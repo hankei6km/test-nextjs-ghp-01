@@ -3,16 +3,28 @@ import api from '../api/$api';
 import { ParsedUrlQuery } from 'querystring';
 import { GetStaticPropsContext } from 'next';
 
-const baseURL = process.env.API_TEST1_URL_BASE;
-const fetchConfig = {
-  headers: { 'X-API-KEY': process.env.GET_API_KEY || '' }
-};
+const test1FetchBaseURL = ((): string => {
+  const test1FetchBaseURL = process.env.API_TEST1_URL_BASE || '';
+  if (test1FetchBaseURL === '') {
+    console.error('$API_TEST1_URL_BASE is not defined.');
+  }
+  return test1FetchBaseURL;
+})();
+const test1FetchConfig = (() => {
+  const getApiKey = process.env.GET_API_KEY || '';
+  if (getApiKey === '') {
+    console.error('$GET_API_KEY is not defined.');
+  }
+  return {
+    headers: { 'X-API-KEY': getApiKey }
+  };
+})();
 const sortedTest1DataFields = ['id', 'title'].join(',');
 const allTest1IdsFields = ['id'].join(',');
 
 const client = api(
   aspida(fetch, {
-    baseURL: baseURL
+    baseURL: test1FetchBaseURL
   })
 );
 
@@ -22,7 +34,7 @@ export async function getSortedTest1Data() {
       query: {
         fields: sortedTest1DataFields
       },
-      config: fetchConfig
+      config: test1FetchConfig
     });
     if (res.status === 200) {
       return res.body.contents;
@@ -41,7 +53,7 @@ export async function getAllTest1Ids() {
       query: {
         fields: allTest1IdsFields
       },
-      config: fetchConfig
+      config: test1FetchConfig
     });
     if (res.status === 200) {
       return res.body.contents.map(({ id }) => ({ params: { id } }));
@@ -66,7 +78,7 @@ export async function getTest1Data({
         query: {
           draftKey: !preview ? '' : previewData.draftKey
         },
-        config: fetchConfig
+        config: test1FetchConfig
       });
     return res;
   } catch (err) {
