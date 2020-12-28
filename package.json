@@ -6,6 +6,7 @@
     "dev": "next",
     "dev:api": "aspida && next",
     "build": "next build",
+    "build:api": "aspida && next build",
     "start": "next start",
     "start:api": "aspida && next build && next start",
     "type-check": "tsc"
