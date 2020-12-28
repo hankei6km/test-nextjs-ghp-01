@@ -19,8 +19,6 @@ const test1FetchConfig = (() => {
     headers: { 'X-API-KEY': getApiKey }
   };
 })();
-const sortedTest1DataFields = ['id', 'title'].join(',');
-const allTest1IdsFields = ['id'].join(',');
 
 const client = api(
   aspida(fetch, {
@@ -32,7 +30,7 @@ export async function getSortedTest1Data() {
   try {
     const res = await client.api.v1.test1.get({
       query: {
-        fields: sortedTest1DataFields
+        fields: 'id,title'
       },
       config: test1FetchConfig
     });
@@ -51,11 +49,12 @@ export async function getAllTest1Ids() {
   try {
     const res = await client.api.v1.test1.get({
       query: {
-        fields: allTest1IdsFields
+        fields: 'id'
       },
       config: test1FetchConfig
     });
     if (res.status === 200) {
+      console.log(res.body.contents);
       return res.body.contents.map(({ id }) => ({ params: { id } }));
     }
     console.error(`getAllTest1Ids error: status=${res.status}`);

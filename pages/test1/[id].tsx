@@ -1,4 +1,4 @@
-import { Test1Content } from '../../api/common';
+import { Test1Content } from '../../api/contentTypes';
 import { getAllTest1Ids, getTest1Data } from '../../lib/test1';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import ErrorPage from 'next/error';

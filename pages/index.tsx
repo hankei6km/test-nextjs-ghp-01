@@ -2,7 +2,7 @@ import { GetStaticProps } from 'next';
 import { getSortedTest1Data } from '../lib/test1';
 import Layout from '../components/Layout';
 import Link from '../components/Link';
-import { Test1Content } from '../api/common';
+import { Test1Content } from '../api/contentTypes';
 
 const IndexPage = ({ allPostsData }: { allPostsData: Test1Content[] }) => {
   return (
