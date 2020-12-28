@@ -25,7 +25,7 @@ export default function Post({
         </Box>
         <Box py={1}>
           <Typography variant="body1">
-            <div dangerouslySetInnerHTML={{ __html: postData.contents }} />
+            <div dangerouslySetInnerHTML={{ __html: postData.content }} />
           </Typography>
         </Box>
       </Container>

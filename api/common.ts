@@ -16,7 +16,7 @@ type CommonList<T> = {
 
 type Test1 = {
   title: string;
-  contents: string;
+  content: string;
   mainImage?: string;
 };
 export type Test1Content = Test1 & CommonItem;
