@@ -1,12 +1,9 @@
-import { Test1Content } from '../../../../common';
+import { Test1Content } from '../../../../contentTypes';
+import { GetContentQuery } from '../../../../queryTypes';
 
 export type Methods = {
   get: {
-    query?: {
-      draftKey?: string;
-      fields?: string;
-      depth?: number;
-    };
+    query?: GetContentQuery;
     resBody: Test1Content;
   };
 };
