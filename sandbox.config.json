@@ -3,5 +3,5 @@
   "hardReloadOnChange": false,
   "view": "browser",
   "template": "node",
-  "container": { "startScript": "start:api" }
+  "container": { "startScript": "dev:api" }
 }
