@@ -10,12 +10,10 @@ export async function getSortedTest1Data() {
       },
       config: fetchConfig
     });
-    if (res.status === 200) {
-      return res.body.contents;
-    }
-    console.error(`getSortedTest1Data error: status=${res.status}`);
+    return res.body.contents;
   } catch (err) {
-    // TODO: ビルド時のエラーはどう扱うのが正解? 迂闊に err を表示するとシークレットが漏洩する可能性もある.
+    // res.status = 404 などでも throw される(試した限りでは)
+    // res.status を知る方法は?
     console.error(`getSortedTest1Data error: ${err.name}`);
   }
   return [];
@@ -29,13 +27,8 @@ export async function getAllTest1Ids() {
       },
       config: fetchConfig
     });
-    if (res.status === 200) {
-      console.log(res.body.contents);
-      return res.body.contents.map(({ id }) => ({ params: { id } }));
-    }
-    console.error(`getAllTest1Ids error: status=${res.status}`);
+    return res.body.contents.map(({ id }) => ({ params: { id } }));
   } catch (err) {
-    // TODO: ビルド時のエラーはどう扱うのが正解? 迂闊に err を表示するとシークレットが漏洩する可能性もある.
     console.error(`getAllTest1Ids error: ${err.name}`);
   }
   return [];
@@ -55,9 +48,8 @@ export async function getTest1Data({
         },
         config: fetchConfig
       });
-    return res;
+    return res || {};
   } catch (err) {
-    // TODO: ビルド時のエラーはどう扱うのが正解? 迂闊に response を表示するとシークレットが漏洩する可能性もある.
     console.error(`getTest1Data error: ${err.name}`);
   }
   return {};
