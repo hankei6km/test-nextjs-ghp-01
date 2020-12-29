@@ -1,45 +1,19 @@
-import aspida from '@aspida/fetch';
-import api from '../api/$api';
 import { ParsedUrlQuery } from 'querystring';
 import { GetStaticPropsContext } from 'next';
-
-const test1FetchBaseURL = ((): string => {
-  const test1FetchBaseURL = process.env.API_TEST1_URL_BASE || '';
-  if (test1FetchBaseURL === '') {
-    console.error('$API_TEST1_URL_BASE is not defined.');
-  }
-  return test1FetchBaseURL;
-})();
-const test1FetchConfig = (() => {
-  const getApiKey = process.env.GET_API_KEY || '';
-  if (getApiKey === '') {
-    console.error('$GET_API_KEY is not defined.');
-  }
-  return {
-    headers: { 'X-API-KEY': getApiKey }
-  };
-})();
-
-const client = api(
-  aspida(fetch, {
-    baseURL: test1FetchBaseURL
-  })
-);
+import client, { fetchConfig } from './client';
 
 export async function getSortedTest1Data() {
   try {
-    const res = await client.api.v1.test1.get({
+    const res = await client.test1.get({
       query: {
         fields: 'id,title'
       },
-      config: test1FetchConfig
+      config: fetchConfig
     });
-    if (res.status === 200) {
-      return res.body.contents;
-    }
-    console.error(`getSortedTest1Data error: status=${res.status}`);
+    return res.body.contents;
   } catch (err) {
-    // TODO: ビルド時のエラーはどう扱うのが正解? 迂闊に err を表示するとシークレットが漏洩する可能性もある.
+    // res.status = 404 などでも throw される(試した限りでは)
+    // res.status を知る方法は?
     console.error(`getSortedTest1Data error: ${err.name}`);
   }
   return [];
@@ -47,19 +21,14 @@ export async function getSortedTest1Data() {
 
 export async function getAllTest1Ids() {
   try {
-    const res = await client.api.v1.test1.get({
+    const res = await client.test1.get({
       query: {
         fields: 'id'
       },
-      config: test1FetchConfig
+      config: fetchConfig
     });
-    if (res.status === 200) {
-      console.log(res.body.contents);
-      return res.body.contents.map(({ id }) => ({ params: { id } }));
-    }
-    console.error(`getAllTest1Ids error: status=${res.status}`);
+    return res.body.contents.map(({ id }) => ({ params: { id } }));
   } catch (err) {
-    // TODO: ビルド時のエラーはどう扱うのが正解? 迂闊に err を表示するとシークレットが漏洩する可能性もある.
     console.error(`getAllTest1Ids error: ${err.name}`);
   }
   return [];
@@ -71,17 +40,16 @@ export async function getTest1Data({
   previewData = {}
 }: GetStaticPropsContext<ParsedUrlQuery>) {
   try {
-    const res = await client.api.v1.test1
+    const res = await client.test1
       ._id(!preview ? params.id : previewData.slug) // 似たような3項式がバラけていてすっきりしない
       .$get({
         query: {
           draftKey: !preview ? '' : previewData.draftKey
         },
-        config: test1FetchConfig
+        config: fetchConfig
       });
-    return res;
+    return res || {};
   } catch (err) {
-    // TODO: ビルド時のエラーはどう扱うのが正解? 迂闊に response を表示するとシークレットが漏洩する可能性もある.
     console.error(`getTest1Data error: ${err.name}`);
   }
   return {};
