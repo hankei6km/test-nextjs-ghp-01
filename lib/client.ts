@@ -1,5 +1,6 @@
 import aspida from '@aspida/fetch';
 import api from '../api/$api';
+import mock from '../api/$mock';
 
 export const fetchBaseURL = (): string => {
   const apiBaseURL = process.env.API_BASE_URL || '';
@@ -18,10 +19,17 @@ export const fetchConfig = (() => {
   };
 })();
 
-const clientV1 = api(
-  aspida(fetch, {
-    baseURL: fetchBaseURL()
-  })
+const clientV1 = (process.env.NODE_ENV === 'development'
+  ? mock(
+      aspida(fetch, {
+        baseURL: fetchBaseURL()
+      })
+    )
+  : api(
+      aspida(fetch, {
+        baseURL: fetchBaseURL()
+      })
+    )
 ).api.v1;
 
 export default clientV1;

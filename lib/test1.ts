@@ -48,7 +48,7 @@ export async function getTest1Data({
         },
         config: fetchConfig
       });
-    return res || {};
+    return res;
   } catch (err) {
     console.error(`getTest1Data error: ${err.name}`);
   }

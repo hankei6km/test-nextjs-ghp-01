@@ -3,17 +3,15 @@
   "version": "1.0.0",
   "scripts": {
     "api:build": "aspida",
-    "dev": "next",
-    "dev:api": "aspida && next",
-    "build": "next build",
-    "build:api": "aspida && next build",
-    "start": "next start",
-    "start:api": "aspida && next build && next start",
+    "dev": "aspida && aspida-mock && next",
+    "build": "aspida && aspida-mock && next build",
+    "start": "aspida && aspida-mock && next start",
     "type-check": "tsc"
   },
   "dependencies": {
     "@aspida/fetch": "^1.1.1",
     "@material-ui/core": "^4.11.2",
+    "aspida-mock": "^0.8.2",
     "next": "latest",
     "react": "^16.12.0",
     "react-dom": "^16.12.0"

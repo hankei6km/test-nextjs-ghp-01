@@ -21,5 +21,6 @@ type Test1 = {
 export type Test1Content = ContentBase & Test1;
 export type Test1Index = Omit<Test1Content, 'content'>;
 export type Test1Id = Pick<Test1Content, 'id'>;
+export type Test1Contents = ContentList<Test1Content>;
 export type Test1List = ContentList<Test1Index>;
 export type Test1Ids = ContentList<Test1Id>;
