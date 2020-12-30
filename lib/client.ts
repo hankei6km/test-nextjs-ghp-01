@@ -1,6 +1,6 @@
 import aspida from '@aspida/fetch';
-import api from '../api/$api';
-import mock from '../api/$mock';
+import api from '../clientTypes/$api';
+import mock from '../clientTypes/$mock';
 
 export const fetchBaseURL = (): string => {
   const apiBaseURL = process.env.API_BASE_URL || '';
