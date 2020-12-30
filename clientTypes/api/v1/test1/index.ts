@@ -50,7 +50,7 @@ export default mockMethods<MockMethods>({
         switch (query.fields) {
           case 'id':
             return mockDataTest1Ids;
-          case 'id,title':
+          case 'id,createdAt,updatedAt,publishedAt,revisedAt,title':
             return mockDataTest1List;
         }
         return mockDataTest1;

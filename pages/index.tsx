@@ -1,18 +1,13 @@
 import { GetStaticProps } from 'next';
 import { getSortedTest1Data } from '../lib/test1';
 import Layout from '../components/Layout';
-import Link from '../components/Link';
+import List from '../components/List';
 import { Test1Content } from '../clientTypes/contentTypes';
 
 const IndexPage = ({ allPostsData }: { allPostsData: Test1Content[] }) => {
   return (
-    <Layout title="Home | Next.js + TypeScript Example">
-      <h1>Hello Next.js 👋</h1>
-      {allPostsData.map(({ id, title }) => (
-        <div key={title}>
-          <Link href={`/test1/${id}`}>{title}</Link>
-        </div>
-      ))}
+    <Layout home title="Home | Next.js + TypeScript Example">
+      <List items={allPostsData} detail={false} />
     </Layout>
   );
 };

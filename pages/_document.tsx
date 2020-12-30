@@ -1,8 +1,8 @@
 // https://github.com/mui-org/material-ui/blob/ceb7cda74289b2feb2b2af23003c99cd4c20398e/examples/nextjs/pages/_document.js
-import React from "react";
-import Document, { Html, Head, Main, NextScript } from "next/document";
-import { ServerStyleSheets } from "@material-ui/core/styles";
-import theme from "../src/theme";
+import React from 'react';
+import Document, { Html, Head, Main, NextScript } from 'next/document';
+import { ServerStyleSheets } from '@material-ui/core/styles';
+import theme from '../src/theme';
 
 export default class MyDocument extends Document {
   render() {

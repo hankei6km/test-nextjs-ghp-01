@@ -6,7 +6,7 @@ export async function getSortedTest1Data() {
   try {
     const res = await client.test1.get({
       query: {
-        fields: 'id,title'
+        fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title'
       },
       config: fetchConfig
     });
