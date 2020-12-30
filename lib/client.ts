@@ -2,13 +2,6 @@ import aspida from '@aspida/fetch';
 import api from '../clientTypes/$api';
 import mock from '../clientTypes/$mock';
 
-export const fetchBaseURL = (): string => {
-  const apiBaseURL = process.env.API_BASE_URL || '';
-  if (apiBaseURL === '') {
-    console.error('$API_BASE_URL is not defined.');
-  }
-  return apiBaseURL;
-};
 export const fetchConfig = (() => {
   const getApiKey = process.env.GET_API_KEY || '';
   if (getApiKey === '') {
@@ -21,14 +14,10 @@ export const fetchConfig = (() => {
 
 const clientV1 = (process.env.NODE_ENV === 'development'
   ? mock(
-      aspida(fetch, {
-        baseURL: fetchBaseURL()
-      })
+      aspida(fetch)
     )
   : api(
-      aspida(fetch, {
-        baseURL: fetchBaseURL()
-      })
+      aspida(fetch)
     )
 ).api.v1;
 
