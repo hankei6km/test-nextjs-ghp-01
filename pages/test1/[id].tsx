@@ -3,8 +3,12 @@ import { getAllTest1Ids, getTest1Data } from '../../lib/test1';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import ErrorPage from 'next/error';
 import Layout from '../../components/Layout';
-import Container from '@material-ui/core/Container';
+import Link from '../../components/Link';
 import Box from '@material-ui/core/Box';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
 export default function Post({
@@ -19,16 +23,22 @@ export default function Post({
 
   return (
     <Layout title={postData.title}>
-      <Container max-width="sm">
-        <Box py={1}>
-          <Typography variant="h6">{postData.title}</Typography>
-        </Box>
-        <Box py={1}>
-          <Typography variant="body1">
-            <div dangerouslySetInnerHTML={{ __html: postData.content }} />
-          </Typography>
-        </Box>
-      </Container>
+      <Box my={1}>
+        <Card elevation={0}>
+          <CardHeader
+            titleTypographyProps={{ variant: 'h4' }}
+            title={postData.title}
+          />
+          <CardContent>
+            <Typography component={Box} variant="body1">
+              <div dangerouslySetInnerHTML={{ __html: postData.content }} />
+            </Typography>
+          </CardContent>
+          <CardActions>
+            <Link href="/test1">{'Back to test1'}</Link>
+          </CardActions>
+        </Card>
+      </Box>
     </Layout>
   );
 }

@@ -1,19 +1,32 @@
-import * as React from 'react'
-import ListItem from './ListItem'
-import { User } from '../interfaces'
+import React from 'react';
+import Box from '@material-ui/core/Box';
+import MuiList from '@material-ui/core/List';
+import MuiListItem from '@material-ui/core/ListItem';
+import ListItem from './ListItem';
+import ListDetail from './ListDetail';
+import { Test1Index } from '../clientTypes/contentTypes';
 
 type Props = {
-  items: User[]
-}
+  items: Test1Index[];
+  detail?: boolean;
+};
 
-const List = ({ items }: Props) => (
-  <ul>
+const List = ({ items, detail = true }: Props) => (
+  <MuiList dense disablePadding>
     {items.map((item) => (
-      <li key={item.id}>
-        <ListItem data={item} />
-      </li>
+      <MuiListItem dense divider={detail} key={item.id}>
+        {detail ? (
+          <Box my={1} width="100%">
+            <ListDetail data={item} />
+          </Box>
+        ) : (
+          <Box my={0} width="100%">
+            <ListItem data={item} />
+          </Box>
+        )}
+      </MuiListItem>
     ))}
-  </ul>
-)
+  </MuiList>
+);
 
-export default List
+export default List;
