@@ -5,4 +5,4 @@ const baseURL = () => {
   }
   return apiBaseURL;
 };
-module.exports = { input: 'clientTypes', baseURL: baseURL() };
+module.exports = { input: 'types/client', baseURL: baseURL() };
