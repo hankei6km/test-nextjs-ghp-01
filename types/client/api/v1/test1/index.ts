@@ -19,42 +19,12 @@ export type Methods = {
   };
 };
 
-//  mock から polymorph を扱う方法が不明だったのでとりあえず.
-// mockMethods の return に polymorph を含めるても作用しなかった.
-type MockMethods = {
-  get: {
-    query: GetTest1ItemQuery | GetIdsQuery;
-    resBody: Test1List | Test1Ids;
-  };
-};
-
 // mock も production のコードに残る?
-export default mockMethods<MockMethods>({
-  get: ({ query }) => {
-    const mockDataTest1Ids = {
-      ...mockDataTest1,
-      contents: mockDataTest1.contents.map(({ id }) => ({ id }))
-    };
-    const mockDataTest1List = {
-      ...mockDataTest1,
-      contents: mockDataTest1.contents.map((v) => ({
-        ...v,
-        content: undefined
-      }))
-    };
-
-    return {
-      status: 200,
-      resHeaders: {},
-      resBody: (() => {
-        switch (query.fields) {
-          case 'id':
-            return mockDataTest1Ids;
-          case 'id,createdAt,updatedAt,publishedAt,revisedAt,title':
-            return mockDataTest1List;
-        }
-        return mockDataTest1;
-      })()
-    };
-  }
+// polymoprh 用のデータは middleware に記述
+export default mockMethods<Methods>({
+  get: () => ({
+    status: 200,
+    resHeaders: {},
+    resBody: mockDataTest1
+  })
 });
