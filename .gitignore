@@ -21,7 +21,7 @@ yarn-error.log*
 /.vscode
 
 # aspida
-/api/$*
+/types/client/$*
 
 # codesandbox
 /.codesandbox

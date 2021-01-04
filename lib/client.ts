@@ -1,6 +1,6 @@
 import aspida from '@aspida/fetch';
-import api from '../clientTypes/$api';
-import mock from '../clientTypes/$mock';
+import api from '../types/client/$api';
+import mock from '../types/client/$mock';
 
 export const fetchConfig = (() => {
   const getApiKey = process.env.GET_API_KEY || '';
