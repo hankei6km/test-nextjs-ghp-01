@@ -11,7 +11,7 @@ import Link from './Link';
 import DateUpdated from './DateUpdated';
 import ThumbImage from './ThumbImage';
 
-import { Test1Index } from '../clientTypes/contentTypes';
+import { Test1Index } from '../types/client/contentTypes';
 
 const useStyles = makeStyles(() => ({
   title: {
