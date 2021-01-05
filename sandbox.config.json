@@ -3,5 +3,8 @@
   "hardReloadOnChange": false,
   "view": "browser",
   "template": "node",
-  "container": { "startScript": "dev:api" }
+  "container": {
+    "startScript": "dev:api",
+    "node": "14"
+  }
 }
