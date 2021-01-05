@@ -4,7 +4,7 @@
   "view": "browser",
   "template": "node",
   "container": {
-    "startScript": "dev:api",
+    "startScript": "dev",
     "node": "12"
   }
 }
