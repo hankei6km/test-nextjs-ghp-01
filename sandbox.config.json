@@ -5,6 +5,6 @@
   "template": "node",
   "container": {
     "startScript": "dev:api",
-    "node": "14"
+    "node": "12"
   }
 }
