@@ -2,7 +2,7 @@
   "name": "with-typescript",
   "version": "1.0.0",
   "scripts": {
-    "api:build": "aspida",
+    "api:build": "aspida && aspida-mock",
     "dev": "aspida && aspida-mock && next",
     "build": "aspida && aspida-mock && next build",
     "start": "aspida && aspida-mock && next start",
