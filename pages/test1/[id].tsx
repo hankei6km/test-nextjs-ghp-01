@@ -1,4 +1,3 @@
-import { Test1Content } from '../../clientTypes/contentTypes';
 import { getAllTest1Ids, getTest1Data } from '../../lib/test1';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import ErrorPage from 'next/error';
@@ -10,6 +9,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import { Test1Content } from '../../types/client/contentTypes';
 
 export default function Post({
   postData

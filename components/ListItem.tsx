@@ -7,7 +7,7 @@ import Link from './Link';
 import DateUpdated from './DateUpdated';
 import ThumbImage from './ThumbImage';
 
-import { Test1Index } from '../clientTypes/contentTypes';
+import { Test1Index } from '../types/client/contentTypes';
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -40,11 +40,7 @@ const ListItem = ({
   thumbSizeFit = 'crop'
 }: Props) => {
   const classes = useStyles();
-  const q = new URLSearchParams('');
-  q.append('w', `${thumbWidth}`);
-  q.append('h', `${thumbHeight}`);
-  q.append('fit', thumbSizeFit);
-  const thumbImage = `${data.mainImage || defaultMainImage}?${q.toString()}`;
+  const thumbImage = data.mainImage || defaultMainImage;
   const updated = data.revisedAt || data.updatedAt || data.publishedAt;
   return (
     <Paper
@@ -62,6 +58,7 @@ const ListItem = ({
               alt={`thumbnail for ${data.title}`}
               thumbWidth={thumbWidth}
               thumbHeight={thumbHeight}
+              thumbSizeFit={thumbSizeFit}
             />
           </Link>
         </Box>

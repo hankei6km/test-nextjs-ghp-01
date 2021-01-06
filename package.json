@@ -2,11 +2,12 @@
   "name": "with-typescript",
   "version": "1.0.0",
   "scripts": {
-    "api:build": "aspida",
+    "api:build": "aspida && aspida-mock",
     "dev": "aspida && aspida-mock && next",
     "build": "aspida && aspida-mock && next build",
     "start": "aspida && aspida-mock && next start",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "test": "jest"
   },
   "dependencies": {
     "@aspida/fetch": "^1.1.1",
@@ -20,9 +21,15 @@
     "react-dom": "^16.12.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.8",
+    "@testing-library/react": "^11.2.2",
+    "@types/jest": "^26.0.19",
     "@types/node": "^12.12.21",
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.9.4",
+    "jest": "^26.6.3",
+    "jest-fetch-mock": "^3.0.3",
+    "jest-watch-typeahead": "^0.6.1",
     "typescript": "4.0"
   },
   "license": "MIT"
