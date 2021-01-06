@@ -1,35 +1,11 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import { NextRouter } from 'next/router';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import Button from '@material-ui/core/Button';
+import { mockRouter } from '../test/testUtils';
 
 import Link from './Link';
-
-function mockRouter(): NextRouter {
-  // https://github.com/vercel/next.js/issues/16864
-  return {
-    basePath: '',
-    pathname: '/',
-    route: '/',
-    asPath: '/',
-    query: {},
-    // push: jest.fn(),
-    push: jest.fn().mockImplementation(() => Promise.resolve()),
-    replace: jest.fn(),
-    reload: jest.fn(),
-    back: jest.fn(),
-    prefetch: jest.fn().mockResolvedValue(undefined), // This one fixed it for me
-    beforePopState: jest.fn(),
-    events: {
-      on: jest.fn(),
-      off: jest.fn(),
-      emit: jest.fn()
-    },
-    isFallback: false
-  };
-}
 
 describe('Link', () => {
   it('renders link', () => {
