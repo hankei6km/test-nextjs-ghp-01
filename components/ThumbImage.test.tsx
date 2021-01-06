@@ -4,6 +4,7 @@ import '@testing-library/jest-dom';
 // import { act } from 'react-test-renderer';
 
 import ThumbImage from './ThumbImage';
+import { mockImage } from '../test/testUtils';
 
 // https://stackoverflow.com/questions/40449434/mocking-globals-in-jest
 const orgImage = global.Image;
@@ -14,15 +15,10 @@ afterEach(() => {
 describe('ThumbImage', () => {
   it('should renders img after Image.onLoad', async () => {
     const addEventListener = jest.fn();
-    global.Image = jest.fn().mockImplementation((w: number, h: number) => {
-      const image = new orgImage(w, h);
-      Object.defineProperty(image, 'src', {
-        set: (v) => {},
-        get: () => undefined
-      });
-      image.addEventListener = addEventListener;
-      return image;
-    });
+    // .mockImplementation((_type: string, fn: () => void) => {
+    //   setTimeout(fn, 1);
+    // });
+    global.Image = mockImage(jest.fn(), addEventListener);
 
     await act(async () => {
       const { container } = render(
@@ -33,18 +29,20 @@ describe('ThumbImage', () => {
           thumbHeight={100}
         />
       );
+      const img = container.querySelector('img');
+      expect(img).not.toBeInTheDocument();
+
       await new Promise((resolve) => {
-        const img = container.querySelector('img');
-        expect(img).not.toBeInTheDocument();
+        // useEEffect 待ち、タイミング依存.
+        // 下記の方法では hadleOnload を非同期に実行するとact の外に出てしまう.
+        // https://reactjs.org/blog/2019/02/06/react-v16.8.0.html#testing-hooks
         setTimeout(() => {
-          // useEEffect 待ち、タイミング依存
+          expect(addEventListener).toHaveBeenCalled();
           addEventListener.mock.calls[0][1]();
           const img = container.querySelector('img');
           expect(img).toBeInTheDocument();
-          expect(addEventListener).toHaveBeenCalled();
           resolve();
         }, 10);
-        // resolve();
       });
     });
   });
