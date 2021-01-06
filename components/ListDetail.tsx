@@ -52,11 +52,7 @@ const ListDetail = ({
   thumbSizeFit = 'crop'
 }: Props) => {
   const classes = useStyles();
-  const q = new URLSearchParams('');
-  q.append('w', `${thumbWidth}`);
-  q.append('h', `${thumbHeight}`);
-  q.append('fit', thumbSizeFit);
-  const thumbImage = `${data.mainImage || defaultMainImage}?${q.toString()}`;
+  const thumbImage = data.mainImage || defaultMainImage;
   const updated = data.revisedAt || data.updatedAt || data.publishedAt;
   return (
     <Card elevation={0} className={classes.content}>
@@ -84,6 +80,7 @@ const ListDetail = ({
               alt={`thumbnail for ${data.title}`}
               thumbWidth={thumbWidth}
               thumbHeight={thumbHeight}
+              thumbSizeFit={thumbSizeFit}
               // title={data.title}
             />
           </Link>
