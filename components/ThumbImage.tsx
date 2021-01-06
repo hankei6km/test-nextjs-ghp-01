@@ -35,6 +35,7 @@ const ThumbImage = ({
   q.append('w', `${thumbWidth}`);
   q.append('h', `${thumbHeight}`);
   q.append('fit', thumbSizeFit);
+  const thumbSrc = `${src}?${q.toString()}`;
 
   const thumbOuterRef = useCallback(
     (node) => {
@@ -55,12 +56,12 @@ const ThumbImage = ({
     };
     img.addEventListener('load', handleLoad);
     img.alt = alt;
-    img.src = src;
+    img.src = thumbSrc;
     return () => {
       img.removeEventListener('load', handleLoad);
       setImage(null);
     };
-  }, [src, alt, thumbWidth, thumbHeight]);
+  }, [thumbSrc, alt, thumbWidth, thumbHeight]);
 
   return (
     <>
