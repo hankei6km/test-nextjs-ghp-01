@@ -4,10 +4,10 @@ import MuiList from '@material-ui/core/List';
 import MuiListItem from '@material-ui/core/ListItem';
 import ListItem from './ListItem';
 import ListDetail from './ListDetail';
-import { Test1Index } from '../types/client/contentTypes';
+import { PostsIndex } from '../types/client/contentTypes';
 
 type Props = {
-  items: Test1Index[];
+  items: PostsIndex[];
   detail?: boolean;
 };
 

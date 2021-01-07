@@ -11,7 +11,7 @@ import Link from './Link';
 import DateUpdated from './DateUpdated';
 import ThumbImage from './ThumbImage';
 
-import { Test1Index } from '../types/client/contentTypes';
+import { PostsIndex } from '../types/client/contentTypes';
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 type Props = {
-  data: Test1Index;
+  data: PostsIndex;
   thumbWidth?: number;
   thumbHeight?: number;
   thumbSizeFit?: '' | 'crop'; // とりあえず
