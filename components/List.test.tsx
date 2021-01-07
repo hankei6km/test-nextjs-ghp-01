@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, act, fireEvent } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import { mockRouter, mockImage } from '../test/testUtils';
