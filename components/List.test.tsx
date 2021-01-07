@@ -1,10 +1,10 @@
 import React from 'react';
-import { render, act, fireEvent } from '@testing-library/react';
+import { render, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import { mockRouter, mockImage } from '../test/testUtils';
 
-import { mockDataTest1 } from '../types/client/mockData';
+import { mockDataTest1List } from '../types/client/mockData';
 import List from './List';
 
 // https://stackoverflow.com/questions/40449434/mocking-globals-in-jest
@@ -22,25 +22,7 @@ describe('List', () => {
       const router = mockRouter();
       const { container } = render(
         <RouterContext.Provider value={router}>
-          <List
-            items={mockDataTest1.contents.map(
-              ({
-                id,
-                createdAt,
-                updatedAt,
-                publishedAt,
-                revisedAt,
-                title
-              }) => ({
-                id,
-                createdAt,
-                updatedAt,
-                publishedAt,
-                revisedAt,
-                title
-              })
-            )}
-          />
+          <List items={mockDataTest1List.contents} />
         </RouterContext.Provider>
       );
 
