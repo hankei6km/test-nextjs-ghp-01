@@ -13,6 +13,22 @@ type ContentList<T> = {
   limit: number;
 };
 
+type Pages = {
+  title: string;
+  kind: 'home' | 'posts' | 'gallery' | 'history' | 'about';
+  descriptionHtml?: string;
+  descriptionMarkdown?: string;
+};
+export type PagesContent = ContentBase & Pages;
+export type PagesIndex = Omit<
+  PagesContent,
+  'kind' | 'descriptionHtml' | 'descriptionMarkdown'
+>;
+export type PagesId = Pick<PagesContent, 'id'>;
+export type PagesContents = ContentList<PagesContent>;
+export type PagesList = ContentList<PagesIndex>;
+export type PagesIds = ContentList<PagesId>;
+
 type Test1 = {
   title: string;
   content: string;

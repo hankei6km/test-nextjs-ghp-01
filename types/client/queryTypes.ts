@@ -23,6 +23,11 @@ export type GetIdsQuery = {
   fields: 'id';
 } & Omit<GetQuery, 'ids' | 'filters'>;
 
+export type GetPagesItemQuery = {
+  // 型のリファクト?が面倒、、、
+  fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title';
+} & GetQuery;
+
 export type GetTest1ItemQuery = {
   // 型のリファクト?が面倒、、、
   fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title';
