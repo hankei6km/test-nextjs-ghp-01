@@ -1,4 +1,46 @@
-import { Test1Contents } from './contentTypes';
+import { PagesContents, Test1Contents } from './contentTypes';
+
+export const mockDataPages: PagesContents = {
+  contents: [
+    {
+      id: 'home',
+      createdAt: '2020-12-27T04:04:30.107Z',
+      updatedAt: '2020-12-27T04:04:30.107Z',
+      publishedAt: '2020-12-27T04:04:30.107Z',
+      revisedAt: '2020-12-27T04:04:30.107Z',
+      title: 'Home',
+      kind: 'home'
+    },
+    {
+      id: 'test1',
+      createdAt: '2020-12-26T15:29:14.476Z',
+      updatedAt: '2020-12-26T15:29:14.476Z',
+      publishedAt: '2020-12-26T15:29:14.476Z',
+      revisedAt: '2020-12-26T15:29:14.476Z',
+      title: 'Test1',
+      kind: 'posts',
+      descriptionHtml: '<p>test1 posts</p>'
+    }
+  ],
+  totalCount: 2,
+  offset: 0,
+  limit: 10
+};
+
+export const mockDataPagesList = {
+  ...mockDataPages,
+  contents: mockDataPages.contents.map((v) => ({
+    ...v,
+    kind: undefined,
+    descriptionHtml: undefined,
+    descriptionMarkdown: undefined
+  }))
+};
+
+export const mockDataPagesIds = {
+  ...mockDataPages,
+  contents: mockDataPages.contents.map(({ id }) => ({ id }))
+};
 
 export const mockDataTest1: Test1Contents = {
   contents: [
