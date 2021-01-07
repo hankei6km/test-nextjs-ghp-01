@@ -13,8 +13,8 @@ afterEach(() => {
   global.Image = orgImage;
 });
 
-describe('ListItem', () => {
-  it('should renders ListItems', async () => {
+describe('ListDetail', () => {
+  it('should renders ListDetails', async () => {
     const srcSetter = jest.fn();
     const addEventListener = jest.fn();
     global.Image = mockImage(srcSetter, addEventListener);

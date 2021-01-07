@@ -8,7 +8,7 @@ import { mockRouter } from '../test/testUtils';
 import Link from './Link';
 
 describe('Link', () => {
-  it('renders link', () => {
+  it('renders link and click', () => {
     const router = mockRouter();
     const { getByRole } = render(
       <RouterContext.Provider value={router}>
