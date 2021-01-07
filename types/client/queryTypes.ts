@@ -28,6 +28,11 @@ export type GetPagesItemQuery = {
   fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title';
 } & GetQuery;
 
+export type GetPostsItemQuery = {
+  // 型のリファクト?が面倒、、、
+  fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title';
+} & GetQuery;
+
 export type GetTest1ItemQuery = {
   // 型のリファクト?が面倒、、、
   fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title';

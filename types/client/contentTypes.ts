@@ -29,6 +29,18 @@ export type PagesContents = ContentList<PagesContent>;
 export type PagesList = ContentList<PagesIndex>;
 export type PagesIds = ContentList<PagesId>;
 
+type Posts = {
+  title: string;
+  content: string;
+  mainImage?: string;
+};
+export type PostsContent = ContentBase & Posts;
+export type PostsIndex = Omit<PostsContent, 'content'>;
+export type PostsId = Pick<PostsContent, 'id'>;
+export type PostsContents = ContentList<PostsContent>;
+export type PostsList = ContentList<PostsIndex>;
+export type PostsIds = ContentList<PostsId>;
+
 type Test1 = {
   title: string;
   content: string;

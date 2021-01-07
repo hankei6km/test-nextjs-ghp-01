@@ -1,4 +1,4 @@
-import { getAllTest1Ids, getTest1Data } from '../../lib/test1';
+import { getAllPostsIds, getPostsData } from '../../lib/posts';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import ErrorPage from 'next/error';
 import Layout from '../../components/Layout';
@@ -9,12 +9,12 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { Test1Content } from '../../types/client/contentTypes';
+import { PostsContent } from '../../types/client/contentTypes';
 
 export default function Post({
   postData
 }: {
-  postData: Test1Content;
+  postData: PostsContent;
   preview: boolean;
 }) {
   if (!postData) {
@@ -35,7 +35,7 @@ export default function Post({
             </Typography>
           </CardContent>
           <CardActions>
-            <Link href="/test1">{'Back to test1'}</Link>
+            <Link href="/posts">{'Back to posts'}</Link>
           </CardActions>
         </Card>
       </Box>
@@ -44,7 +44,7 @@ export default function Post({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = await getAllTest1Ids();
+  const paths = await getAllPostsIds('test1');
   return {
     paths,
     fallback: true
@@ -52,7 +52,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const postData = await getTest1Data(context);
+  const postData = await getPostsData('test1', context);
   return {
     props: {
       postData,
