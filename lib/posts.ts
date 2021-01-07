@@ -1,10 +1,10 @@
 import { ParsedUrlQuery } from 'querystring';
 import { GetStaticPropsContext } from 'next';
-import client, { fetchConfig } from './client';
+import client, { fetchConfig, ApiNamePosts } from './client';
 
-export async function getSortedTest1Data() {
+export async function getSortedPostsData(apiName: ApiNamePosts) {
   try {
-    const res = await client.test1.get({
+    const res = await client[apiName].get({
       query: {
         fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title'
       },
@@ -14,14 +14,14 @@ export async function getSortedTest1Data() {
   } catch (err) {
     // res.status = 404 などでも throw される(試した限りでは)
     // res.status を知る方法は?
-    console.error(`getSortedTest1Data error: ${err.name}`);
+    console.error(`getSortedPostsData error: ${apiName}: ${err.name}`);
   }
   return [];
 }
 
-export async function getAllTest1Ids() {
+export async function getAllPostsIds(apiName: ApiNamePosts) {
   try {
-    const res = await client.test1.get({
+    const res = await client[apiName].get({
       query: {
         fields: 'id'
       },
@@ -29,18 +29,21 @@ export async function getAllTest1Ids() {
     });
     return res.body.contents.map(({ id }) => ({ params: { id } }));
   } catch (err) {
-    console.error(`getAllTest1Ids error: ${err.name}`);
+    console.error(`getAllPostsIds error: ${apiName}: ${err.name}`);
   }
   return [];
 }
 
-export async function getTest1Data({
-  params = { id: '' },
-  preview = false,
-  previewData = {}
-}: GetStaticPropsContext<ParsedUrlQuery>) {
+export async function getPostsData(
+  apiName: ApiNamePosts,
+  {
+    params = { id: '' },
+    preview = false,
+    previewData = {}
+  }: GetStaticPropsContext<ParsedUrlQuery>
+) {
   try {
-    const res = await client.test1
+    const res = await client[apiName]
       ._id(!preview ? params.id : previewData.slug) // 似たような3項式がバラけていてすっきりしない
       .$get({
         query: {
@@ -50,7 +53,7 @@ export async function getTest1Data({
       });
     return res;
   } catch (err) {
-    console.error(`getTest1Data error: ${err.name}`);
+    console.error(`getPostsData error: ${apiName}: ${err.name}`);
   }
   return {};
 }

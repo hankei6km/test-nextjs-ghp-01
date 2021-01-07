@@ -1,10 +1,10 @@
 import { GetStaticProps } from 'next';
-import { getSortedTest1Data } from '../lib/test1';
+import { getSortedPostsData } from '../lib/posts';
 import Layout from '../components/Layout';
 import List from '../components/List';
-import { Test1Content } from '../types/client/contentTypes';
+import { PostsContent } from '../types/client/contentTypes';
 
-const IndexPage = ({ allPostsData }: { allPostsData: Test1Content[] }) => {
+const IndexPage = ({ allPostsData }: { allPostsData: PostsContent[] }) => {
   return (
     <Layout home title="Home | Next.js + TypeScript Example">
       <List items={allPostsData} detail={false} />
@@ -15,7 +15,7 @@ const IndexPage = ({ allPostsData }: { allPostsData: Test1Content[] }) => {
 export default IndexPage;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const allPostsData = await getSortedTest1Data();
+  const allPostsData = await getSortedPostsData('test1');
   return {
     props: {
       allPostsData

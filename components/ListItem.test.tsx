@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import { mockRouter, mockImage } from '../test/testUtils';
 
-import { mockDataTest1 } from '../types/client/mockData';
+import { mockDataPosts } from '../types/client/mockData';
 import ListItem from './ListItem';
 
 // https://stackoverflow.com/questions/40449434/mocking-globals-in-jest
@@ -23,7 +23,7 @@ describe('ListItem', () => {
       const router = mockRouter();
       const { container, getByText, getByRole, queryByText } = render(
         <RouterContext.Provider value={router}>
-          <ListItem data={mockDataTest1.contents[0]} />
+          <ListItem data={mockDataPosts.contents[0]} />
         </RouterContext.Provider>
       );
       const img = container.querySelector('img');

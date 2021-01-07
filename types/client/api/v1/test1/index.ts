@@ -1,19 +1,19 @@
 import { mockMethods } from 'aspida-mock';
-import { Test1List, Test1Ids } from '../../../contentTypes';
-import { GetIdsQuery, GetTest1ItemQuery } from '../../../queryTypes';
-import { mockDataTest1 } from '../../../mockData';
+import { PostsList, PostsIds } from '../../../contentTypes';
+import { GetIdsQuery, GetPostsItemQuery } from '../../../queryTypes';
+import { mockDataPosts } from '../../../mockData';
 
 export type Methods = {
   get: {
-    resBody: Test1List;
+    resBody: PostsList;
     polymorph: [
       {
         query: GetIdsQuery;
-        resBody: Test1Ids;
+        resBody: PostsIds;
       },
       {
-        query: GetTest1ItemQuery;
-        resBody: Test1List;
+        query: GetPostsItemQuery;
+        resBody: PostsList;
       }
     ];
   };
@@ -25,6 +25,6 @@ export default mockMethods<Methods>({
   get: () => ({
     status: 200,
     resHeaders: {},
-    resBody: mockDataTest1
+    resBody: mockDataPosts
   })
 });

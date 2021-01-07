@@ -1,5 +1,10 @@
 import { mockMiddleware } from 'aspida-mock';
-import { mockDataPages, mockDataTest1 } from './mockData';
+import {
+  mockDataPagesIds,
+  mockDataPagesList,
+  mockDataPostsIds,
+  mockDataPostsList
+} from './mockData';
 
 // polymorph 対応
 export default mockMiddleware([
@@ -9,12 +14,7 @@ export default mockMiddleware([
     req.query?.fields === 'id'
       ? res({
           status: 200,
-          resBody: {
-            ...mockDataPages,
-            contents: mockDataPages.contents.map(({ id }) => ({
-              id
-            }))
-          }
+          resBody: mockDataPagesIds
         })
       : next(),
   (req, res, next) =>
@@ -23,26 +23,7 @@ export default mockMiddleware([
     req.query?.fields === 'id,createdAt,updatedAt,publishedAt,revisedAt,title'
       ? res({
           status: 200,
-          resBody: {
-            ...mockDataPages,
-            contents: mockDataPages.contents.map(
-              ({
-                id,
-                createdAt,
-                updatedAt,
-                publishedAt,
-                revisedAt,
-                title
-              }) => ({
-                id,
-                createdAt,
-                updatedAt,
-                publishedAt,
-                revisedAt,
-                title
-              })
-            )
-          }
+          resBody: mockDataPagesList
         })
       : next(),
   (req, res, next) =>
@@ -51,12 +32,7 @@ export default mockMiddleware([
     req.query?.fields === 'id'
       ? res({
           status: 200,
-          resBody: {
-            ...mockDataTest1,
-            contents: mockDataTest1.contents.map(({ id }) => ({
-              id
-            }))
-          }
+          resBody: mockDataPostsIds
         })
       : next(),
   (req, res, next) =>
@@ -65,26 +41,7 @@ export default mockMiddleware([
     req.query?.fields === 'id,createdAt,updatedAt,publishedAt,revisedAt,title'
       ? res({
           status: 200,
-          resBody: {
-            ...mockDataTest1,
-            contents: mockDataTest1.contents.map(
-              ({
-                id,
-                createdAt,
-                updatedAt,
-                publishedAt,
-                revisedAt,
-                title
-              }) => ({
-                id,
-                createdAt,
-                updatedAt,
-                publishedAt,
-                revisedAt,
-                title
-              })
-            )
-          }
+          resBody: mockDataPostsList
         })
       : next()
 ]);

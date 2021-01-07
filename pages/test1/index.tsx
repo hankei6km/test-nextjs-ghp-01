@@ -1,10 +1,10 @@
 import { GetStaticProps } from 'next';
-import { getSortedTest1Data } from '../../lib/test1';
+import { getSortedPostsData } from '../../lib/posts';
 import Layout from '../../components/Layout';
 import List from '../../components/List';
-import { Test1Content } from '../../types/client/contentTypes';
+import { PostsContent } from '../../types/client/contentTypes';
 
-const Test1Page = ({ allPostsData }: { allPostsData: Test1Content[] }) => {
+const PostsPage = ({ allPostsData }: { allPostsData: PostsContent[] }) => {
   return (
     <Layout title="Home | Next.js + TypeScript Example">
       <List items={allPostsData} />
@@ -12,10 +12,10 @@ const Test1Page = ({ allPostsData }: { allPostsData: Test1Content[] }) => {
   );
 };
 
-export default Test1Page;
+export default PostsPage;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const allPostsData = await getSortedTest1Data();
+  const allPostsData = await getSortedPostsData('test1');
   return {
     props: {
       allPostsData

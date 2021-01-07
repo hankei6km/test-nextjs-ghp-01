@@ -1,4 +1,4 @@
-import { PagesContents, Test1Contents } from './contentTypes';
+import { PagesContents, PostsContents } from './contentTypes';
 
 export const mockDataPages: PagesContents = {
   contents: [
@@ -42,7 +42,7 @@ export const mockDataPagesIds = {
   contents: mockDataPages.contents.map(({ id }) => ({ id }))
 };
 
-export const mockDataTest1: Test1Contents = {
+export const mockDataPosts: PostsContents = {
   contents: [
     {
       id: 'zzzzzzzzz',
@@ -77,15 +77,15 @@ export const mockDataTest1: Test1Contents = {
   limit: 10
 };
 
-export const mockDataTest1List = {
-  ...mockDataTest1,
-  contents: mockDataTest1.contents.map((v) => ({
+export const mockDataPostsList = {
+  ...mockDataPosts,
+  contents: mockDataPosts.contents.map((v) => ({
     ...v,
     content: undefined
   }))
 };
 
-export const mockDataTest1Ids = {
-  ...mockDataTest1,
-  contents: mockDataTest1.contents.map(({ id }) => ({ id }))
+export const mockDataPostsIds = {
+  ...mockDataPosts,
+  contents: mockDataPosts.contents.map(({ id }) => ({ id }))
 };
