@@ -59,7 +59,14 @@ describe('getPagesData()', () => {
       publishedAt: '2020-12-27T04:04:30.107Z',
       revisedAt: '2020-12-27T04:04:30.107Z',
       title: 'Home',
-      kind: 'home'
+      kind: 'page',
+      section: [
+        {
+          title: 'intro',
+          kind: 'content',
+          contentHtml: '<p>index page</p>'
+        }
+      ]
     });
   });
   it('should returns content data of "test1" that is contained descriptionHtml', async () => {
@@ -74,7 +81,15 @@ describe('getPagesData()', () => {
       revisedAt: '2020-12-26T15:29:14.476Z',
       title: 'Test1',
       kind: 'posts',
-      descriptionHtml: '<p>test1 posts</p>'
+      descriptionHtml: '<p>test1 posts</p>',
+      section: [
+        {
+          title: 'test1 posts',
+          kind: 'posts',
+          posts: 'test1',
+          postsDetail: true
+        }
+      ]
     });
   });
 });

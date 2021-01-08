@@ -13,16 +13,28 @@ type ContentList<T> = {
   limit: number;
 };
 
+export type PagesSectionKind = 'content' | 'posts';
+
+type PagesSection = {
+  title: string;
+  kind: PagesSectionKind;
+  contentHtml?: string;
+  contentMarkdown?: string;
+  posts?: string;
+  postsDetail?: boolean;
+};
+
 type Pages = {
   title: string;
-  kind: 'home' | 'posts' | 'gallery' | 'history' | 'about';
+  kind: 'posts' | 'gallery' | 'page';
   descriptionHtml?: string;
   descriptionMarkdown?: string;
+  section: PagesSection[];
 };
 export type PagesContent = ContentBase & Pages;
 export type PagesIndex = Omit<
   PagesContent,
-  'kind' | 'descriptionHtml' | 'descriptionMarkdown'
+  'kind' | 'descriptionHtml' | 'descriptionMarkdown' | 'section'
 >;
 export type PagesId = Pick<PagesContent, 'id'>;
 export type PagesContents = ContentList<PagesContent>;
