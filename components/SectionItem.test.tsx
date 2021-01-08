@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import { mockRouter, mockImage } from '../test/testUtils';
 
-import { mockDataPostsList } from '../types/client/mockData';
+import { mockDataArticleList } from '../types/client/mockData';
 import SectionItem from './SectionItem';
 
 // https://stackoverflow.com/questions/40449434/mocking-globals-in-jest
@@ -26,7 +26,7 @@ describe('SectionItem', () => {
             data={{
               title: 'test1',
               kind: 'posts',
-              contents: mockDataPostsList.contents,
+              contents: mockDataArticleList.contents,
               detail: true
             }}
           />

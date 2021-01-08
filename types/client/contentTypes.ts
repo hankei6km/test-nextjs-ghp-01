@@ -41,14 +41,14 @@ export type PagesContents = ContentList<PagesContent>;
 export type PagesList = ContentList<PagesIndex>;
 export type PagesIds = ContentList<PagesId>;
 
-type Posts = {
+type Article = {
   title: string;
   content: string;
   mainImage?: string;
 };
-export type PostsContent = ContentBase & Posts;
-export type PostsIndex = Omit<PostsContent, 'content'>;
-export type PostsId = Pick<PostsContent, 'id'>;
-export type PostsContents = ContentList<PostsContent>;
-export type PostsList = ContentList<PostsIndex>;
-export type PostsIds = ContentList<PostsId>;
+export type ArticleContent = ContentBase & Article;
+export type ArticleIndex = Omit<ArticleContent, 'content'>;
+export type ArticleId = Pick<ArticleContent, 'id'>;
+export type ArticleContents = ContentList<ArticleContent>;
+export type ArticleList = ContentList<ArticleIndex>;
+export type ArticleIds = ContentList<ArticleId>;

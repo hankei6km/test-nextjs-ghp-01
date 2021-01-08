@@ -1,5 +1,5 @@
 import { GetStaticProps } from 'next';
-import { getSortedPostsData } from '../../lib/posts';
+import { getSortedArticleList } from '../../lib/articles';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Layout from '../../components/Layout';
@@ -42,7 +42,7 @@ export const getStaticProps: GetStaticProps = async () => {
       {
         title: 'test1 posts',
         kind: 'posts',
-        contents: await getSortedPostsData('test1'),
+        contents: await getSortedArticleList('test1'),
         detail: true
       }
     ]

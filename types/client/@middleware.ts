@@ -2,8 +2,8 @@ import { mockMiddleware } from 'aspida-mock';
 import {
   mockDataPagesIds,
   mockDataPagesList,
-  mockDataPostsIds,
-  mockDataPostsList
+  mockDataArticleIds,
+  mockDataArticleList
 } from './mockData';
 
 // polymorph 対応
@@ -32,7 +32,7 @@ export default mockMiddleware([
     req.query?.fields === 'id'
       ? res({
           status: 200,
-          resBody: mockDataPostsIds
+          resBody: mockDataArticleIds
         })
       : next(),
   (req, res, next) =>
@@ -41,7 +41,7 @@ export default mockMiddleware([
     req.query?.fields === 'id,createdAt,updatedAt,publishedAt,revisedAt,title'
       ? res({
           status: 200,
-          resBody: mockDataPostsList
+          resBody: mockDataArticleList
         })
       : next()
 ]);

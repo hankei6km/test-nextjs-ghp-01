@@ -1,4 +1,4 @@
-import { PostsIndex } from './client/contentTypes';
+import { ArticleIndex } from './client/contentTypes';
 // export type SectionKind = 'content' | 'posts';
 export type SectionContent = {
   title: string;
@@ -8,7 +8,7 @@ export type SectionContent = {
 export type SectionPosts = {
   title: string;
   kind: 'posts';
-  contents: PostsIndex[];
+  contents: ArticleIndex[];
   detail: boolean;
 };
 

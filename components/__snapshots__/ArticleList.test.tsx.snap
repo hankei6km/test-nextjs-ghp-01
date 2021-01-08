@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`List should renders List 1`] = `
+exports[`ArticleList should renders ArticleList 1`] = `
 <div>
   <ul
     class="MuiList-root MuiList-dense"

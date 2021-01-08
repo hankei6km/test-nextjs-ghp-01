@@ -1,10 +1,14 @@
 import {
-  mockDataPosts,
-  mockDataPostsList,
-  mockDataPostsIds
+  mockDataArticles,
+  mockDataArticleList,
+  mockDataArticleIds
 } from '../types/client/mockData';
 import { FetchMock } from 'jest-fetch-mock';
-import { getSortedPostsData, getAllPostsIds, getPostsData } from './posts';
+import {
+  getSortedArticleList,
+  getAllArticleIds,
+  getArticleData
+} from './articles';
 
 // https://github.com/jefflau/jest-fetch-mock/issues/83
 const fetchMock = fetch as FetchMock;
@@ -13,11 +17,11 @@ beforeEach(() => {
 });
 const testApiName = 'test1';
 
-describe('getSortedPostsData()', () => {
+describe('getSortedArticleList()', () => {
   it('should returns contents array with out contet filed', async () => {
     // aspida-mock 使う?
-    fetchMock.mockResponseOnce(JSON.stringify(mockDataPostsList));
-    expect(await getSortedPostsData(testApiName)).toStrictEqual([
+    fetchMock.mockResponseOnce(JSON.stringify(mockDataArticleList));
+    expect(await getSortedArticleList(testApiName)).toStrictEqual([
       {
         id: 'zzzzzzzzz',
         createdAt: '2020-12-27T04:04:30.107Z',
@@ -46,10 +50,10 @@ describe('getSortedPostsData()', () => {
   });
 });
 
-describe('getAllPostsIds()', () => {
+describe('getAllArticleIds()', () => {
   it('should returns all ids', async () => {
-    fetchMock.mockResponseOnce(JSON.stringify(mockDataPostsIds));
-    expect(await getAllPostsIds(testApiName)).toStrictEqual([
+    fetchMock.mockResponseOnce(JSON.stringify(mockDataArticleIds));
+    expect(await getAllArticleIds(testApiName)).toStrictEqual([
       { params: { id: 'zzzzzzzzz' } },
       { params: { id: 'yyyyyy-da' } },
       { params: { id: 'xxxxxxxxx' } }
@@ -57,15 +61,15 @@ describe('getAllPostsIds()', () => {
   });
 });
 
-describe('getPostsData()', () => {
+describe('getArticleData()', () => {
   it('should returns content data of "zzzzzzzzz"', async () => {
     fetchMock.mockResponseOnce(
       JSON.stringify(
-        mockDataPosts.contents.find(({ id }) => id === 'zzzzzzzzz')
+        mockDataArticles.contents.find(({ id }) => id === 'zzzzzzzzz')
       )
     );
     expect(
-      await getPostsData(testApiName, { params: { id: 'zzzzzzzzz' } })
+      await getArticleData(testApiName, { params: { id: 'zzzzzzzzz' } })
     ).toStrictEqual({
       id: 'zzzzzzzzz',
       createdAt: '2020-12-27T04:04:30.107Z',

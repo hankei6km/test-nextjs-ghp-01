@@ -1,4 +1,4 @@
-import { getAllPostsIds, getPostsData } from '../../lib/posts';
+import { getAllArticleIds, getArticleData } from '../../lib/articles';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import ErrorPage from 'next/error';
 import Layout from '../../components/Layout';
@@ -9,12 +9,12 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { PostsContent } from '../../types/client/contentTypes';
+import { ArticleContent } from '../../types/client/contentTypes';
 
 export default function Post({
   postData
 }: {
-  postData: PostsContent;
+  postData: ArticleContent;
   preview: boolean;
 }) {
   if (!postData) {
@@ -44,7 +44,7 @@ export default function Post({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = await getAllPostsIds('test1');
+  const paths = await getAllArticleIds('test1');
   return {
     paths,
     fallback: true
@@ -52,7 +52,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const postData = await getPostsData('test1', context);
+  const postData = await getArticleData('test1', context);
   return {
     props: {
       postData,
