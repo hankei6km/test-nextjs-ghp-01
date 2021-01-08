@@ -96,7 +96,6 @@ describe('ArticleDetail', () => {
             articleDetailComponent="li"
             articleDetailTitleComponent="h5"
           />
-          articleDetailComponent="li" articleDetailTitleComponent="h5"
         </RouterContext.Provider>
       );
       const h5 = container.querySelector('h5');
