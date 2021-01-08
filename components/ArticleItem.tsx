@@ -5,6 +5,7 @@ import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import Link from './Link';
 import DateUpdated from './DateUpdated';
 import ThumbImage from './ThumbImage';
+import { pruneClasses } from '../utils/classes';
 
 import { ArticleIndex } from '../types/client/contentTypes';
 
@@ -28,6 +29,12 @@ const useStyles = makeStyles((theme) => ({
   },
   'ArticleItem-title': {}
 }));
+const classNames = [
+  'ArticleItem-root',
+  'ArticleItem-thumbnImage',
+  'ArticleItem-content',
+  'ArticleItem-title'
+];
 
 export type ArticleItemComponentVariant = {
   articleItemComponent?: ElementType<any>;
@@ -57,7 +64,7 @@ const ArticleItem = ({
   articleItemTitleVariant = 'body1',
   articleItemTitleComponent = 'span'
 }: Props) => {
-  const classes = useStyles({ classes: inClasses });
+  const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
   const thumbImage = data.mainImage || defaultMainImage;
   const updated = data.revisedAt || data.updatedAt || data.publishedAt;
   return (

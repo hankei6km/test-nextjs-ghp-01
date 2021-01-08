@@ -4,6 +4,7 @@ import Box from '@material-ui/core/Box';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import ArticleList, { ArticlListrComponentVariant } from './ArticleList';
 import { Section as SectionType } from '../types/pageTypes';
+import { pruneClasses } from '../utils/classes';
 
 const useStyles = makeStyles(() => ({
   'SectionItem-root': {
@@ -22,6 +23,13 @@ const useStyles = makeStyles(() => ({
     width: '100%'
   }
 }));
+const classNames = [
+  'SectionItem-root',
+  'SectionItem-articles',
+  'SectionItem-articlesTitleDetail',
+  'SectionItem-articlesTitle',
+  'SectionItem-articlesList'
+];
 
 export type SectionItemComponentVariant = {
   contentTitleDetailVariant?: TypographyProps['variant'];
@@ -53,7 +61,7 @@ const SectionItem = ({
   articleItemTitleComponent = 'span',
   classes: inClasses
 }: Props) => {
-  const classes = useStyles({ classes: inClasses });
+  const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
   return (
     <Box component="section" className={classes['SectionItem-root']}>
       {data.kind === 'posts' ? (

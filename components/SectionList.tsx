@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import SectionItem, { SectionItemComponentVariant } from './SectionItem';
 import { Section as SectionType } from '../types/pageTypes';
+import { pruneClasses } from '../utils/classes';
 
 const useStyles = makeStyles(() => ({
   'Section-root': {
@@ -12,6 +13,9 @@ const useStyles = makeStyles(() => ({
     width: '100%'
   }
 }));
+// 上記の設定と手動であわせる.
+// 自動化できない?
+const classNames = ['Section-root', 'Section-item'];
 
 type Props = {
   sections: SectionType[];
@@ -34,7 +38,7 @@ const SectionList = ({
   articleItemTitleComponent = 'span',
   classes: inClasses
 }: Props) => {
-  const classes = useStyles({ classes: inClasses });
+  const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
   return (
     <Box className={classes['Section-root']}>
       {sections.map((section, i) => (
