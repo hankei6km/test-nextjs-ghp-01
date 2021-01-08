@@ -4,6 +4,7 @@ import Box from '@material-ui/core/Box';
 import ArticleItem, { ArticleItemComponentVariant } from './ArticleItem';
 import ArticleDetail, { ArticleDetailComponentVariant } from './ArticleDetail';
 import { ArticleIndex } from '../types/client/contentTypes';
+import { pruneClasses } from '../utils/classes';
 
 const useStyles = makeStyles(() => ({
   'ArticleList-root': {
@@ -19,6 +20,12 @@ const useStyles = makeStyles(() => ({
     listStyle: 'none'
   }
 }));
+const classNames = [
+  'ArticleList-root',
+  'ArticleList-content',
+  'ArticleList-itemDetail',
+  'ArticleList-item'
+];
 
 export type ArticlListrComponentVariant = ArticleDetailComponentVariant &
   ArticleItemComponentVariant;
@@ -39,7 +46,7 @@ const ArticleList = ({
   articleItemTitleVariant = 'body1',
   articleItemTitleComponent = 'span'
 }: Props) => {
-  const classes = useStyles({ classes: inClasses });
+  const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
   return (
     <>
       <Box
