@@ -2,6 +2,14 @@ import React from 'react';
 import { render, act, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
+// 'next-router-provider' の RouterContext をつかうと
+// ./Link.tsx の useRouter が null になる.
+// 上で import している RouterContext に createMockRouter のインスタンスだと
+// 以下のエラーとる
+//   console.error
+// Error: Not implemented: window.scrollTo
+// at module.exports (/sandbox/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+// import { RouterContext, createMockRouter } from 'next-router-provider';
 import { mockRouter, mockImage } from '../test/testUtils';
 
 import { mockDataArticles } from '../types/client/mockData';
@@ -16,6 +24,11 @@ afterEach(() => {
 describe('ArticleItem', () => {
   it('should renders ArticleItems', async () => {
     const srcSetter = jest.fn();
+    const srcValue = new Promise((resolve) => {
+      srcSetter.mockImplementation((v) => {
+        resolve(v);
+      });
+    });
     const addEventListener = jest.fn();
     global.Image = mockImage(srcSetter, addEventListener);
 
@@ -31,46 +44,45 @@ describe('ArticleItem', () => {
       const article = container.querySelector('article');
       expect(article).not.toBeInTheDocument();
 
-      const img = container.querySelector('img');
-      expect(img).toEqual(null);
+      expect(container.querySelector('img')).toEqual(null);
+      expect(queryByText(/^2020-12-27$/)).toEqual(null);
+
+      expect(await srcValue).toEqual(
+        'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/hankei6km-pages/media/my-starter-default-main-image.png?w=100&h=60&fit=crop'
+      );
+      // expect(srcSetter).toHaveBeenLastCalledWith(
+      //   'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/hankei6km-pages/media/my-starter-default-main-image.png?w=100&h=60&fit=crop'
+      // );
+
+      addEventListener.mock.calls[0][1]();
+      const img = getByRole('img');
+      expect(img).toBeInTheDocument();
       const updated = queryByText(/^2020-12-27$/);
-      expect(updated).toEqual(null);
+      expect(updated).toBeInTheDocument();
+      const title = getByText(/^title3$/);
+      expect(title).toBeInTheDocument();
 
-      await new Promise((resolve) => {
-        setTimeout(() => {
-          expect(srcSetter).toHaveBeenLastCalledWith(
-            'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/hankei6km-pages/media/my-starter-default-main-image.png?w=100&h=60&fit=crop'
-          );
+      fireEvent.click(img);
+      expect(router.push).toHaveBeenCalledTimes(1);
+      expect(router.push).toHaveBeenLastCalledWith(
+        '/test1/[id]',
+        '/test1/zzzzzzzzz',
+        {
+          locale: undefined,
+          shallow: undefined
+        }
+      );
 
-          addEventListener.mock.calls[0][1]();
-          const img = getByRole('img');
-          expect(img).toBeInTheDocument();
-          const updated = queryByText(/^2020-12-27$/);
-          expect(updated).toBeInTheDocument();
-          const title = getByText(/^title3$/);
-          expect(title).toBeInTheDocument();
-
-          fireEvent.click(img);
-          expect(router.push).toHaveBeenLastCalledWith(
-            '/test1/[id]',
-            '/test1/zzzzzzzzz',
-            {
-              locale: undefined,
-              shallow: undefined
-            }
-          );
-          fireEvent.click(title);
-          expect(router.push).toHaveBeenLastCalledWith(
-            '/test1/[id]',
-            '/test1/zzzzzzzzz',
-            {
-              locale: undefined,
-              shallow: undefined
-            }
-          );
-          resolve();
-        }, 10);
-      });
+      fireEvent.click(title);
+      expect(router.push).toHaveBeenCalledTimes(2);
+      expect(router.push).toHaveBeenLastCalledWith(
+        '/test1/[id]',
+        '/test1/zzzzzzzzz',
+        {
+          locale: undefined,
+          shallow: undefined
+        }
+      );
     });
   });
 
