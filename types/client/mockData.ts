@@ -31,7 +31,8 @@ export const mockDataPages: PagesContents = {
         {
           title: 'test1 posts',
           kind: 'posts',
-          posts: 'test1'
+          posts: 'test1',
+          postsDetail: true
         }
       ]
     }

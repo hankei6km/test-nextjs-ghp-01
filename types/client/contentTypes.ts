@@ -13,12 +13,15 @@ type ContentList<T> = {
   limit: number;
 };
 
+export type PagesSectionKind = 'content' | 'posts';
+
 type PagesSection = {
   title: string;
-  kind: 'content' | 'posts';
+  kind: PagesSectionKind;
   contentHtml?: string;
   contentMarkdown?: string;
   posts?: string;
+  postsDetail?: boolean;
 };
 
 type Pages = {
@@ -31,7 +34,7 @@ type Pages = {
 export type PagesContent = ContentBase & Pages;
 export type PagesIndex = Omit<
   PagesContent,
-  'kind' | 'descriptionHtml' | 'descriptionMarkdown'|'section'
+  'kind' | 'descriptionHtml' | 'descriptionMarkdown' | 'section'
 >;
 export type PagesId = Pick<PagesContent, 'id'>;
 export type PagesContents = ContentList<PagesContent>;

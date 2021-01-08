@@ -1,0 +1,324 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SectionItem should renders Section by List  1`] = `
+<div>
+  <section
+    class="MuiBox-root MuiBox-root-5 makeStyles-SectionItem-root-1"
+  >
+    <div
+      class="MuiBox-root MuiBox-root-6 makeStyles-SectionItem-postsOuter-2"
+    >
+      <div
+        class="MuiBox-root MuiBox-root-7 makeStyles-SectionItem-titlePostsDetailOuter-3"
+      >
+        <h2
+          class="MuiTypography-root MuiTypography-h2"
+        >
+          test1
+        </h2>
+      </div>
+      <ul
+        class="MuiList-root MuiList-dense"
+      >
+        <li
+          class="MuiListItem-root MuiListItem-dense MuiListItem-gutters MuiListItem-divider"
+        >
+          <div
+            class="MuiBox-root MuiBox-root-8"
+          >
+            <div
+              class="MuiPaper-root MuiCard-root makeStyles-content-10 MuiPaper-elevation0 MuiPaper-rounded"
+            >
+              <div
+                class="MuiCardContent-root"
+              >
+                <div
+                  class="MuiCardHeader-root makeStyles-title-9"
+                >
+                  <div
+                    class="MuiCardHeader-content"
+                  >
+                    <a
+                      class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-root MuiTypography-h4 MuiTypography-colorTextPrimary MuiTypography-colorPrimary"
+                      href="/test1/zzzzzzzzz"
+                    >
+                      title3
+                    </a>
+                    <span
+                      class="MuiTypography-root MuiCardHeader-subheader MuiTypography-body1 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+                    >
+                      <div
+                        class="MuiBox-root MuiBox-root-14 makeStyles-root-13"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="MuiSvgIcon-root MuiSvgIcon-colorAction MuiSvgIcon-fontSizeSmall"
+                          focusable="false"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                          <path
+                            d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z"
+                          />
+                        </svg>
+                        <div
+                          class="MuiTypography-root MuiTypography-body2"
+                        >
+                          <time
+                            datetime="2020-12-27T04:04:30.107Z"
+                          >
+                            2020-12-27
+                          </time>
+                        </div>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="MuiBox-root MuiBox-root-15 makeStyles-thumb-11"
+                >
+                  <a
+                    class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
+                    href="/test1/zzzzzzzzz"
+                  >
+                    <div
+                      class="makeStyles-thumb-16"
+                    >
+                      <img
+                        alt="thumbnail for title3"
+                        height="150"
+                        width="250"
+                      />
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div
+                class="MuiCardActions-root makeStyles-actions-12 MuiCardActions-spacing"
+              >
+                <a
+                  aria-disabled="false"
+                  class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-outlinedPrimary MuiButton-textSizeSmall MuiButton-sizeSmall MuiTypography-colorPrimary"
+                  href="/test1/zzzzzzzzz"
+                  role="button"
+                  style="text-transform: none;"
+                  tabindex="0"
+                >
+                  <span
+                    class="MuiButton-label"
+                  >
+                    read more
+                  </span>
+                  <span
+                    class="MuiTouchRipple-root"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li
+          class="MuiListItem-root MuiListItem-dense MuiListItem-gutters MuiListItem-divider"
+        >
+          <div
+            class="MuiBox-root MuiBox-root-17"
+          >
+            <div
+              class="MuiPaper-root MuiCard-root makeStyles-content-10 MuiPaper-elevation0 MuiPaper-rounded"
+            >
+              <div
+                class="MuiCardContent-root"
+              >
+                <div
+                  class="MuiCardHeader-root makeStyles-title-9"
+                >
+                  <div
+                    class="MuiCardHeader-content"
+                  >
+                    <a
+                      class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-root MuiTypography-h4 MuiTypography-colorTextPrimary MuiTypography-colorPrimary"
+                      href="/test1/yyyyyy-da"
+                    >
+                      title2
+                    </a>
+                    <span
+                      class="MuiTypography-root MuiCardHeader-subheader MuiTypography-body1 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+                    >
+                      <div
+                        class="MuiBox-root MuiBox-root-18 makeStyles-root-13"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="MuiSvgIcon-root MuiSvgIcon-colorAction MuiSvgIcon-fontSizeSmall"
+                          focusable="false"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                          <path
+                            d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z"
+                          />
+                        </svg>
+                        <div
+                          class="MuiTypography-root MuiTypography-body2"
+                        >
+                          <time
+                            datetime="2020-12-26T15:29:14.476Z"
+                          >
+                            2020-12-26
+                          </time>
+                        </div>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="MuiBox-root MuiBox-root-19 makeStyles-thumb-11"
+                >
+                  <a
+                    class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
+                    href="/test1/yyyyyy-da"
+                  >
+                    <div
+                      class="makeStyles-thumb-16"
+                    >
+                      <img
+                        alt="thumbnail for title2"
+                        height="150"
+                        width="250"
+                      />
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div
+                class="MuiCardActions-root makeStyles-actions-12 MuiCardActions-spacing"
+              >
+                <a
+                  aria-disabled="false"
+                  class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-outlinedPrimary MuiButton-textSizeSmall MuiButton-sizeSmall MuiTypography-colorPrimary"
+                  href="/test1/yyyyyy-da"
+                  role="button"
+                  style="text-transform: none;"
+                  tabindex="0"
+                >
+                  <span
+                    class="MuiButton-label"
+                  >
+                    read more
+                  </span>
+                  <span
+                    class="MuiTouchRipple-root"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li
+          class="MuiListItem-root MuiListItem-dense MuiListItem-gutters MuiListItem-divider"
+        >
+          <div
+            class="MuiBox-root MuiBox-root-20"
+          >
+            <div
+              class="MuiPaper-root MuiCard-root makeStyles-content-10 MuiPaper-elevation0 MuiPaper-rounded"
+            >
+              <div
+                class="MuiCardContent-root"
+              >
+                <div
+                  class="MuiCardHeader-root makeStyles-title-9"
+                >
+                  <div
+                    class="MuiCardHeader-content"
+                  >
+                    <a
+                      class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-root MuiTypography-h4 MuiTypography-colorTextPrimary MuiTypography-colorPrimary"
+                      href="/test1/xxxxxxxxx"
+                    >
+                      title1
+                    </a>
+                    <span
+                      class="MuiTypography-root MuiCardHeader-subheader MuiTypography-body1 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
+                    >
+                      <div
+                        class="MuiBox-root MuiBox-root-21 makeStyles-root-13"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="MuiSvgIcon-root MuiSvgIcon-colorAction MuiSvgIcon-fontSizeSmall"
+                          focusable="false"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z"
+                          />
+                          <path
+                            d="M12.5 7H11v6l5.25 3.15.75-1.23-4.5-2.67z"
+                          />
+                        </svg>
+                        <div
+                          class="MuiTypography-root MuiTypography-body2"
+                        >
+                          <time
+                            datetime="2020-12-26T12:27:22.533Z"
+                          >
+                            2020-12-26
+                          </time>
+                        </div>
+                      </div>
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="MuiBox-root MuiBox-root-22 makeStyles-thumb-11"
+                >
+                  <a
+                    class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
+                    href="/test1/xxxxxxxxx"
+                  >
+                    <div
+                      class="makeStyles-thumb-16"
+                    >
+                      <img
+                        alt="thumbnail for title1"
+                        height="150"
+                        width="250"
+                      />
+                    </div>
+                  </a>
+                </div>
+              </div>
+              <div
+                class="MuiCardActions-root makeStyles-actions-12 MuiCardActions-spacing"
+              >
+                <a
+                  aria-disabled="false"
+                  class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-outlinedPrimary MuiButton-textSizeSmall MuiButton-sizeSmall MuiTypography-colorPrimary"
+                  href="/test1/xxxxxxxxx"
+                  role="button"
+                  style="text-transform: none;"
+                  tabindex="0"
+                >
+                  <span
+                    class="MuiButton-label"
+                  >
+                    read more
+                  </span>
+                  <span
+                    class="MuiTouchRipple-root"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+</div>
+`;
