@@ -26,6 +26,11 @@ describe('ArticleItem', () => {
           <ArticleItem data={mockDataArticles.contents[0]} />
         </RouterContext.Provider>
       );
+      const h3 = container.querySelector('h3');
+      expect(h3).not.toBeInTheDocument();
+      const article = container.querySelector('article');
+      expect(article).not.toBeInTheDocument();
+
       const img = container.querySelector('img');
       expect(img).toEqual(null);
       const updated = queryByText(/^2020-12-27$/);
@@ -66,6 +71,27 @@ describe('ArticleItem', () => {
           resolve();
         }, 10);
       });
+    });
+  });
+
+  it('should renders with specify components', async () => {
+    global.Image = mockImage();
+
+    await act(async () => {
+      const router = mockRouter();
+      const { container } = render(
+        <RouterContext.Provider value={router}>
+          <ArticleItem
+            data={mockDataArticles.contents[0]}
+            articleItemComponent="article"
+            articleItemTitleComponent="h3"
+          />
+        </RouterContext.Provider>
+      );
+      const h3 = container.querySelector('h3');
+      expect(h3).toBeInTheDocument();
+      const article = container.querySelector('article');
+      expect(article).toBeInTheDocument();
     });
   });
 });

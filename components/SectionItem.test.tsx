@@ -42,7 +42,7 @@ describe('SectionItem', () => {
         }, 10);
       });
       const titleOuter = container.querySelector(
-        `[class*='makeStyles-SectionItem-titlePostsDetailOuter-']`
+        `[class*='makeStyles-SectionItem-articlesTitleDetail-']`
       );
       expect(titleOuter).toBeInTheDocument();
       expect(container).toMatchSnapshot();

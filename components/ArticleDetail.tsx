@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ElementType } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -6,7 +6,7 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
+import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import Link from './Link';
 import DateUpdated from './DateUpdated';
 import ThumbImage from './ThumbImage';
@@ -14,32 +14,41 @@ import ThumbImage from './ThumbImage';
 import { ArticleIndex } from '../types/client/contentTypes';
 
 const useStyles = makeStyles(() => ({
-  title: {
-    padding: 0
-  },
-  content: {
+  'ArticleDetail-root': {
+    width: '100%',
     '& > .MuiCardContent-root': {
       padding: 0
     }
   },
-  thumb: {
+  'ArticleDetail-content': {},
+  'ArticleDetail-title': {
+    padding: 0
+  },
+  'ArticleDetail-thumbImage': {
     // https://stackoverflow.com/questions/23041956/a-tag-is-not-at-the-same-size-of-img-tag-inside-it
     '&>a': {
       fontSize: 0,
       display: 'inline-block'
     }
   },
-  actions: {
+  'ArticleDetail-actions': {
     padding: 0
   }
 }));
+
+export type ArticleDetailComponentVariant = {
+  articleDetailComponent?: ElementType<any>;
+  articleDetailTitleVariant?: TypographyProps['variant'];
+  articleDetailTitleComponent?: ElementType<any>;
+};
 
 type Props = {
   data: ArticleIndex;
   thumbWidth?: number;
   thumbHeight?: number;
   thumbSizeFit?: '' | 'crop'; // とりあえず
-};
+  classes?: { [key: string]: string };
+} & ArticleDetailComponentVariant;
 
 // TODO: config 作成
 const defaultMainImage =
@@ -49,31 +58,37 @@ const ArticleDetail = ({
   data,
   thumbWidth = 250,
   thumbHeight = 150,
-  thumbSizeFit = 'crop'
+  thumbSizeFit = 'crop',
+  classes: inClasses,
+  articleDetailComponent = 'article',
+  articleDetailTitleVariant = 'h3',
+  articleDetailTitleComponent = 'h3'
 }: Props) => {
-  const classes = useStyles();
+  const classes = useStyles({ classes: inClasses });
   const thumbImage = data.mainImage || defaultMainImage;
   const updated = data.revisedAt || data.updatedAt || data.publishedAt;
   return (
-    <Card elevation={0} className={classes.content}>
-      <CardContent>
+    <Card elevation={0} className={classes['ArticleDetail-root']}>
+      <CardContent
+        component={articleDetailComponent}
+        className={classes['ArticleDetail-content']}
+      >
         <CardHeader
-          className={classes.title}
+          className={classes['ArticleDetail-title']}
           title={
-            <Typography
-              color="textPrimary"
-              variant="h4"
-              component={Link}
-              underline="none"
-              href="/test1/[id]"
-              as={`/test1/${data.id}`}
-            >
-              {data.title}
-            </Typography>
+            <Link underline="none" href="/test1/[id]" as={`/test1/${data.id}`}>
+              <Typography
+                color="textPrimary"
+                variant={articleDetailTitleVariant}
+                component={articleDetailTitleComponent}
+              >
+                {data.title}
+              </Typography>
+            </Link>
           }
           subheader={<DateUpdated updated={updated} />}
         />
-        <Box my={1} className={classes.thumb}>
+        <Box className={classes['ArticleDetail-thumbImage']}>
           <Link underline="none" href="/test1/[id]" as={`/test1/${data.id}`}>
             <ThumbImage
               src={thumbImage}
@@ -86,7 +101,7 @@ const ArticleDetail = ({
           </Link>
         </Box>
       </CardContent>
-      <CardActions className={classes.actions}>
+      <CardActions className={classes['ArticleDetail-actions']}>
         <Button
           style={{ textTransform: 'none' }}
           size="small"

@@ -1,33 +1,47 @@
-import React from 'react';
+import React, { ElementType } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
+import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import Link from './Link';
 import DateUpdated from './DateUpdated';
 import ThumbImage from './ThumbImage';
 
 import { ArticleIndex } from '../types/client/contentTypes';
 
-const useStyles = makeStyles(() => ({
-  root: {
+const useStyles = makeStyles((theme) => ({
+  'ArticleItem-root': {
     width: '100%'
   },
-  thumb: {
+  'ArticleItem-thumbnImage': {
     // https://stackoverflow.com/questions/23041956/a-tag-is-not-at-the-same-size-of-img-tag-inside-it
     '&>a': {
       fontSize: 0,
       display: 'inline-block'
     }
-  }
+  },
+  'ArticleItem-content': {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly'
+  },
+  'ArticleItem-title': {}
 }));
+
+export type ArticleItemComponentVariant = {
+  articleItemComponent?: ElementType<any>;
+  articleItemTitleVariant?: TypographyProps['variant'];
+  articleItemTitleComponent?: ElementType<any>;
+};
 
 type Props = {
   data: ArticleIndex;
   thumbWidth?: number;
   thumbHeight?: number;
   thumbSizeFit?: '' | 'crop'; // とりあえず
-};
+  classes?: { [key: string]: string };
+} & ArticleItemComponentVariant;
 
 // TODO: config 作成
 const defaultMainImage =
@@ -37,21 +51,23 @@ const ArticleItem = ({
   data,
   thumbWidth = 100,
   thumbHeight = 60,
-  thumbSizeFit = 'crop'
+  thumbSizeFit = 'crop',
+  classes: inClasses,
+  articleItemComponent,
+  articleItemTitleVariant = 'body1',
+  articleItemTitleComponent = 'span'
 }: Props) => {
-  const classes = useStyles();
+  const classes = useStyles({ classes: inClasses });
   const thumbImage = data.mainImage || defaultMainImage;
   const updated = data.revisedAt || data.updatedAt || data.publishedAt;
   return (
-    <Paper
-      elevation={0}
-      className={classes.root}
-      // component={Link}
-      // href="/test1/[id]"
-      // as={`/test1/${data.id}`}
-    >
-      <Box display="flex" py={1}>
-        <Box className={classes.thumb}>
+    <>
+      <Box
+        component={articleItemComponent}
+        className={classes['ArticleItem-root']}
+        display="flex"
+      >
+        <Box className={classes['ArticleItem-thumbnImage']}>
           <Link href="/test1/[id]" as={`/test1/${data.id}`}>
             <ThumbImage
               src={thumbImage}
@@ -62,24 +78,20 @@ const ArticleItem = ({
             />
           </Link>
         </Box>
-        <Box
-          mx={1}
-          display="flex"
-          flexDirection="column"
-          justifyContent="space-evenly"
-        >
-          <Typography
-            component={Link}
-            href="/test1/[id]"
-            as={`/test1/${data.id}`}
-            variant="body1"
-          >
-            {data.title}
-          </Typography>
+        <Box className={classes['ArticleItem-content']}>
+          <Link href="/test1/[id]" as={`/test1/${data.id}`}>
+            <Typography
+              className={classes['ArticleItem-title']}
+              variant={articleItemTitleVariant}
+              component={articleItemTitleComponent}
+            >
+              {data.title}
+            </Typography>
+          </Link>
           <DateUpdated updated={updated} />
         </Box>
       </Box>
-    </Paper>
+    </>
   );
 };
 

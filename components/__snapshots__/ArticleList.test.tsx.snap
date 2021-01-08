@@ -2,38 +2,46 @@
 
 exports[`ArticleList should renders ArticleList 1`] = `
 <div>
-  <ul
-    class="MuiList-root MuiList-dense"
+  <div
+    class="MuiBox-root MuiBox-root-5 makeStyles-ArticleList-root-1"
   >
-    <li
-      class="MuiListItem-root MuiListItem-dense MuiListItem-gutters MuiListItem-divider"
+    <div
+      class="MuiBox-root MuiBox-root-6"
     >
       <div
-        class="MuiBox-root MuiBox-root-1"
+        class="MuiBox-root MuiBox-root-7 makeStyles-ArticleList-itemDetail-3"
       >
         <div
-          class="MuiPaper-root MuiCard-root makeStyles-content-3 MuiPaper-elevation0 MuiPaper-rounded"
+          class="MuiPaper-root MuiCard-root makeStyles-ArticleDetail-root-8 MuiPaper-elevation0 MuiPaper-rounded"
         >
-          <div
-            class="MuiCardContent-root"
+          <article
+            class="MuiCardContent-root makeStyles-ArticleDetail-content-9"
           >
             <div
-              class="MuiCardHeader-root makeStyles-title-2"
+              class="MuiCardHeader-root makeStyles-ArticleDetail-title-10"
             >
               <div
                 class="MuiCardHeader-content"
               >
-                <a
-                  class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-root MuiTypography-h4 MuiTypography-colorTextPrimary MuiTypography-colorPrimary"
-                  href="/test1/zzzzzzzzz"
+                <span
+                  class="MuiTypography-root MuiCardHeader-title MuiTypography-h5 MuiTypography-displayBlock"
                 >
-                  title3
-                </a>
+                  <a
+                    class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
+                    href="/test1/zzzzzzzzz"
+                  >
+                    <h3
+                      class="MuiTypography-root MuiTypography-h3 MuiTypography-colorTextPrimary"
+                    >
+                      title3
+                    </h3>
+                  </a>
+                </span>
                 <span
                   class="MuiTypography-root MuiCardHeader-subheader MuiTypography-body1 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
                 >
                   <div
-                    class="MuiBox-root MuiBox-root-7 makeStyles-root-6"
+                    class="MuiBox-root MuiBox-root-14 makeStyles-root-13"
                   >
                     <svg
                       aria-hidden="true"
@@ -62,14 +70,14 @@ exports[`ArticleList should renders ArticleList 1`] = `
               </div>
             </div>
             <div
-              class="MuiBox-root MuiBox-root-8 makeStyles-thumb-4"
+              class="MuiBox-root MuiBox-root-15 makeStyles-ArticleDetail-thumbImage-11"
             >
               <a
                 class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
                 href="/test1/zzzzzzzzz"
               >
                 <div
-                  class="makeStyles-thumb-9"
+                  class="makeStyles-thumb-16"
                 >
                   <img
                     alt="thumbnail for title3"
@@ -79,9 +87,9 @@ exports[`ArticleList should renders ArticleList 1`] = `
                 </div>
               </a>
             </div>
-          </div>
+          </article>
           <div
-            class="MuiCardActions-root makeStyles-actions-5 MuiCardActions-spacing"
+            class="MuiCardActions-root makeStyles-ArticleDetail-actions-12 MuiCardActions-spacing"
           >
             <a
               aria-disabled="false"
@@ -103,36 +111,44 @@ exports[`ArticleList should renders ArticleList 1`] = `
           </div>
         </div>
       </div>
-    </li>
-    <li
-      class="MuiListItem-root MuiListItem-dense MuiListItem-gutters MuiListItem-divider"
+    </div>
+    <div
+      class="MuiBox-root MuiBox-root-17"
     >
       <div
-        class="MuiBox-root MuiBox-root-10"
+        class="MuiBox-root MuiBox-root-18 makeStyles-ArticleList-itemDetail-3"
       >
         <div
-          class="MuiPaper-root MuiCard-root makeStyles-content-3 MuiPaper-elevation0 MuiPaper-rounded"
+          class="MuiPaper-root MuiCard-root makeStyles-ArticleDetail-root-8 MuiPaper-elevation0 MuiPaper-rounded"
         >
-          <div
-            class="MuiCardContent-root"
+          <article
+            class="MuiCardContent-root makeStyles-ArticleDetail-content-9"
           >
             <div
-              class="MuiCardHeader-root makeStyles-title-2"
+              class="MuiCardHeader-root makeStyles-ArticleDetail-title-10"
             >
               <div
                 class="MuiCardHeader-content"
               >
-                <a
-                  class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-root MuiTypography-h4 MuiTypography-colorTextPrimary MuiTypography-colorPrimary"
-                  href="/test1/yyyyyy-da"
+                <span
+                  class="MuiTypography-root MuiCardHeader-title MuiTypography-h5 MuiTypography-displayBlock"
                 >
-                  title2
-                </a>
+                  <a
+                    class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
+                    href="/test1/yyyyyy-da"
+                  >
+                    <h3
+                      class="MuiTypography-root MuiTypography-h3 MuiTypography-colorTextPrimary"
+                    >
+                      title2
+                    </h3>
+                  </a>
+                </span>
                 <span
                   class="MuiTypography-root MuiCardHeader-subheader MuiTypography-body1 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
                 >
                   <div
-                    class="MuiBox-root MuiBox-root-11 makeStyles-root-6"
+                    class="MuiBox-root MuiBox-root-19 makeStyles-root-13"
                   >
                     <svg
                       aria-hidden="true"
@@ -161,14 +177,14 @@ exports[`ArticleList should renders ArticleList 1`] = `
               </div>
             </div>
             <div
-              class="MuiBox-root MuiBox-root-12 makeStyles-thumb-4"
+              class="MuiBox-root MuiBox-root-20 makeStyles-ArticleDetail-thumbImage-11"
             >
               <a
                 class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
                 href="/test1/yyyyyy-da"
               >
                 <div
-                  class="makeStyles-thumb-9"
+                  class="makeStyles-thumb-16"
                 >
                   <img
                     alt="thumbnail for title2"
@@ -178,9 +194,9 @@ exports[`ArticleList should renders ArticleList 1`] = `
                 </div>
               </a>
             </div>
-          </div>
+          </article>
           <div
-            class="MuiCardActions-root makeStyles-actions-5 MuiCardActions-spacing"
+            class="MuiCardActions-root makeStyles-ArticleDetail-actions-12 MuiCardActions-spacing"
           >
             <a
               aria-disabled="false"
@@ -202,36 +218,44 @@ exports[`ArticleList should renders ArticleList 1`] = `
           </div>
         </div>
       </div>
-    </li>
-    <li
-      class="MuiListItem-root MuiListItem-dense MuiListItem-gutters MuiListItem-divider"
+    </div>
+    <div
+      class="MuiBox-root MuiBox-root-21"
     >
       <div
-        class="MuiBox-root MuiBox-root-13"
+        class="MuiBox-root MuiBox-root-22 makeStyles-ArticleList-itemDetail-3"
       >
         <div
-          class="MuiPaper-root MuiCard-root makeStyles-content-3 MuiPaper-elevation0 MuiPaper-rounded"
+          class="MuiPaper-root MuiCard-root makeStyles-ArticleDetail-root-8 MuiPaper-elevation0 MuiPaper-rounded"
         >
-          <div
-            class="MuiCardContent-root"
+          <article
+            class="MuiCardContent-root makeStyles-ArticleDetail-content-9"
           >
             <div
-              class="MuiCardHeader-root makeStyles-title-2"
+              class="MuiCardHeader-root makeStyles-ArticleDetail-title-10"
             >
               <div
                 class="MuiCardHeader-content"
               >
-                <a
-                  class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-root MuiTypography-h4 MuiTypography-colorTextPrimary MuiTypography-colorPrimary"
-                  href="/test1/xxxxxxxxx"
+                <span
+                  class="MuiTypography-root MuiCardHeader-title MuiTypography-h5 MuiTypography-displayBlock"
                 >
-                  title1
-                </a>
+                  <a
+                    class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
+                    href="/test1/xxxxxxxxx"
+                  >
+                    <h3
+                      class="MuiTypography-root MuiTypography-h3 MuiTypography-colorTextPrimary"
+                    >
+                      title1
+                    </h3>
+                  </a>
+                </span>
                 <span
                   class="MuiTypography-root MuiCardHeader-subheader MuiTypography-body1 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
                 >
                   <div
-                    class="MuiBox-root MuiBox-root-14 makeStyles-root-6"
+                    class="MuiBox-root MuiBox-root-23 makeStyles-root-13"
                   >
                     <svg
                       aria-hidden="true"
@@ -260,14 +284,14 @@ exports[`ArticleList should renders ArticleList 1`] = `
               </div>
             </div>
             <div
-              class="MuiBox-root MuiBox-root-15 makeStyles-thumb-4"
+              class="MuiBox-root MuiBox-root-24 makeStyles-ArticleDetail-thumbImage-11"
             >
               <a
                 class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
                 href="/test1/xxxxxxxxx"
               >
                 <div
-                  class="makeStyles-thumb-9"
+                  class="makeStyles-thumb-16"
                 >
                   <img
                     alt="thumbnail for title1"
@@ -277,9 +301,9 @@ exports[`ArticleList should renders ArticleList 1`] = `
                 </div>
               </a>
             </div>
-          </div>
+          </article>
           <div
-            class="MuiCardActions-root makeStyles-actions-5 MuiCardActions-spacing"
+            class="MuiCardActions-root makeStyles-ArticleDetail-actions-12 MuiCardActions-spacing"
           >
             <a
               aria-disabled="false"
@@ -301,7 +325,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
           </div>
         </div>
       </div>
-    </li>
-  </ul>
+    </div>
+  </div>
 </div>
 `;

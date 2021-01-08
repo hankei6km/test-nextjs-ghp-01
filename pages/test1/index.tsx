@@ -3,12 +3,12 @@ import { getSortedArticleList } from '../../lib/articles';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Layout from '../../components/Layout';
-import SectionItem from '../../components/SectionItem';
+import SectionList from '../../components/SectionList';
 import { Section as SectionType } from '../../types/pageTypes';
 
 const useStyles = makeStyles(() => ({
   'SectionItem-root': {},
-  'SectionItem-titlePostsDetailOuter': {
+  'SectionItem-articlesTitleDetail': {
     width: '100%',
     display: 'flex',
     justifyContent: 'center'
@@ -24,11 +24,7 @@ const PostsPage = ({ pageData }: { pageData: PageData }) => {
   return (
     <Layout title="Home | Next.js + TypeScript Example">
       <Box my={1}>
-        {pageData.sections.map((section, i) => (
-          <Box key={i}>
-            <SectionItem data={section} classes={{ ...classes }} />
-          </Box>
-        ))}
+        <SectionList sections={pageData.sections} classes={{ ...classes }} />
       </Box>
     </Layout>
   );
