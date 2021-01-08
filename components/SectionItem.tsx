@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-import List from './List';
+import ArticleList from './ArticleList';
 import { Section as SectionType } from '../types/pageTypes';
 
 const useStyles = makeStyles(() => ({
@@ -28,19 +28,23 @@ type Props = {
 const SectionItem = ({ data, classes: c }: Props) => {
   const classes = useStyles({ classes: c });
   return (
-      <Box component="section" className={classes['SectionItem-root']}>
+    <Box component="section" className={classes['SectionItem-root']}>
       {data.kind === 'posts' ? (
         <Box className={classes['SectionItem-postsOuter']}>
           {data.detail ? (
             <Box className={classes['SectionItem-titlePostsDetailOuter']}>
-              <Typography variant="h2" component="h2">{data.title}</Typography>
+              <Typography variant="h2" component="h2">
+                {data.title}
+              </Typography>
             </Box>
           ) : (
             <Box className={classes['SectionItem-titlePostsOuter']}>
-              <Typography variant="h2" component="h2">{data.title}</Typography>
+              <Typography variant="h2" component="h2">
+                {data.title}
+              </Typography>
             </Box>
           )}
-          <List items={data.contents} />
+          <ArticleList items={data.contents} />
         </Box>
       ) : (
         ''

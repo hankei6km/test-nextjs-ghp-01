@@ -11,7 +11,7 @@ import Link from './Link';
 import DateUpdated from './DateUpdated';
 import ThumbImage from './ThumbImage';
 
-import { PostsIndex } from '../types/client/contentTypes';
+import { ArticleIndex } from '../types/client/contentTypes';
 
 const useStyles = makeStyles(() => ({
   title: {
@@ -35,7 +35,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 type Props = {
-  data: PostsIndex;
+  data: ArticleIndex;
   thumbWidth?: number;
   thumbHeight?: number;
   thumbSizeFit?: '' | 'crop'; // とりあえず
@@ -45,7 +45,7 @@ type Props = {
 const defaultMainImage =
   'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/hankei6km-pages/media/my-starter-default-main-image.png';
 
-const ListDetail = ({
+const ArticleDetail = ({
   data,
   thumbWidth = 250,
   thumbHeight = 150,
@@ -102,4 +102,4 @@ const ListDetail = ({
   );
 };
 
-export default ListDetail;
+export default ArticleDetail;

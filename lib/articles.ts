@@ -1,8 +1,8 @@
 import { ParsedUrlQuery } from 'querystring';
 import { GetStaticPropsContext } from 'next';
-import client, { fetchConfig, ApiNamePosts } from './client';
+import client, { fetchConfig, ApiNameArticle } from './client';
 
-export async function getSortedPostsData(apiName: ApiNamePosts) {
+export async function getSortedArticleList(apiName: ApiNameArticle) {
   try {
     const res = await client[apiName].get({
       query: {
@@ -14,12 +14,12 @@ export async function getSortedPostsData(apiName: ApiNamePosts) {
   } catch (err) {
     // res.status = 404 などでも throw される(試した限りでは)
     // res.status を知る方法は?
-    console.error(`getSortedPostsData error: ${apiName}: ${err.name}`);
+    console.error(`getSortedArticleList error: ${apiName}: ${err.name}`);
   }
   return [];
 }
 
-export async function getAllPostsIds(apiName: ApiNamePosts) {
+export async function getAllArticleIds(apiName: ApiNameArticle) {
   try {
     const res = await client[apiName].get({
       query: {
@@ -29,13 +29,13 @@ export async function getAllPostsIds(apiName: ApiNamePosts) {
     });
     return res.body.contents.map(({ id }) => ({ params: { id } }));
   } catch (err) {
-    console.error(`getAllPostsIds error: ${apiName}: ${err.name}`);
+    console.error(`getAllArticleIds error: ${apiName}: ${err.name}`);
   }
   return [];
 }
 
-export async function getPostsData(
-  apiName: ApiNamePosts,
+export async function getArticleData(
+  apiName: ApiNameArticle,
   {
     params = { id: '' },
     preview = false,
@@ -53,7 +53,7 @@ export async function getPostsData(
       });
     return res;
   } catch (err) {
-    console.error(`getPostsData error: ${apiName}: ${err.name}`);
+    console.error(`getArticleData error: ${apiName}: ${err.name}`);
   }
   return {};
 }
