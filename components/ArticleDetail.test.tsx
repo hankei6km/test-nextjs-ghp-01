@@ -16,6 +16,11 @@ afterEach(() => {
 describe('ArticleDetail', () => {
   it('should renders ArticleDetails', async () => {
     const srcSetter = jest.fn();
+    const srcValue = new Promise((resolve) => {
+      srcSetter.mockImplementation((v) => {
+        resolve(v);
+      });
+    });
     const addEventListener = jest.fn();
     global.Image = mockImage(srcSetter, addEventListener);
 
@@ -27,17 +32,26 @@ describe('ArticleDetail', () => {
         </RouterContext.Provider>
       );
       const article = container.querySelector('article');
-      expect(article).not.toEqual(null);
+      expect(article).toBeInTheDocument();
 
-      const img = container.querySelector('img');
-      expect(img).toEqual(null);
-      const updated = queryByText(/^2020-12-27$/);
-      expect(updated).toEqual(null);
+      expect(container.querySelector('img')).toEqual(null);
+      expect(queryByText(/^2020-12-27$/)).toEqual(null);
       const button = getByRole('button');
       expect(button).toBeInTheDocument();
       expect(button.children[0].innerHTML).toEqual('read more');
 
-      fireEvent.click(button);
+      expect(await srcValue).toEqual(
+        'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/hankei6km-pages/media/my-starter-default-main-image.png?w=250&h=150&fit=crop'
+      );
+
+      addEventListener.mock.calls[0][1]();
+      const img = getByRole('img');
+      expect(img).toBeInTheDocument();
+      expect(queryByText(/^2020-12-27$/)).toBeInTheDocument();
+      const title = getByText(/^title3$/);
+      expect(title).toBeInTheDocument();
+
+      fireEvent.click(img);
       expect(router.push).toHaveBeenLastCalledWith(
         '/test1/[id]',
         '/test1/zzzzzzzzz',
@@ -46,42 +60,15 @@ describe('ArticleDetail', () => {
           shallow: undefined
         }
       );
-
-      await new Promise((resolve) => {
-        setTimeout(() => {
-          expect(srcSetter).toHaveBeenLastCalledWith(
-            'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/hankei6km-pages/media/my-starter-default-main-image.png?w=250&h=150&fit=crop'
-          );
-
-          addEventListener.mock.calls[0][1]();
-          const img = getByRole('img');
-          expect(img).toBeInTheDocument();
-          const updated = queryByText(/^2020-12-27$/);
-          expect(updated).toBeInTheDocument();
-          const title = getByText(/^title3$/);
-          expect(title).toBeInTheDocument();
-
-          fireEvent.click(img);
-          expect(router.push).toHaveBeenLastCalledWith(
-            '/test1/[id]',
-            '/test1/zzzzzzzzz',
-            {
-              locale: undefined,
-              shallow: undefined
-            }
-          );
-          fireEvent.click(title);
-          expect(router.push).toHaveBeenLastCalledWith(
-            '/test1/[id]',
-            '/test1/zzzzzzzzz',
-            {
-              locale: undefined,
-              shallow: undefined
-            }
-          );
-          resolve();
-        }, 10);
-      });
+      fireEvent.click(title);
+      expect(router.push).toHaveBeenLastCalledWith(
+        '/test1/[id]',
+        '/test1/zzzzzzzzz',
+        {
+          locale: undefined,
+          shallow: undefined
+        }
+      );
     });
   });
   it('should renders with specify components', async () => {
@@ -96,7 +83,6 @@ describe('ArticleDetail', () => {
             articleDetailComponent="li"
             articleDetailTitleComponent="h5"
           />
-          articleDetailComponent="li" articleDetailTitleComponent="h5"
         </RouterContext.Provider>
       );
       const h5 = container.querySelector('h5');
