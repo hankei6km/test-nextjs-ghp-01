@@ -10,7 +10,7 @@ export const mockDataPages: PagesContents = {
       revisedAt: '2020-12-27T04:04:30.107Z',
       title: 'Home',
       kind: 'page',
-      section: [
+      sections: [
         {
           title: 'intro',
           kind: 'content',
@@ -27,7 +27,7 @@ export const mockDataPages: PagesContents = {
       title: 'Test1',
       kind: 'posts',
       descriptionHtml: '<p>test1 posts</p>',
-      section: [
+      sections: [
         {
           title: 'test1 posts',
           kind: 'posts',
@@ -49,7 +49,7 @@ export const mockDataPagesList = {
     kind: undefined,
     descriptionHtml: undefined,
     descriptionMarkdown: undefined,
-    section: undefined
+    sections: undefined
   }))
 };
 

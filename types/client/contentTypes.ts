@@ -29,12 +29,12 @@ type Pages = {
   kind: 'posts' | 'gallery' | 'page';
   descriptionHtml?: string;
   descriptionMarkdown?: string;
-  section: PagesSection[];
+  sections: PagesSection[];
 };
 export type PagesContent = ContentBase & Pages;
 export type PagesIndex = Omit<
   PagesContent,
-  'kind' | 'descriptionHtml' | 'descriptionMarkdown' | 'section'
+  'kind' | 'descriptionHtml' | 'descriptionMarkdown' | 'sections'
 >;
 export type PagesId = Pick<PagesContent, 'id'>;
 export type PagesContents = ContentList<PagesContent>;
