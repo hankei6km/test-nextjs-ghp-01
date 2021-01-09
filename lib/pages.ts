@@ -4,7 +4,7 @@ import client, { fetchConfig } from './client';
 
 export async function getSortedPagesData() {
   try {
-    const res = await client.test1.get({
+    const res = await client.pages.get({
       query: {
         fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title'
       },
@@ -21,7 +21,7 @@ export async function getSortedPagesData() {
 
 export async function getAllPagesIds() {
   try {
-    const res = await client.test1.get({
+    const res = await client.pages.get({
       query: {
         fields: 'id'
       },
@@ -40,7 +40,7 @@ export async function getPagesData({
   previewData = {}
 }: GetStaticPropsContext<ParsedUrlQuery>) {
   try {
-    const res = await client.test1
+    const res = await client.pages
       ._id(!preview ? params.id : previewData.slug) // 似たような3項式がバラけていてすっきりしない
       .$get({
         query: {
