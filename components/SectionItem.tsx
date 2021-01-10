@@ -21,6 +21,15 @@ const useStyles = makeStyles(() => ({
   },
   'SectionItem-articlesList': {
     width: '100%'
+  },
+  'SectionItem-content': {
+    width: '100%'
+  },
+  'SectionItem-contentTitle': {
+    width: '100%'
+  },
+  'SectionItem-contentBody': {
+    width: '100%'
   }
 }));
 const classNames = [
@@ -28,14 +37,17 @@ const classNames = [
   'SectionItem-articles',
   'SectionItem-articlesTitleDetail',
   'SectionItem-articlesTitle',
-  'SectionItem-articlesList'
+  'SectionItem-articlesList',
+  'SectionItem-content',
+  'SectionItem-contentTitle',
+  'SectionItem-contentBody'
 ];
 
 export type SectionItemComponentVariant = {
-  contentTitleDetailVariant?: TypographyProps['variant'];
+  contentTitleVariant?: TypographyProps['variant'];
   articlesTitleDetailVariant?: TypographyProps['variant'];
   articlesTitleVariant?: TypographyProps['variant'];
-  contentTitleDetailComponent?: ElementType<any>;
+  contentTitleComponent?: ElementType<any>;
   articlesTitleDetailComponent?: ElementType<any>;
   articlesTitleComponent?: ElementType<any>;
 } & ArticlListrComponentVariant;
@@ -49,10 +61,10 @@ const SectionItem = ({
   data,
   articleDetailComponent = 'article',
   articleItemComponent,
-  // contentTitleDetailVariant = 'h2',
+  contentTitleVariant = 'h2',
   articlesTitleDetailVariant = 'h2',
   articlesTitleVariant = 'h2',
-  // contentTitleDetailComponent = 'h2',
+  contentTitleComponent = 'h2',
   articlesTitleDetailComponent = 'h2',
   articlesTitleComponent = 'h2',
   articleDetailTitleVariant = 'h3',
@@ -64,30 +76,49 @@ const SectionItem = ({
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
   return (
     <Box component="section" className={classes['SectionItem-root']}>
-      {data.kind === 'posts' ? (
-        <Box className={classes['SectionItem-articles']}>
-          {data.detail ? (
-            <Box className={classes['SectionItem-articlesTitleDetail']}>
+      {data.kind === 'content' && (
+        <Box className={classes['SectionItem-content']}>
+          {data.title && (
+            <Box className={classes['SectionItem-contentTitle']}>
               <Typography
-                variant={articlesTitleDetailVariant}
-                component={articlesTitleDetailComponent}
-              >
-                {data.title}
-              </Typography>
-            </Box>
-          ) : (
-            <Box className={classes['SectionItem-articlesTitle']}>
-              <Typography
-                variant={articlesTitleVariant}
-                component={articlesTitleComponent}
+                variant={contentTitleVariant}
+                component={contentTitleComponent}
               >
                 {data.title}
               </Typography>
             </Box>
           )}
+          <Box className={classes['SectionItem-contentBody']}>
+            {data.contentHtml}
+          </Box>
+        </Box>
+      )}
+      {data.kind === 'posts' && (
+        <Box className={classes['SectionItem-articles']}>
+          {data.title &&
+            (data.detail ? (
+              <Box className={classes['SectionItem-articlesTitleDetail']}>
+                <Typography
+                  variant={articlesTitleDetailVariant}
+                  component={articlesTitleDetailComponent}
+                >
+                  {data.title}
+                </Typography>
+              </Box>
+            ) : (
+              <Box className={classes['SectionItem-articlesTitle']}>
+                <Typography
+                  variant={articlesTitleVariant}
+                  component={articlesTitleComponent}
+                >
+                  {data.title}
+                </Typography>
+              </Box>
+            ))}
           <Box className={classes['SectionItem-articlesList']}>
             <ArticleList
               items={data.contents}
+              detail={data.detail}
               classes={{ ...inClasses }}
               articleDetailComponent={articleDetailComponent}
               articleItemComponent={articleItemComponent}
@@ -98,8 +129,6 @@ const SectionItem = ({
             />
           </Box>
         </Box>
-      ) : (
-        ''
       )}
     </Box>
   );

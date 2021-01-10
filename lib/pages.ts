@@ -80,7 +80,10 @@ export async function getPagesSectionsData({
           return {
             title: section.title,
             kind: 'content' as 'content',
-            contentHtml: ''
+            contentHtml:
+              (section.contentMarkdown
+                ? section.contentMarkdown
+                : section.contentHtml) || ''
           };
         } else if (
           section.kind[0] === 'posts' &&

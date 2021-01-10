@@ -26,10 +26,10 @@ const SectionList = ({
   sections,
   articleDetailComponent = 'article',
   articleItemComponent,
-  contentTitleDetailVariant = 'h2',
+  contentTitleVariant = 'h2',
   articlesTitleDetailVariant = 'h2',
   articlesTitleVariant = 'h2',
-  contentTitleDetailComponent = 'h2',
+  contentTitleComponent = 'h2',
   articlesTitleDetailComponent = 'h2',
   articlesTitleComponent = 'h2',
   articleDetailTitleVariant = 'h3',
@@ -47,10 +47,10 @@ const SectionList = ({
             data={section}
             articleDetailComponent={articleDetailComponent}
             articleItemComponent={articleItemComponent}
-            contentTitleDetailVariant={contentTitleDetailVariant}
+            contentTitleVariant={contentTitleVariant}
             articlesTitleDetailVariant={articlesTitleDetailVariant}
             articlesTitleVariant={articlesTitleVariant}
-            contentTitleDetailComponent={contentTitleDetailComponent}
+            contentTitleComponent={contentTitleComponent}
             articlesTitleDetailComponent={articlesTitleDetailComponent}
             articlesTitleComponent={articlesTitleComponent}
             articleDetailTitleVariant={articleDetailTitleVariant}
