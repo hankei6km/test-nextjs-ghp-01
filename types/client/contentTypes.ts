@@ -52,3 +52,24 @@ export type ArticleId = Pick<ArticleContent, 'id'>;
 export type ArticleContents = ContentList<ArticleContent>;
 export type ArticleList = ContentList<ArticleIndex>;
 export type ArticleIds = ContentList<ArticleId>;
+
+const contentBase: ContentBase = {
+  id: '',
+  createdAt: '',
+  updatedAt: '',
+  publishedAt: '',
+  revisedAt: ''
+};
+// const pagesSection: PagesSection = {
+//   title: '',
+//   kind: 'content',
+//   contentHtml: ''
+// };
+
+export const blankPageContent = (): PagesContent => ({
+  ...contentBase,
+  title: '',
+  kind: ['page'],
+  descriptionHtml: '',
+  sections: []
+});

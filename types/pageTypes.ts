@@ -1,5 +1,9 @@
 import { ArticleIndex } from './client/contentTypes';
 // export type SectionKind = 'content' | 'posts';
+export type SectionBlank = {
+  title: string;
+  kind: '';
+};
 export type SectionContent = {
   title: string;
   kind: 'content';
@@ -12,4 +16,4 @@ export type SectionPosts = {
   detail: boolean;
 };
 
-export type Section = SectionContent | SectionPosts;
+export type Section = SectionBlank | SectionContent | SectionPosts;

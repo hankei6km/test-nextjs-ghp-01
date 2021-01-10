@@ -14,7 +14,9 @@ export const fetchConfig = (() => {
 
 // aspida の client.xxx の xxx 部分。
 // 今回は api.vi[apiName]
-export type ApiNameArticle = 'test1';
+// 手動で定義する必要があるので注意:
+export const ApiNameArticleValues = ['test1'] as const;
+export type ApiNameArticle = typeof ApiNameArticleValues[number];
 
 const clientV1 = (process.env.NODE_ENV === 'development'
   ? mock(aspida(fetch))

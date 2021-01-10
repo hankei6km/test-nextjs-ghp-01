@@ -1,10 +1,16 @@
 import {
   mockDataPages,
   mockDataPagesList,
-  mockDataPagesIds
+  mockDataPagesIds,
+  mockDataArticleList
 } from '../types/client/mockData';
 import { FetchMock } from 'jest-fetch-mock';
-import { getSortedPagesData, getAllPagesIds, getPagesData } from './pages';
+import {
+  getSortedPagesData,
+  getAllPagesIds,
+  getPagesData,
+  getPagesSectionsData
+} from './pages';
 
 // https://github.com/jefflau/jest-fetch-mock/issues/83
 const fetchMock = fetch as FetchMock;
@@ -85,16 +91,58 @@ describe('getPagesData()', () => {
       publishedAt: '2020-12-26T15:29:14.476Z',
       revisedAt: '2020-12-26T15:29:14.476Z',
       title: 'Test1',
-      kind: 'posts',
+      kind: ['posts'],
       descriptionHtml: '<p>test1 posts</p>',
       sections: [
         {
           title: 'test1 posts',
-          kind: 'posts',
+          kind: ['posts'],
           posts: 'test1',
           postsDetail: true
         }
       ]
     });
+  });
+  it('should returns SectionPosts', async () => {
+    fetchMock
+      .mockResponseOnce(
+        JSON.stringify(mockDataPages.contents.find(({ id }) => id === 'test1'))
+      )
+      .mockResponseOnce(JSON.stringify(mockDataArticleList));
+    expect(
+      await getPagesSectionsData({ params: { id: 'test1' } })
+    ).toStrictEqual([
+      {
+        title: 'test1 posts',
+        kind: 'posts',
+        contents: [
+          {
+            id: 'zzzzzzzzz',
+            createdAt: '2020-12-27T04:04:30.107Z',
+            updatedAt: '2020-12-27T04:04:30.107Z',
+            publishedAt: '2020-12-27T04:04:30.107Z',
+            revisedAt: '2020-12-27T04:04:30.107Z',
+            title: 'title3'
+          },
+          {
+            id: 'yyyyyy-da',
+            createdAt: '2020-12-26T15:29:14.476Z',
+            updatedAt: '2020-12-26T15:29:14.476Z',
+            publishedAt: '2020-12-26T15:29:14.476Z',
+            revisedAt: '2020-12-26T15:29:14.476Z',
+            title: 'title2'
+          },
+          {
+            id: 'xxxxxxxxx',
+            createdAt: '2020-12-26T12:25:43.532Z',
+            updatedAt: '2020-12-26T12:27:22.533Z',
+            publishedAt: '2020-12-26T12:27:22.533Z',
+            revisedAt: '2020-12-26T12:27:22.533Z',
+            title: 'title1'
+          }
+        ],
+        detail: true
+      }
+    ]);
   });
 });
