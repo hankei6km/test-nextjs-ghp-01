@@ -18,7 +18,8 @@ export const fetchConfig = (() => {
 export const ApiNameArticleValues = ['test1'] as const;
 export type ApiNameArticle = typeof ApiNameArticleValues[number];
 
-const clientV1 = (process.env.NODE_ENV === 'development'
+const clientV1 = (process.env.USE_MOCK_CLIENT_FORCE === 'true' ||
+process.env.USE_MOCK_CLIENT === 'true'
   ? mock(aspida(fetch))
   : api(aspida(fetch))
 ).api.v1;
