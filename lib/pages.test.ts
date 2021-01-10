@@ -59,12 +59,17 @@ describe('getPagesData()', () => {
       publishedAt: '2020-12-27T04:04:30.107Z',
       revisedAt: '2020-12-27T04:04:30.107Z',
       title: 'Home',
-      kind: 'page',
+      kind: ['page'],
       sections: [
         {
           title: 'intro',
-          kind: 'content',
+          kind: ['content'],
           contentHtml: '<p>index page</p>'
+        },
+        {
+          title: 'test1 posts',
+          kind: ['posts'],
+          posts: 'test1'
         }
       ]
     });

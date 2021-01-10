@@ -9,12 +9,17 @@ export const mockDataPages: PagesContents = {
       publishedAt: '2020-12-27T04:04:30.107Z',
       revisedAt: '2020-12-27T04:04:30.107Z',
       title: 'Home',
-      kind: 'page',
+      kind: ['page'],
       sections: [
         {
           title: 'intro',
-          kind: 'content',
+          kind: ['content'],
           contentHtml: '<p>index page</p>'
+        },
+        {
+          title: 'test1 posts',
+          kind: ['posts'],
+          posts: 'test1'
         }
       ]
     },
@@ -25,12 +30,12 @@ export const mockDataPages: PagesContents = {
       publishedAt: '2020-12-26T15:29:14.476Z',
       revisedAt: '2020-12-26T15:29:14.476Z',
       title: 'Test1',
-      kind: 'posts',
+      kind: ['posts'],
       descriptionHtml: '<p>test1 posts</p>',
       sections: [
         {
           title: 'test1 posts',
-          kind: 'posts',
+          kind: ['posts'],
           posts: 'test1',
           postsDetail: true
         }

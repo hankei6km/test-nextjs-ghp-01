@@ -17,7 +17,7 @@ export type PagesSectionKind = 'content' | 'posts';
 
 type PagesSection = {
   title: string;
-  kind: PagesSectionKind;
+  kind: [PagesSectionKind]; // 複数選択にしていない
   contentHtml?: string;
   contentMarkdown?: string;
   posts?: string;
@@ -26,7 +26,7 @@ type PagesSection = {
 
 type Pages = {
   title: string;
-  kind: 'posts' | 'gallery' | 'page';
+  kind: ['posts' | 'gallery' | 'page']; // 複数選択にしていない
   descriptionHtml?: string;
   descriptionMarkdown?: string;
   sections: PagesSection[];
