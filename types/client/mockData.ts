@@ -10,6 +10,7 @@ export const mockDataPages: PagesContents = {
       revisedAt: '2020-12-27T04:04:30.107Z',
       title: 'Home',
       kind: ['page'],
+      description: 'my starter home page',
       sections: [
         {
           title: 'intro',
@@ -31,7 +32,6 @@ export const mockDataPages: PagesContents = {
       revisedAt: '2020-12-26T15:29:14.476Z',
       title: 'Test1',
       kind: ['posts'],
-      descriptionHtml: '<p>test1 posts</p>',
       sections: [
         {
           title: 'test1 posts',
@@ -52,8 +52,7 @@ export const mockDataPagesList = {
   contents: mockDataPages.contents.map((v) => ({
     ...v,
     kind: undefined,
-    descriptionHtml: undefined,
-    descriptionMarkdown: undefined,
+    description: undefined,
     sections: undefined
   }))
 };

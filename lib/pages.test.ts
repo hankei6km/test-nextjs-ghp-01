@@ -54,7 +54,7 @@ describe('getAllPagesIds()', () => {
 });
 
 describe('getPagesData()', () => {
-  it('should returns content data of "home"', async () => {
+  it('should returns content data of "home" that is contained description', async () => {
     fetchMock.mockResponseOnce(
       JSON.stringify(mockDataPages.contents.find(({ id }) => id === 'home'))
     );
@@ -66,6 +66,7 @@ describe('getPagesData()', () => {
       revisedAt: '2020-12-27T04:04:30.107Z',
       title: 'Home',
       kind: ['page'],
+      description: 'my starter home page',
       sections: [
         {
           title: 'intro',
@@ -80,7 +81,7 @@ describe('getPagesData()', () => {
       ]
     });
   });
-  it('should returns content data of "test1" that is contained descriptionHtml', async () => {
+  it('should returns content data of "test1"', async () => {
     fetchMock.mockResponseOnce(
       JSON.stringify(mockDataPages.contents.find(({ id }) => id === 'test1'))
     );
@@ -92,7 +93,6 @@ describe('getPagesData()', () => {
       revisedAt: '2020-12-26T15:29:14.476Z',
       title: 'Test1',
       kind: ['posts'],
-      descriptionHtml: '<p>test1 posts</p>',
       sections: [
         {
           title: 'test1 posts',

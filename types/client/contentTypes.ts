@@ -27,8 +27,7 @@ type PagesSection = {
 type Pages = {
   title: string;
   kind: ['posts' | 'gallery' | 'page']; // 複数選択にしていない
-  descriptionHtml?: string;
-  descriptionMarkdown?: string;
+  description?: string;
   sections: PagesSection[];
 };
 export type PagesContent = ContentBase & Pages;
@@ -70,6 +69,6 @@ export const blankPageContent = (): PagesContent => ({
   ...contentBase,
   title: '',
   kind: ['page'],
-  descriptionHtml: '',
+  description: '',
   sections: []
 });
