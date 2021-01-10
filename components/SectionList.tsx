@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-import SectionItem, { SectionItemComponentVariant } from './SectionItem';
+import SectionItem from './SectionItem';
 import { Section as SectionType } from '../types/pageTypes';
 import { pruneClasses } from '../utils/classes';
 
@@ -20,24 +20,9 @@ const classNames = ['Section-root', 'Section-item'];
 type Props = {
   sections: SectionType[];
   classes?: { [key: string]: string };
-} & SectionItemComponentVariant;
+};
 
-const SectionList = ({
-  sections,
-  articleDetailComponent = 'article',
-  articleItemComponent,
-  contentTitleVariant = 'h2',
-  articlesTitleDetailVariant = 'h2',
-  articlesTitleVariant = 'h2',
-  contentTitleComponent = 'h2',
-  articlesTitleDetailComponent = 'h2',
-  articlesTitleComponent = 'h2',
-  articleDetailTitleVariant = 'h3',
-  articleDetailTitleComponent = 'h3',
-  articleItemTitleVariant = 'body1',
-  articleItemTitleComponent = 'span',
-  classes: inClasses
-}: Props) => {
+const SectionList = ({ sections, classes: inClasses }: Props) => {
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
   return (
     <Box className={classes['Section-root']}>
@@ -45,18 +30,6 @@ const SectionList = ({
         <Box key={i} className={classes['Section-item']}>
           <SectionItem
             data={section}
-            articleDetailComponent={articleDetailComponent}
-            articleItemComponent={articleItemComponent}
-            contentTitleVariant={contentTitleVariant}
-            articlesTitleDetailVariant={articlesTitleDetailVariant}
-            articlesTitleVariant={articlesTitleVariant}
-            contentTitleComponent={contentTitleComponent}
-            articlesTitleDetailComponent={articlesTitleDetailComponent}
-            articlesTitleComponent={articlesTitleComponent}
-            articleDetailTitleVariant={articleDetailTitleVariant}
-            articleDetailTitleComponent={articleDetailTitleComponent}
-            articleItemTitleVariant={articleItemTitleVariant}
-            articleItemTitleComponent={articleItemTitleComponent}
             classes={{ ...inClasses } /* 'Section-*' は除外する?  */}
           />
         </Box>

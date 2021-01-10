@@ -1,4 +1,4 @@
-import React, { ElementType } from 'react';
+import React, { ElementType, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
@@ -6,6 +6,7 @@ import Link from './Link';
 import DateUpdated from './DateUpdated';
 import ThumbImage from './ThumbImage';
 import { pruneClasses } from '../utils/classes';
+import SectionContext from './SectionContext';
 
 import { ArticleIndex } from '../types/client/contentTypes';
 
@@ -36,10 +37,13 @@ const classNames = [
   'ArticleItem-title'
 ];
 
-export type ArticleItemComponentVariant = {
-  articleItemComponent?: ElementType<any>;
-  articleItemTitleVariant?: TypographyProps['variant'];
-  articleItemTitleComponent?: ElementType<any>;
+export type ArticleItemComponent = {
+  articleItemComponent: ElementType<any>;
+  articleItemTitleComponent: ElementType<any>;
+};
+
+export type ArticleItemVariant = {
+  articleItemTitleVariant: TypographyProps['variant'];
 };
 
 type Props = {
@@ -48,7 +52,7 @@ type Props = {
   thumbHeight?: number;
   thumbSizeFit?: '' | 'crop'; // とりあえず
   classes?: { [key: string]: string };
-} & ArticleItemComponentVariant;
+};
 
 // TODO: config 作成
 const defaultMainImage =
@@ -59,18 +63,16 @@ const ArticleItem = ({
   thumbWidth = 100,
   thumbHeight = 60,
   thumbSizeFit = 'crop',
-  classes: inClasses,
-  articleItemComponent,
-  articleItemTitleVariant = 'body1',
-  articleItemTitleComponent = 'span'
+  classes: inClasses
 }: Props) => {
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
+  const { component, variant } = useContext(SectionContext);
   const thumbImage = data.mainImage || defaultMainImage;
   const updated = data.revisedAt || data.updatedAt || data.publishedAt;
   return (
     <>
       <Box
-        component={articleItemComponent}
+        component={component.articleItemComponent}
         className={classes['ArticleItem-root']}
         display="flex"
       >
@@ -89,8 +91,8 @@ const ArticleItem = ({
           <Link href="/test1/[id]" as={`/test1/${data.id}`}>
             <Typography
               className={classes['ArticleItem-title']}
-              variant={articleItemTitleVariant}
-              component={articleItemTitleComponent}
+              variant={variant.articleItemTitleVariant}
+              component={component.articleItemTitleComponent}
             >
               {data.title}
             </Typography>

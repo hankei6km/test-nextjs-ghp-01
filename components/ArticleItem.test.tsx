@@ -12,6 +12,7 @@ import { RouterContext } from 'next/dist/next-server/lib/router-context';
 // import { RouterContext, createMockRouter } from 'next-router-provider';
 import { mockRouter, mockImage } from '../test/testUtils';
 
+import SectionContext, { sectionContextDefault } from './SectionContext';
 import { mockDataArticles } from '../types/client/mockData';
 import ArticleItem from './ArticleItem';
 
@@ -36,7 +37,9 @@ describe('ArticleItem', () => {
       const router = mockRouter();
       const { container, getByText, getByRole, queryByText } = render(
         <RouterContext.Provider value={router}>
-          <ArticleItem data={mockDataArticles.contents[0]} />
+          <SectionContext.Provider value={sectionContextDefault}>
+            <ArticleItem data={mockDataArticles.contents[0]} />
+          </SectionContext.Provider>
         </RouterContext.Provider>
       );
       const h3 = container.querySelector('h3');
@@ -93,11 +96,18 @@ describe('ArticleItem', () => {
       const router = mockRouter();
       const { container } = render(
         <RouterContext.Provider value={router}>
-          <ArticleItem
-            data={mockDataArticles.contents[0]}
-            articleItemComponent="article"
-            articleItemTitleComponent="h3"
-          />
+          <SectionContext.Provider
+            value={{
+              ...sectionContextDefault,
+              component: {
+                ...sectionContextDefault.component,
+                articleItemComponent: 'article',
+                articleItemTitleComponent: 'h3'
+              }
+            }}
+          >
+            <ArticleItem data={mockDataArticles.contents[0]} />
+          </SectionContext.Provider>
         </RouterContext.Provider>
       );
       const h3 = container.querySelector('h3');

@@ -2,9 +2,10 @@ import React, { ElementType } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
-import ArticleList, { ArticlListrComponentVariant } from './ArticleList';
+import ArticleList from './ArticleList';
 import { Section as SectionType } from '../types/pageTypes';
 import { pruneClasses } from '../utils/classes';
+import SectionContext, { sectionContextDefault } from './SectionContext';
 
 const useStyles = makeStyles(() => ({
   'SectionItem-root': {
@@ -43,94 +44,79 @@ const classNames = [
   'SectionItem-contentBody'
 ];
 
-export type SectionItemComponentVariant = {
-  contentTitleVariant?: TypographyProps['variant'];
-  articlesTitleDetailVariant?: TypographyProps['variant'];
-  articlesTitleVariant?: TypographyProps['variant'];
-  contentTitleComponent?: ElementType<any>;
-  articlesTitleDetailComponent?: ElementType<any>;
-  articlesTitleComponent?: ElementType<any>;
-} & ArticlListrComponentVariant;
+export type SectionItemComponent = {
+  contentTitleComponent: ElementType<any>;
+  articlesTitleDetailComponent: ElementType<any>;
+  articlesTitleComponent: ElementType<any>;
+};
+
+export type SectionItemVariant = {
+  contentTitleVariant: TypographyProps['variant'];
+  articlesTitleDetailVariant: TypographyProps['variant'];
+  articlesTitleVariant: TypographyProps['variant'];
+};
 
 type Props = {
   data: SectionType;
   classes?: { [key: string]: string };
-} & SectionItemComponentVariant;
+};
 
-const SectionItem = ({
-  data,
-  articleDetailComponent = 'article',
-  articleItemComponent,
-  contentTitleVariant = 'h2',
-  articlesTitleDetailVariant = 'h2',
-  articlesTitleVariant = 'h2',
-  contentTitleComponent = 'h2',
-  articlesTitleDetailComponent = 'h2',
-  articlesTitleComponent = 'h2',
-  articleDetailTitleVariant = 'h3',
-  articleDetailTitleComponent = 'h3',
-  articleItemTitleVariant = 'body1',
-  articleItemTitleComponent = 'span',
-  classes: inClasses
-}: Props) => {
+const SectionItem = ({ data, classes: inClasses }: Props) => {
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
+  const { component, variant } = sectionContextDefault;
   return (
-    <Box component="section" className={classes['SectionItem-root']}>
-      {data.kind === 'content' && (
-        <Box className={classes['SectionItem-content']}>
-          {data.title && (
-            <Box className={classes['SectionItem-contentTitle']}>
-              <Typography
-                variant={contentTitleVariant}
-                component={contentTitleComponent}
-              >
-                {data.title}
-              </Typography>
+    <SectionContext.Provider value={sectionContextDefault}>
+      <Box component="section" className={classes['SectionItem-root']}>
+        {data.kind === 'content' && (
+          <Box className={classes['SectionItem-content']}>
+            {data.title && (
+              <Box className={classes['SectionItem-contentTitle']}>
+                <Typography
+                  variant={variant.contentTitleVariant}
+                  component={component.contentTitleComponent}
+                >
+                  {data.title}
+                </Typography>
+              </Box>
+            )}
+            <Box className={classes['SectionItem-contentBody']}>
+              {data.contentHtml}
             </Box>
-          )}
-          <Box className={classes['SectionItem-contentBody']}>
-            {data.contentHtml}
           </Box>
-        </Box>
-      )}
-      {data.kind === 'posts' && (
-        <Box className={classes['SectionItem-articles']}>
-          {data.title &&
-            (data.detail ? (
-              <Box className={classes['SectionItem-articlesTitleDetail']}>
-                <Typography
-                  variant={articlesTitleDetailVariant}
-                  component={articlesTitleDetailComponent}
-                >
-                  {data.title}
-                </Typography>
-              </Box>
-            ) : (
-              <Box className={classes['SectionItem-articlesTitle']}>
-                <Typography
-                  variant={articlesTitleVariant}
-                  component={articlesTitleComponent}
-                >
-                  {data.title}
-                </Typography>
-              </Box>
-            ))}
-          <Box className={classes['SectionItem-articlesList']}>
-            <ArticleList
-              items={data.contents}
-              detail={data.detail}
-              classes={{ ...inClasses }}
-              articleDetailComponent={articleDetailComponent}
-              articleItemComponent={articleItemComponent}
-              articleDetailTitleVariant={articleDetailTitleVariant}
-              articleDetailTitleComponent={articleDetailTitleComponent}
-              articleItemTitleVariant={articleItemTitleVariant}
-              articleItemTitleComponent={articleItemTitleComponent}
-            />
+        )}
+        {data.kind === 'posts' && (
+          <Box className={classes['SectionItem-articles']}>
+            {data.title &&
+              (data.detail ? (
+                <Box className={classes['SectionItem-articlesTitleDetail']}>
+                  <Typography
+                    variant={variant.articlesTitleDetailVariant}
+                    component={component.articlesTitleDetailComponent}
+                  >
+                    {data.title}
+                  </Typography>
+                </Box>
+              ) : (
+                <Box className={classes['SectionItem-articlesTitle']}>
+                  <Typography
+                    variant={variant.articlesTitleVariant}
+                    component={component.articlesTitleComponent}
+                  >
+                    {data.title}
+                  </Typography>
+                </Box>
+              ))}
+            <Box className={classes['SectionItem-articlesList']}>
+              <ArticleList
+                items={data.contents}
+                detail={data.detail}
+                classes={{ ...inClasses }}
+              />
+            </Box>
           </Box>
-        </Box>
-      )}
-    </Box>
+        )}
+      </Box>
+    </SectionContext.Provider>
   );
 };
 export default SectionItem;
