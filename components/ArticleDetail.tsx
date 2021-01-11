@@ -2,10 +2,6 @@ import React, { ElementType, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import Link from './Link';
 import DateUpdated from './DateUpdated';
@@ -17,32 +13,35 @@ import { ArticleIndex } from '../types/client/contentTypes';
 
 const useStyles = makeStyles(() => ({
   'ArticleDetail-root': {
-    width: '100%',
-    '& > .MuiCardContent-root': {
-      padding: 0
-    }
+    width: '100%'
   },
-  'ArticleDetail-content': {},
-  'ArticleDetail-title': {
-    padding: 0
+  'ArticleDetail-header': {
+    width: '100%'
   },
+  'ArticleDetail-content': {
+    width: '100%'
+  },
+  'ArticleDetail-footer': {
+    width: '100%'
+  },
+  'ArticleDetail-title': {},
+  'ArticleDetail-updated': {},
   'ArticleDetail-thumbImage': {
     // https://stackoverflow.com/questions/23041956/a-tag-is-not-at-the-same-size-of-img-tag-inside-it
     '&>a': {
       fontSize: 0,
       display: 'inline-block'
     }
-  },
-  'ArticleDetail-actions': {
-    padding: 0
   }
 }));
 const classNames = [
   'ArticleDetail-root',
+  'ArticleDetail-header',
   'ArticleDetail-content',
+  'ArticleDetail-footer',
   'ArticleDetail-title',
-  'ArticleDetail-thumbImage',
-  'ArticleDetail-actions'
+  'ArticleDetail-updated',
+  'ArticleDetail-thumbImage'
 ];
 
 export type ArticleDetailComponent = {
@@ -77,26 +76,26 @@ const ArticleDetail = ({
   const thumbImage = data.mainImage || defaultMainImage;
   const updated = data.revisedAt || data.updatedAt || data.publishedAt;
   return (
-    <Card elevation={0} className={classes['ArticleDetail-root']}>
-      <CardContent
-        component={component.articleDetailComponent}
-        className={classes['ArticleDetail-content']}
-      >
-        <CardHeader
+    <Box
+      component={component.articleDetailComponent}
+      className={classes['ArticleDetail-root']}
+    >
+      <Box component="header" className={classes['ArticleDetail-header']}>
+        <Typography
+          color="textPrimary"
+          variant={variant.articleDetailTitleVariant}
+          component={component.articleDetailTitleComponent}
           className={classes['ArticleDetail-title']}
-          title={
-            <Link underline="none" href="/test1/[id]" as={`/test1/${data.id}`}>
-              <Typography
-                color="textPrimary"
-                variant={variant.articleDetailTitleVariant}
-                component={component.articleDetailTitleComponent}
-              >
-                {data.title}
-              </Typography>
-            </Link>
-          }
-          subheader={<DateUpdated updated={updated} />}
-        />
+        >
+          <Link underline="none" href="/test1/[id]" as={`/test1/${data.id}`}>
+            {data.title}
+          </Link>
+        </Typography>
+        <Box className={classes['ArticleDetail-updated']}>
+          {<DateUpdated updated={updated} />}
+        </Box>
+      </Box>
+      <Box className={classes['ArticleDetail-content']}>
         <Box className={classes['ArticleDetail-thumbImage']}>
           <Link underline="none" href="/test1/[id]" as={`/test1/${data.id}`}>
             <ThumbImage
@@ -109,8 +108,8 @@ const ArticleDetail = ({
             />
           </Link>
         </Box>
-      </CardContent>
-      <CardActions className={classes['ArticleDetail-actions']}>
+      </Box>
+      <Box component="footer" className={classes['ArticleDetail-footer']}>
         <Button
           style={{ textTransform: 'none' }}
           size="small"
@@ -121,8 +120,8 @@ const ArticleDetail = ({
         >
           {'read more'}
         </Button>
-      </CardActions>
-    </Card>
+      </Box>
+    </Box>
   );
 };
 

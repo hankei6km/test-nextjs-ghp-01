@@ -11,20 +11,13 @@ const useStyles = makeStyles(() => ({
     width: '100%',
     padding: 0
   },
-  'ArticleList-content': {},
-  'ArticleList-itemDetail': {
-    width: '100%'
-  },
-  'ArticleList-item': {
-    width: '100%',
-    listStyle: 'none'
-  }
+  'ArticleList-detailList': {},
+  'ArticleList-itemList': {}
 }));
 const classNames = [
   'ArticleList-root',
-  'ArticleList-content',
-  'ArticleList-itemDetail',
-  'ArticleList-item'
+  'ArticleList-detailList',
+  'ArticleList-itemList'
 ];
 
 export type ArticleListComponent = {};
@@ -43,21 +36,33 @@ const ArticleList = ({ items, detail = true, classes: inClasses }: Props) => {
     <>
       <Box
         component={detail ? 'div' : 'ul'}
-        className={classes['ArticleList-root']}
+        className={`${classes['ArticleList-root']} ${
+          detail
+            ? classes['ArticleList-detailList']
+            : classes['ArticleList-itemList']
+        }`}
       >
-        {items.map((item) => (
-          <Box key={item.id}>
-            {detail ? (
-              <Box className={classes['ArticleList-itemDetail']}>
-                <ArticleDetail data={item} classes={{ ...inClasses }} />
-              </Box>
-            ) : (
-              <Box component="li" className={classes['ArticleList-item']}>
-                <ArticleItem data={item} classes={{ ...inClasses }} />
-              </Box>
-            )}
-          </Box>
-        ))}
+        {detail ? (
+          <>
+            {items.map((item) => (
+              <ArticleDetail
+                key={item.id}
+                data={item}
+                classes={{ ...inClasses }}
+              />
+            ))}
+          </>
+        ) : (
+          <>
+            {items.map((item) => (
+              <ArticleItem
+                key={item.id}
+                data={item}
+                classes={{ ...inClasses }}
+              />
+            ))}
+          </>
+        )}
       </Box>
     </>
   );
