@@ -17,7 +17,7 @@ type Context = {
 export const sectionContextDefault: Context = {
   component: {
     articleDetailComponent: 'article',
-    articleItemComponent: 'div',
+    articleItemComponent: 'li',
     contentTitleComponent: 'h2',
     articlesTitleDetailComponent: 'h2',
     articlesTitleComponent: 'h2',

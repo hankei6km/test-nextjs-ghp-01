@@ -12,7 +12,9 @@ import { ArticleIndex } from '../types/client/contentTypes';
 
 const useStyles = makeStyles((theme) => ({
   'ArticleItem-root': {
-    width: '100%'
+    width: '100%',
+    display: 'flex',
+    listStyle: 'none'
   },
   'ArticleItem-thumbnImage': {
     // https://stackoverflow.com/questions/23041956/a-tag-is-not-at-the-same-size-of-img-tag-inside-it
@@ -21,20 +23,22 @@ const useStyles = makeStyles((theme) => ({
       display: 'inline-block'
     }
   },
-  'ArticleItem-content': {
+  'ArticleItem-item': {
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-evenly'
   },
-  'ArticleItem-title': {}
+  'ArticleItem-title': {},
+  'ArticleItem-updated': {}
 }));
 const classNames = [
   'ArticleItem-root',
   'ArticleItem-thumbnImage',
-  'ArticleItem-content',
-  'ArticleItem-title'
+  'ArticleItem-item',
+  'ArticleItem-title',
+  'ArticleItem-updated'
 ];
 
 export type ArticleItemComponent = {
@@ -70,37 +74,36 @@ const ArticleItem = ({
   const thumbImage = data.mainImage || defaultMainImage;
   const updated = data.revisedAt || data.updatedAt || data.publishedAt;
   return (
-    <>
-      <Box
-        component={component.articleItemComponent}
-        className={classes['ArticleItem-root']}
-        display="flex"
-      >
-        <Box className={classes['ArticleItem-thumbnImage']}>
+    <Box
+      component={component.articleItemComponent}
+      className={classes['ArticleItem-root']}
+    >
+      <Box className={classes['ArticleItem-thumbnImage']}>
+        <Link href="/test1/[id]" as={`/test1/${data.id}`}>
+          <ThumbImage
+            src={thumbImage}
+            alt={`thumbnail for ${data.title}`}
+            thumbWidth={thumbWidth}
+            thumbHeight={thumbHeight}
+            thumbSizeFit={thumbSizeFit}
+          />
+        </Link>
+      </Box>
+      <Box className={classes['ArticleItem-item']}>
+        <Typography
+          className={classes['ArticleItem-title']}
+          variant={variant.articleItemTitleVariant}
+          component={component.articleItemTitleComponent}
+        >
           <Link href="/test1/[id]" as={`/test1/${data.id}`}>
-            <ThumbImage
-              src={thumbImage}
-              alt={`thumbnail for ${data.title}`}
-              thumbWidth={thumbWidth}
-              thumbHeight={thumbHeight}
-              thumbSizeFit={thumbSizeFit}
-            />
+            {data.title}
           </Link>
-        </Box>
-        <Box className={classes['ArticleItem-content']}>
-          <Link href="/test1/[id]" as={`/test1/${data.id}`}>
-            <Typography
-              className={classes['ArticleItem-title']}
-              variant={variant.articleItemTitleVariant}
-              component={component.articleItemTitleComponent}
-            >
-              {data.title}
-            </Typography>
-          </Link>
+        </Typography>
+        <Box className={classes['ArticleItem-updated']}>
           <DateUpdated updated={updated} />
         </Box>
       </Box>
-    </>
+    </Box>
   );
 };
 

@@ -20,9 +20,6 @@ const useStyles = makeStyles(() => ({
   'SectionItem-articlesTitle': {
     width: '100%'
   },
-  'SectionItem-articlesList': {
-    width: '100%'
-  },
   'SectionItem-content': {
     width: '100%'
   },
@@ -38,7 +35,6 @@ const classNames = [
   'SectionItem-articles',
   'SectionItem-articlesTitleDetail',
   'SectionItem-articlesTitle',
-  'SectionItem-articlesList',
   'SectionItem-content',
   'SectionItem-contentTitle',
   'SectionItem-contentBody'
@@ -66,18 +62,20 @@ const SectionItem = ({ data, classes: inClasses }: Props) => {
   const { component, variant } = sectionContextDefault;
   return (
     <SectionContext.Provider value={sectionContextDefault}>
-      <Box component="section" className={classes['SectionItem-root']}>
+      <>
         {data.kind === 'content' && (
-          <Box className={classes['SectionItem-content']}>
+          <Box
+            component="section"
+            className={`${classes['SectionItem-root']} ${classes['SectionItem-content']}`}
+          >
             {data.title && (
-              <Box className={classes['SectionItem-contentTitle']}>
-                <Typography
-                  variant={variant.contentTitleVariant}
-                  component={component.contentTitleComponent}
-                >
-                  {data.title}
-                </Typography>
-              </Box>
+              <Typography
+                variant={variant.contentTitleVariant}
+                component={component.contentTitleComponent}
+                className={classes['SectionItem-contentTitle']}
+              >
+                {data.title}
+              </Typography>
             )}
             <Box className={classes['SectionItem-contentBody']}>
               {data.contentHtml}
@@ -85,37 +83,35 @@ const SectionItem = ({ data, classes: inClasses }: Props) => {
           </Box>
         )}
         {data.kind === 'posts' && (
-          <Box className={classes['SectionItem-articles']}>
+          <Box
+            className={`${classes['SectionItem-root']} ${classes['SectionItem-articles']}`}
+          >
             {data.title &&
               (data.detail ? (
-                <Box className={classes['SectionItem-articlesTitleDetail']}>
-                  <Typography
-                    variant={variant.articlesTitleDetailVariant}
-                    component={component.articlesTitleDetailComponent}
-                  >
-                    {data.title}
-                  </Typography>
-                </Box>
+                <Typography
+                  variant={variant.articlesTitleDetailVariant}
+                  component={component.articlesTitleDetailComponent}
+                  className={classes['SectionItem-articlesTitleDetail']}
+                >
+                  {data.title}
+                </Typography>
               ) : (
-                <Box className={classes['SectionItem-articlesTitle']}>
-                  <Typography
-                    variant={variant.articlesTitleVariant}
-                    component={component.articlesTitleComponent}
-                  >
-                    {data.title}
-                  </Typography>
-                </Box>
+                <Typography
+                  variant={variant.articlesTitleVariant}
+                  component={component.articlesTitleComponent}
+                  className={classes['SectionItem-articlesTitle']}
+                >
+                  {data.title}
+                </Typography>
               ))}
-            <Box className={classes['SectionItem-articlesList']}>
-              <ArticleList
-                items={data.contents}
-                detail={data.detail}
-                classes={{ ...inClasses }}
-              />
-            </Box>
+            <ArticleList
+              items={data.contents}
+              detail={data.detail}
+              classes={{ ...inClasses }}
+            />
           </Box>
         )}
-      </Box>
+      </>
     </SectionContext.Provider>
   );
 };
