@@ -2,8 +2,9 @@ import React from 'react';
 import { render, act, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
-import { mockRouter, mockImage } from '../test/testUtils';
 
+import SectionContext, { sectionContextDefault } from './SectionContext';
+import { mockRouter, mockImage } from '../test/testUtils';
 import { mockDataArticles } from '../types/client/mockData';
 import ArticleDetail from './ArticleDetail';
 
@@ -28,7 +29,9 @@ describe('ArticleDetail', () => {
       const router = mockRouter();
       const { container, getByText, getByRole, queryByText } = render(
         <RouterContext.Provider value={router}>
-          <ArticleDetail data={mockDataArticles.contents[0]} />
+          <SectionContext.Provider value={sectionContextDefault}>
+            <ArticleDetail data={mockDataArticles.contents[0]} />
+          </SectionContext.Provider>
         </RouterContext.Provider>
       );
       const article = container.querySelector('article');
@@ -78,11 +81,18 @@ describe('ArticleDetail', () => {
       const router = mockRouter();
       const { container } = render(
         <RouterContext.Provider value={router}>
-          <ArticleDetail
-            data={mockDataArticles.contents[0]}
-            articleDetailComponent="li"
-            articleDetailTitleComponent="h5"
-          />
+          <SectionContext.Provider
+            value={{
+              ...sectionContextDefault,
+              component: {
+                ...sectionContextDefault.component,
+                articleDetailComponent: 'li',
+                articleDetailTitleComponent: 'h5'
+              }
+            }}
+          >
+            <ArticleDetail data={mockDataArticles.contents[0]} />
+          </SectionContext.Provider>
         </RouterContext.Provider>
       );
       const h5 = container.querySelector('h5');

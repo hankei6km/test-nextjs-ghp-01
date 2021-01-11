@@ -3,13 +3,13 @@
 exports[`SectionItem should renders Section by List  1`] = `
 <div>
   <section
-    class="MuiBox-root MuiBox-root-6 makeStyles-SectionItem-root-1"
+    class="MuiBox-root MuiBox-root-9 makeStyles-SectionItem-root-1"
   >
     <div
-      class="MuiBox-root MuiBox-root-7 makeStyles-SectionItem-articles-2"
+      class="MuiBox-root MuiBox-root-10 makeStyles-SectionItem-articles-2"
     >
       <div
-        class="MuiBox-root MuiBox-root-8 makeStyles-SectionItem-articlesTitleDetail-3"
+        class="MuiBox-root MuiBox-root-11 makeStyles-SectionItem-articlesTitleDetail-3"
       >
         <h2
           class="MuiTypography-root MuiTypography-h2"
@@ -18,25 +18,25 @@ exports[`SectionItem should renders Section by List  1`] = `
         </h2>
       </div>
       <div
-        class="MuiBox-root MuiBox-root-9 makeStyles-SectionItem-articlesList-5"
+        class="MuiBox-root MuiBox-root-12 makeStyles-SectionItem-articlesList-5"
       >
         <div
-          class="MuiBox-root MuiBox-root-14 makeStyles-ArticleList-root-10"
+          class="MuiBox-root MuiBox-root-17 makeStyles-ArticleList-root-13"
         >
           <div
-            class="MuiBox-root MuiBox-root-15"
+            class="MuiBox-root MuiBox-root-18"
           >
             <div
-              class="MuiBox-root MuiBox-root-16 makeStyles-ArticleList-itemDetail-12"
+              class="MuiBox-root MuiBox-root-19 makeStyles-ArticleList-itemDetail-15"
             >
               <div
-                class="MuiPaper-root MuiCard-root makeStyles-ArticleDetail-root-17 MuiPaper-elevation0 MuiPaper-rounded"
+                class="MuiPaper-root MuiCard-root makeStyles-ArticleDetail-root-20 MuiPaper-elevation0 MuiPaper-rounded"
               >
                 <article
-                  class="MuiCardContent-root makeStyles-ArticleDetail-content-18"
+                  class="MuiCardContent-root makeStyles-ArticleDetail-content-21"
                 >
                   <div
-                    class="MuiCardHeader-root makeStyles-ArticleDetail-title-19"
+                    class="MuiCardHeader-root makeStyles-ArticleDetail-title-22"
                   >
                     <div
                       class="MuiCardHeader-content"
@@ -59,7 +59,7 @@ exports[`SectionItem should renders Section by List  1`] = `
                         class="MuiTypography-root MuiCardHeader-subheader MuiTypography-body1 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
                       >
                         <div
-                          class="MuiBox-root MuiBox-root-23 makeStyles-root-22"
+                          class="MuiBox-root MuiBox-root-26 makeStyles-root-25"
                         >
                           <svg
                             aria-hidden="true"
@@ -88,14 +88,14 @@ exports[`SectionItem should renders Section by List  1`] = `
                     </div>
                   </div>
                   <div
-                    class="MuiBox-root MuiBox-root-24 makeStyles-ArticleDetail-thumbImage-20"
+                    class="MuiBox-root MuiBox-root-27 makeStyles-ArticleDetail-thumbImage-23"
                   >
                     <a
                       class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
                       href="/test1/zzzzzzzzz"
                     >
                       <div
-                        class="makeStyles-thumb-25"
+                        class="makeStyles-thumb-28"
                       >
                         <img
                           alt="thumbnail for title3"
@@ -107,7 +107,7 @@ exports[`SectionItem should renders Section by List  1`] = `
                   </div>
                 </article>
                 <div
-                  class="MuiCardActions-root makeStyles-ArticleDetail-actions-21 MuiCardActions-spacing"
+                  class="MuiCardActions-root makeStyles-ArticleDetail-actions-24 MuiCardActions-spacing"
                 >
                   <a
                     aria-disabled="false"
@@ -131,19 +131,19 @@ exports[`SectionItem should renders Section by List  1`] = `
             </div>
           </div>
           <div
-            class="MuiBox-root MuiBox-root-26"
+            class="MuiBox-root MuiBox-root-29"
           >
             <div
-              class="MuiBox-root MuiBox-root-27 makeStyles-ArticleList-itemDetail-12"
+              class="MuiBox-root MuiBox-root-30 makeStyles-ArticleList-itemDetail-15"
             >
               <div
-                class="MuiPaper-root MuiCard-root makeStyles-ArticleDetail-root-17 MuiPaper-elevation0 MuiPaper-rounded"
+                class="MuiPaper-root MuiCard-root makeStyles-ArticleDetail-root-20 MuiPaper-elevation0 MuiPaper-rounded"
               >
                 <article
-                  class="MuiCardContent-root makeStyles-ArticleDetail-content-18"
+                  class="MuiCardContent-root makeStyles-ArticleDetail-content-21"
                 >
                   <div
-                    class="MuiCardHeader-root makeStyles-ArticleDetail-title-19"
+                    class="MuiCardHeader-root makeStyles-ArticleDetail-title-22"
                   >
                     <div
                       class="MuiCardHeader-content"
@@ -166,7 +166,7 @@ exports[`SectionItem should renders Section by List  1`] = `
                         class="MuiTypography-root MuiCardHeader-subheader MuiTypography-body1 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
                       >
                         <div
-                          class="MuiBox-root MuiBox-root-28 makeStyles-root-22"
+                          class="MuiBox-root MuiBox-root-31 makeStyles-root-25"
                         >
                           <svg
                             aria-hidden="true"
@@ -195,14 +195,14 @@ exports[`SectionItem should renders Section by List  1`] = `
                     </div>
                   </div>
                   <div
-                    class="MuiBox-root MuiBox-root-29 makeStyles-ArticleDetail-thumbImage-20"
+                    class="MuiBox-root MuiBox-root-32 makeStyles-ArticleDetail-thumbImage-23"
                   >
                     <a
                       class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
                       href="/test1/yyyyyy-da"
                     >
                       <div
-                        class="makeStyles-thumb-25"
+                        class="makeStyles-thumb-28"
                       >
                         <img
                           alt="thumbnail for title2"
@@ -214,7 +214,7 @@ exports[`SectionItem should renders Section by List  1`] = `
                   </div>
                 </article>
                 <div
-                  class="MuiCardActions-root makeStyles-ArticleDetail-actions-21 MuiCardActions-spacing"
+                  class="MuiCardActions-root makeStyles-ArticleDetail-actions-24 MuiCardActions-spacing"
                 >
                   <a
                     aria-disabled="false"
@@ -238,19 +238,19 @@ exports[`SectionItem should renders Section by List  1`] = `
             </div>
           </div>
           <div
-            class="MuiBox-root MuiBox-root-30"
+            class="MuiBox-root MuiBox-root-33"
           >
             <div
-              class="MuiBox-root MuiBox-root-31 makeStyles-ArticleList-itemDetail-12"
+              class="MuiBox-root MuiBox-root-34 makeStyles-ArticleList-itemDetail-15"
             >
               <div
-                class="MuiPaper-root MuiCard-root makeStyles-ArticleDetail-root-17 MuiPaper-elevation0 MuiPaper-rounded"
+                class="MuiPaper-root MuiCard-root makeStyles-ArticleDetail-root-20 MuiPaper-elevation0 MuiPaper-rounded"
               >
                 <article
-                  class="MuiCardContent-root makeStyles-ArticleDetail-content-18"
+                  class="MuiCardContent-root makeStyles-ArticleDetail-content-21"
                 >
                   <div
-                    class="MuiCardHeader-root makeStyles-ArticleDetail-title-19"
+                    class="MuiCardHeader-root makeStyles-ArticleDetail-title-22"
                   >
                     <div
                       class="MuiCardHeader-content"
@@ -273,7 +273,7 @@ exports[`SectionItem should renders Section by List  1`] = `
                         class="MuiTypography-root MuiCardHeader-subheader MuiTypography-body1 MuiTypography-colorTextSecondary MuiTypography-displayBlock"
                       >
                         <div
-                          class="MuiBox-root MuiBox-root-32 makeStyles-root-22"
+                          class="MuiBox-root MuiBox-root-35 makeStyles-root-25"
                         >
                           <svg
                             aria-hidden="true"
@@ -302,14 +302,14 @@ exports[`SectionItem should renders Section by List  1`] = `
                     </div>
                   </div>
                   <div
-                    class="MuiBox-root MuiBox-root-33 makeStyles-ArticleDetail-thumbImage-20"
+                    class="MuiBox-root MuiBox-root-36 makeStyles-ArticleDetail-thumbImage-23"
                   >
                     <a
                       class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
                       href="/test1/xxxxxxxxx"
                     >
                       <div
-                        class="makeStyles-thumb-25"
+                        class="makeStyles-thumb-28"
                       >
                         <img
                           alt="thumbnail for title1"
@@ -321,7 +321,7 @@ exports[`SectionItem should renders Section by List  1`] = `
                   </div>
                 </article>
                 <div
-                  class="MuiCardActions-root makeStyles-ArticleDetail-actions-21 MuiCardActions-spacing"
+                  class="MuiCardActions-root makeStyles-ArticleDetail-actions-24 MuiCardActions-spacing"
                 >
                   <a
                     aria-disabled="false"

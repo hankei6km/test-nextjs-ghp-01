@@ -1,4 +1,4 @@
-import React, { ElementType } from 'react';
+import React, { ElementType, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -11,6 +11,7 @@ import Link from './Link';
 import DateUpdated from './DateUpdated';
 import ThumbImage from './ThumbImage';
 import { pruneClasses } from '../utils/classes';
+import SectionContext from './SectionContext';
 
 import { ArticleIndex } from '../types/client/contentTypes';
 
@@ -44,10 +45,12 @@ const classNames = [
   'ArticleDetail-actions'
 ];
 
-export type ArticleDetailComponentVariant = {
-  articleDetailComponent?: ElementType<any>;
-  articleDetailTitleVariant?: TypographyProps['variant'];
-  articleDetailTitleComponent?: ElementType<any>;
+export type ArticleDetailComponent = {
+  articleDetailComponent: ElementType<any>;
+  articleDetailTitleComponent: ElementType<any>;
+};
+export type ArticleDetailVariant = {
+  articleDetailTitleVariant: TypographyProps['variant'];
 };
 
 type Props = {
@@ -56,7 +59,7 @@ type Props = {
   thumbHeight?: number;
   thumbSizeFit?: '' | 'crop'; // とりあえず
   classes?: { [key: string]: string };
-} & ArticleDetailComponentVariant;
+};
 
 // TODO: config 作成
 const defaultMainImage =
@@ -67,18 +70,16 @@ const ArticleDetail = ({
   thumbWidth = 250,
   thumbHeight = 150,
   thumbSizeFit = 'crop',
-  classes: inClasses,
-  articleDetailComponent = 'article',
-  articleDetailTitleVariant = 'h3',
-  articleDetailTitleComponent = 'h3'
+  classes: inClasses
 }: Props) => {
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
+  const { component, variant } = useContext(SectionContext);
   const thumbImage = data.mainImage || defaultMainImage;
   const updated = data.revisedAt || data.updatedAt || data.publishedAt;
   return (
     <Card elevation={0} className={classes['ArticleDetail-root']}>
       <CardContent
-        component={articleDetailComponent}
+        component={component.articleDetailComponent}
         className={classes['ArticleDetail-content']}
       >
         <CardHeader
@@ -87,8 +88,8 @@ const ArticleDetail = ({
             <Link underline="none" href="/test1/[id]" as={`/test1/${data.id}`}>
               <Typography
                 color="textPrimary"
-                variant={articleDetailTitleVariant}
-                component={articleDetailTitleComponent}
+                variant={variant.articleDetailTitleVariant}
+                component={component.articleDetailTitleComponent}
               >
                 {data.title}
               </Typography>

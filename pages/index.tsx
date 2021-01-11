@@ -1,13 +1,31 @@
 import { GetStaticProps } from 'next';
-import { getSortedArticleList } from '../lib/articles';
+import { makeStyles } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
 import Layout from '../components/Layout';
-import ArticleList from '../components/ArticleList';
-import { ArticleContent } from '../types/client/contentTypes';
+import SectionList from '../components/SectionList';
+import { Section as SectionType } from '../types/pageTypes';
+import { getPagesSectionsData } from '../lib/pages';
 
-const IndexPage = ({ allPostsData }: { allPostsData: ArticleContent[] }) => {
+const useStyles = makeStyles(() => ({
+  'SectionItem-root': {},
+  'SectionItem-articlesTitleDetail': {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center'
+  }
+}));
+
+type PageData = {
+  sections: SectionType[];
+};
+
+const IndexPage = ({ pageData }: { pageData: PageData }) => {
+  const classes = useStyles();
   return (
     <Layout home title="Home | Next.js + TypeScript Example">
-      <ArticleList items={allPostsData} detail={false} />
+      <Box my={1}>
+        <SectionList sections={pageData.sections} classes={{ ...classes }} />
+      </Box>
     </Layout>
   );
 };
@@ -15,10 +33,12 @@ const IndexPage = ({ allPostsData }: { allPostsData: ArticleContent[] }) => {
 export default IndexPage;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const allPostsData = await getSortedArticleList('test1');
+  const pageData: PageData = {
+    sections: await getPagesSectionsData({ params: { id: 'home' } })
+  };
   return {
     props: {
-      allPostsData
+      pageData
     }
   };
 };

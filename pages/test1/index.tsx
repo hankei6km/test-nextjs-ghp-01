@@ -1,10 +1,10 @@
 import { GetStaticProps } from 'next';
-import { getSortedArticleList } from '../../lib/articles';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Layout from '../../components/Layout';
 import SectionList from '../../components/SectionList';
 import { Section as SectionType } from '../../types/pageTypes';
+import { getPagesSectionsData } from '../../lib/pages';
 
 const useStyles = makeStyles(() => ({
   'SectionItem-root': {},
@@ -33,15 +33,17 @@ const PostsPage = ({ pageData }: { pageData: PageData }) => {
 export default PostsPage;
 
 export const getStaticProps: GetStaticProps = async () => {
+  // const sections = (await getPagesData({ params: { id: 'test1' } })).sections;
   const pageData: PageData = {
-    sections: [
-      {
-        title: 'test1 posts',
-        kind: 'posts',
-        contents: await getSortedArticleList('test1'),
-        detail: true
-      }
-    ]
+    sections: await getPagesSectionsData({ params: { id: 'test1' } })
+    // sections: [
+    //   {
+    //     title: 'test1 posts',
+    //     kind: 'posts',
+    //     contents: await getSortedArticleList('test1'),
+    //     detail: true
+    //   }
+    // ]
   };
   return {
     props: {
