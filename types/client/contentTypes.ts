@@ -15,14 +15,19 @@ type ContentList<T> = {
 
 export type PagesSectionKind = 'content' | 'posts';
 
-type PagesSection = {
-  title: string;
-  kind: [PagesSectionKind]; // 複数選択にしていない
-  contentHtml?: string;
+type PagesSectionContent = {
+  fieldId: 'sectionContent';
+  title?: string;
+  contentHtml: string;
   contentMarkdown?: string;
-  posts?: string;
-  postsDetail?: boolean;
 };
+type PagesSectionArticles = {
+  fieldId: 'sectionArticles';
+  title?: string;
+  apiName: string;
+  detail?: boolean;
+};
+type PagesSection = PagesSectionContent | PagesSectionArticles;
 
 type Pages = {
   title: string;

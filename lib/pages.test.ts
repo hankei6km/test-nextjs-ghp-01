@@ -69,14 +69,14 @@ describe('getPagesData()', () => {
       description: 'my starter home page',
       sections: [
         {
+          fieldId: 'sectionContent',
           title: 'intro',
-          kind: ['content'],
           contentHtml: '<p>index page</p>'
         },
         {
+          fieldId: 'sectionArticles',
           title: 'test1 posts',
-          kind: ['posts'],
-          posts: 'test1'
+          apiName: 'test1'
         }
       ]
     });
@@ -95,10 +95,10 @@ describe('getPagesData()', () => {
       kind: ['posts'],
       sections: [
         {
+          fieldId: 'sectionArticles',
           title: 'test1 posts',
-          kind: ['posts'],
-          posts: 'test1',
-          postsDetail: true
+          apiName: 'test1',
+          detail: true
         }
       ]
     });
