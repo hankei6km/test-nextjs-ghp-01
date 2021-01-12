@@ -18,6 +18,10 @@ export const mockDataPages: PagesContents = {
           contentHtml: '<p>index page</p>'
         },
         {
+          fieldId: 'sectionContent',
+          contentMarkdown: '## markdown\ndescribed by using markdown'
+        },
+        {
           fieldId: 'sectionArticles',
           title: 'test1 posts',
           apiName: 'test1'

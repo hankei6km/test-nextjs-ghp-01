@@ -18,7 +18,7 @@ export type PagesSectionKind = 'content' | 'posts';
 type PagesSectionContent = {
   fieldId: 'sectionContent';
   title?: string;
-  contentHtml: string;
+  contentHtml?: string;
   contentMarkdown?: string;
 };
 type PagesSectionArticles = {

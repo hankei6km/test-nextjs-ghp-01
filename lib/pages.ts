@@ -8,6 +8,7 @@ import client, {
 import { PagesContent, blankPageContent } from '../types/client/contentTypes';
 import { getSortedArticleList } from './articles';
 import { Section } from '../types/pageTypes';
+import { markdownToHtml } from './markdown';
 
 export async function getSortedPagesData() {
   try {
@@ -82,7 +83,7 @@ export async function getPagesSectionsData({
             kind: 'content' as 'content',
             contentHtml:
               (section.contentMarkdown
-                ? section.contentMarkdown
+                ? markdownToHtml(section.contentMarkdown)
                 : section.contentHtml) || ''
           };
         } else if (

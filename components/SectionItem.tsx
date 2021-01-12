@@ -77,9 +77,10 @@ const SectionItem = ({ data, classes: inClasses }: Props) => {
                 {data.title}
               </Typography>
             )}
-            <Box className={classes['SectionItem-contentBody']}>
-              {data.contentHtml}
-            </Box>
+            <Box
+              className={classes['SectionItem-contentBody']}
+              dangerouslySetInnerHTML={{ __html: data.contentHtml }}
+            ></Box>
           </Box>
         )}
         {data.kind === 'posts' && (
