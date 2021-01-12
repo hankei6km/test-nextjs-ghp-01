@@ -76,9 +76,9 @@ export async function getPagesSectionsData({
       })
     ).sections.map((section) => {
       return async () => {
-        if (section.kind[0] === 'content') {
+        if (section.fieldId === 'sectionContent') {
           return {
-            title: section.title,
+            title: section.title || '',
             kind: 'content' as 'content',
             contentHtml:
               (section.contentMarkdown
@@ -86,16 +86,16 @@ export async function getPagesSectionsData({
                 : section.contentHtml) || ''
           };
         } else if (
-          section.kind[0] === 'posts' &&
-          ApiNameArticleValues.some((v) => v === section.posts)
+          section.fieldId === 'sectionArticles' &&
+          ApiNameArticleValues.some((v) => v === section.apiName)
         ) {
           return {
-            title: section.title,
+            title: section.title || '',
             kind: 'posts' as 'posts',
             contents: await getSortedArticleList(
-              section.posts as ApiNameArticle
+              section.apiName as ApiNameArticle
             ),
-            detail: section.postsDetail || false
+            detail: section.detail || false
           };
         }
         return {
