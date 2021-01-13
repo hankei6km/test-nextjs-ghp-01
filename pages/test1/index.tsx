@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box';
 import Layout from '../../components/Layout';
 import SectionList from '../../components/SectionList';
 import { Section as SectionType } from '../../types/pageTypes';
-import { getPagesSectionsData } from '../../lib/pages';
+import { getPagesPageData } from '../../lib/pages';
 
 const useStyles = makeStyles(() => ({
   'SectionItem-root': {},
@@ -35,7 +35,7 @@ export default PostsPage;
 export const getStaticProps: GetStaticProps = async () => {
   // const sections = (await getPagesData({ params: { id: 'test1' } })).sections;
   const pageData: PageData = {
-    sections: await getPagesSectionsData({ params: { id: 'test1' } })
+    sections: await getPagesPageData({ params: { id: 'test1' } })
     // sections: [
     //   {
     //     title: 'test1 posts',

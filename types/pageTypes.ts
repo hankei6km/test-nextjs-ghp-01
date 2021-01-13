@@ -17,3 +17,10 @@ export type Section = {
   title?: string;
   content: (SectionBlank | SectionContent | SectionPosts)[];
 };
+
+export type PageData = {
+  title: string;
+  description: string;
+  mainImage: string;
+  sections: Section[];
+};
