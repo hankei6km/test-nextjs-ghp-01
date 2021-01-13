@@ -45,9 +45,18 @@ export type PagesContents = ContentList<PagesContent>;
 export type PagesList = ContentList<PagesIndex>;
 export type PagesIds = ContentList<PagesId>;
 
+type ArticleContentHtml = {
+  fieldId: 'contentHtml';
+  html: string;
+};
+type ArticleContenMarkdown = {
+  fieldId: 'contentMarkdown';
+  markdown: string;
+};
+
 type Article = {
   title: string;
-  content: string;
+  content: (ArticleContentHtml | ArticleContenMarkdown)[];
   mainImage?: string;
 };
 export type ArticleContent = ContentBase & Article;

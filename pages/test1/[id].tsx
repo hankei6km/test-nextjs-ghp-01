@@ -31,7 +31,14 @@ export default function Post({
           />
           <CardContent>
             <Typography component={Box} variant="body1">
-              <div dangerouslySetInnerHTML={{ __html: postData.content }} />
+              <div
+                dangerouslySetInnerHTML={{
+                  __html:
+                    postData.content[0].fieldId === 'contentHtml'
+                      ? postData.content[0].html
+                      : ''
+                }}
+              />
             </Typography>
           </CardContent>
           <CardActions>

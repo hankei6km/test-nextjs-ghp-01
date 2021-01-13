@@ -23,6 +23,14 @@ describe('getSortedArticleList()', () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataArticleList));
     expect(await getSortedArticleList(testApiName)).toStrictEqual([
       {
+        id: 'mmmmmmmmm',
+        createdAt: '2021-01-13T05:12.157Z',
+        updatedAt: '2021-01-13T05:12.157Z',
+        publishedAt: '2021-01-13T05:12.157Z',
+        revisedAt: '2021-01-13T05:12.157Z',
+        title: 'title4'
+      },
+      {
         id: 'zzzzzzzzz',
         createdAt: '2020-12-27T04:04:30.107Z',
         updatedAt: '2020-12-27T04:04:30.107Z',
@@ -54,6 +62,7 @@ describe('getAllArticleIds()', () => {
   it('should returns all ids', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataArticleIds));
     expect(await getAllArticleIds(testApiName)).toStrictEqual([
+      { params: { id: 'mmmmmmmmm' } },
       { params: { id: 'zzzzzzzzz' } },
       { params: { id: 'yyyyyy-da' } },
       { params: { id: 'xxxxxxxxx' } }
@@ -77,7 +86,12 @@ describe('getArticleData()', () => {
       publishedAt: '2020-12-27T04:04:30.107Z',
       revisedAt: '2020-12-27T04:04:30.107Z',
       title: 'title3',
-      content: '<p>content3</p>'
+      content: [
+        {
+          fieldId: 'contentHtml',
+          html: '<p>content3</p>'
+        }
+      ]
     });
   });
 });

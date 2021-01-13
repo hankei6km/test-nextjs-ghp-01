@@ -121,6 +121,14 @@ describe('getPagesData()', () => {
         kind: 'posts',
         contents: [
           {
+            id: 'mmmmmmmmm',
+            createdAt: '2021-01-13T05:12.157Z',
+            updatedAt: '2021-01-13T05:12.157Z',
+            publishedAt: '2021-01-13T05:12.157Z',
+            revisedAt: '2021-01-13T05:12.157Z',
+            title: 'title4'
+          },
+          {
             id: 'zzzzzzzzz',
             createdAt: '2020-12-27T04:04:30.107Z',
             updatedAt: '2020-12-27T04:04:30.107Z',
