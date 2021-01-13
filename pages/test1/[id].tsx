@@ -1,4 +1,4 @@
-import { getAllArticleIds, getArticleData } from '../../lib/articles';
+import { getAllArticleIds, getArticlePostData } from '../../lib/articles';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import ErrorPage from 'next/error';
 import Layout from '../../components/Layout';
@@ -9,18 +9,17 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import { ArticleContent } from '../../types/client/contentTypes';
+import { ArticlePost } from '../../types/articleTypes';
 
 export default function Post({
   postData
 }: {
-  postData: ArticleContent;
+  postData: ArticlePost;
   preview: boolean;
 }) {
   if (!postData) {
     return <ErrorPage statusCode={404} />;
   }
-
   return (
     <Layout title={postData.title}>
       <Box my={1}>
@@ -31,14 +30,18 @@ export default function Post({
           />
           <CardContent>
             <Typography component={Box} variant="body1">
-              <div
-                dangerouslySetInnerHTML={{
-                  __html:
-                    postData.content[0].fieldId === 'contentHtml'
-                      ? postData.content[0].html
-                      : ''
-                }}
-              />
+              {postData.content.map((data, i) =>
+                data.kind === 'html' ? (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: data.html
+                    }}
+                    key={i}
+                  />
+                ) : (
+                  ''
+                )
+              )}
             </Typography>
           </CardContent>
           <CardActions>
@@ -59,7 +62,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const postData = await getArticleData('test1', context);
+  const postData = await getArticlePostData('test1', context);
   return {
     props: {
       postData,

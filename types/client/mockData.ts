@@ -78,7 +78,7 @@ export const mockDataArticles: ArticleContents = {
       content: [
         {
           fieldId: 'contentMarkdown',
-          markdown: 'markdown coantent'
+          markdown: 'markdown content'
         }
       ]
     },

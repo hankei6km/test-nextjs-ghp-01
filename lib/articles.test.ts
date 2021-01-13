@@ -7,7 +7,8 @@ import { FetchMock } from 'jest-fetch-mock';
 import {
   getSortedArticleList,
   getAllArticleIds,
-  getArticleData
+  getArticleData,
+  getArticlePostData
 } from './articles';
 
 // https://github.com/jefflau/jest-fetch-mock/issues/83
@@ -90,6 +91,51 @@ describe('getArticleData()', () => {
         {
           fieldId: 'contentHtml',
           html: '<p>content3</p>'
+        }
+      ]
+    });
+  });
+});
+
+describe('getArticlePostData()', () => {
+  it('should returns post data of "zzzzzzzzz"', async () => {
+    fetchMock.mockResponseOnce(
+      JSON.stringify(
+        mockDataArticles.contents.find(({ id }) => id === 'zzzzzzzzz')
+      )
+    );
+    expect(
+      await getArticlePostData(testApiName, { params: { id: 'zzzzzzzzz' } })
+    ).toStrictEqual({
+      id: 'zzzzzzzzz',
+      updated: '2020-12-27T04:04:30.107Z',
+      title: 'title3',
+      mainImage: '',
+      content: [
+        {
+          kind: 'html',
+          html: '<p>content3</p>'
+        }
+      ]
+    });
+  });
+  it('should returns post data of "mmmmmmmmm" (markdown)', async () => {
+    fetchMock.mockResponseOnce(
+      JSON.stringify(
+        mockDataArticles.contents.find(({ id }) => id === 'mmmmmmmmm')
+      )
+    );
+    expect(
+      await getArticlePostData(testApiName, { params: { id: 'mmmmmmmmm' } })
+    ).toStrictEqual({
+      id: 'mmmmmmmmm',
+      updated: '2021-01-13T05:12.157Z',
+      title: 'title4',
+      mainImage: '',
+      content: [
+        {
+          kind: 'html',
+          html: '<p>markdown content</p>'
         }
       ]
     });

@@ -86,3 +86,9 @@ export const blankPageContent = (): PagesContent => ({
   description: '',
   sections: []
 });
+
+export const blankArticleContent = (): ArticleContent => ({
+  ...contentBase,
+  title: '',
+  content: []
+});
