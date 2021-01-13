@@ -8,7 +8,7 @@ import { getPagesSectionsData } from '../../lib/pages';
 
 const useStyles = makeStyles(() => ({
   'SectionItem-root': {},
-  'SectionItem-articlesTitleDetail': {
+  'SectionItem-title': {
     width: '100%',
     display: 'flex',
     justifyContent: 'center'

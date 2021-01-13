@@ -15,16 +15,20 @@ export const mockDataPages: PagesContents = {
         {
           fieldId: 'sectionContent',
           title: 'intro',
-          contentHtml: '<p>index page</p>'
-        },
-        {
-          fieldId: 'sectionContent',
-          contentMarkdown: '## markdown\ndescribed by using markdown'
-        },
-        {
-          fieldId: 'sectionArticles',
-          title: 'test1 posts',
-          apiName: 'test1'
+          content: [
+            {
+              fieldId: 'contentHtml',
+              html: '<p>index page</p>'
+            },
+            {
+              fieldId: 'contentMarkdown',
+              markdown: '## markdown\ndescribed by using markdown'
+            },
+            {
+              fieldId: 'contentArticles',
+              apiName: 'test1'
+            }
+          ]
         }
       ]
     },
@@ -38,10 +42,15 @@ export const mockDataPages: PagesContents = {
       kind: ['posts'],
       sections: [
         {
-          fieldId: 'sectionArticles',
+          fieldId: 'sectionContent',
           title: 'test1 posts',
-          apiName: 'test1',
-          detail: true
+          content: [
+            {
+              fieldId: 'contentArticles',
+              apiName: 'test1',
+              detail: true
+            }
+          ]
         }
       ]
     }

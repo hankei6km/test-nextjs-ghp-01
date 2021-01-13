@@ -33,38 +33,32 @@ type Props = {
 const ArticleList = ({ items, detail = true, classes: inClasses }: Props) => {
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
   return (
-    <>
-      <Box
-        component={detail ? 'div' : 'ul'}
-        className={`${classes['ArticleList-root']} ${
-          detail
-            ? classes['ArticleList-detailList']
-            : classes['ArticleList-itemList']
-        }`}
-      >
-        {detail ? (
-          <>
-            {items.map((item) => (
-              <ArticleDetail
-                key={item.id}
-                data={item}
-                classes={{ ...inClasses }}
-              />
-            ))}
-          </>
-        ) : (
-          <>
-            {items.map((item) => (
-              <ArticleItem
-                key={item.id}
-                data={item}
-                classes={{ ...inClasses }}
-              />
-            ))}
-          </>
-        )}
-      </Box>
-    </>
+    <Box
+      component={detail ? 'div' : 'ul'}
+      className={`${classes['ArticleList-root']} ${
+        detail
+          ? classes['ArticleList-detailList']
+          : classes['ArticleList-itemList']
+      }`}
+    >
+      {detail ? (
+        <>
+          {items.map((item) => (
+            <ArticleDetail
+              key={item.id}
+              data={item}
+              classes={{ ...inClasses }}
+            />
+          ))}
+        </>
+      ) : (
+        <>
+          {items.map((item) => (
+            <ArticleItem key={item.id} data={item} classes={{ ...inClasses }} />
+          ))}
+        </>
+      )}
+    </Box>
   );
 };
 

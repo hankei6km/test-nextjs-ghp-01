@@ -13,21 +13,24 @@ type ContentList<T> = {
   limit: number;
 };
 
-export type PagesSectionKind = 'content' | 'posts';
-
-type PagesSectionContent = {
-  fieldId: 'sectionContent';
-  title?: string;
-  contentHtml?: string;
-  contentMarkdown?: string;
+type PagesContentHtml = {
+  fieldId: 'contentHtml';
+  html: string;
 };
-type PagesSectionArticles = {
-  fieldId: 'sectionArticles';
-  title?: string;
+type PagesContentMarkdown = {
+  fieldId: 'contentMarkdown';
+  markdown: string;
+};
+type PagesContentArticles = {
+  fieldId: 'contentArticles';
   apiName: string;
   detail?: boolean;
 };
-type PagesSection = PagesSectionContent | PagesSectionArticles;
+type PagesSection = {
+  fieldId: 'sectionContent';
+  title?: string;
+  content: (PagesContentHtml | PagesContentMarkdown | PagesContentArticles)[]; // array にしているが、API スキーマ等にあわせたもので、１つコンテントという認識(articlesはちょっと違うか)
+};
 
 type Pages = {
   title: string;
