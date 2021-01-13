@@ -16,18 +16,14 @@ type Context = {
 };
 export const sectionContextDefault: Context = {
   component: {
+    sectionTitleComponent: 'h2',
     articleDetailComponent: 'article',
     articleItemComponent: 'li',
-    contentTitleComponent: 'h2',
-    articlesTitleDetailComponent: 'h2',
-    articlesTitleComponent: 'h2',
     articleDetailTitleComponent: 'h3',
     articleItemTitleComponent: 'span'
   },
   variant: {
-    contentTitleVariant: 'h2',
-    articlesTitleDetailVariant: 'h2',
-    articlesTitleVariant: 'h2',
+    sectionTitleVariant: 'h2',
     articleDetailTitleVariant: 'h3',
     articleItemTitleVariant: 'body1'
   }

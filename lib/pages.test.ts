@@ -54,7 +54,7 @@ describe('getAllPagesIds()', () => {
 });
 
 describe('getPagesData()', () => {
-  it('should returns content data of "home" that is contained description', async () => {
+  it('should returns content data of "home"', async () => {
     fetchMock.mockResponseOnce(
       JSON.stringify(mockDataPages.contents.find(({ id }) => id === 'home'))
     );
@@ -71,77 +71,85 @@ describe('getPagesData()', () => {
         {
           fieldId: 'sectionContent',
           title: 'intro',
-          contentHtml: '<p>index page</p>'
-        },
-        {
-          fieldId: 'sectionArticles',
-          title: 'test1 posts',
-          apiName: 'test1'
+          content: [
+            {
+              fieldId: 'contentHtml',
+              html: '<p>index page</p>'
+            },
+            {
+              fieldId: 'contentMarkdown',
+              markdown: '## markdown\ndescribed by using markdown'
+            },
+            {
+              fieldId: 'contentArticles',
+              apiName: 'test1'
+            }
+          ]
         }
       ]
     });
   });
-  it('should returns content data of "test1"', async () => {
-    fetchMock.mockResponseOnce(
-      JSON.stringify(mockDataPages.contents.find(({ id }) => id === 'test1'))
-    );
-    expect(await getPagesData({ params: { id: 'test1' } })).toStrictEqual({
-      id: 'test1',
-      createdAt: '2020-12-26T15:29:14.476Z',
-      updatedAt: '2020-12-26T15:29:14.476Z',
-      publishedAt: '2020-12-26T15:29:14.476Z',
-      revisedAt: '2020-12-26T15:29:14.476Z',
-      title: 'Test1',
-      kind: ['posts'],
-      sections: [
-        {
-          fieldId: 'sectionArticles',
-          title: 'test1 posts',
-          apiName: 'test1',
-          detail: true
-        }
-      ]
-    });
-  });
-  it('should returns SectionPosts', async () => {
+});
+describe('getPagesSectionsData()', () => {
+  it('should returns Sections', async () => {
     fetchMock
       .mockResponseOnce(
-        JSON.stringify(mockDataPages.contents.find(({ id }) => id === 'test1'))
+        JSON.stringify(mockDataPages.contents.find(({ id }) => id === 'home'))
       )
       .mockResponseOnce(JSON.stringify(mockDataArticleList));
     expect(
-      await getPagesSectionsData({ params: { id: 'test1' } })
+      await getPagesSectionsData({ params: { id: 'home' } })
     ).toStrictEqual([
       {
-        title: 'test1 posts',
-        kind: 'posts',
-        contents: [
+        title: 'intro',
+        content: [
           {
-            id: 'zzzzzzzzz',
-            createdAt: '2020-12-27T04:04:30.107Z',
-            updatedAt: '2020-12-27T04:04:30.107Z',
-            publishedAt: '2020-12-27T04:04:30.107Z',
-            revisedAt: '2020-12-27T04:04:30.107Z',
-            title: 'title3'
+            kind: 'html',
+            contentHtml: '<p>index page</p>'
           },
           {
-            id: 'yyyyyy-da',
-            createdAt: '2020-12-26T15:29:14.476Z',
-            updatedAt: '2020-12-26T15:29:14.476Z',
-            publishedAt: '2020-12-26T15:29:14.476Z',
-            revisedAt: '2020-12-26T15:29:14.476Z',
-            title: 'title2'
+            kind: 'html',
+            contentHtml: '<h2>markdown</h2><p>described by using markdown</p>'
           },
           {
-            id: 'xxxxxxxxx',
-            createdAt: '2020-12-26T12:25:43.532Z',
-            updatedAt: '2020-12-26T12:27:22.533Z',
-            publishedAt: '2020-12-26T12:27:22.533Z',
-            revisedAt: '2020-12-26T12:27:22.533Z',
-            title: 'title1'
+            kind: 'posts',
+            contents: [
+              {
+                id: 'mmmmmmmmm',
+                createdAt: '2021-01-13T05:12.157Z',
+                updatedAt: '2021-01-13T05:12.157Z',
+                publishedAt: '2021-01-13T05:12.157Z',
+                revisedAt: '2021-01-13T05:12.157Z',
+                title: 'title4'
+              },
+              {
+                id: 'zzzzzzzzz',
+                createdAt: '2020-12-27T04:04:30.107Z',
+                updatedAt: '2020-12-27T04:04:30.107Z',
+                publishedAt: '2020-12-27T04:04:30.107Z',
+                revisedAt: '2020-12-27T04:04:30.107Z',
+                title: 'title3'
+              },
+              {
+                id: 'yyyyyy-da',
+                createdAt: '2020-12-26T15:29:14.476Z',
+                updatedAt: '2020-12-26T15:29:14.476Z',
+                publishedAt: '2020-12-26T15:29:14.476Z',
+                revisedAt: '2020-12-26T15:29:14.476Z',
+                title: 'title2'
+              },
+              {
+                id: 'xxxxxxxxx',
+                createdAt: '2020-12-26T12:25:43.532Z',
+                updatedAt: '2020-12-26T12:27:22.533Z',
+                publishedAt: '2020-12-26T12:27:22.533Z',
+                revisedAt: '2020-12-26T12:27:22.533Z',
+                title: 'title1'
+              }
+            ],
+            detail: false
           }
-        ],
-        detail: true
+        ]
       }
     ]);
   });

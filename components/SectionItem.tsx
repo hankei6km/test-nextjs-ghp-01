@@ -11,45 +11,29 @@ const useStyles = makeStyles(() => ({
   'SectionItem-root': {
     width: '100%'
   },
-  'SectionItem-articles': {
-    width: '100%'
-  },
-  'SectionItem-articlesTitleDetail': {
-    width: '100%'
-  },
-  'SectionItem-articlesTitle': {
-    width: '100%'
-  },
-  'SectionItem-content': {
-    width: '100%'
-  },
-  'SectionItem-contentTitle': {
+  'SectionItem-title': {
     width: '100%'
   },
   'SectionItem-contentBody': {
+    width: '100%'
+  },
+  'SectionItem-contentArticles': {
     width: '100%'
   }
 }));
 const classNames = [
   'SectionItem-root',
-  'SectionItem-articles',
-  'SectionItem-articlesTitleDetail',
-  'SectionItem-articlesTitle',
-  'SectionItem-content',
-  'SectionItem-contentTitle',
-  'SectionItem-contentBody'
+  'SectionItem-title',
+  'SectionItem-contentBody',
+  'SectionItem-contentArticles'
 ];
 
 export type SectionItemComponent = {
-  contentTitleComponent: ElementType<any>;
-  articlesTitleDetailComponent: ElementType<any>;
-  articlesTitleComponent: ElementType<any>;
+  sectionTitleComponent: ElementType<any>;
 };
 
 export type SectionItemVariant = {
-  contentTitleVariant: TypographyProps['variant'];
-  articlesTitleDetailVariant: TypographyProps['variant'];
-  articlesTitleVariant: TypographyProps['variant'];
+  sectionTitleVariant: TypographyProps['variant'];
 };
 
 type Props = {
@@ -62,56 +46,36 @@ const SectionItem = ({ data, classes: inClasses }: Props) => {
   const { component, variant } = sectionContextDefault;
   return (
     <SectionContext.Provider value={sectionContextDefault}>
-      <>
-        {data.kind === 'content' && (
-          <Box
-            component="section"
-            className={`${classes['SectionItem-root']} ${classes['SectionItem-content']}`}
+      <Box component="section" className={classes['SectionItem-root']}>
+        {data.title && (
+          <Typography
+            variant={variant.sectionTitleVariant}
+            component={component.sectionTitleComponent}
+            className={classes['SectionItem-title']}
           >
-            {data.title && (
-              <Typography
-                variant={variant.contentTitleVariant}
-                component={component.contentTitleComponent}
-                className={classes['SectionItem-contentTitle']}
-              >
-                {data.title}
-              </Typography>
+            {data.title}
+          </Typography>
+        )}
+        {data.content.map((content, i) => (
+          <Box key={i}>
+            {content.kind === 'html' && (
+              <Box
+                className={classes['SectionItem-contentBody']}
+                dangerouslySetInnerHTML={{ __html: content.contentHtml }}
+              ></Box>
             )}
-            <Box className={classes['SectionItem-contentBody']}>
-              {data.contentHtml}
-            </Box>
+            {content.kind === 'posts' && (
+              <Box className={classes['SectionItem-contentArticles']}>
+                <ArticleList
+                  items={content.contents}
+                  detail={content.detail}
+                  classes={{ ...inClasses }}
+                />
+              </Box>
+            )}
           </Box>
-        )}
-        {data.kind === 'posts' && (
-          <Box
-            className={`${classes['SectionItem-root']} ${classes['SectionItem-articles']}`}
-          >
-            {data.title &&
-              (data.detail ? (
-                <Typography
-                  variant={variant.articlesTitleDetailVariant}
-                  component={component.articlesTitleDetailComponent}
-                  className={classes['SectionItem-articlesTitleDetail']}
-                >
-                  {data.title}
-                </Typography>
-              ) : (
-                <Typography
-                  variant={variant.articlesTitleVariant}
-                  component={component.articlesTitleComponent}
-                  className={classes['SectionItem-articlesTitle']}
-                >
-                  {data.title}
-                </Typography>
-              ))}
-            <ArticleList
-              items={data.contents}
-              detail={data.detail}
-              classes={{ ...inClasses }}
-            />
-          </Box>
-        )}
-      </>
+        ))}
+      </Box>
     </SectionContext.Provider>
   );
 };

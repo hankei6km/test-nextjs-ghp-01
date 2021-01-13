@@ -35,10 +35,11 @@ describe('ArticleItem', () => {
 
     await act(async () => {
       const router = mockRouter();
+      const articleData = mockDataArticles.contents[1]; // id: 'zzzzzzzzz'
       const { container, getByText, getByRole, queryByText } = render(
         <RouterContext.Provider value={router}>
           <SectionContext.Provider value={sectionContextDefault}>
-            <ArticleItem data={mockDataArticles.contents[0]} />
+            <ArticleItem data={articleData} />
           </SectionContext.Provider>
         </RouterContext.Provider>
       );

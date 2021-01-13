@@ -7,7 +7,8 @@ import { FetchMock } from 'jest-fetch-mock';
 import {
   getSortedArticleList,
   getAllArticleIds,
-  getArticleData
+  getArticleData,
+  getArticlePostData
 } from './articles';
 
 // https://github.com/jefflau/jest-fetch-mock/issues/83
@@ -22,6 +23,14 @@ describe('getSortedArticleList()', () => {
     // aspida-mock 使う?
     fetchMock.mockResponseOnce(JSON.stringify(mockDataArticleList));
     expect(await getSortedArticleList(testApiName)).toStrictEqual([
+      {
+        id: 'mmmmmmmmm',
+        createdAt: '2021-01-13T05:12.157Z',
+        updatedAt: '2021-01-13T05:12.157Z',
+        publishedAt: '2021-01-13T05:12.157Z',
+        revisedAt: '2021-01-13T05:12.157Z',
+        title: 'title4'
+      },
       {
         id: 'zzzzzzzzz',
         createdAt: '2020-12-27T04:04:30.107Z',
@@ -54,6 +63,7 @@ describe('getAllArticleIds()', () => {
   it('should returns all ids', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataArticleIds));
     expect(await getAllArticleIds(testApiName)).toStrictEqual([
+      { params: { id: 'mmmmmmmmm' } },
       { params: { id: 'zzzzzzzzz' } },
       { params: { id: 'yyyyyy-da' } },
       { params: { id: 'xxxxxxxxx' } }
@@ -77,7 +87,57 @@ describe('getArticleData()', () => {
       publishedAt: '2020-12-27T04:04:30.107Z',
       revisedAt: '2020-12-27T04:04:30.107Z',
       title: 'title3',
-      content: '<p>content3</p>'
+      content: [
+        {
+          fieldId: 'contentHtml',
+          html: '<p>content3</p>'
+        }
+      ]
+    });
+  });
+});
+
+describe('getArticlePostData()', () => {
+  it('should returns post data of "zzzzzzzzz"', async () => {
+    fetchMock.mockResponseOnce(
+      JSON.stringify(
+        mockDataArticles.contents.find(({ id }) => id === 'zzzzzzzzz')
+      )
+    );
+    expect(
+      await getArticlePostData(testApiName, { params: { id: 'zzzzzzzzz' } })
+    ).toStrictEqual({
+      id: 'zzzzzzzzz',
+      updated: '2020-12-27T04:04:30.107Z',
+      title: 'title3',
+      mainImage: '',
+      content: [
+        {
+          kind: 'html',
+          html: '<p>content3</p>'
+        }
+      ]
+    });
+  });
+  it('should returns post data of "mmmmmmmmm" (markdown)', async () => {
+    fetchMock.mockResponseOnce(
+      JSON.stringify(
+        mockDataArticles.contents.find(({ id }) => id === 'mmmmmmmmm')
+      )
+    );
+    expect(
+      await getArticlePostData(testApiName, { params: { id: 'mmmmmmmmm' } })
+    ).toStrictEqual({
+      id: 'mmmmmmmmm',
+      updated: '2021-01-13T05:12.157Z',
+      title: 'title4',
+      mainImage: '',
+      content: [
+        {
+          kind: 'html',
+          html: '<p>markdown content</p>'
+        }
+      ]
     });
   });
 });

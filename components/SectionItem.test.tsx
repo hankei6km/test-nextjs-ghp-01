@@ -25,9 +25,13 @@ describe('SectionItem', () => {
           <SectionItem
             data={{
               title: 'test1',
-              kind: 'posts',
-              contents: mockDataArticleList.contents,
-              detail: true
+              content: [
+                {
+                  kind: 'posts',
+                  contents: mockDataArticleList.contents,
+                  detail: true
+                }
+              ]
             }}
           />
         </RouterContext.Provider>
@@ -42,7 +46,7 @@ describe('SectionItem', () => {
         }, 10);
       });
       const titleOuter = container.querySelector(
-        `[class*='makeStyles-SectionItem-articlesTitleDetail-']`
+        `[class*='ArticleDetail-root']`
       );
       expect(titleOuter).toBeInTheDocument();
       expect(container).toMatchSnapshot();

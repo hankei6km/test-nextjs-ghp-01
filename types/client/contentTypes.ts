@@ -13,21 +13,24 @@ type ContentList<T> = {
   limit: number;
 };
 
-export type PagesSectionKind = 'content' | 'posts';
-
-type PagesSectionContent = {
-  fieldId: 'sectionContent';
-  title?: string;
-  contentHtml: string;
-  contentMarkdown?: string;
+type PagesContentHtml = {
+  fieldId: 'contentHtml';
+  html: string;
 };
-type PagesSectionArticles = {
-  fieldId: 'sectionArticles';
-  title?: string;
+type PagesContentMarkdown = {
+  fieldId: 'contentMarkdown';
+  markdown: string;
+};
+type PagesContentArticles = {
+  fieldId: 'contentArticles';
   apiName: string;
   detail?: boolean;
 };
-type PagesSection = PagesSectionContent | PagesSectionArticles;
+type PagesSection = {
+  fieldId: 'sectionContent';
+  title?: string;
+  content: (PagesContentHtml | PagesContentMarkdown | PagesContentArticles)[]; // array にしているが、API スキーマ等にあわせたもので、１つコンテントという認識(articlesはちょっと違うか)
+};
 
 type Pages = {
   title: string;
@@ -45,9 +48,18 @@ export type PagesContents = ContentList<PagesContent>;
 export type PagesList = ContentList<PagesIndex>;
 export type PagesIds = ContentList<PagesId>;
 
+type ArticleContentHtml = {
+  fieldId: 'contentHtml';
+  html: string;
+};
+type ArticleContenMarkdown = {
+  fieldId: 'contentMarkdown';
+  markdown: string;
+};
+
 type Article = {
   title: string;
-  content: string;
+  content: (ArticleContentHtml | ArticleContenMarkdown)[];
   mainImage?: string;
 };
 export type ArticleContent = ContentBase & Article;
@@ -76,4 +88,10 @@ export const blankPageContent = (): PagesContent => ({
   kind: ['page'],
   description: '',
   sections: []
+});
+
+export const blankArticleContent = (): ArticleContent => ({
+  ...contentBase,
+  title: '',
+  content: []
 });

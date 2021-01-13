@@ -8,6 +8,7 @@ import client, {
 import { PagesContent, blankPageContent } from '../types/client/contentTypes';
 import { getSortedArticleList } from './articles';
 import { Section } from '../types/pageTypes';
+import { markdownToHtml } from './markdown';
 
 export async function getSortedPagesData() {
   try {
@@ -75,38 +76,51 @@ export async function getPagesSectionsData({
         previewData
       })
     ).sections.map((section) => {
-      return async () => {
-        if (section.fieldId === 'sectionContent') {
-          return {
-            title: section.title || '',
-            kind: 'content' as 'content',
-            contentHtml:
-              (section.contentMarkdown
-                ? section.contentMarkdown
-                : section.contentHtml) || ''
+      return async () => ({
+        title: section.title || '',
+        content: section.content.map((content) => {
+          return async () => {
+            if (content.fieldId === 'contentHtml') {
+              return {
+                kind: 'html' as 'html',
+                contentHtml: content.html
+              };
+            } else if (content.fieldId === 'contentMarkdown') {
+              return {
+                kind: 'html' as 'html',
+                contentHtml: markdownToHtml(content.markdown)
+              };
+            } else if (
+              content.fieldId === 'contentArticles' &&
+              ApiNameArticleValues.some((v) => v === content.apiName)
+            ) {
+              return {
+                kind: 'posts' as 'posts',
+                contents: await getSortedArticleList(
+                  content.apiName as ApiNameArticle
+                ),
+                detail: content.detail || false
+              };
+            }
+            return {
+              kind: '' as ''
+            };
           };
-        } else if (
-          section.fieldId === 'sectionArticles' &&
-          ApiNameArticleValues.some((v) => v === section.apiName)
-        ) {
-          return {
-            title: section.title || '',
-            kind: 'posts' as 'posts',
-            contents: await getSortedArticleList(
-              section.apiName as ApiNameArticle
-            ),
-            detail: section.detail || false
-          };
-        }
-        return {
-          title: section.title,
-          kind: '' as ''
-        };
-      };
+        })
+      });
     });
     // all だと fetch が同時に実行されすぎる?
     // (いっても 2 セクションもないだろうけど)
-    return await Promise.all(sections.map((section) => section()));
+    return await Promise.all(
+      sections.map(async (section) => {
+        const s = await section();
+        return {
+          title: s.title,
+          // content: []
+          content: await Promise.all(s.content.map((content) => content()))
+        };
+      })
+    );
   } catch (err) {
     console.error(`getPagesData error: ${err.name}`);
   }
