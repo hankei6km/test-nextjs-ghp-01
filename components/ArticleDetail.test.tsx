@@ -4,7 +4,11 @@ import '@testing-library/jest-dom';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
 import SectionContext, { sectionContextDefault } from './SectionContext';
-import { mockRouter, mockImage } from '../test/testUtils';
+import {
+  mockRouter,
+  mockImage,
+  mockDataSectionArticleList
+} from '../test/testUtils';
 import { mockDataArticles } from '../types/client/mockData';
 import ArticleDetail from './ArticleDetail';
 
@@ -27,11 +31,11 @@ describe('ArticleDetail', () => {
 
     await act(async () => {
       const router = mockRouter();
-      const articleData = mockDataArticles.contents[1]; // id: 'zzzzzzzzz'
+      const sectionArticleData = mockDataSectionArticleList[1]; // id: 'zzzzzzzzz'
       const { container, getByText, getByRole, queryByText } = render(
         <RouterContext.Provider value={router}>
           <SectionContext.Provider value={sectionContextDefault}>
-            <ArticleDetail data={articleData} />
+            <ArticleDetail data={sectionArticleData} />
           </SectionContext.Provider>
         </RouterContext.Provider>
       );
@@ -57,8 +61,8 @@ describe('ArticleDetail', () => {
 
       fireEvent.click(img);
       expect(router.push).toHaveBeenLastCalledWith(
-        '/test1/[id]',
-        '/test1/zzzzzzzzz',
+        '/posts/[id]',
+        '/posts/zzzzzzzzz',
         {
           locale: undefined,
           shallow: undefined
@@ -66,8 +70,8 @@ describe('ArticleDetail', () => {
       );
       fireEvent.click(title);
       expect(router.push).toHaveBeenLastCalledWith(
-        '/test1/[id]',
-        '/test1/zzzzzzzzz',
+        '/posts/[id]',
+        '/posts/zzzzzzzzz',
         {
           locale: undefined,
           shallow: undefined
@@ -80,6 +84,7 @@ describe('ArticleDetail', () => {
 
     await act(async () => {
       const router = mockRouter();
+      const sectionArticleData = mockDataSectionArticleList[1]; // id: 'zzzzzzzzz'
       const { container } = render(
         <RouterContext.Provider value={router}>
           <SectionContext.Provider
@@ -92,7 +97,7 @@ describe('ArticleDetail', () => {
               }
             }}
           >
-            <ArticleDetail data={mockDataArticles.contents[0]} />
+            <ArticleDetail data={sectionArticleData} />
           </SectionContext.Provider>
         </RouterContext.Provider>
       );

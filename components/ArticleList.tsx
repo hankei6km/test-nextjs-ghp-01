@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import ArticleItem from './ArticleItem';
 import ArticleDetail from './ArticleDetail';
-import { ArticleIndex } from '../types/client/contentTypes';
+import { SectionArticleIndex } from '../types/pageTypes';
 import { pruneClasses } from '../utils/classes';
 
 const useStyles = makeStyles(() => ({
@@ -25,7 +25,7 @@ export type ArticleListComponent = {};
 export type ArticleListVariant = {};
 
 type Props = {
-  items: ArticleIndex[];
+  items: SectionArticleIndex[];
   detail?: boolean;
   classes?: { [key: string]: string };
 };

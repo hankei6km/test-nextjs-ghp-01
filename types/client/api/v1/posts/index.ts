@@ -28,3 +28,4 @@ export default mockMethods<Methods>({
     resBody: mockDataArticles
   })
 });
+

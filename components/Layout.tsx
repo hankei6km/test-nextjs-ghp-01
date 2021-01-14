@@ -40,6 +40,21 @@ const name = 'my-starter';
 const profileImage =
   'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/hankei6km-pages/media/my-starter-default-profile1.png';
 
+const tabs = [
+  {
+    label: 'Home',
+    href: '/'
+  },
+  {
+    label: 'Blog',
+    href: '/posts'
+  },
+  {
+    label: 'Abouit',
+    href: '/about'
+  }
+];
+
 const Layout = ({ children, title = '', home = false }: Props) => {
   const classes = useStyles();
   const { siteTitle } = useContext(siteContext);
@@ -115,9 +130,14 @@ const Layout = ({ children, title = '', home = false }: Props) => {
               )}
             </Box>
             <Tabs indicatorColor="primary" textColor="primary" value={0}>
-              <Tab label="Home" component={Link} href="/" />
-              <Tab label="test1" component={Link} href="/test1" />
-              <Tab label="About" component={Link} href="/about" />
+              {tabs.map(({ label, href }) => (
+                <Tab
+                  key={`${label}:${href}`}
+                  label={label}
+                  component={Link}
+                  href={href}
+                />
+              ))}
             </Tabs>
           </Container>
         </Toolbar>

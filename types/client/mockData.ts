@@ -25,20 +25,24 @@ export const mockDataPages: PagesContents = {
               markdown: '## markdown\ndescribed by using markdown'
             },
             {
+              fieldId: 'contentMarkdown',
+              markdown: '## blog'
+            },
+            {
               fieldId: 'contentArticles',
-              apiName: 'test1'
+              apiName: 'posts'
             }
           ]
         }
       ]
     },
     {
-      id: 'test1',
+      id: 'blog',
       createdAt: '2020-12-26T15:29:14.476Z',
       updatedAt: '2020-12-26T15:29:14.476Z',
       publishedAt: '2020-12-26T15:29:14.476Z',
       revisedAt: '2020-12-26T15:29:14.476Z',
-      title: 'Test1',
+      title: 'Blog',
       kind: ['posts'],
       sections: [
         {
@@ -47,7 +51,7 @@ export const mockDataPages: PagesContents = {
           content: [
             {
               fieldId: 'contentArticles',
-              apiName: 'test1',
+              apiName: 'posts',
               detail: true
             }
           ]

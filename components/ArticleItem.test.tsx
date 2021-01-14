@@ -10,7 +10,11 @@ import { RouterContext } from 'next/dist/next-server/lib/router-context';
 // Error: Not implemented: window.scrollTo
 // at module.exports (/sandbox/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
 // import { RouterContext, createMockRouter } from 'next-router-provider';
-import { mockRouter, mockImage } from '../test/testUtils';
+import {
+  mockRouter,
+  mockImage,
+  mockDataSectionArticleList
+} from '../test/testUtils';
 
 import SectionContext, { sectionContextDefault } from './SectionContext';
 import { mockDataArticles } from '../types/client/mockData';
@@ -35,11 +39,11 @@ describe('ArticleItem', () => {
 
     await act(async () => {
       const router = mockRouter();
-      const articleData = mockDataArticles.contents[1]; // id: 'zzzzzzzzz'
+      const sectionArticleData = mockDataSectionArticleList[1]; // id: 'zzzzzzzzz'
       const { container, getByText, getByRole, queryByText } = render(
         <RouterContext.Provider value={router}>
           <SectionContext.Provider value={sectionContextDefault}>
-            <ArticleItem data={articleData} />
+            <ArticleItem data={sectionArticleData} />
           </SectionContext.Provider>
         </RouterContext.Provider>
       );
@@ -69,8 +73,8 @@ describe('ArticleItem', () => {
       fireEvent.click(img);
       expect(router.push).toHaveBeenCalledTimes(1);
       expect(router.push).toHaveBeenLastCalledWith(
-        '/test1/[id]',
-        '/test1/zzzzzzzzz',
+        '/posts/[id]',
+        '/posts/zzzzzzzzz',
         {
           locale: undefined,
           shallow: undefined
@@ -80,8 +84,8 @@ describe('ArticleItem', () => {
       fireEvent.click(title);
       expect(router.push).toHaveBeenCalledTimes(2);
       expect(router.push).toHaveBeenLastCalledWith(
-        '/test1/[id]',
-        '/test1/zzzzzzzzz',
+        '/posts/[id]',
+        '/posts/zzzzzzzzz',
         {
           locale: undefined,
           shallow: undefined
@@ -95,6 +99,7 @@ describe('ArticleItem', () => {
 
     await act(async () => {
       const router = mockRouter();
+      const sectionArticleData = mockDataSectionArticleList[1]; // id: 'zzzzzzzzz'
       const { container } = render(
         <RouterContext.Provider value={router}>
           <SectionContext.Provider
@@ -107,7 +112,7 @@ describe('ArticleItem', () => {
               }
             }}
           >
-            <ArticleItem data={mockDataArticles.contents[0]} />
+            <ArticleItem data={sectionArticleData} />
           </SectionContext.Provider>
         </RouterContext.Provider>
       );

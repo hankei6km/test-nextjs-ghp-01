@@ -1,5 +1,7 @@
 import { ArticleIndex } from './client/contentTypes';
 // export type SectionKind = 'content' | 'posts';
+type SectionArticleIndexPath = { path: string };
+export type SectionArticleIndex = ArticleIndex & SectionArticleIndexPath;
 export type SectionBlank = {
   kind: '';
 };
@@ -9,7 +11,7 @@ export type SectionContent = {
 };
 export type SectionPosts = {
   kind: 'posts';
-  contents: ArticleIndex[];
+  contents: SectionArticleIndex[];
   detail: boolean;
 };
 
@@ -24,3 +26,10 @@ export type PageData = {
   mainImage: string;
   sections: Section[];
 };
+
+export const blankPageData = (): PageData => ({
+  title: '',
+  description: '',
+  sections: [],
+  mainImage: ''
+});

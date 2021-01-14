@@ -29,7 +29,7 @@ const PostsPage = ({ pageData }: { pageData: PageData }) => {
 export default PostsPage;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const pageData = await getPagesPageData({ params: { id: 'test1' } });
+  const pageData = await getPagesPageData({ params: { id: 'blog' } });
   return {
     props: {
       pageData
