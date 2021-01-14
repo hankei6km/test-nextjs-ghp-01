@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { useContext, ReactNode } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
 // import Image from 'next/image';
@@ -10,6 +10,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import siteContext from '../components/SiteContext';
 
 const useStyles = makeStyles({
   headerImage: {
@@ -39,17 +40,14 @@ const name = 'my-starter';
 const profileImage =
   'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/hankei6km-pages/media/my-starter-default-profile1.png';
 
-const Layout = ({
-  children,
-  title = 'This is the default title',
-  home = false
-}: Props) => {
+const Layout = ({ children, title = '', home = false }: Props) => {
   const classes = useStyles();
+  const { siteTitle } = useContext(siteContext);
   const maxWidth = 'sm';
   return (
     <div>
       <Head>
-        <title>{title}</title>
+        <title>{`${title}: ${siteTitle}`}</title>
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>

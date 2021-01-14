@@ -9,7 +9,7 @@ import {
   getSortedPagesData,
   getAllPagesIds,
   getPagesData,
-  getPagesSectionsData
+  getPagesPageData
 } from './pages';
 
 // https://github.com/jefflau/jest-fetch-mock/issues/83
@@ -90,67 +90,70 @@ describe('getPagesData()', () => {
     });
   });
 });
-describe('getPagesSectionsData()', () => {
-  it('should returns Sections', async () => {
+describe('getPagesPageData()', () => {
+  it('should returns PageData', async () => {
     fetchMock
       .mockResponseOnce(
         JSON.stringify(mockDataPages.contents.find(({ id }) => id === 'home'))
       )
       .mockResponseOnce(JSON.stringify(mockDataArticleList));
-    expect(
-      await getPagesSectionsData({ params: { id: 'home' } })
-    ).toStrictEqual([
-      {
-        title: 'intro',
-        content: [
-          {
-            kind: 'html',
-            contentHtml: '<p>index page</p>'
-          },
-          {
-            kind: 'html',
-            contentHtml: '<h2>markdown</h2><p>described by using markdown</p>'
-          },
-          {
-            kind: 'posts',
-            contents: [
-              {
-                id: 'mmmmmmmmm',
-                createdAt: '2021-01-13T05:12.157Z',
-                updatedAt: '2021-01-13T05:12.157Z',
-                publishedAt: '2021-01-13T05:12.157Z',
-                revisedAt: '2021-01-13T05:12.157Z',
-                title: 'title4'
-              },
-              {
-                id: 'zzzzzzzzz',
-                createdAt: '2020-12-27T04:04:30.107Z',
-                updatedAt: '2020-12-27T04:04:30.107Z',
-                publishedAt: '2020-12-27T04:04:30.107Z',
-                revisedAt: '2020-12-27T04:04:30.107Z',
-                title: 'title3'
-              },
-              {
-                id: 'yyyyyy-da',
-                createdAt: '2020-12-26T15:29:14.476Z',
-                updatedAt: '2020-12-26T15:29:14.476Z',
-                publishedAt: '2020-12-26T15:29:14.476Z',
-                revisedAt: '2020-12-26T15:29:14.476Z',
-                title: 'title2'
-              },
-              {
-                id: 'xxxxxxxxx',
-                createdAt: '2020-12-26T12:25:43.532Z',
-                updatedAt: '2020-12-26T12:27:22.533Z',
-                publishedAt: '2020-12-26T12:27:22.533Z',
-                revisedAt: '2020-12-26T12:27:22.533Z',
-                title: 'title1'
-              }
-            ],
-            detail: false
-          }
-        ]
-      }
-    ]);
+    expect(await getPagesPageData({ params: { id: 'home' } })).toStrictEqual({
+      title: 'Home',
+      description: 'my starter home page',
+      mainImage: '',
+      sections: [
+        {
+          title: 'intro',
+          content: [
+            {
+              kind: 'html',
+              contentHtml: '<p>index page</p>'
+            },
+            {
+              kind: 'html',
+              contentHtml: '<h2>markdown</h2><p>described by using markdown</p>'
+            },
+            {
+              kind: 'posts',
+              contents: [
+                {
+                  id: 'mmmmmmmmm',
+                  createdAt: '2021-01-13T05:12.157Z',
+                  updatedAt: '2021-01-13T05:12.157Z',
+                  publishedAt: '2021-01-13T05:12.157Z',
+                  revisedAt: '2021-01-13T05:12.157Z',
+                  title: 'title4'
+                },
+                {
+                  id: 'zzzzzzzzz',
+                  createdAt: '2020-12-27T04:04:30.107Z',
+                  updatedAt: '2020-12-27T04:04:30.107Z',
+                  publishedAt: '2020-12-27T04:04:30.107Z',
+                  revisedAt: '2020-12-27T04:04:30.107Z',
+                  title: 'title3'
+                },
+                {
+                  id: 'yyyyyy-da',
+                  createdAt: '2020-12-26T15:29:14.476Z',
+                  updatedAt: '2020-12-26T15:29:14.476Z',
+                  publishedAt: '2020-12-26T15:29:14.476Z',
+                  revisedAt: '2020-12-26T15:29:14.476Z',
+                  title: 'title2'
+                },
+                {
+                  id: 'xxxxxxxxx',
+                  createdAt: '2020-12-26T12:25:43.532Z',
+                  updatedAt: '2020-12-26T12:27:22.533Z',
+                  publishedAt: '2020-12-26T12:27:22.533Z',
+                  revisedAt: '2020-12-26T12:27:22.533Z',
+                  title: 'title1'
+                }
+              ],
+              detail: false
+            }
+          ]
+        }
+      ]
+    });
   });
 });

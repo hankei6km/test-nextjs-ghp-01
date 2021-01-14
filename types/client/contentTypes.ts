@@ -36,6 +36,7 @@ type Pages = {
   title: string;
   kind: ['posts' | 'gallery' | 'page']; // 複数選択にしていない
   description?: string;
+  mainImage?: string;
   sections: PagesSection[];
 };
 export type PagesContent = ContentBase & Pages;

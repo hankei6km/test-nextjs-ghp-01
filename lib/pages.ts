@@ -7,7 +7,7 @@ import client, {
 } from './client';
 import { PagesContent, blankPageContent } from '../types/client/contentTypes';
 import { getSortedArticleList } from './articles';
-import { Section } from '../types/pageTypes';
+import { PageData } from '../types/pageTypes';
 import { markdownToHtml } from './markdown';
 
 export async function getSortedPagesData() {
@@ -63,19 +63,18 @@ export async function getPagesData({
   return blankPageContent();
 }
 
-export async function getPagesSectionsData({
+export async function getPagesPageData({
   params = { id: '' },
   preview = false,
   previewData = {}
-}: GetStaticPropsContext<ParsedUrlQuery>): Promise<Section[]> {
+}: GetStaticPropsContext<ParsedUrlQuery>): Promise<PageData> {
   try {
-    const sections = (
-      await getPagesData({
-        params,
-        preview,
-        previewData
-      })
-    ).sections.map((section) => {
+    const rawPageData = await getPagesData({
+      params,
+      preview,
+      previewData
+    });
+    const sections = rawPageData.sections.map((section) => {
       return async () => ({
         title: section.title || '',
         content: section.content.map((content) => {
@@ -111,16 +110,21 @@ export async function getPagesSectionsData({
     });
     // all だと fetch が同時に実行されすぎる?
     // (いっても 2 セクションもないだろうけど)
-    return await Promise.all(
-      sections.map(async (section) => {
-        const s = await section();
-        return {
-          title: s.title,
-          // content: []
-          content: await Promise.all(s.content.map((content) => content()))
-        };
-      })
-    );
+    return {
+      title: rawPageData.title,
+      description: rawPageData.description || '',
+      mainImage: '',
+      sections: await Promise.all(
+        sections.map(async (section) => {
+          const s = await section();
+          return {
+            title: s.title,
+            // content: []
+            content: await Promise.all(s.content.map((content) => content()))
+          };
+        })
+      )
+    };
   } catch (err) {
     console.error(`getPagesData error: ${err.name}`);
   }
