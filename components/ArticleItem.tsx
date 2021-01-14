@@ -7,8 +7,8 @@ import DateUpdated from './DateUpdated';
 import ThumbImage from './ThumbImage';
 import { pruneClasses } from '../utils/classes';
 import SectionContext from './SectionContext';
-
-import { ArticleIndex } from '../types/client/contentTypes';
+import { join } from 'path';
+import { SectionArticleIndex } from '../types/pageTypes';
 
 const useStyles = makeStyles((theme) => ({
   'ArticleItem-root': {
@@ -51,7 +51,7 @@ export type ArticleItemVariant = {
 };
 
 type Props = {
-  data: ArticleIndex;
+  data: SectionArticleIndex;
   thumbWidth?: number;
   thumbHeight?: number;
   thumbSizeFit?: '' | 'crop'; // とりあえず
@@ -79,7 +79,7 @@ const ArticleItem = ({
       className={classes['ArticleItem-root']}
     >
       <Box className={classes['ArticleItem-thumbnImage']}>
-        <Link href="/test1/[id]" as={`/test1/${data.id}`}>
+        <Link href={join(data.path, '[id]')} as={join(data.path, data.id)}>
           <ThumbImage
             src={thumbImage}
             alt={`thumbnail for ${data.title}`}
@@ -95,7 +95,7 @@ const ArticleItem = ({
           variant={variant.articleItemTitleVariant}
           component={component.articleItemTitleComponent}
         >
-          <Link href="/test1/[id]" as={`/test1/${data.id}`}>
+          <Link href={join(data.path, '[id]')} as={join(data.path, data.id)}>
             {data.title}
           </Link>
         </Typography>

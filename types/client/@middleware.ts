@@ -27,7 +27,7 @@ export default mockMiddleware([
         })
       : next(),
   (req, res, next) =>
-    req.path === '/api/v1/test1' &&
+    req.path === '/api/v1/posts' &&
     req.method === 'GET' &&
     req.query?.fields === 'id'
       ? res({
@@ -36,7 +36,7 @@ export default mockMiddleware([
         })
       : next(),
   (req, res, next) =>
-    req.path === '/api/v1/test1' &&
+    req.path === '/api/v1/posts' &&
     req.method === 'GET' &&
     req.query?.fields === 'id,createdAt,updatedAt,publishedAt,revisedAt,title'
       ? res({

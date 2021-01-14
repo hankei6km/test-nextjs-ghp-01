@@ -16,7 +16,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
         >
           <a
             class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
-            href="/test1/mmmmmmmmm"
+            href="/posts/mmmmmmmmm"
           >
             title4
           </a>
@@ -60,7 +60,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
         >
           <a
             class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
-            href="/test1/mmmmmmmmm"
+            href="/posts/mmmmmmmmm"
           >
             <div
               class="makeStyles-thumb-19"
@@ -80,7 +80,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
         <a
           aria-disabled="false"
           class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-outlinedPrimary MuiButton-textSizeSmall MuiButton-sizeSmall MuiTypography-colorPrimary"
-          href="/test1/mmmmmmmmm"
+          href="/posts/mmmmmmmmm"
           role="button"
           style="text-transform: none;"
           tabindex="0"
@@ -107,7 +107,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
         >
           <a
             class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
-            href="/test1/zzzzzzzzz"
+            href="/posts/zzzzzzzzz"
           >
             title3
           </a>
@@ -151,7 +151,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
         >
           <a
             class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
-            href="/test1/zzzzzzzzz"
+            href="/posts/zzzzzzzzz"
           >
             <div
               class="makeStyles-thumb-19"
@@ -171,7 +171,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
         <a
           aria-disabled="false"
           class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-outlinedPrimary MuiButton-textSizeSmall MuiButton-sizeSmall MuiTypography-colorPrimary"
-          href="/test1/zzzzzzzzz"
+          href="/posts/zzzzzzzzz"
           role="button"
           style="text-transform: none;"
           tabindex="0"
@@ -198,7 +198,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
         >
           <a
             class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
-            href="/test1/yyyyyy-da"
+            href="/posts/yyyyyy-da"
           >
             title2
           </a>
@@ -242,7 +242,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
         >
           <a
             class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
-            href="/test1/yyyyyy-da"
+            href="/posts/yyyyyy-da"
           >
             <div
               class="makeStyles-thumb-19"
@@ -262,7 +262,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
         <a
           aria-disabled="false"
           class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-outlinedPrimary MuiButton-textSizeSmall MuiButton-sizeSmall MuiTypography-colorPrimary"
-          href="/test1/yyyyyy-da"
+          href="/posts/yyyyyy-da"
           role="button"
           style="text-transform: none;"
           tabindex="0"
@@ -289,7 +289,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
         >
           <a
             class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
-            href="/test1/xxxxxxxxx"
+            href="/posts/xxxxxxxxx"
           >
             title1
           </a>
@@ -333,7 +333,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
         >
           <a
             class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
-            href="/test1/xxxxxxxxx"
+            href="/posts/xxxxxxxxx"
           >
             <div
               class="makeStyles-thumb-19"
@@ -353,7 +353,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
         <a
           aria-disabled="false"
           class="MuiTypography-root MuiLink-root MuiLink-underlineHover MuiButtonBase-root MuiButton-root MuiButton-text MuiButton-outlinedPrimary MuiButton-textSizeSmall MuiButton-sizeSmall MuiTypography-colorPrimary"
-          href="/test1/xxxxxxxxx"
+          href="/posts/xxxxxxxxx"
           role="button"
           style="text-transform: none;"
           tabindex="0"

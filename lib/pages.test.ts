@@ -32,12 +32,12 @@ describe('getSortedPagesData()', () => {
         title: 'Home'
       },
       {
-        id: 'test1',
+        id: 'blog',
         createdAt: '2020-12-26T15:29:14.476Z',
         updatedAt: '2020-12-26T15:29:14.476Z',
         publishedAt: '2020-12-26T15:29:14.476Z',
         revisedAt: '2020-12-26T15:29:14.476Z',
-        title: 'Test1'
+        title: 'Blog'
       }
     ]);
   });
@@ -48,7 +48,7 @@ describe('getAllPagesIds()', () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPagesIds));
     expect(await getAllPagesIds()).toStrictEqual([
       { params: { id: 'home' } },
-      { params: { id: 'test1' } }
+      { params: { id: 'blog' } }
     ]);
   });
 });
@@ -81,8 +81,12 @@ describe('getPagesData()', () => {
               markdown: '## markdown\ndescribed by using markdown'
             },
             {
+              fieldId: 'contentMarkdown',
+              markdown: '## blog'
+            },
+            {
               fieldId: 'contentArticles',
-              apiName: 'test1'
+              apiName: 'posts'
             }
           ]
         }
@@ -114,6 +118,10 @@ describe('getPagesPageData()', () => {
               contentHtml: '<h2>markdown</h2><p>described by using markdown</p>'
             },
             {
+              kind: 'html',
+              contentHtml: '<h2>blog</h2>'
+            },
+            {
               kind: 'posts',
               contents: [
                 {
@@ -122,7 +130,8 @@ describe('getPagesPageData()', () => {
                   updatedAt: '2021-01-13T05:12.157Z',
                   publishedAt: '2021-01-13T05:12.157Z',
                   revisedAt: '2021-01-13T05:12.157Z',
-                  title: 'title4'
+                  title: 'title4',
+                  path: '/posts'
                 },
                 {
                   id: 'zzzzzzzzz',
@@ -130,7 +139,8 @@ describe('getPagesPageData()', () => {
                   updatedAt: '2020-12-27T04:04:30.107Z',
                   publishedAt: '2020-12-27T04:04:30.107Z',
                   revisedAt: '2020-12-27T04:04:30.107Z',
-                  title: 'title3'
+                  title: 'title3',
+                  path: '/posts'
                 },
                 {
                   id: 'yyyyyy-da',
@@ -138,7 +148,8 @@ describe('getPagesPageData()', () => {
                   updatedAt: '2020-12-26T15:29:14.476Z',
                   publishedAt: '2020-12-26T15:29:14.476Z',
                   revisedAt: '2020-12-26T15:29:14.476Z',
-                  title: 'title2'
+                  title: 'title2',
+                  path: '/posts'
                 },
                 {
                   id: 'xxxxxxxxx',
@@ -146,7 +157,8 @@ describe('getPagesPageData()', () => {
                   updatedAt: '2020-12-26T12:27:22.533Z',
                   publishedAt: '2020-12-26T12:27:22.533Z',
                   revisedAt: '2020-12-26T12:27:22.533Z',
-                  title: 'title1'
+                  title: 'title1',
+                  path: '/posts'
                 }
               ],
               detail: false

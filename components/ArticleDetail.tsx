@@ -8,8 +8,8 @@ import DateUpdated from './DateUpdated';
 import ThumbImage from './ThumbImage';
 import { pruneClasses } from '../utils/classes';
 import SectionContext from './SectionContext';
-
-import { ArticleIndex } from '../types/client/contentTypes';
+import { join } from 'path';
+import { SectionArticleIndex } from '../types/pageTypes';
 
 const useStyles = makeStyles(() => ({
   'ArticleDetail-root': {
@@ -53,7 +53,7 @@ export type ArticleDetailVariant = {
 };
 
 type Props = {
-  data: ArticleIndex;
+  data: SectionArticleIndex;
   thumbWidth?: number;
   thumbHeight?: number;
   thumbSizeFit?: '' | 'crop'; // とりあえず
@@ -87,7 +87,11 @@ const ArticleDetail = ({
           component={component.articleDetailTitleComponent}
           className={classes['ArticleDetail-title']}
         >
-          <Link underline="none" href="/test1/[id]" as={`/test1/${data.id}`}>
+          <Link
+            underline="none"
+            href={join(data.path, '[id]')}
+            as={join(data.path, data.id)}
+          >
             {data.title}
           </Link>
         </Typography>
@@ -97,7 +101,11 @@ const ArticleDetail = ({
       </Box>
       <Box className={classes['ArticleDetail-content']}>
         <Box className={classes['ArticleDetail-thumbImage']}>
-          <Link underline="none" href="/test1/[id]" as={`/test1/${data.id}`}>
+          <Link
+            underline="none"
+            href={join(data.path, '[id]')}
+            as={join(data.path, data.id)}
+          >
             <ThumbImage
               src={thumbImage}
               alt={`thumbnail for ${data.title}`}
@@ -115,8 +123,8 @@ const ArticleDetail = ({
           size="small"
           className={'MuiButton-outlinedPrimary'}
           component={Link}
-          href="/test1/[id]"
-          as={`/test1/${data.id}`}
+          href={join(data.path, '[id]')}
+          as={join(data.path, data.id)}
         >
           {'read more'}
         </Button>

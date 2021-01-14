@@ -7,7 +7,8 @@ import client, {
 } from './client';
 import { PagesContent, blankPageContent } from '../types/client/contentTypes';
 import { getSortedArticleList } from './articles';
-import { PageData } from '../types/pageTypes';
+import { join } from 'path';
+import { PageData, blankPageData } from '../types/pageTypes';
 import { markdownToHtml } from './markdown';
 
 export async function getSortedPagesData() {
@@ -93,11 +94,16 @@ export async function getPagesPageData({
               content.fieldId === 'contentArticles' &&
               ApiNameArticleValues.some((v) => v === content.apiName)
             ) {
+              const contents = await getSortedArticleList(
+                content.apiName as ApiNameArticle
+              );
               return {
                 kind: 'posts' as 'posts',
-                contents: await getSortedArticleList(
-                  content.apiName as ApiNameArticle
-                ),
+                contents: contents.map((c) => ({
+                  ...c,
+                  // path: normalize(`/${content.apiName}`)
+                  path: join('/', content.apiName)
+                })),
                 detail: content.detail || false
               };
             }
@@ -126,7 +132,7 @@ export async function getPagesPageData({
       )
     };
   } catch (err) {
-    console.error(`getPagesData error: ${err.name}`);
+    console.error(`getPagesPageData error: ${err.name}`);
   }
-  return [];
+  return blankPageData();
 }

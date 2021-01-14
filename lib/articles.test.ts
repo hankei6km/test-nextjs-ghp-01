@@ -16,7 +16,7 @@ const fetchMock = fetch as FetchMock;
 beforeEach(() => {
   fetchMock.resetMocks();
 });
-const testApiName = 'test1';
+const testApiName = 'posts';
 
 describe('getSortedArticleList()', () => {
   it('should returns contents array with out contet filed', async () => {

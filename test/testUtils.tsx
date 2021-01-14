@@ -1,5 +1,13 @@
 import { NextRouter } from 'next/router';
+import { mockDataArticleList } from '../types/client/mockData';
 // import { CreateMockRouterOptions } from 'next-router-provider';
+
+export const mockDataSectionArticleList = mockDataArticleList.contents.map(
+  (content) => ({
+    ...content,
+    path: '/posts'
+  })
+);
 
 export function mockRouter(): NextRouter {
   // https://github.com/vercel/next.js/issues/16864
