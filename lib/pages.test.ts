@@ -114,6 +114,8 @@ describe('getPagesPageData()', () => {
     expect(
       await getPagesPageData('pages', { params: { id: 'home' } })
     ).toStrictEqual({
+      id: 'home',
+      updated: '2020-12-27T04:04:30.107Z',
       title: 'Home',
       description: 'my starter home page',
       mainImage: '',

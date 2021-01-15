@@ -1,18 +1,18 @@
-import { ArticleContent } from '../../../../contentTypes';
+import { PagesContent } from '../../../../contentTypes';
 import { GetContentQuery } from '../../../../queryTypes';
 import { mockMethods } from 'aspida-mock';
-import { mockDataArticles } from '../../../../mockData';
+import { mockDataPages } from '../../../../mockData';
 
 export type Methods = {
   get: {
     query?: GetContentQuery;
-    resBody: ArticleContent;
+    resBody: PagesContent;
   };
 };
 
 export default mockMethods<Methods>({
   get: ({ values }) => {
-    const contents = mockDataArticles.contents;
+    const contents = mockDataPages.contents;
     // stub 使いたいが、どの辺が production に残るかわからないので
     // とりあえずコードを書く.
     const idx = contents.findIndex(({ id }) => id === values.id);

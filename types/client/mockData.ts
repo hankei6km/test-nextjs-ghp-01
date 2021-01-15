@@ -1,4 +1,4 @@
-import { PagesContents, ArticleContents } from './contentTypes';
+import { PagesContents } from './contentTypes';
 
 export const mockDataPages: PagesContents = {
   contents: [
@@ -110,7 +110,7 @@ export const mockDataPagesIds = {
   contents: mockDataPages.contents.map(({ id }) => ({ id }))
 };
 
-export const mockDataArticles: ArticleContents = {
+export const mockDataArticles: PagesContents = {
   contents: [
     {
       id: 'mmmmmmmmm',
@@ -119,10 +119,16 @@ export const mockDataArticles: ArticleContents = {
       publishedAt: '2021-01-13T05:12.157Z',
       revisedAt: '2021-01-13T05:12.157Z',
       title: 'title4',
-      content: [
+      kind: ['page'],
+      sections: [
         {
-          fieldId: 'contentMarkdown',
-          markdown: 'markdown content'
+          fieldId: 'sectionContent',
+          content: [
+            {
+              fieldId: 'contentMarkdown',
+              markdown: 'markdown content'
+            }
+          ]
         }
       ]
     },
@@ -133,10 +139,16 @@ export const mockDataArticles: ArticleContents = {
       publishedAt: '2020-12-27T04:04:30.107Z',
       revisedAt: '2020-12-27T04:04:30.107Z',
       title: 'title3',
-      content: [
+      kind: ['page'],
+      sections: [
         {
-          fieldId: 'contentHtml',
-          html: '<p>content3</p>'
+          fieldId: 'sectionContent',
+          content: [
+            {
+              fieldId: 'contentHtml',
+              html: '<p>content3</p>'
+            }
+          ]
         }
       ]
     },
@@ -147,10 +159,16 @@ export const mockDataArticles: ArticleContents = {
       publishedAt: '2020-12-26T15:29:14.476Z',
       revisedAt: '2020-12-26T15:29:14.476Z',
       title: 'title2',
-      content: [
+      kind: ['page'],
+      sections: [
         {
-          fieldId: 'contentHtml',
-          html: '<p>content2</p>'
+          fieldId: 'sectionContent',
+          content: [
+            {
+              fieldId: 'contentHtml',
+              html: '<p>content2</p>'
+            }
+          ]
         }
       ]
     },
@@ -161,10 +179,16 @@ export const mockDataArticles: ArticleContents = {
       publishedAt: '2020-12-26T12:27:22.533Z',
       revisedAt: '2020-12-26T12:27:22.533Z',
       title: 'title1',
-      content: [
+      kind: ['page'],
+      sections: [
         {
-          fieldId: 'contentHtml',
-          html: '<p>content1</p>'
+          fieldId: 'sectionContent',
+          content: [
+            {
+              fieldId: 'contentHtml',
+              html: '<p>content1</p>'
+            }
+          ]
         }
       ]
     }
@@ -178,7 +202,9 @@ export const mockDataArticleList = {
   ...mockDataArticles,
   contents: mockDataArticles.contents.map((v) => ({
     ...v,
-    content: undefined
+    kind: undefined,
+    description: undefined,
+    sections: undefined
   }))
 };
 

@@ -10,7 +10,6 @@ import {
   PagesContent,
   blankPageContent
 } from '../types/client/contentTypes';
-import { getSortedArticleList } from './articles';
 import { join } from 'path';
 import { Section, PageData, blankPageData } from '../types/pageTypes';
 import { markdownToHtml } from './markdown';
@@ -81,13 +80,25 @@ export async function getPagesDataWithLayout(
 ): Promise<PagesContent[]> {
   try {
     // TODO: preview 対応
-    const res = await client[apiName].get({
-      query: {
-        ids: `_layout,${params.id}`
-      },
-      config: fetchConfig
-    });
-    return res.body.contents;
+    if (apiName === 'pages') {
+      const res = await client[apiName].get({
+        query: {
+          ids: `_layout,${params.id}`
+        },
+        config: fetchConfig
+      });
+      return res.body.contents;
+    }
+    return [
+      await getPagesData('pages', {
+        params: {
+          id: '_layout'
+        }
+      }),
+      await getPagesData(apiName, {
+        params
+      })
+    ];
   } catch (err) {
     console.error(`getPagesDataWithLayout error: ${err.name}`);
   }
@@ -118,7 +129,7 @@ async function getSectionFromPages(
             content.fieldId === 'contentArticles' &&
             ApiNameArticleValues.some((v) => v === content.apiName)
           ) {
-            const contents = await getSortedArticleList(
+            const contents = await getSortedPagesData(
               content.apiName as ApiNameArticle
             );
             return {
@@ -171,6 +182,8 @@ export async function getPagesPageData(
     });
     const rawLayoutData = rawPageDatas[0];
     const layoutData = {
+      id: rawLayoutData.id,
+      updated: rawLayoutData.revisedAt || rawLayoutData.updatedAt,
       title: rawLayoutData.title,
       description: rawLayoutData.description || '',
       mainImage: '',
@@ -180,6 +193,8 @@ export async function getPagesPageData(
     };
     const rawPageData = rawPageDatas[1];
     const pageData = {
+      id: rawPageData.id,
+      updated: rawPageData.revisedAt || rawPageData.updatedAt,
       title: rawPageData.title,
       description: rawPageData.description || '',
       mainImage: '',
@@ -188,6 +203,8 @@ export async function getPagesPageData(
       footer: await getSectionFromPages(rawPageData, 'sectionFooter')
     };
     return {
+      id: pageData.id,
+      updated: pageData.updated,
       // title: layoutData.title || pageData.title,
       title: pageData.title,
       description: layoutData.description || pageData.description,

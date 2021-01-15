@@ -55,7 +55,7 @@ type PagesSection =
   | PagesSectionContent
   | PagesSectionHeader
   | PagesSectionFooter;
-export type PagesSectionKind = PagesSection['filedId'];
+export type PagesSectionKind = PagesSection['fieldId'];
 type Pages = {
   title: string;
   kind: ['posts' | 'gallery' | 'page']; // 複数選択にしていない
@@ -73,27 +73,6 @@ export type PagesContents = ContentList<PagesContent>;
 export type PagesIdsContents = Omit<PagesContents, 'offset' | 'limit'>;
 export type PagesList = ContentList<PagesIndex>;
 export type PagesIds = ContentList<PagesId>;
-
-type ArticleContentHtml = {
-  fieldId: 'contentHtml';
-  html: string;
-};
-type ArticleContenMarkdown = {
-  fieldId: 'contentMarkdown';
-  markdown: string;
-};
-
-type Article = {
-  title: string;
-  content: (ArticleContentHtml | ArticleContenMarkdown)[];
-  mainImage?: string;
-};
-export type ArticleContent = ContentBase & Article;
-export type ArticleIndex = Omit<ArticleContent, 'content'>;
-export type ArticleId = Pick<ArticleContent, 'id'>;
-export type ArticleContents = ContentList<ArticleContent>;
-export type ArticleList = ContentList<ArticleIndex>;
-export type ArticleIds = ContentList<ArticleId>;
 
 const contentBase: ContentBase = {
   id: '',
@@ -114,10 +93,4 @@ export const blankPageContent = (): PagesContent => ({
   kind: ['page'],
   description: '',
   sections: []
-});
-
-export const blankArticleContent = (): ArticleContent => ({
-  ...contentBase,
-  title: '',
-  content: []
 });
