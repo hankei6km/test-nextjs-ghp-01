@@ -36,10 +36,6 @@ type Props = {
   home?: boolean;
 };
 
-const name = 'my-starter';
-const profileImage =
-  'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/hankei6km-pages/media/my-starter-default-profile1.png';
-
 const tabs = [
   {
     label: 'Home',
@@ -57,7 +53,7 @@ const tabs = [
 
 const Layout = ({ children, title = '', home = false }: Props) => {
   const classes = useStyles();
-  const { siteTitle } = useContext(siteContext);
+  const { siteTitle, profile } = useContext(siteContext);
   const maxWidth = 'sm';
   return (
     <div>
@@ -83,21 +79,26 @@ const Layout = ({ children, title = '', home = false }: Props) => {
               {home ? (
                 <>
                   <Box>
+                    <Typography component="h1" variant="h5">
+                      {siteTitle}
+                    </Typography>
+                  </Box>
+                  <Box>
                     <img
                       // img を使うと
                       // "Warning: Expected server HTML to contain a matching <img> in <div>." となる.
                       // window.devicePixelRatio が 1 だとならない(と思う).
                       // next/image を使うとならない.
-                      src={profileImage}
+                      src={profile.image}
                       className={classes.headerHomeImage}
                       width={130}
                       height={130}
-                      alt={name}
+                      alt={profile.name}
                     />
                   </Box>
                   <Box>
                     <Typography className={classes.heading} variant="h3">
-                      {name}
+                      {profile.name}
                     </Typography>
                   </Box>
                 </>
@@ -106,11 +107,11 @@ const Layout = ({ children, title = '', home = false }: Props) => {
                   <Box>
                     <Link href="/">
                       <img
-                        src={profileImage}
+                        src={profile.image}
                         className={classes.headerImage}
                         width={110}
                         height={110}
-                        alt={name}
+                        alt={profile.name}
                       />
                     </Link>
                   </Box>
@@ -123,7 +124,7 @@ const Layout = ({ children, title = '', home = false }: Props) => {
                       variant="h4"
                       href="/"
                     >
-                      {name}
+                      {profile.name}
                     </Typography>
                   </Box>
                 </>
