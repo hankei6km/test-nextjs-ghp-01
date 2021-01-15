@@ -15,9 +15,9 @@ import { join } from 'path';
 import { Section, PageData, blankPageData } from '../types/pageTypes';
 import { markdownToHtml } from './markdown';
 
-export async function getSortedPagesData() {
+export async function getSortedPagesData(apiName: ApiNameArticle) {
   try {
-    const res = await client.pages.get({
+    const res = await client[apiName].get({
       query: {
         fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title'
       },
@@ -32,9 +32,9 @@ export async function getSortedPagesData() {
   return [];
 }
 
-export async function getAllPagesIds() {
+export async function getAllPagesIds(apiName: ApiNameArticle) {
   try {
-    const res = await client.pages.get({
+    const res = await client[apiName].get({
       query: {
         fields: 'id'
       },
@@ -47,13 +47,16 @@ export async function getAllPagesIds() {
   return [];
 }
 
-export async function getPagesData({
-  params = { id: '' },
-  preview = false,
-  previewData = {}
-}: GetStaticPropsContext<ParsedUrlQuery>): Promise<PagesContent> {
+export async function getPagesData(
+  apiName: ApiNameArticle,
+  {
+    params = { id: '' },
+    preview = false,
+    previewData = {}
+  }: GetStaticPropsContext<ParsedUrlQuery>
+): Promise<PagesContent> {
   try {
-    const res = await client.pages
+    const res = await client[apiName]
       ._id(!preview ? params.id : previewData.slug) // 似たような3項式がバラけていてすっきりしない
       .$get({
         query: {
@@ -68,14 +71,17 @@ export async function getPagesData({
   return blankPageContent();
 }
 
-export async function getPagesDataWithLayout({
-  params = { id: '' }
-}: // preview = false,
-// previewData = {}
-GetStaticPropsContext<ParsedUrlQuery>): Promise<PagesContent[]> {
+export async function getPagesDataWithLayout(
+  apiName: ApiNameArticle,
+  {
+    params = { id: '' }
+  }: // preview = false,
+  // previewData = {}
+  GetStaticPropsContext<ParsedUrlQuery>
+): Promise<PagesContent[]> {
   try {
     // TODO: preview 対応
-    const res = await client.pages.get({
+    const res = await client[apiName].get({
       query: {
         ids: `_layout,${params.id}`
       },
@@ -149,13 +155,16 @@ async function getSectionFromPages(
   );
 }
 
-export async function getPagesPageData({
-  params = { id: '' },
-  preview = false,
-  previewData = {}
-}: GetStaticPropsContext<ParsedUrlQuery>): Promise<PageData> {
+export async function getPagesPageData(
+  apiName: ApiNameArticle,
+  {
+    params = { id: '' },
+    preview = false,
+    previewData = {}
+  }: GetStaticPropsContext<ParsedUrlQuery>
+): Promise<PageData> {
   try {
-    const rawPageDatas = await getPagesDataWithLayout({
+    const rawPageDatas = await getPagesDataWithLayout(apiName, {
       params,
       preview,
       previewData

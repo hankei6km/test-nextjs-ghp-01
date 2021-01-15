@@ -15,7 +15,7 @@ export const fetchConfig = (() => {
 // aspida の client.xxx の xxx 部分。
 // 今回は api.vi[apiName]
 // 手動で定義する必要があるので注意:
-export const ApiNameArticleValues = ['posts'] as const;
+export const ApiNameArticleValues = ['pages', 'posts'] as const;
 export type ApiNameArticle = typeof ApiNameArticleValues[number];
 
 const clientV1 = (process.env.USE_MOCK_CLIENT_FORCE === 'true' ||

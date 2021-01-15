@@ -29,7 +29,7 @@ const IndexPage = ({ pageData }: { pageData: PageData }) => {
 export default IndexPage;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const pageData = await getPagesPageData({ params: { id: 'home' } });
+  const pageData = await getPagesPageData('pages',{ params: { id: 'home' } });
   return {
     props: {
       pageData

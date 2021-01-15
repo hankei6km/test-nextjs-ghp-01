@@ -23,7 +23,7 @@ describe('getSortedPagesData()', () => {
   it('should returns contents array with out contet filed', async () => {
     // aspida-mock 使う?
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPagesList));
-    expect(await getSortedPagesData()).toStrictEqual([
+    expect(await getSortedPagesData('pages')).toStrictEqual([
       {
         id: '_layout',
         createdAt: '2020-12-27T04:04:30.107Z',
@@ -55,7 +55,7 @@ describe('getSortedPagesData()', () => {
 describe('getAllPagesIds()', () => {
   it('should returns all ids', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPagesIds));
-    expect(await getAllPagesIds()).toStrictEqual([
+    expect(await getAllPagesIds('pages')).toStrictEqual([
       { params: { id: '_layout' } },
       { params: { id: 'home' } },
       { params: { id: 'blog' } }
@@ -68,7 +68,9 @@ describe('getPagesData()', () => {
     fetchMock.mockResponseOnce(
       JSON.stringify(mockDataPages.contents.find(({ id }) => id === 'home'))
     );
-    expect(await getPagesData({ params: { id: 'home' } })).toStrictEqual({
+    expect(
+      await getPagesData('pages', { params: { id: 'home' } })
+    ).toStrictEqual({
       id: 'home',
       createdAt: '2020-12-27T04:04:30.107Z',
       updatedAt: '2020-12-27T04:04:30.107Z',
@@ -109,7 +111,9 @@ describe('getPagesPageData()', () => {
     fetchMock
       .mockResponseOnce(JSON.stringify(mockDataPagesLayoutHome))
       .mockResponseOnce(JSON.stringify(mockDataArticleList));
-    expect(await getPagesPageData({ params: { id: 'home' } })).toStrictEqual({
+    expect(
+      await getPagesPageData('pages', { params: { id: 'home' } })
+    ).toStrictEqual({
       title: 'Home',
       description: 'my starter home page',
       mainImage: '',
