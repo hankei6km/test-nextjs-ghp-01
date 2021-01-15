@@ -1,5 +1,6 @@
 import {
   mockDataPages,
+  mockDataPagesLayoutHome,
   mockDataPagesList,
   mockDataPagesIds,
   mockDataArticleList
@@ -24,6 +25,14 @@ describe('getSortedPagesData()', () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPagesList));
     expect(await getSortedPagesData()).toStrictEqual([
       {
+        id: '_layout',
+        createdAt: '2020-12-27T04:04:30.107Z',
+        updatedAt: '2020-12-27T04:04:30.107Z',
+        publishedAt: '2020-12-27T04:04:30.107Z',
+        revisedAt: '2020-12-27T04:04:30.107Z',
+        title: 'My Starter MOCK'
+      },
+      {
         id: 'home',
         createdAt: '2020-12-27T04:04:30.107Z',
         updatedAt: '2020-12-27T04:04:30.107Z',
@@ -47,6 +56,7 @@ describe('getAllPagesIds()', () => {
   it('should returns all ids', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPagesIds));
     expect(await getAllPagesIds()).toStrictEqual([
+      { params: { id: '_layout' } },
       { params: { id: 'home' } },
       { params: { id: 'blog' } }
     ]);
@@ -97,14 +107,23 @@ describe('getPagesData()', () => {
 describe('getPagesPageData()', () => {
   it('should returns PageData', async () => {
     fetchMock
-      .mockResponseOnce(
-        JSON.stringify(mockDataPages.contents.find(({ id }) => id === 'home'))
-      )
+      .mockResponseOnce(JSON.stringify(mockDataPagesLayoutHome))
       .mockResponseOnce(JSON.stringify(mockDataArticleList));
     expect(await getPagesPageData({ params: { id: 'home' } })).toStrictEqual({
       title: 'Home',
       description: 'my starter home page',
       mainImage: '',
+      header: [
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html',
+              contentHtml: '<h1>My Starter MOCK</h1>'
+            }
+          ]
+        }
+      ],
       sections: [
         {
           title: 'intro',
@@ -165,7 +184,8 @@ describe('getPagesPageData()', () => {
             }
           ]
         }
-      ]
+      ],
+      footer: []
     });
   });
 });

@@ -1,6 +1,6 @@
 import { mockMethods } from 'aspida-mock';
 import { ArticleList, ArticleIds } from '../../../contentTypes';
-import { GetIdsQuery, GetPostsItemQuery } from '../../../queryTypes';
+import { GetFieldsIdQuery, GetPostsItemQuery } from '../../../queryTypes';
 import { mockDataArticles } from '../../../mockData';
 
 export type Methods = {
@@ -8,7 +8,7 @@ export type Methods = {
     resBody: ArticleList;
     polymorph: [
       {
-        query: GetIdsQuery;
+        query: GetFieldsIdQuery;
         resBody: ArticleIds;
       },
       {
@@ -28,4 +28,3 @@ export default mockMethods<Methods>({
     resBody: mockDataArticles
   })
 });
-

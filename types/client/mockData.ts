@@ -3,6 +3,27 @@ import { PagesContents, ArticleContents } from './contentTypes';
 export const mockDataPages: PagesContents = {
   contents: [
     {
+      id: '_layout',
+      createdAt: '2020-12-27T04:04:30.107Z',
+      updatedAt: '2020-12-27T04:04:30.107Z',
+      publishedAt: '2020-12-27T04:04:30.107Z',
+      revisedAt: '2020-12-27T04:04:30.107Z',
+      title: 'My Starter MOCK',
+      kind: ['page'],
+      description: 'my starter home page',
+      sections: [
+        {
+          fieldId: 'sectionHeader',
+          content: [
+            {
+              fieldId: 'contentMarkdown',
+              markdown: '# My Starter MOCK'
+            }
+          ]
+        }
+      ]
+    },
+    {
       id: 'home',
       createdAt: '2020-12-27T04:04:30.107Z',
       updatedAt: '2020-12-27T04:04:30.107Z',
@@ -62,6 +83,16 @@ export const mockDataPages: PagesContents = {
   totalCount: 2,
   offset: 0,
   limit: 10
+};
+
+export const mockDataPagesLayoutHome = {
+  ...mockDataPages,
+  contents: [mockDataPages.contents[0], mockDataPages.contents[1]]
+};
+
+export const mockDataPagesLayoutBlog = {
+  ...mockDataPages,
+  contents: [mockDataPages.contents[0], mockDataPages.contents[2]]
 };
 
 export const mockDataPagesList = {

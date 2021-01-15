@@ -26,12 +26,36 @@ type PagesContentArticles = {
   apiName: string;
   detail?: boolean;
 };
-type PagesSection = {
+type PagesContentImage = {
+  fieldId: 'contentImage';
+  image: string;
+  className?: boolean;
+};
+type PageContent =
+  | PagesContentHtml
+  | PagesContentMarkdown
+  | PagesContentArticles
+  | PagesContentImage;
+type PagesSectionContent = {
   fieldId: 'sectionContent';
   title?: string;
-  content: (PagesContentHtml | PagesContentMarkdown | PagesContentArticles)[]; // array にしているが、API スキーマ等にあわせたもので、１つコンテントという認識(articlesはちょっと違うか)
+  content: PageContent[]; // array にしているが、API スキーマ等にあわせたもので、１つコンテントという認識(articlesはちょっと違うか)
 };
-
+type PagesSectionHeader = {
+  fieldId: 'sectionHeader';
+  title?: string;
+  content: PageContent[];
+};
+type PagesSectionFooter = {
+  fieldId: 'sectionFooter';
+  title?: string;
+  content: PageContent[];
+};
+type PagesSection =
+  | PagesSectionContent
+  | PagesSectionHeader
+  | PagesSectionFooter;
+export type PagesSectionKind = PagesSection['filedId'];
 type Pages = {
   title: string;
   kind: ['posts' | 'gallery' | 'page']; // 複数選択にしていない
@@ -42,10 +66,11 @@ type Pages = {
 export type PagesContent = ContentBase & Pages;
 export type PagesIndex = Omit<
   PagesContent,
-  'kind' | 'descriptionHtml' | 'descriptionMarkdown' | 'sections'
+  'kind' | 'description' | 'sections'
 >;
 export type PagesId = Pick<PagesContent, 'id'>;
 export type PagesContents = ContentList<PagesContent>;
+export type PagesIdsContents = Omit<PagesContents, 'offset' | 'limit'>;
 export type PagesList = ContentList<PagesIndex>;
 export type PagesIds = ContentList<PagesId>;
 

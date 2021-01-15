@@ -5,10 +5,14 @@ import client, {
   ApiNameArticleValues,
   ApiNameArticle
 } from './client';
-import { PagesContent, blankPageContent } from '../types/client/contentTypes';
+import {
+  PagesSectionKind,
+  PagesContent,
+  blankPageContent
+} from '../types/client/contentTypes';
 import { getSortedArticleList } from './articles';
 import { join } from 'path';
-import { PageData, blankPageData } from '../types/pageTypes';
+import { Section, PageData, blankPageData } from '../types/pageTypes';
 import { markdownToHtml } from './markdown';
 
 export async function getSortedPagesData() {
@@ -64,72 +68,128 @@ export async function getPagesData({
   return blankPageContent();
 }
 
+export async function getPagesDataWithLayout({
+  params = { id: '' }
+}: // preview = false,
+// previewData = {}
+GetStaticPropsContext<ParsedUrlQuery>): Promise<PagesContent[]> {
+  try {
+    // TODO: preview 対応
+    const res = await client.pages.get({
+      query: {
+        ids: `_layout,${params.id}`
+      },
+      config: fetchConfig
+    });
+    return res.body.contents;
+  } catch (err) {
+    console.error(`getPagesDataWithLayout error: ${err.name}`);
+  }
+  return [blankPageContent(), blankPageContent()];
+}
+
+async function getSectionFromPages(
+  page: PagesContent,
+  kind: PagesSectionKind
+): Promise<Section[]> {
+  const sections = page.sections
+    .filter(({ fieldId }) => fieldId === kind)
+    .map((section) => ({
+      title: section.title || '',
+      content: section.content.map((content) => {
+        return async () => {
+          if (content.fieldId === 'contentHtml') {
+            return {
+              kind: 'html' as 'html',
+              contentHtml: content.html
+            };
+          } else if (content.fieldId === 'contentMarkdown') {
+            return {
+              kind: 'html' as 'html',
+              contentHtml: markdownToHtml(content.markdown)
+            };
+          } else if (
+            content.fieldId === 'contentArticles' &&
+            ApiNameArticleValues.some((v) => v === content.apiName)
+          ) {
+            const contents = await getSortedArticleList(
+              content.apiName as ApiNameArticle
+            );
+            return {
+              kind: 'posts' as 'posts',
+              contents: contents.map((c) => ({
+                ...c,
+                // path: normalize(`/${content.apiName}`)
+                path: join('/', content.apiName)
+              })),
+              detail: content.detail || false
+            };
+          } else if (content.fieldId === 'contentImage') {
+            return {
+              kind: 'image' as 'image',
+              image: markdownToHtml(content.image)
+            };
+          }
+          return {
+            kind: '' as ''
+          };
+        };
+      })
+    }));
+  // all だと fetch が同時に実行されすぎる?
+  // (いっても 2 セクションもないだろうけど)
+  return await Promise.all(
+    sections.map(async (section) => {
+      return {
+        title: section.title,
+        // content: []
+        content: await Promise.all(section.content.map((content) => content()))
+      };
+    })
+  );
+}
+
 export async function getPagesPageData({
   params = { id: '' },
   preview = false,
   previewData = {}
 }: GetStaticPropsContext<ParsedUrlQuery>): Promise<PageData> {
   try {
-    const rawPageData = await getPagesData({
+    const rawPageDatas = await getPagesDataWithLayout({
       params,
       preview,
       previewData
     });
-    const sections = rawPageData.sections.map((section) => {
-      return async () => ({
-        title: section.title || '',
-        content: section.content.map((content) => {
-          return async () => {
-            if (content.fieldId === 'contentHtml') {
-              return {
-                kind: 'html' as 'html',
-                contentHtml: content.html
-              };
-            } else if (content.fieldId === 'contentMarkdown') {
-              return {
-                kind: 'html' as 'html',
-                contentHtml: markdownToHtml(content.markdown)
-              };
-            } else if (
-              content.fieldId === 'contentArticles' &&
-              ApiNameArticleValues.some((v) => v === content.apiName)
-            ) {
-              const contents = await getSortedArticleList(
-                content.apiName as ApiNameArticle
-              );
-              return {
-                kind: 'posts' as 'posts',
-                contents: contents.map((c) => ({
-                  ...c,
-                  // path: normalize(`/${content.apiName}`)
-                  path: join('/', content.apiName)
-                })),
-                detail: content.detail || false
-              };
-            }
-            return {
-              kind: '' as ''
-            };
-          };
-        })
-      });
-    });
-    // all だと fetch が同時に実行されすぎる?
-    // (いっても 2 セクションもないだろうけど)
-    return {
+    const rawLayoutData = rawPageDatas[0];
+    const layoutData = {
+      title: rawLayoutData.title,
+      description: rawLayoutData.description || '',
+      mainImage: '',
+      header: await getSectionFromPages(rawLayoutData, 'sectionHeader'),
+      sections: await getSectionFromPages(rawLayoutData, 'sectionContent'),
+      footer: await getSectionFromPages(rawLayoutData, 'sectionFooter')
+    };
+    const rawPageData = rawPageDatas[1];
+    const pageData = {
       title: rawPageData.title,
       description: rawPageData.description || '',
       mainImage: '',
-      sections: await Promise.all(
-        sections.map(async (section) => {
-          const s = await section();
-          return {
-            title: s.title,
-            // content: []
-            content: await Promise.all(s.content.map((content) => content()))
-          };
-        })
-      )
+      header: await getSectionFromPages(rawPageData, 'sectionHeader'),
+      sections: await getSectionFromPages(rawPageData, 'sectionContent'),
+      footer: await getSectionFromPages(rawPageData, 'sectionFooter')
+    };
+    return {
+      // title: layoutData.title || pageData.title,
+      title: pageData.title,
+      description: layoutData.description || pageData.description,
+      mainImage: '',
+      header:
+        layoutData.header.length > 0 ? layoutData.header : pageData.sections,
+      sections:
+        layoutData.sections.length > 0
+          ? layoutData.sections
+          : pageData.sections,
+      footer: layoutData.footer.length > 0 ? layoutData.footer : pageData.footer
     };
   } catch (err) {
     console.error(`getPagesPageData error: ${err.name}`);

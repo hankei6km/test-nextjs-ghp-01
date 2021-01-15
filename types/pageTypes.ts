@@ -14,22 +14,31 @@ export type SectionPosts = {
   contents: SectionArticleIndex[];
   detail: boolean;
 };
+export type SectionImage = {
+  kind: 'image';
+  image: string;
+  className?: string;
+};
 
 export type Section = {
   title?: string;
-  content: (SectionBlank | SectionContent | SectionPosts)[];
+  content: (SectionBlank | SectionContent | SectionPosts | SectionImage)[];
 };
 
 export type PageData = {
   title: string;
   description: string;
   mainImage: string;
+  header: Section[];
   sections: Section[];
+  footer: Section[];
 };
 
 export const blankPageData = (): PageData => ({
   title: '',
   description: '',
+  header: [],
   sections: [],
+  footer: [],
   mainImage: ''
 });
