@@ -19,10 +19,27 @@ export type SectionImage = {
   image: string;
   className?: string;
 };
+export type SectionConfigLabel = {
+  kind: 'configLabel';
+  image: string;
+  className?: string;
+};
+export type SectionConfigImage = {
+  kind: 'configImage';
+  image: string;
+  className?: string;
+};
 
 export type Section = {
   title?: string;
-  content: (SectionBlank | SectionContent | SectionPosts | SectionImage)[];
+  content: (
+    | SectionBlank
+    | SectionContent
+    | SectionPosts
+    | SectionImage
+    | SectionConfigLabel
+    | SectionConfigImage
+  )[];
 };
 
 export type PageData = {

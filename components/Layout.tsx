@@ -64,7 +64,7 @@ const Layout = ({ children, title = '', home = false }: Props) => {
       </Head>
       <AppBar
         position="sticky"
-        style={{ top: home ? -220 : -180 }}
+        style={{ top: home ? -300 : -300 }}
         color="default"
         elevation={0}
       >
@@ -130,7 +130,12 @@ const Layout = ({ children, title = '', home = false }: Props) => {
                 </>
               )}
             </Box>
-            <Tabs indicatorColor="primary" textColor="primary" value={0}>
+            <Tabs
+              indicatorColor="primary"
+              textColor="primary"
+              value={0}
+              style={{ position: 'sticky', top: 0 }}
+            >
               {tabs.map(({ label, href }) => (
                 <Tab
                   key={`${label}:${href}`}

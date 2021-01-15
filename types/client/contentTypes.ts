@@ -31,11 +31,23 @@ type PagesContentImage = {
   image: string;
   className?: boolean;
 };
+type PagesContentConfigLabel = {
+  fieldId: 'contentConfigLabel';
+  field: string;
+  className?: boolean;
+};
+type PagesContentConfigImage = {
+  fieldId: 'contentConfigImage';
+  field: string;
+  className?: boolean;
+};
 type PageContent =
   | PagesContentHtml
   | PagesContentMarkdown
   | PagesContentArticles
-  | PagesContentImage;
+  | PagesContentImage
+  | PagesContentConfigLabel
+  | PagesContentConfigImage;
 type PagesSectionContent = {
   fieldId: 'sectionContent';
   title?: string;
