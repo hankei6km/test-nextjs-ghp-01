@@ -29,17 +29,15 @@ type PagesContentArticles = {
 type PagesContentImage = {
   fieldId: 'contentImage';
   image: string;
-  className?: boolean;
+  className?: string;
 };
 type PagesContentConfigLabel = {
   fieldId: 'contentConfigLabel';
   field: string;
-  className?: boolean;
 };
 type PagesContentConfigImage = {
   fieldId: 'contentConfigImage';
   field: string;
-  className?: boolean;
 };
 type PageContent =
   | PagesContentHtml

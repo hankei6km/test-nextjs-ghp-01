@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
 const IndexPage = ({ pageData }: { pageData: PageData }) => {
   const classes = useStyles();
   return (
-    <Layout home title={pageData.title}>
+    <Layout home headerSections={pageData.header} title={pageData.title}>
       <Box my={1}>
         <SectionList sections={pageData.sections} classes={{ ...classes }} />
       </Box>
@@ -29,7 +29,7 @@ const IndexPage = ({ pageData }: { pageData: PageData }) => {
 export default IndexPage;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const pageData = await getPagesPageData('pages',{ params: { id: 'home' } });
+  const pageData = await getPagesPageData('pages', { params: { id: 'home' } });
   return {
     props: {
       pageData

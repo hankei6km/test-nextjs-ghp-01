@@ -1,10 +1,11 @@
-import React, { ElementType } from 'react';
+import React, { useContext, ElementType } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import siteContext from '../components/SiteContext';
 import ArticleList from './ArticleList';
 import { Section as SectionType } from '../types/pageTypes';
-import { pruneClasses } from '../utils/classes';
+import { pruneClasses, classNameFromConfigField } from '../utils/classes';
 import SectionContext, { sectionContextDefault } from './SectionContext';
 
 const useStyles = makeStyles(() => ({
@@ -19,13 +20,30 @@ const useStyles = makeStyles(() => ({
   },
   'SectionItem-contentArticles': {
     width: '100%'
+  },
+  'ConfigLabel-siteTitle': {},
+  'ConfigLabel-profileName': {},
+  'ConfigImage-profileImage-outer': {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center'
+  },
+  'ConfigImage-profileImage': {
+    width: 240,
+    height: 240,
+    borderRadius: '9999px'
   }
 }));
 const classNames = [
   'SectionItem-root',
   'SectionItem-title',
   'SectionItem-contentBody',
-  'SectionItem-contentArticles'
+  'SectionItem-contentArticles',
+  'ConfigLabel-siteTitle',
+  'ConfigLabel-profileName',
+  'ConfigImage-profileImage-outer',
+  'ConfigImage-profileImage'
 ];
 
 export type SectionItemComponent = {
@@ -43,6 +61,7 @@ type Props = {
 
 const SectionItem = ({ data, classes: inClasses }: Props) => {
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
+  const { label, image } = useContext(siteContext);
   const { component, variant } = sectionContextDefault;
   return (
     <SectionContext.Provider value={sectionContextDefault}>
@@ -63,6 +82,33 @@ const SectionItem = ({ data, classes: inClasses }: Props) => {
                 className={classes['SectionItem-contentBody']}
                 dangerouslySetInnerHTML={{ __html: content.contentHtml }}
               ></Box>
+            )}
+            {content.kind === 'configLabel' && (
+              <Box
+                className={classNameFromConfigField(
+                  classes,
+                  `ConfigLabel-${content.field}`
+                )}
+              >
+                {label[content.field]}
+              </Box>
+            )}
+            {content.kind === 'configImage' && (
+              <Box
+                className={classNameFromConfigField(
+                  classes,
+                  `ConfigImage-${content.field}-outer`
+                )}
+              >
+                <img
+                  src={image[content.field]}
+                  alt=""
+                  className={classNameFromConfigField(
+                    classes,
+                    `ConfigImage-${content.field}`
+                  )}
+                />
+              </Box>
             )}
             {content.kind === 'posts' && (
               <Box className={classes['SectionItem-contentArticles']}>

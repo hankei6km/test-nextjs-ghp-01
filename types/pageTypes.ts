@@ -21,13 +21,11 @@ export type SectionImage = {
 };
 export type SectionConfigLabel = {
   kind: 'configLabel';
-  image: string;
-  className?: string;
+  field: string;
 };
 export type SectionConfigImage = {
   kind: 'configImage';
-  image: string;
-  className?: string;
+  field: string;
 };
 
 export type Section = {

@@ -11,6 +11,7 @@ import {
   blankPageContent
 } from '../types/client/contentTypes';
 import { join } from 'path';
+import siteConfig from '../src/site.config';
 import { Section, PageData, blankPageData } from '../types/pageTypes';
 import { markdownToHtml } from './markdown';
 
@@ -117,12 +118,12 @@ async function getSectionFromPages(
         return async () => {
           if (content.fieldId === 'contentHtml') {
             return {
-              kind: 'html' as 'html',
+              kind: 'html' as const,
               contentHtml: content.html
             };
           } else if (content.fieldId === 'contentMarkdown') {
             return {
-              kind: 'html' as 'html',
+              kind: 'html' as const,
               contentHtml: markdownToHtml(content.markdown)
             };
           } else if (
@@ -133,7 +134,7 @@ async function getSectionFromPages(
               content.apiName as ApiNameArticle
             );
             return {
-              kind: 'posts' as 'posts',
+              kind: 'posts' as const,
               contents: contents.map((c) => ({
                 ...c,
                 // path: normalize(`/${content.apiName}`)
@@ -143,12 +144,29 @@ async function getSectionFromPages(
             };
           } else if (content.fieldId === 'contentImage') {
             return {
-              kind: 'image' as 'image',
-              image: markdownToHtml(content.image)
+              kind: 'image' as const,
+              image: content.image,
+              className: content.className || ''
+            };
+          } else if (
+            content.fieldId === 'contentConfigLabel' &&
+            siteConfig.label[content.field] !== undefined
+          ) {
+            return {
+              kind: 'configLabel' as const,
+              field: content.field
+            };
+          } else if (
+            content.fieldId === 'contentConfigImage' &&
+            siteConfig.image[content.field] !== undefined
+          ) {
+            return {
+              kind: 'configImage' as const,
+              field: content.field
             };
           }
           return {
-            kind: '' as ''
+            kind: '' as const
           };
         };
       })
