@@ -32,7 +32,7 @@ describe('ThumbImage', () => {
       const img = container.querySelector('img');
       expect(img).not.toBeInTheDocument();
 
-      await new Promise((resolve) => {
+      await new Promise<void>((resolve) => {
         // useEEffect 待ち、タイミング依存.
         // 下記の方法では hadleOnload を非同期に実行するとact の外に出てしまう.
         // https://reactjs.org/blog/2019/02/06/react-v16.8.0.html#testing-hooks

@@ -17,7 +17,6 @@ import {
 } from '../test/testUtils';
 
 import SectionContext, { sectionContextDefault } from './SectionContext';
-import { mockDataArticles } from '../types/client/mockData';
 import ArticleItem from './ArticleItem';
 
 // https://stackoverflow.com/questions/40449434/mocking-globals-in-jest
@@ -29,7 +28,7 @@ afterEach(() => {
 describe('ArticleItem', () => {
   it('should renders ArticleItems', async () => {
     const srcSetter = jest.fn();
-    const srcValue = new Promise((resolve) => {
+    const srcValue = new Promise<void>((resolve) => {
       srcSetter.mockImplementation((v) => {
         resolve(v);
       });

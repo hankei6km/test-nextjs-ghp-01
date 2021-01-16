@@ -40,7 +40,7 @@ describe('SectionItem', () => {
         </RouterContext.Provider>
       );
 
-      await new Promise((resolve) => {
+      await new Promise<void>((resolve) => {
         setTimeout(() => {
           addEventListener.mock.calls.forEach((v) => {
             v[1]();

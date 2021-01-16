@@ -9,7 +9,6 @@ import {
   mockImage,
   mockDataSectionArticleList
 } from '../test/testUtils';
-import { mockDataArticles } from '../types/client/mockData';
 import ArticleDetail from './ArticleDetail';
 
 // https://stackoverflow.com/questions/40449434/mocking-globals-in-jest
