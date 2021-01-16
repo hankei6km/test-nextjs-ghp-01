@@ -81,6 +81,24 @@ describe('getPagesData()', () => {
       description: 'my starter home page',
       sections: [
         {
+          fieldId: 'sectionHeader',
+          content: [
+            {
+              fieldId: 'contentConfigImage',
+              field: 'profileImage'
+            },
+            {
+              fieldId: 'contentConfigLabel',
+              field: 'profileName'
+            },
+            {
+              fieldId: 'contentMarkdown',
+              markdown:
+                '## variant\n- Next.js\n- Material-UI\n- Typescript\n- aspida\n- and more\n## environment\n- hot mock'
+            }
+          ]
+        },
+        {
           fieldId: 'sectionContent',
           title: 'intro',
           content: [
@@ -124,8 +142,17 @@ describe('getPagesPageData()', () => {
           title: '',
           content: [
             {
+              kind: 'configImage',
+              field: 'profileImage'
+            },
+            {
+              kind: 'configLabel',
+              field: 'profileName'
+            },
+            {
               kind: 'html',
-              contentHtml: '<h1>My Starter MOCK</h1>'
+              contentHtml:
+                '<h2>variant</h2><ul><li>Next.js</li><li>Material-UI</li><li>Typescript</li><li>aspida</li><li>and more</li></ul><h2>environment</h2><ul><li>hot mock</li></ul>'
             }
           ]
         }

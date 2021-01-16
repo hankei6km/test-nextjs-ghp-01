@@ -22,7 +22,6 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   // 共有されないもよう。
   // sessionStorage は?
   // https://ja.reactjs.org/docs/hooks-faq.html#how-to-avoid-passing-callbacks-down
-
   return (
     <React.Fragment>
       <Head>

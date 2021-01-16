@@ -16,8 +16,8 @@ export const mockDataPages: PagesContents = {
           fieldId: 'sectionHeader',
           content: [
             {
-              fieldId: 'contentMarkdown',
-              markdown: '# My Starter MOCK'
+              fieldId: 'contentConfigImage',
+              field: 'profileImageSmall'
             }
           ]
         }
@@ -33,6 +33,24 @@ export const mockDataPages: PagesContents = {
       kind: ['page'],
       description: 'my starter home page',
       sections: [
+        {
+          fieldId: 'sectionHeader',
+          content: [
+            {
+              fieldId: 'contentConfigImage',
+              field: 'profileImage'
+            },
+            {
+              fieldId: 'contentConfigLabel',
+              field: 'profileName'
+            },
+            {
+              fieldId: 'contentMarkdown',
+              markdown:
+                '## variant\n- Next.js\n- Material-UI\n- Typescript\n- aspida\n- and more\n## environment\n- hot mock'
+            }
+          ]
+        },
         {
           fieldId: 'sectionContent',
           title: 'intro',

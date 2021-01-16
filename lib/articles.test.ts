@@ -130,8 +130,8 @@ describe('getPagesPageData()', () => {
           title: '',
           content: [
             {
-              kind: 'html',
-              contentHtml: '<h1>My Starter MOCK</h1>'
+              kind: 'configImage',
+              field: 'profileImageSmall'
             }
           ]
         }
@@ -175,8 +175,8 @@ describe('getPagesPageData()', () => {
           title: '',
           content: [
             {
-              kind: 'html',
-              contentHtml: '<h1>My Starter MOCK</h1>'
+              kind: 'configImage',
+              field: 'profileImageSmall'
             }
           ]
         }

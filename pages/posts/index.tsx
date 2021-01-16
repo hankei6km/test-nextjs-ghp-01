@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
 const PostsPage = ({ pageData }: { pageData: PageData }) => {
   const classes = useStyles();
   return (
-    <Layout title={pageData.title}>
+    <Layout headerSections={pageData.header} title={pageData.title}>
       <Box my={1}>
         <SectionList sections={pageData.sections} classes={{ ...classes }} />
       </Box>

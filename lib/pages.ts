@@ -227,13 +227,9 @@ export async function getPagesPageData(
       title: pageData.title,
       description: layoutData.description || pageData.description,
       mainImage: '',
-      header:
-        layoutData.header.length > 0 ? layoutData.header : pageData.sections,
-      sections:
-        layoutData.sections.length > 0
-          ? layoutData.sections
-          : pageData.sections,
-      footer: layoutData.footer.length > 0 ? layoutData.footer : pageData.footer
+      header: pageData.header.length > 0 ? pageData.header : layoutData.header,
+      sections: pageData.sections,
+      footer: pageData.footer.length > 0 ? pageData.footer : layoutData.footer
     };
   } catch (err) {
     console.error(`getPagesPageData error: ${err.name}`);

@@ -2,11 +2,11 @@ import React, { useContext, ElementType } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
-import siteContext from '../components/SiteContext';
+import SiteContext from '../components/SiteContext';
 import ArticleList from './ArticleList';
 import { Section as SectionType } from '../types/pageTypes';
 import { pruneClasses, classNameFromConfigField } from '../utils/classes';
-import SectionContext, { sectionContextDefault } from './SectionContext';
+import SectionContext from './SectionContext';
 
 const useStyles = makeStyles(() => ({
   'SectionItem-root': {
@@ -23,15 +23,22 @@ const useStyles = makeStyles(() => ({
   },
   'ConfigLabel-siteTitle': {},
   'ConfigLabel-profileName': {},
-  'ConfigImage-profileImage-outer': {
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center'
-  },
-  'ConfigImage-profileImage': {
+  'ConfigImage-profileImageLarge-outer': {},
+  'ConfigImage-profileImageLarge': {
     width: 240,
     height: 240,
+    borderRadius: '9999px'
+  },
+  'ConfigImage-profileImage-outer': {},
+  'ConfigImage-profileImage': {
+    width: 140,
+    height: 140,
+    borderRadius: '9999px'
+  },
+  'ConfigImage-profileImageSmall-outer': {},
+  'ConfigImage-profileImageSmall': {
+    width: 80,
+    height: 80,
     borderRadius: '9999px'
   }
 }));
@@ -42,8 +49,12 @@ const classNames = [
   'SectionItem-contentArticles',
   'ConfigLabel-siteTitle',
   'ConfigLabel-profileName',
+  'ConfigImage-profileImageLarge-outer',
+  'ConfigImage-profileImageLarge',
   'ConfigImage-profileImage-outer',
-  'ConfigImage-profileImage'
+  'ConfigImage-profileImage',
+  'ConfigImage-profileImageSmall-outer',
+  'ConfigImage-profileImageSmall'
 ];
 
 export type SectionItemComponent = {
@@ -61,10 +72,10 @@ type Props = {
 
 const SectionItem = ({ data, classes: inClasses }: Props) => {
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
-  const { label, image } = useContext(siteContext);
-  const { component, variant } = sectionContextDefault;
+  const { label, image, sectionConfig } = useContext(SiteContext);
+  const { component, variant } = sectionConfig;
   return (
-    <SectionContext.Provider value={sectionContextDefault}>
+    <SectionContext.Provider value={sectionConfig}>
       <Box component="section" className={classes['SectionItem-root']}>
         {data.title && (
           <Typography
@@ -84,14 +95,24 @@ const SectionItem = ({ data, classes: inClasses }: Props) => {
               ></Box>
             )}
             {content.kind === 'configLabel' && (
-              <Box
+              <Typography
+                component={
+                  (component as { [key: string]: ElementType<any> })[
+                    `configLabel-${content.field}-Component`
+                  ] || 'span'
+                }
+                variant={
+                  (variant as { [key: string]: TypographyProps['variant'] })[
+                    `configLabel-${content.field}-Variant`
+                  ] || 'body1'
+                }
                 className={classNameFromConfigField(
                   classes,
                   `ConfigLabel-${content.field}`
                 )}
               >
                 {label[content.field]}
-              </Box>
+              </Typography>
             )}
             {content.kind === 'configImage' && (
               <Box

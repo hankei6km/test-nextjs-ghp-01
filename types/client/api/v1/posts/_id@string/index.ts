@@ -1,7 +1,7 @@
 import { PagesContent } from '../../../../contentTypes';
 import { GetContentQuery } from '../../../../queryTypes';
 import { mockMethods } from 'aspida-mock';
-import { mockDataPages } from '../../../../mockData';
+import { mockDataArticles } from '../../../../mockData';
 
 export type Methods = {
   get: {
@@ -12,7 +12,7 @@ export type Methods = {
 
 export default mockMethods<Methods>({
   get: ({ values }) => {
-    const contents = mockDataPages.contents;
+    const contents = mockDataArticles.contents;
     // stub 使いたいが、どの辺が production に残るかわからないので
     // とりあえずコードを書く.
     const idx = contents.findIndex(({ id }) => id === values.id);
