@@ -131,7 +131,9 @@ describe('getPagesPageData()', () => {
           content: [
             {
               kind: 'configImage',
-              field: 'profileImageSmall'
+              field: 'profileImageSmall',
+              alt: 'profile image',
+              link: '/'
             }
           ]
         }
@@ -205,7 +207,9 @@ describe('getPagesPageData()', () => {
           content: [
             {
               kind: 'configImage',
-              field: 'profileImageSmall'
+              field: 'profileImageSmall',
+              alt: 'profile image',
+              link: '/'
             }
           ]
         }

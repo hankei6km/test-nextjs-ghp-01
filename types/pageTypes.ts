@@ -17,15 +17,19 @@ export type SectionPosts = {
 export type SectionImage = {
   kind: 'image';
   image: string;
-  className?: string;
+  alt: string;
+  link: string;
 };
 export type SectionConfigLabel = {
   kind: 'configLabel';
   field: string;
+  link: string;
 };
 export type SectionConfigImage = {
   kind: 'configImage';
   field: string;
+  alt: string;
+  link: string;
 };
 
 export type Section = {

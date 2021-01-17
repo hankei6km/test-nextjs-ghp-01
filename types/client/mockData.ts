@@ -17,7 +17,9 @@ export const mockDataPages: PagesContents = {
           content: [
             {
               fieldId: 'contentConfigImage',
-              field: 'profileImageSmall'
+              field: 'profileImageSmall',
+              alt: 'profile image',
+              link: '/'
             }
           ]
         },
@@ -68,7 +70,8 @@ export const mockDataPages: PagesContents = {
           content: [
             {
               fieldId: 'contentConfigImage',
-              field: 'profileImage'
+              field: 'profileImage',
+              alt: 'profile image'
             },
             {
               fieldId: 'contentConfigLabel',

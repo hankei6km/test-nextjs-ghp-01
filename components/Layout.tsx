@@ -121,16 +121,18 @@ const Layout = ({
           )}
           <Box className={classes['LayoutHeader-sectionTop']}>
             <SectionList
-              sections={headerSections.slice(0,1)}
+              sections={headerSections.slice(0, 1)}
               classes={{ ...classes }}
             />
           </Box>
-          <Box className={classes['LayoutHeader-sectionList']}>
-            <SectionList
-              sections={headerSections.slice(1)}
-              classes={{ ...classesHeaderFooter }}
-            />
-          </Box>
+          {headerSectionsLen > 0 && (
+            <Box className={classes['LayoutHeader-sectionList']}>
+              <SectionList
+                sections={headerSections.slice(1)}
+                classes={{ ...classesHeaderFooter }}
+              />
+            </Box>
+          )}
         </Container>
       </header>
       <Container maxWidth={maxWidth} disableGutters>

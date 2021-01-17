@@ -2,6 +2,7 @@ import React, { useContext, ElementType } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
+import Link from '../components/Link';
 import SiteContext from '../components/SiteContext';
 import ArticleList from './ArticleList';
 import { Section as SectionType } from '../types/pageTypes';
@@ -94,43 +95,57 @@ const SectionItem = ({ data, classes: inClasses }: Props) => {
                 dangerouslySetInnerHTML={{ __html: content.contentHtml }}
               ></Box>
             )}
-            {content.kind === 'configLabel' && (
-              <Typography
-                component={
-                  (component as { [key: string]: ElementType<any> })[
-                    `configLabel-${content.field}-Component`
-                  ] || 'span'
+            {content.kind === 'configLabel' &&
+              (() => {
+                const inner = (
+                  <Typography
+                    component={
+                      (component as { [key: string]: ElementType<any> })[
+                        `configLabel-${content.field}-Component`
+                      ] || 'span'
+                    }
+                    variant={
+                      (variant as {
+                        [key: string]: TypographyProps['variant'];
+                      })[`configLabel-${content.field}-Variant`] || 'body1'
+                    }
+                    className={classNameFromConfigField(
+                      classes,
+                      `ConfigLabel-${content.field}`
+                    )}
+                  >
+                    {label[content.field]}
+                  </Typography>
+                );
+                if (content.link) {
+                  return <Link href={content.link}>{inner}</Link>;
                 }
-                variant={
-                  (variant as { [key: string]: TypographyProps['variant'] })[
-                    `configLabel-${content.field}-Variant`
-                  ] || 'body1'
+                return inner;
+              })()}
+            {content.kind === 'configImage' &&
+              (() => {
+                const inner = (
+                  <Box
+                    className={classNameFromConfigField(
+                      classes,
+                      `ConfigImage-${content.field}-outer`
+                    )}
+                  >
+                    <img
+                      src={image[content.field]}
+                      alt=""
+                      className={classNameFromConfigField(
+                        classes,
+                        `ConfigImage-${content.field}`
+                      )}
+                    />
+                  </Box>
+                );
+                if (content.link) {
+                  return <Link href={content.link}>{inner}</Link>;
                 }
-                className={classNameFromConfigField(
-                  classes,
-                  `ConfigLabel-${content.field}`
-                )}
-              >
-                {label[content.field]}
-              </Typography>
-            )}
-            {content.kind === 'configImage' && (
-              <Box
-                className={classNameFromConfigField(
-                  classes,
-                  `ConfigImage-${content.field}-outer`
-                )}
-              >
-                <img
-                  src={image[content.field]}
-                  alt=""
-                  className={classNameFromConfigField(
-                    classes,
-                    `ConfigImage-${content.field}`
-                  )}
-                />
-              </Box>
-            )}
+                return inner;
+              })()}
             {content.kind === 'posts' && (
               <Box className={classes['SectionItem-contentArticles']}>
                 <ArticleList

@@ -29,15 +29,19 @@ type PagesContentArticles = {
 type PagesContentImage = {
   fieldId: 'contentImage';
   image: string;
-  className?: string;
+  alt: string;
+  link?: string;
 };
 type PagesContentConfigLabel = {
   fieldId: 'contentConfigLabel';
   field: string;
+  link?: string;
 };
 type PagesContentConfigImage = {
   fieldId: 'contentConfigImage';
   field: string;
+  alt: string;
+  link?: string;
 };
 type PageContent =
   | PagesContentHtml

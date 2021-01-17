@@ -85,7 +85,8 @@ describe('getPagesData()', () => {
           content: [
             {
               fieldId: 'contentConfigImage',
-              field: 'profileImage'
+              field: 'profileImage',
+              alt: 'profile image'
             },
             {
               fieldId: 'contentConfigLabel',
@@ -138,11 +139,14 @@ describe('getPagesPageData()', () => {
           content: [
             {
               kind: 'configImage',
-              field: 'profileImage'
+              field: 'profileImage',
+              alt: 'profile image',
+              link: ''
             },
             {
               kind: 'configLabel',
-              field: 'profileName'
+              field: 'profileName',
+              link: ''
             }
           ]
         }

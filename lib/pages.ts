@@ -146,7 +146,8 @@ async function getSectionFromPages(
             return {
               kind: 'image' as const,
               image: content.image,
-              className: content.className || ''
+              alt: content.alt,
+              link: content.link || ''
             };
           } else if (
             content.fieldId === 'contentConfigLabel' &&
@@ -154,7 +155,8 @@ async function getSectionFromPages(
           ) {
             return {
               kind: 'configLabel' as const,
-              field: content.field
+              field: content.field,
+              link: content.link || ''
             };
           } else if (
             content.fieldId === 'contentConfigImage' &&
@@ -162,7 +164,9 @@ async function getSectionFromPages(
           ) {
             return {
               kind: 'configImage' as const,
-              field: content.field
+              field: content.field,
+              alt: content.alt,
+              link: content.link || ''
             };
           }
           return {
