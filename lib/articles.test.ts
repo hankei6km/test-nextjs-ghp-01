@@ -147,7 +147,36 @@ describe('getPagesPageData()', () => {
           ]
         }
       ],
-      footer: []
+      footer: [
+        {
+          title: 'language & library',
+          content: [
+            {
+              kind: 'html',
+              contentHtml:
+                '<ul><li>Next.js</li><li>Material-UI</li><li>Typescript</li><li>aspida</li><li>and more</li></ul>'
+            }
+          ]
+        },
+        {
+          title: 'environment',
+          content: [
+            {
+              kind: 'html',
+              contentHtml: '<ul><li>hot mock</li></ul>'
+            }
+          ]
+        },
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html',
+              contentHtml: '<hr><p>My Starter</p>'
+            }
+          ]
+        }
+      ]
     });
   });
   it('should returns post data of "mmmmmmmmm" (markdown)', async () => {
@@ -192,7 +221,36 @@ describe('getPagesPageData()', () => {
           ]
         }
       ],
-      footer: []
+      footer: [
+        {
+          title: 'language & library',
+          content: [
+            {
+              kind: 'html',
+              contentHtml:
+                '<ul><li>Next.js</li><li>Material-UI</li><li>Typescript</li><li>aspida</li><li>and more</li></ul>'
+            }
+          ]
+        },
+        {
+          title: 'environment',
+          content: [
+            {
+              kind: 'html',
+              contentHtml: '<ul><li>hot mock</li></ul>'
+            }
+          ]
+        },
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html',
+              contentHtml: '<hr><p>My Starter</p>'
+            }
+          ]
+        }
+      ]
     });
   });
 });

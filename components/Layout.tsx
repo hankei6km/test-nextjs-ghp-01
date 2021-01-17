@@ -11,24 +11,39 @@ import Tab from '@material-ui/core/Tab';
 import siteContext from '../components/SiteContext';
 import { Section } from '../types/pageTypes';
 import SectionList from './SectionList';
+import { pruneClasses } from '../utils/classes';
 
 const useStyles = makeStyles({
-  headerImage: {
-    // width: '6rem',
-    // height: '6rem',
-    borderRadius: '9999px'
-  },
-  headerHomeImage: {
-    // width: '8rem',
-    // height: '8rem',
-    borderRadius: '9999px'
-  },
+  'LayoutHeader-root': {},
+  'LayoutHeader-sectionTop': {},
+  'LayoutHeader-sectionList': {},
+  'LayoutFooter-root': {},
+  'LayoutFooter-sectionList': {},
+  'LayoutFooter-sectionBottom': {},
   heading: {
     // fontFamily:
     //   '-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif',
     fontWeight: 800
   }
 });
+const useStylesGrid = makeStyles(() => ({
+  'SectionList-root': {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(12, 1fr)'
+    // gridGap: theme.spacing(3)
+  },
+  'SectionItem-root': {
+    gridColumnEnd: 'span 6'
+  }
+}));
+const classNames = [
+  'LayoutHeader-root',
+  'LayoutHeader-sectionTop',
+  'LayoutHeader-sectionList',
+  'LayoutFooter-root',
+  'LayoutFooter-sectionList',
+  'LayoutFooter-sectionBottom'
+];
 
 type Props = {
   children?: ReactNode;
@@ -36,6 +51,7 @@ type Props = {
   headerSections?: Section[];
   footerSections?: Section[];
   home?: boolean;
+  classes?: { [key: string]: string };
 };
 
 const tabs = [
@@ -58,10 +74,16 @@ const Layout = ({
   title = '',
   home = false,
   headerSections = [],
-  footerSections = []
+  footerSections = [],
+  classes: inClasses
 }: Props) => {
-  const classes = useStyles();
+  const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
+  const classesHeaderFooter = useStylesGrid({
+    classes: pruneClasses(inClasses, classNames)
+  });
   const { siteTitle } = useContext(siteContext).label;
+  const headerSectionsLen = headerSections.length;
+  const footerSectionsLen = footerSections.length;
   const maxWidth = 'sm';
   return (
     <>
@@ -70,7 +92,7 @@ const Layout = ({
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <header>
+      <header className={classes['LayoutHeader-root']}>
         <Container maxWidth={maxWidth} disableGutters>
           <Typography component="h1" variant="h3">
             <Link href="/" underline="none">
@@ -97,18 +119,38 @@ const Layout = ({
               {title}
             </Typography>
           )}
-          <Box my={1}>
-            <SectionList sections={headerSections} classes={{ ...classes }} />
+          <Box className={classes['LayoutHeader-sectionTop']}>
+            <SectionList
+              sections={headerSections.slice(0,1)}
+              classes={{ ...classes }}
+            />
+          </Box>
+          <Box className={classes['LayoutHeader-sectionList']}>
+            <SectionList
+              sections={headerSections.slice(1)}
+              classes={{ ...classesHeaderFooter }}
+            />
           </Box>
         </Container>
       </header>
       <Container maxWidth={maxWidth} disableGutters>
         <Box>{children}</Box>
       </Container>
-      <footer>
+      <footer className={classes['LayoutHeader-root']}>
         <Container maxWidth={maxWidth} disableGutters>
-          <Box my={1}>
-            <SectionList sections={footerSections} classes={{ ...classes }} />
+          {footerSectionsLen > 0 && (
+            <Box className={classes['LayoutFooter-sectionList']}>
+              <SectionList
+                sections={footerSections.slice(0, footerSectionsLen - 1)}
+                classes={{ ...classesHeaderFooter }}
+              />
+            </Box>
+          )}
+          <Box className={classes['LayoutFooter-sectionBottom']}>
+            <SectionList
+              sections={footerSections.slice(-1)}
+              classes={{ ...classes }}
+            />
           </Box>
         </Container>
       </footer>

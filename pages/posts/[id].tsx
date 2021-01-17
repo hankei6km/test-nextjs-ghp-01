@@ -29,7 +29,11 @@ export default function Post({
     return <ErrorPage statusCode={404} />;
   }
   return (
-    <Layout headerSections={pageData.header} title={pageData.title}>
+    <Layout
+      headerSections={pageData.header}
+      title={pageData.title}
+      footerSections={pageData.footer}
+    >
       <Box my={1}>
         <SectionList sections={pageData.sections} classes={{ ...classes }} />
       </Box>

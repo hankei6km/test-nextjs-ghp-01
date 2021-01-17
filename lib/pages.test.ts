@@ -90,11 +90,6 @@ describe('getPagesData()', () => {
             {
               fieldId: 'contentConfigLabel',
               field: 'profileName'
-            },
-            {
-              fieldId: 'contentMarkdown',
-              markdown:
-                '## variant\n- Next.js\n- Material-UI\n- Typescript\n- aspida\n- and more\n## environment\n- hot mock'
             }
           ]
         },
@@ -148,11 +143,6 @@ describe('getPagesPageData()', () => {
             {
               kind: 'configLabel',
               field: 'profileName'
-            },
-            {
-              kind: 'html',
-              contentHtml:
-                '<h2>variant</h2><ul><li>Next.js</li><li>Material-UI</li><li>Typescript</li><li>aspida</li><li>and more</li></ul><h2>environment</h2><ul><li>hot mock</li></ul>'
             }
           ]
         }
@@ -218,7 +208,36 @@ describe('getPagesPageData()', () => {
           ]
         }
       ],
-      footer: []
+      footer: [
+        {
+          title: 'language & library',
+          content: [
+            {
+              kind: 'html',
+              contentHtml:
+                '<ul><li>Next.js</li><li>Material-UI</li><li>Typescript</li><li>aspida</li><li>and more</li></ul>'
+            }
+          ]
+        },
+        {
+          title: 'environment',
+          content: [
+            {
+              kind: 'html',
+              contentHtml: '<ul><li>hot mock</li></ul>'
+            }
+          ]
+        },
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html',
+              contentHtml: '<hr><p>My Starter</p>'
+            }
+          ]
+        }
+      ]
     });
   });
 });

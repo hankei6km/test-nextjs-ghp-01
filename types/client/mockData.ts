@@ -20,6 +20,36 @@ export const mockDataPages: PagesContents = {
               field: 'profileImageSmall'
             }
           ]
+        },
+        {
+          fieldId: 'sectionFooter',
+          title: 'language & library',
+          content: [
+            {
+              fieldId: 'contentMarkdown',
+              markdown:
+                '- Next.js\n- Material-UI\n- Typescript\n- aspida\n- and more'
+            }
+          ]
+        },
+        {
+          fieldId: 'sectionFooter',
+          title: 'environment',
+          content: [
+            {
+              fieldId: 'contentMarkdown',
+              markdown: '- hot mock'
+            }
+          ]
+        },
+        {
+          fieldId: 'sectionFooter',
+          content: [
+            {
+              fieldId: 'contentMarkdown',
+              markdown: '---\n\nMy Starter'
+            }
+          ]
         }
       ]
     },
@@ -43,11 +73,6 @@ export const mockDataPages: PagesContents = {
             {
               fieldId: 'contentConfigLabel',
               field: 'profileName'
-            },
-            {
-              fieldId: 'contentMarkdown',
-              markdown:
-                '## variant\n- Next.js\n- Material-UI\n- Typescript\n- aspida\n- and more\n## environment\n- hot mock'
             }
           ]
         },
