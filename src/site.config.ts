@@ -1,6 +1,7 @@
 import { ElementType } from 'react';
 import { SectionConfig } from '../components/SectionContext';
 import { TypographyProps } from '@material-ui/core/Typography';
+
 const siteConfig: {
   sectionConfig: SectionConfig & {
     component: {
@@ -23,14 +24,18 @@ const siteConfig: {
       articleDetailComponent: 'article',
       articleItemComponent: 'li',
       articleDetailTitleComponent: 'h3',
-      articleItemTitleComponent: 'span'
+      articleItemTitleComponent: 'span',
+      siteTitleComponent: 'h1',
+      pageTitleComponent: 'h2'
     },
     variant: {
       'configLabel-siteTitle-Variant': 'h2',
       'configLabel-profileName-Variant': 'body1',
       sectionTitleVariant: 'h2',
       articleDetailTitleVariant: 'h3',
-      articleItemTitleVariant: 'body1'
+      articleItemTitleVariant: 'body1',
+      siteTitleVariant: 'h2',
+      pageTitleVariant: 'h2'
     }
   },
   label: {

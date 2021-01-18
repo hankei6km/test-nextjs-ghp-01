@@ -3,16 +3,22 @@ import { ArticleListComponent, ArticleListVariant } from './ArticleList';
 import { SectionItemComponent, SectionItemVariant } from './SectionItem';
 import { ArticleDetailComponent, ArticleDetailVariant } from './ArticleDetail';
 import { ArticleItemComponent, ArticleItemVariant } from './ArticleItem';
+import { SiteTitleComponent, SiteTitleVariant } from './parts/SiteTitle';
+import { PageTitleComponent, PageTitleVariant } from './parts/PageTitle';
 
 export type SectionConfig = {
   component: SectionItemComponent &
     ArticleListComponent &
     ArticleDetailComponent &
-    ArticleItemComponent;
+    ArticleItemComponent &
+    SiteTitleComponent &
+    PageTitleComponent;
   variant: SectionItemVariant &
     ArticleListVariant &
     ArticleDetailVariant &
-    ArticleItemVariant;
+    ArticleItemVariant &
+    SiteTitleVariant &
+    PageTitleVariant;
 };
 export const sectionContextDefault: SectionConfig = {
   component: {
@@ -20,12 +26,16 @@ export const sectionContextDefault: SectionConfig = {
     articleDetailComponent: 'article',
     articleItemComponent: 'li',
     articleDetailTitleComponent: 'h3',
-    articleItemTitleComponent: 'span'
+    articleItemTitleComponent: 'span',
+    siteTitleComponent: 'h1',
+    pageTitleComponent: 'h2'
   },
   variant: {
     sectionTitleVariant: 'h2',
     articleDetailTitleVariant: 'h3',
-    articleItemTitleVariant: 'body1'
+    articleItemTitleVariant: 'body1',
+    siteTitleVariant: 'h2',
+    pageTitleVariant: 'h2'
   }
 };
 
