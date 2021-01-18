@@ -5,6 +5,7 @@ import Layout from '../components/Layout';
 import SectionList from '../components/SectionList';
 import { PageData } from '../types/pageTypes';
 import { getPagesPageData } from '../lib/pages';
+import PageContext from '../components/PageContext';
 
 const useStyles = makeStyles(() => ({
   'SectionItem-root': {},
@@ -18,18 +19,20 @@ const useStyles = makeStyles(() => ({
 const IndexPage = ({ pageData }: { pageData: PageData }) => {
   const classes = useStyles();
   return (
-    <Layout
-      home
-      headerSections={pageData.header}
-      title={pageData.title}
-      footerSections={pageData.footer}
-    >
-      <Box my={1}>
-        <SectionList sections={pageData.top} classes={{ ...classes }} />
-        <SectionList sections={pageData.sections} classes={{ ...classes }} />
-        <SectionList sections={pageData.bottom} classes={{ ...classes }} />
-      </Box>
-    </Layout>
+    <PageContext.Provider value={pageData}>
+      <Layout
+        home
+        headerSections={pageData.header}
+        title={pageData.title}
+        footerSections={pageData.footer}
+      >
+        <Box my={1}>
+          <SectionList sections={pageData.top} classes={{ ...classes }} />
+          <SectionList sections={pageData.sections} classes={{ ...classes }} />
+          <SectionList sections={pageData.bottom} classes={{ ...classes }} />
+        </Box>
+      </Layout>
+    </PageContext.Provider>
   );
 };
 

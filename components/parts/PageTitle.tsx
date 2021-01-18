@@ -4,6 +4,7 @@ import Typography, { TypographyProps } from '@material-ui/core/Typography';
 import SectionContext from '../SectionContext';
 import Link from '../Link';
 import { pruneClasses } from '../../utils/classes';
+import PageContext from '../PageContext';
 
 const useStyles = makeStyles(() => ({
   'PageTitle-root': {}
@@ -18,13 +19,13 @@ export type PageTitleVariant = {
 };
 
 type Props = {
-  title: string;
   link?: string;
   classes?: { [key: string]: string };
 };
 
-const PageTitle = ({ title, link = '', classes: inClasses }: Props) => {
+const PageTitle = ({ link = '', classes: inClasses }: Props) => {
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
+  const { title } = useContext(PageContext);
   const { component, variant } = useContext(SectionContext);
   return (
     <Typography

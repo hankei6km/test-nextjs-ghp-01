@@ -72,7 +72,6 @@ const tabs = [
 const Layout = ({
   children,
   title = '',
-  home = false,
   headerSections = [],
   footerSections = [],
   classes: inClasses
@@ -114,11 +113,6 @@ const Layout = ({
               />
             ))}
           </Tabs>
-          {!home && (
-            <Typography component="h2" variant="h3">
-              {title}
-            </Typography>
-          )}
           <Box className={classes['LayoutHeader-sectionTop']}>
             <SectionList
               sections={headerSections.slice(0, 1)}

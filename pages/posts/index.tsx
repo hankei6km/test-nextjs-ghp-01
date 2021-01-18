@@ -5,6 +5,7 @@ import Layout from '../../components/Layout';
 import SectionList from '../../components/SectionList';
 import { PageData } from '../../types/pageTypes';
 import { getPagesPageData } from '../../lib/pages';
+import PageContext from '../../components/PageContext';
 
 const useStyles = makeStyles(() => ({
   'SectionItem-root': {},
@@ -18,17 +19,33 @@ const useStyles = makeStyles(() => ({
 const PostsPage = ({ pageData }: { pageData: PageData }) => {
   const classes = useStyles();
   return (
-    <Layout
-      headerSections={pageData.header}
-      title={pageData.title}
-      footerSections={pageData.footer}
-    >
-      <Box my={1}>
-        <SectionList sections={pageData.top} classes={{ ...classes }} />
-        <SectionList sections={pageData.sections} classes={{ ...classes }} />
-        <SectionList sections={pageData.bottom} classes={{ ...classes }} />
-      </Box>
-    </Layout>
+    <PageContext.Provider value={pageData}>
+      <Layout
+        headerSections={pageData.header}
+        title={pageData.title}
+        footerSections={pageData.footer}
+      >
+        <Box my={1}>
+          <SectionList
+            sections={[
+              {
+                title: '',
+                content: [
+                  {
+                    kind: 'partsPageTitle',
+                    link: ''
+                  }
+                ]
+              }
+            ]}
+            classes={{ ...classes }}
+          />
+          <SectionList sections={pageData.top} classes={{ ...classes }} />
+          <SectionList sections={pageData.sections} classes={{ ...classes }} />
+          <SectionList sections={pageData.bottom} classes={{ ...classes }} />
+        </Box>
+      </Layout>
+    </PageContext.Provider>
   );
 };
 

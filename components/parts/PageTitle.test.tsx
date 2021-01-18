@@ -4,11 +4,19 @@ import { render, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 import { mockRouter } from '../../test/testUtils';
+import PageContext from '../../components/PageContext';
 import PageTitle from './PageTitle';
+import { blankPageData } from '../../types/pageTypes';
 
 describe('PageTitle', () => {
   test('renders site title', () => {
-    const { getByText, queryByRole } = render(<PageTitle title="page1" />);
+    const pageData = blankPageData();
+    pageData.title = 'page1';
+    const { getByText, queryByRole } = render(
+      <PageContext.Provider value={pageData}>
+        <PageTitle />
+      </PageContext.Provider>
+    );
     const pageTitle = getByText('page1');
     expect(pageTitle).toBeInTheDocument();
     const a = queryByRole('link');
@@ -16,9 +24,13 @@ describe('PageTitle', () => {
   });
   test('renders site title with link', () => {
     const router = mockRouter();
+    const pageData = blankPageData();
+    pageData.title = 'page1';
     const { getByRole } = render(
       <RouterContext.Provider value={router}>
-        <PageTitle title="page1" link="/page1" />
+        <PageContext.Provider value={pageData}>
+          <PageTitle link="/page1" />
+        </PageContext.Provider>
       </RouterContext.Provider>
     );
     const a = getByRole('link');

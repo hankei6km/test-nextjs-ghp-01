@@ -8,6 +8,7 @@ import ArticleList from './ArticleList';
 import { Section as SectionType } from '../types/pageTypes';
 import { pruneClasses, classNameFromConfigField } from '../utils/classes';
 import SectionContext from './SectionContext';
+import PageTitle from './parts/PageTitle';
 
 const useStyles = makeStyles(() => ({
   'SectionItem-root': {
@@ -146,6 +147,9 @@ const SectionItem = ({ data, classes: inClasses }: Props) => {
                 }
                 return inner;
               })()}
+            {content.kind === 'partsPageTitle' && (
+              <PageTitle link={content.link} />
+            )}
             {content.kind === 'posts' && (
               <Box className={classes['SectionItem-contentArticles']}>
                 <ArticleList
