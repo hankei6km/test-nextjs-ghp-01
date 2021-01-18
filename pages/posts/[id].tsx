@@ -53,7 +53,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const pageData = await getPagesPageData('posts', context);
+  const pageData = await getPagesPageData('posts', context, ['blog-posts']);
   return {
     props: {
       pageData,

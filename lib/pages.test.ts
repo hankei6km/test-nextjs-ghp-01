@@ -1,6 +1,6 @@
 import {
   mockDataPages,
-  mockDataPagesLayoutHome,
+  mockDataPagesOuterHome,
   mockDataPagesList,
   mockDataPagesIds,
   mockDataArticleList
@@ -47,6 +47,14 @@ describe('getSortedPagesData()', () => {
         publishedAt: '2020-12-26T15:29:14.476Z',
         revisedAt: '2020-12-26T15:29:14.476Z',
         title: 'Blog'
+      },
+      {
+        id: 'blog-posts',
+        createdAt: '2020-12-26T15:29:14.476Z',
+        updatedAt: '2020-12-26T15:29:14.476Z',
+        publishedAt: '2020-12-26T15:29:14.476Z',
+        revisedAt: '2020-12-26T15:29:14.476Z',
+        title: 'Blog'
       }
     ]);
   });
@@ -58,7 +66,8 @@ describe('getAllPagesIds()', () => {
     expect(await getAllPagesIds('pages')).toStrictEqual([
       { params: { id: '_global' } },
       { params: { id: 'home' } },
-      { params: { id: 'blog' } }
+      { params: { id: 'blog' } },
+      { params: { id: 'blog-posts' } }
     ]);
   });
 });
@@ -123,7 +132,7 @@ describe('getPagesData()', () => {
 describe('getPagesPageData()', () => {
   it('should returns PageData', async () => {
     fetchMock
-      .mockResponseOnce(JSON.stringify(mockDataPagesLayoutHome))
+      .mockResponseOnce(JSON.stringify(mockDataPagesOuterHome))
       .mockResponseOnce(JSON.stringify(mockDataArticleList));
     expect(
       await getPagesPageData('pages', { params: { id: 'home' } })
