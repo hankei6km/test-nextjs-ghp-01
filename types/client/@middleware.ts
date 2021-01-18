@@ -5,7 +5,8 @@ import {
   mockDataArticleIds,
   mockDataArticleList,
   mockDataPagesOuterHome,
-  mockDataPagesOuterBlog
+  mockDataPagesOuterBlog,
+  mockDataPagesOuterPosts
 } from './mockData';
 
 // polymorph 対応
@@ -13,7 +14,7 @@ export default mockMiddleware([
   (req, res, next) =>
     req.path === '/api/v1/pages' &&
     req.method === 'GET' &&
-    req.query?.ids === '_layout,home'
+    req.query?.ids === '_global,home'
       ? res({
           status: 200,
           resBody: mockDataPagesOuterHome
@@ -22,10 +23,19 @@ export default mockMiddleware([
   (req, res, next) =>
     req.path === '/api/v1/pages' &&
     req.method === 'GET' &&
-    req.query?.ids === '_layout,blog'
+    req.query?.ids === '_global,blog'
       ? res({
           status: 200,
           resBody: mockDataPagesOuterBlog
+        })
+      : next(),
+  (req, res, next) =>
+    req.path === '/api/v1/pages' &&
+    req.method === 'GET' &&
+    req.query?.ids === '_global,blog-posts'
+      ? res({
+          status: 200,
+          resBody: mockDataPagesOuterPosts
         })
       : next(),
   (req, res, next) =>
