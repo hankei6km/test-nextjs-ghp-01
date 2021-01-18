@@ -1,8 +1,9 @@
 import {
-  mockDataPages,
   mockDataArticles,
   mockDataArticleList,
-  mockDataArticleIds
+  mockDataArticleIds,
+  mockDataPagesOuter,
+  mockDataPagesOuterPosts
 } from '../types/client/mockData';
 import { FetchMock } from 'jest-fetch-mock';
 import {
@@ -107,11 +108,7 @@ describe('getPagesData()', () => {
 describe('getPagesPageData()', () => {
   it('should returns post data of "zzzzzzzzz"', async () => {
     fetchMock
-      .mockResponseOnce(
-        JSON.stringify(
-          mockDataPages.contents.find(({ id }) => id === '_layout')
-        )
-      )
+      .mockResponseOnce(JSON.stringify(mockDataPagesOuter))
       .mockResponseOnce(
         JSON.stringify(
           mockDataArticles.contents.find(({ id }) => id === 'zzzzzzzzz')
@@ -138,6 +135,7 @@ describe('getPagesPageData()', () => {
           ]
         }
       ],
+      top: [],
       sections: [
         {
           title: '',
@@ -149,6 +147,7 @@ describe('getPagesPageData()', () => {
           ]
         }
       ],
+      bottom: [],
       footer: [
         {
           title: 'language & library',
@@ -181,20 +180,18 @@ describe('getPagesPageData()', () => {
       ]
     });
   });
-  it('should returns post data of "mmmmmmmmm" (markdown)', async () => {
+  it('should returns post data of "mmmmmmmmm" (markdown) with outer', async () => {
     fetchMock
-      .mockResponseOnce(
-        JSON.stringify(
-          mockDataPages.contents.find(({ id }) => id === '_layout')
-        )
-      )
+      .mockResponseOnce(JSON.stringify(mockDataPagesOuterPosts))
       .mockResponseOnce(
         JSON.stringify(
           mockDataArticles.contents.find(({ id }) => id === 'mmmmmmmmm')
         )
       );
     expect(
-      await getPagesPageData(testApiName, { params: { id: 'mmmmmmmmm' } })
+      await getPagesPageData(testApiName, { params: { id: 'mmmmmmmmm' } }, [
+        'blog-posts'
+      ])
     ).toStrictEqual({
       id: 'mmmmmmmmm',
       updated: '2021-01-13T05:12.157Z',
@@ -214,6 +211,17 @@ describe('getPagesPageData()', () => {
           ]
         }
       ],
+      top: [
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html',
+              contentHtml: '<p>post top</p><hr>'
+            }
+          ]
+        }
+      ],
       sections: [
         {
           title: '',
@@ -221,6 +229,17 @@ describe('getPagesPageData()', () => {
             {
               kind: 'html',
               contentHtml: '<p>markdown content</p>'
+            }
+          ]
+        }
+      ],
+      bottom: [
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html',
+              contentHtml: '<hr><p>post bottom</p>'
             }
           ]
         }

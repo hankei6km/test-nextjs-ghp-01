@@ -15,6 +15,8 @@ import siteConfig from '../src/site.config';
 import { Section, PageData, blankPageData } from '../types/pageTypes';
 import { markdownToHtml } from './markdown';
 
+const globalPageId = '_global';
+
 export async function getSortedPagesData(apiName: ApiNameArticle) {
   try {
     const res = await client[apiName].get({
@@ -71,35 +73,37 @@ export async function getPagesData(
   return blankPageContent();
 }
 
-export async function getPagesDataWithLayout(
+export async function getPagesDataWithOuter(
   apiName: ApiNameArticle,
   {
     params = { id: '' }
   }: // preview = false,
   // previewData = {}
-  GetStaticPropsContext<ParsedUrlQuery>
+  GetStaticPropsContext<ParsedUrlQuery>,
+  outerIds: string[]
 ): Promise<PagesContent[]> {
   try {
     // TODO: preview 対応
     if (apiName === 'pages') {
       const res = await client[apiName].get({
         query: {
-          ids: `_layout,${params.id}`
+          ids: [globalPageId].concat(outerIds, params.id).join(',')
         },
         config: fetchConfig
       });
       return res.body.contents;
     }
-    return [
-      await getPagesData('pages', {
-        params: {
-          id: '_layout'
-        }
-      }),
+    const res = await client['pages'].get({
+      query: {
+        ids: [globalPageId].concat(outerIds).join(',')
+      },
+      config: fetchConfig
+    });
+    return res.body.contents.concat(
       await getPagesData(apiName, {
         params
       })
-    ];
+    );
   } catch (err) {
     console.error(`getPagesDataWithLayout error: ${err.name}`);
   }
@@ -194,47 +198,52 @@ export async function getPagesPageData(
     params = { id: '' },
     preview = false,
     previewData = {}
-  }: GetStaticPropsContext<ParsedUrlQuery>
+  }: GetStaticPropsContext<ParsedUrlQuery>,
+  outerIds: string[] = []
 ): Promise<PageData> {
   try {
-    const rawPageDatas = await getPagesDataWithLayout(apiName, {
-      params,
-      preview,
-      previewData
-    });
-    const rawLayoutData = rawPageDatas[0];
-    const layoutData = {
-      id: rawLayoutData.id,
-      updated: rawLayoutData.revisedAt || rawLayoutData.updatedAt,
-      title: rawLayoutData.title,
-      description: rawLayoutData.description || '',
-      mainImage: '',
-      header: await getSectionFromPages(rawLayoutData, 'sectionHeader'),
-      sections: await getSectionFromPages(rawLayoutData, 'sectionContent'),
-      footer: await getSectionFromPages(rawLayoutData, 'sectionFooter')
-    };
-    const rawPageData = rawPageDatas[1];
+    const rawPageDatas = await getPagesDataWithOuter(
+      apiName,
+      {
+        params,
+        preview,
+        previewData
+      },
+      outerIds
+    );
     const pageData = {
-      id: rawPageData.id,
-      updated: rawPageData.revisedAt || rawPageData.updatedAt,
-      title: rawPageData.title,
-      description: rawPageData.description || '',
+      id: rawPageDatas[0].id,
+      updated: rawPageDatas[0].revisedAt || rawPageDatas[0].updatedAt,
+      title: rawPageDatas[0].title,
+      description: rawPageDatas[0].description || '',
       mainImage: '',
-      header: await getSectionFromPages(rawPageData, 'sectionHeader'),
-      sections: await getSectionFromPages(rawPageData, 'sectionContent'),
-      footer: await getSectionFromPages(rawPageData, 'sectionFooter')
+      header: await getSectionFromPages(rawPageDatas[0], 'sectionHeader'),
+      top: await getSectionFromPages(rawPageDatas[0], 'sectionTop'),
+      sections: await getSectionFromPages(rawPageDatas[0], 'sectionContent'),
+      bottom: await getSectionFromPages(rawPageDatas[0], 'sectionBottom'),
+      footer: await getSectionFromPages(rawPageDatas[0], 'sectionFooter')
     };
-    return {
-      id: pageData.id,
-      updated: pageData.updated,
-      // title: layoutData.title || pageData.title,
-      title: pageData.title,
-      description: layoutData.description || pageData.description,
-      mainImage: '',
-      header: pageData.header.length > 0 ? pageData.header : layoutData.header,
-      sections: pageData.sections,
-      footer: pageData.footer.length > 0 ? pageData.footer : layoutData.footer
-    };
+    const rawPageDataLen = rawPageDatas.length;
+    for (let idx = 1; idx < rawPageDataLen; idx++) {
+      const rawPageData = rawPageDatas[idx];
+      pageData.id = rawPageData.id;
+      pageData.updated = rawPageData.revisedAt || rawPageData.updatedAt;
+      pageData.title =
+        rawPageData.title !== '' ? rawPageData.title : pageData.title;
+      pageData.description = rawPageData.description || pageData.description;
+      pageData.mainImage = '';
+      const header = await getSectionFromPages(rawPageData, 'sectionHeader');
+      pageData.header = header.length > 0 ? header : pageData.header;
+      const top = await getSectionFromPages(rawPageData, 'sectionTop');
+      pageData.top = top.length > 0 ? top : pageData.top;
+      const sections = await getSectionFromPages(rawPageData, 'sectionContent');
+      pageData.sections = sections.length > 0 ? sections : pageData.sections;
+      const bottom = await getSectionFromPages(rawPageData, 'sectionBottom');
+      pageData.bottom = bottom.length > 0 ? bottom : pageData.bottom;
+      const footer = await getSectionFromPages(rawPageData, 'sectionFooter');
+      pageData.footer = footer.length > 0 ? footer : pageData.footer;
+    }
+    return pageData;
   } catch (err) {
     console.error(`getPagesPageData error: ${err.name}`);
   }
