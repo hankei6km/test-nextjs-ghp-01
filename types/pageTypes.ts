@@ -37,6 +37,11 @@ export type SectionPartsSiteTitle = {
   kind: 'partsSiteTitle';
   link: string;
 };
+export type SectionPartsSiteLogo = {
+  kind: 'partsSiteLogo';
+  size: '' | 'small' | 'large';
+  link: string;
+};
 export type SectionPartsPageTitle = {
   kind: 'partsPageTitle';
   link: string;
@@ -61,6 +66,7 @@ export type Section = {
     | SectionConfigLabel
     | SectionConfigImage
     | SectionPartsSiteTitle
+    | SectionPartsSiteLogo
     | SectionPartsPageTitle
     | SectionPartsProfileImage
     | SectionPartsUpdated

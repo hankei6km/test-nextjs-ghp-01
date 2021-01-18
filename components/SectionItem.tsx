@@ -9,6 +9,7 @@ import { Section as SectionType } from '../types/pageTypes';
 import { pruneClasses, classNameFromConfigField } from '../utils/classes';
 import SectionContext from './SectionContext';
 import SiteTitle from './parts/SiteTitle';
+import SiteLogo from './parts/SiteLogo';
 import PageTitle from './parts/PageTitle';
 
 const useStyles = makeStyles(() => ({
@@ -149,10 +150,17 @@ const SectionItem = ({ data, classes: inClasses }: Props) => {
                 return inner;
               })()}
             {content.kind === 'partsSiteTitle' && (
-              <SiteTitle link={content.link} />
+              <SiteTitle link={content.link} classes={{ ...inClasses }} />
+            )}
+            {content.kind === 'partsSiteLogo' && (
+              <SiteLogo
+                size={content.size}
+                link={content.link}
+                classes={{ ...inClasses }}
+              />
             )}
             {content.kind === 'partsPageTitle' && (
-              <PageTitle link={content.link} />
+              <PageTitle link={content.link} classes={{ ...inClasses }} />
             )}
             {content.kind === 'posts' && (
               <Box className={classes['SectionItem-contentArticles']}>

@@ -25,6 +25,20 @@ const useStyles = makeStyles({
     fontWeight: 800
   }
 });
+const useStylesHeader = makeStyles(() => ({
+  'SectionItem-root': {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  'SiteTitle-link': {
+    opacity: 1,
+    '&:hover': { textDecorationLine: 'none', opacity: 1 }
+  },
+  'SiteLogo-link': {
+    opacity: 1,
+    '&:hover': { textDecorationLine: 'none', opacity: 1 }
+  }
+}));
 const useStylesGrid = makeStyles(() => ({
   'SectionList-root': {
     display: 'grid',
@@ -79,6 +93,9 @@ const Layout = ({
   const classesHeaderFooter = useStylesGrid({
     classes: pruneClasses(inClasses, classNames)
   });
+  const classesHeader = useStylesHeader({
+    classes: pruneClasses(inClasses, classNames)
+  });
   const { siteTitle } = useContext(siteContext).label;
   const headerSectionsLen = headerSections.length;
   const footerSectionsLen = footerSections.length;
@@ -110,9 +127,15 @@ const Layout = ({
           <Box className={classes['LayoutHeader-sectionTop']}>
             <SectionList
               sections={[
-                { title: '', content: [{ kind: 'partsSiteTitle', link: '/' }] }
+                {
+                  title: '',
+                  content: [
+                    { kind: 'partsSiteLogo', size: 'small', link: '/' },
+                    { kind: 'partsSiteTitle', link: '/' }
+                  ]
+                }
               ]}
-              classes={{ ...classes }}
+              classes={{ ...classesHeader }}
             />
           </Box>
           {headerSectionsLen > 0 && (
