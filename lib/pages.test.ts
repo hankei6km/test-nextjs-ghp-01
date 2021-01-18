@@ -25,7 +25,7 @@ describe('getSortedPagesData()', () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPagesList));
     expect(await getSortedPagesData('pages')).toStrictEqual([
       {
-        id: '_layout',
+        id: '_global',
         createdAt: '2020-12-27T04:04:30.107Z',
         updatedAt: '2020-12-27T04:04:30.107Z',
         publishedAt: '2020-12-27T04:04:30.107Z',
@@ -56,7 +56,7 @@ describe('getAllPagesIds()', () => {
   it('should returns all ids', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPagesIds));
     expect(await getAllPagesIds('pages')).toStrictEqual([
-      { params: { id: '_layout' } },
+      { params: { id: '_global' } },
       { params: { id: 'home' } },
       { params: { id: 'blog' } }
     ]);

@@ -109,7 +109,7 @@ describe('getPagesPageData()', () => {
     fetchMock
       .mockResponseOnce(
         JSON.stringify(
-          mockDataPages.contents.find(({ id }) => id === '_layout')
+          mockDataPages.contents.find(({ id }) => id === '_global')
         )
       )
       .mockResponseOnce(
@@ -187,7 +187,7 @@ describe('getPagesPageData()', () => {
     fetchMock
       .mockResponseOnce(
         JSON.stringify(
-          mockDataPages.contents.find(({ id }) => id === '_layout')
+          mockDataPages.contents.find(({ id }) => id === '_global')
         )
       )
       .mockResponseOnce(

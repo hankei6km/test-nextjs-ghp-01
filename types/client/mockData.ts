@@ -3,7 +3,7 @@ import { PagesContents } from './contentTypes';
 export const mockDataPages: PagesContents = {
   contents: [
     {
-      id: '_layout',
+      id: '_global',
       createdAt: '2020-12-27T04:04:30.107Z',
       updatedAt: '2020-12-27T04:04:30.107Z',
       publishedAt: '2020-12-27T04:04:30.107Z',

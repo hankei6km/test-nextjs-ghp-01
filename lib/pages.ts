@@ -15,6 +15,8 @@ import siteConfig from '../src/site.config';
 import { Section, PageData, blankPageData } from '../types/pageTypes';
 import { markdownToHtml } from './markdown';
 
+const globalPageId = '_global';
+
 export async function getSortedPagesData(apiName: ApiNameArticle) {
   try {
     const res = await client[apiName].get({
@@ -84,7 +86,7 @@ export async function getPagesDataWithLayout(
     if (apiName === 'pages') {
       const res = await client[apiName].get({
         query: {
-          ids: `_layout,${params.id}`
+          ids: `${globalPageId},${params.id}`
         },
         config: fetchConfig
       });
@@ -93,7 +95,7 @@ export async function getPagesDataWithLayout(
     return [
       await getPagesData('pages', {
         params: {
-          id: '_layout'
+          id: globalPageId
         }
       }),
       await getPagesData(apiName, {
