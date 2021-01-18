@@ -12,3 +12,32 @@ export function pruneClasses(
   }
   return ret;
 }
+
+export function classNameFromConfigField(
+  classes: { [key: string]: string } | undefined,
+  className: string
+): string {
+  if (classes === undefined) {
+    return '';
+  }
+  const names = Object.entries(classes).filter((kv) => kv[0] === className);
+  if (names.length > 0) {
+    return names[0][1];
+  }
+  return '';
+}
+
+export function classNamesFromConfigField(
+  classes: { [key: string]: string } | undefined,
+  className: string
+): string {
+  if (classes === undefined) {
+    return '';
+  }
+  const r = new RegExp(`^${className}|^${className}-.+`);
+  const names = Object.entries(classes).filter((kv) => r.test(kv[0]));
+  if (names.length > 0) {
+    return names.map((kv) => kv[1]).join(' ');
+  }
+  return '';
+}

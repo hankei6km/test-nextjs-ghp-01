@@ -1,5 +1,6 @@
 import {
   mockDataPages,
+  mockDataPagesLayoutHome,
   mockDataPagesList,
   mockDataPagesIds,
   mockDataArticleList
@@ -22,7 +23,15 @@ describe('getSortedPagesData()', () => {
   it('should returns contents array with out contet filed', async () => {
     // aspida-mock 使う?
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPagesList));
-    expect(await getSortedPagesData()).toStrictEqual([
+    expect(await getSortedPagesData('pages')).toStrictEqual([
+      {
+        id: '_layout',
+        createdAt: '2020-12-27T04:04:30.107Z',
+        updatedAt: '2020-12-27T04:04:30.107Z',
+        publishedAt: '2020-12-27T04:04:30.107Z',
+        revisedAt: '2020-12-27T04:04:30.107Z',
+        title: 'My Starter MOCK'
+      },
       {
         id: 'home',
         createdAt: '2020-12-27T04:04:30.107Z',
@@ -46,7 +55,8 @@ describe('getSortedPagesData()', () => {
 describe('getAllPagesIds()', () => {
   it('should returns all ids', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPagesIds));
-    expect(await getAllPagesIds()).toStrictEqual([
+    expect(await getAllPagesIds('pages')).toStrictEqual([
+      { params: { id: '_layout' } },
       { params: { id: 'home' } },
       { params: { id: 'blog' } }
     ]);
@@ -58,7 +68,9 @@ describe('getPagesData()', () => {
     fetchMock.mockResponseOnce(
       JSON.stringify(mockDataPages.contents.find(({ id }) => id === 'home'))
     );
-    expect(await getPagesData({ params: { id: 'home' } })).toStrictEqual({
+    expect(
+      await getPagesData('pages', { params: { id: 'home' } })
+    ).toStrictEqual({
       id: 'home',
       createdAt: '2020-12-27T04:04:30.107Z',
       updatedAt: '2020-12-27T04:04:30.107Z',
@@ -68,6 +80,20 @@ describe('getPagesData()', () => {
       kind: ['page'],
       description: 'my starter home page',
       sections: [
+        {
+          fieldId: 'sectionHeader',
+          content: [
+            {
+              fieldId: 'contentConfigImage',
+              field: 'profileImage',
+              alt: 'profile image'
+            },
+            {
+              fieldId: 'contentConfigLabel',
+              field: 'profileName'
+            }
+          ]
+        },
         {
           fieldId: 'sectionContent',
           title: 'intro',
@@ -97,14 +123,34 @@ describe('getPagesData()', () => {
 describe('getPagesPageData()', () => {
   it('should returns PageData', async () => {
     fetchMock
-      .mockResponseOnce(
-        JSON.stringify(mockDataPages.contents.find(({ id }) => id === 'home'))
-      )
+      .mockResponseOnce(JSON.stringify(mockDataPagesLayoutHome))
       .mockResponseOnce(JSON.stringify(mockDataArticleList));
-    expect(await getPagesPageData({ params: { id: 'home' } })).toStrictEqual({
+    expect(
+      await getPagesPageData('pages', { params: { id: 'home' } })
+    ).toStrictEqual({
+      id: 'home',
+      updated: '2020-12-27T04:04:30.107Z',
       title: 'Home',
       description: 'my starter home page',
       mainImage: '',
+      header: [
+        {
+          title: '',
+          content: [
+            {
+              kind: 'configImage',
+              field: 'profileImage',
+              alt: 'profile image',
+              link: ''
+            },
+            {
+              kind: 'configLabel',
+              field: 'profileName',
+              link: ''
+            }
+          ]
+        }
+      ],
       sections: [
         {
           title: 'intro',
@@ -162,6 +208,36 @@ describe('getPagesPageData()', () => {
                 }
               ],
               detail: false
+            }
+          ]
+        }
+      ],
+      footer: [
+        {
+          title: 'language & library',
+          content: [
+            {
+              kind: 'html',
+              contentHtml:
+                '<ul><li>Next.js</li><li>Material-UI</li><li>Typescript</li><li>aspida</li><li>and more</li></ul>'
+            }
+          ]
+        },
+        {
+          title: 'environment',
+          content: [
+            {
+              kind: 'html',
+              contentHtml: '<ul><li>hot mock</li></ul>'
+            }
+          ]
+        },
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html',
+              contentHtml: '<hr><p>My Starter</p>'
             }
           ]
         }

@@ -1,60 +1,49 @@
-import { getAllArticleIds, getArticlePostData } from '../../lib/articles';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import ErrorPage from 'next/error';
+import { makeStyles } from '@material-ui/core';
 import Layout from '../../components/Layout';
 import Link from '../../components/Link';
 import Box from '@material-ui/core/Box';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import { ArticlePost } from '../../types/articleTypes';
+import { PageData } from '../../types/pageTypes';
+import { getAllPagesIds, getPagesPageData } from '../../lib/pages';
+import SectionList from '../../components/SectionList';
+// import classes from '*.module.css';
+
+const useStyles = makeStyles(() => ({
+  'SectionItem-root': {},
+  'SectionItem-title': {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center'
+  }
+}));
 
 export default function Post({
-  postData
+  pageData
 }: {
-  postData: ArticlePost;
+  pageData: PageData;
   preview: boolean;
 }) {
-  if (!postData) {
+  const classes = useStyles();
+  if (!pageData) {
     return <ErrorPage statusCode={404} />;
   }
   return (
-    <Layout title={postData.title}>
+    <Layout
+      headerSections={pageData.header}
+      title={pageData.title}
+      footerSections={pageData.footer}
+    >
       <Box my={1}>
-        <Card elevation={0}>
-          <CardHeader
-            titleTypographyProps={{ variant: 'h4' }}
-            title={postData.title}
-          />
-          <CardContent>
-            <Typography component={Box} variant="body1">
-              {postData.content.map((data, i) =>
-                data.kind === 'html' ? (
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: data.html
-                    }}
-                    key={i}
-                  />
-                ) : (
-                  ''
-                )
-              )}
-            </Typography>
-          </CardContent>
-          <CardActions>
-            <Link href="/posts">{'Back to posts'}</Link>
-          </CardActions>
-        </Card>
+        <SectionList sections={pageData.sections} classes={{ ...classes }} />
       </Box>
+      <Link href="/posts">{'Back to posts'}</Link>
     </Layout>
   );
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = await getAllArticleIds('posts');
+  const paths = await getAllPagesIds('posts');
   return {
     paths,
     fallback: true
@@ -62,10 +51,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const postData = await getArticlePostData('posts', context);
+  const pageData = await getPagesPageData('posts', context);
   return {
     props: {
-      postData,
+      pageData,
       preview: context.preview ? context.preview : null
     }
   };

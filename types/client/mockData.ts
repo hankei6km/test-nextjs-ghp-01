@@ -1,7 +1,60 @@
-import { PagesContents, ArticleContents } from './contentTypes';
+import { PagesContents } from './contentTypes';
 
 export const mockDataPages: PagesContents = {
   contents: [
+    {
+      id: '_layout',
+      createdAt: '2020-12-27T04:04:30.107Z',
+      updatedAt: '2020-12-27T04:04:30.107Z',
+      publishedAt: '2020-12-27T04:04:30.107Z',
+      revisedAt: '2020-12-27T04:04:30.107Z',
+      title: 'My Starter MOCK',
+      kind: ['page'],
+      description: 'my starter home page',
+      sections: [
+        {
+          fieldId: 'sectionHeader',
+          content: [
+            {
+              fieldId: 'contentConfigImage',
+              field: 'profileImageSmall',
+              alt: 'profile image',
+              link: '/'
+            }
+          ]
+        },
+        {
+          fieldId: 'sectionFooter',
+          title: 'language & library',
+          content: [
+            {
+              fieldId: 'contentMarkdown',
+              markdown:
+                '- Next.js\n- Material-UI\n- Typescript\n- aspida\n- and more'
+            }
+          ]
+        },
+        {
+          fieldId: 'sectionFooter',
+          title: 'environment',
+          content: [
+            {
+              fieldId: 'contentMarkdown',
+              markdown: '- hot mock'
+            }
+          ]
+        },
+        {
+          fieldId: 'sectionFooter',
+          content: [
+            {
+              fieldId: 'contentMarkdown',
+              markdown: '---\n\nMy Starter'
+            }
+          ]
+        }
+      ]
+    },
     {
       id: 'home',
       createdAt: '2020-12-27T04:04:30.107Z',
@@ -12,6 +65,20 @@ export const mockDataPages: PagesContents = {
       kind: ['page'],
       description: 'my starter home page',
       sections: [
+        {
+          fieldId: 'sectionHeader',
+          content: [
+            {
+              fieldId: 'contentConfigImage',
+              field: 'profileImage',
+              alt: 'profile image'
+            },
+            {
+              fieldId: 'contentConfigLabel',
+              field: 'profileName'
+            }
+          ]
+        },
         {
           fieldId: 'sectionContent',
           title: 'intro',
@@ -64,6 +131,16 @@ export const mockDataPages: PagesContents = {
   limit: 10
 };
 
+export const mockDataPagesLayoutHome = {
+  ...mockDataPages,
+  contents: [mockDataPages.contents[0], mockDataPages.contents[1]]
+};
+
+export const mockDataPagesLayoutBlog = {
+  ...mockDataPages,
+  contents: [mockDataPages.contents[0], mockDataPages.contents[2]]
+};
+
 export const mockDataPagesList = {
   ...mockDataPages,
   contents: mockDataPages.contents.map((v) => ({
@@ -79,7 +156,7 @@ export const mockDataPagesIds = {
   contents: mockDataPages.contents.map(({ id }) => ({ id }))
 };
 
-export const mockDataArticles: ArticleContents = {
+export const mockDataArticles: PagesContents = {
   contents: [
     {
       id: 'mmmmmmmmm',
@@ -88,10 +165,16 @@ export const mockDataArticles: ArticleContents = {
       publishedAt: '2021-01-13T05:12.157Z',
       revisedAt: '2021-01-13T05:12.157Z',
       title: 'title4',
-      content: [
+      kind: ['page'],
+      sections: [
         {
-          fieldId: 'contentMarkdown',
-          markdown: 'markdown content'
+          fieldId: 'sectionContent',
+          content: [
+            {
+              fieldId: 'contentMarkdown',
+              markdown: 'markdown content'
+            }
+          ]
         }
       ]
     },
@@ -102,10 +185,16 @@ export const mockDataArticles: ArticleContents = {
       publishedAt: '2020-12-27T04:04:30.107Z',
       revisedAt: '2020-12-27T04:04:30.107Z',
       title: 'title3',
-      content: [
+      kind: ['page'],
+      sections: [
         {
-          fieldId: 'contentHtml',
-          html: '<p>content3</p>'
+          fieldId: 'sectionContent',
+          content: [
+            {
+              fieldId: 'contentHtml',
+              html: '<p>content3</p>'
+            }
+          ]
         }
       ]
     },
@@ -116,10 +205,16 @@ export const mockDataArticles: ArticleContents = {
       publishedAt: '2020-12-26T15:29:14.476Z',
       revisedAt: '2020-12-26T15:29:14.476Z',
       title: 'title2',
-      content: [
+      kind: ['page'],
+      sections: [
         {
-          fieldId: 'contentHtml',
-          html: '<p>content2</p>'
+          fieldId: 'sectionContent',
+          content: [
+            {
+              fieldId: 'contentHtml',
+              html: '<p>content2</p>'
+            }
+          ]
         }
       ]
     },
@@ -130,10 +225,16 @@ export const mockDataArticles: ArticleContents = {
       publishedAt: '2020-12-26T12:27:22.533Z',
       revisedAt: '2020-12-26T12:27:22.533Z',
       title: 'title1',
-      content: [
+      kind: ['page'],
+      sections: [
         {
-          fieldId: 'contentHtml',
-          html: '<p>content1</p>'
+          fieldId: 'sectionContent',
+          content: [
+            {
+              fieldId: 'contentHtml',
+              html: '<p>content1</p>'
+            }
+          ]
         }
       ]
     }
@@ -147,7 +248,9 @@ export const mockDataArticleList = {
   ...mockDataArticles,
   contents: mockDataArticles.contents.map((v) => ({
     ...v,
-    content: undefined
+    kind: undefined,
+    description: undefined,
+    sections: undefined
   }))
 };
 

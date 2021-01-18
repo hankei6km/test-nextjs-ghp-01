@@ -26,12 +26,50 @@ type PagesContentArticles = {
   apiName: string;
   detail?: boolean;
 };
-type PagesSection = {
+type PagesContentImage = {
+  fieldId: 'contentImage';
+  image: string;
+  alt: string;
+  link?: string;
+};
+type PagesContentConfigLabel = {
+  fieldId: 'contentConfigLabel';
+  field: string;
+  link?: string;
+};
+type PagesContentConfigImage = {
+  fieldId: 'contentConfigImage';
+  field: string;
+  alt: string;
+  link?: string;
+};
+type PageContent =
+  | PagesContentHtml
+  | PagesContentMarkdown
+  | PagesContentArticles
+  | PagesContentImage
+  | PagesContentConfigLabel
+  | PagesContentConfigImage;
+type PagesSectionContent = {
   fieldId: 'sectionContent';
   title?: string;
-  content: (PagesContentHtml | PagesContentMarkdown | PagesContentArticles)[]; // array にしているが、API スキーマ等にあわせたもので、１つコンテントという認識(articlesはちょっと違うか)
+  content: PageContent[]; // array にしているが、API スキーマ等にあわせたもので、１つコンテントという認識(articlesはちょっと違うか)
 };
-
+type PagesSectionHeader = {
+  fieldId: 'sectionHeader';
+  title?: string;
+  content: PageContent[];
+};
+type PagesSectionFooter = {
+  fieldId: 'sectionFooter';
+  title?: string;
+  content: PageContent[];
+};
+type PagesSection =
+  | PagesSectionContent
+  | PagesSectionHeader
+  | PagesSectionFooter;
+export type PagesSectionKind = PagesSection['fieldId'];
 type Pages = {
   title: string;
   kind: ['posts' | 'gallery' | 'page']; // 複数選択にしていない
@@ -42,33 +80,13 @@ type Pages = {
 export type PagesContent = ContentBase & Pages;
 export type PagesIndex = Omit<
   PagesContent,
-  'kind' | 'descriptionHtml' | 'descriptionMarkdown' | 'sections'
+  'kind' | 'description' | 'sections'
 >;
 export type PagesId = Pick<PagesContent, 'id'>;
 export type PagesContents = ContentList<PagesContent>;
+export type PagesIdsContents = Omit<PagesContents, 'offset' | 'limit'>;
 export type PagesList = ContentList<PagesIndex>;
 export type PagesIds = ContentList<PagesId>;
-
-type ArticleContentHtml = {
-  fieldId: 'contentHtml';
-  html: string;
-};
-type ArticleContenMarkdown = {
-  fieldId: 'contentMarkdown';
-  markdown: string;
-};
-
-type Article = {
-  title: string;
-  content: (ArticleContentHtml | ArticleContenMarkdown)[];
-  mainImage?: string;
-};
-export type ArticleContent = ContentBase & Article;
-export type ArticleIndex = Omit<ArticleContent, 'content'>;
-export type ArticleId = Pick<ArticleContent, 'id'>;
-export type ArticleContents = ContentList<ArticleContent>;
-export type ArticleList = ContentList<ArticleIndex>;
-export type ArticleIds = ContentList<ArticleId>;
 
 const contentBase: ContentBase = {
   id: '',
@@ -89,10 +107,4 @@ export const blankPageContent = (): PagesContent => ({
   kind: ['page'],
   description: '',
   sections: []
-});
-
-export const blankArticleContent = (): ArticleContent => ({
-  ...contentBase,
-  title: '',
-  content: []
 });

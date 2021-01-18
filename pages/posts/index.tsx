@@ -18,7 +18,11 @@ const useStyles = makeStyles(() => ({
 const PostsPage = ({ pageData }: { pageData: PageData }) => {
   const classes = useStyles();
   return (
-    <Layout title={pageData.title}>
+    <Layout
+      headerSections={pageData.header}
+      title={pageData.title}
+      footerSections={pageData.footer}
+    >
       <Box my={1}>
         <SectionList sections={pageData.sections} classes={{ ...classes }} />
       </Box>
@@ -29,7 +33,7 @@ const PostsPage = ({ pageData }: { pageData: PageData }) => {
 export default PostsPage;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const pageData = await getPagesPageData({ params: { id: 'blog' } });
+  const pageData = await getPagesPageData('pages', { params: { id: 'blog' } });
   return {
     props: {
       pageData

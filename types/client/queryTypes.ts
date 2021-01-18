@@ -19,9 +19,15 @@ export type GetContentQuery = {
   // depth?: number;
 };
 
-export type GetIdsQuery = {
+export type GetFieldsIdQuery = {
   fields: 'id';
 } & Omit<GetQuery, 'ids' | 'filters'>;
+
+type GetPagesItemsWithLayoutId = string;
+export type GetPagesItemsWithLayout = {
+  // ids: `_layout,${GetPagesItemsWithLayoutId}`
+  ids: GetPagesItemsWithLayoutId;
+};
 
 export type GetPagesItemQuery = {
   // 型のリファクト?が面倒、、、

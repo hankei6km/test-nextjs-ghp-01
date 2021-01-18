@@ -4,7 +4,7 @@ import { SectionItemComponent, SectionItemVariant } from './SectionItem';
 import { ArticleDetailComponent, ArticleDetailVariant } from './ArticleDetail';
 import { ArticleItemComponent, ArticleItemVariant } from './ArticleItem';
 
-type Context = {
+export type SectionConfig = {
   component: SectionItemComponent &
     ArticleListComponent &
     ArticleDetailComponent &
@@ -14,7 +14,7 @@ type Context = {
     ArticleDetailVariant &
     ArticleItemVariant;
 };
-export const sectionContextDefault: Context = {
+export const sectionContextDefault: SectionConfig = {
   component: {
     sectionTitleComponent: 'h2',
     articleDetailComponent: 'article',

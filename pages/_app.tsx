@@ -22,11 +22,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   // 共有されないもよう。
   // sessionStorage は?
   // https://ja.reactjs.org/docs/hooks-faq.html#how-to-avoid-passing-callbacks-down
-
   return (
     <React.Fragment>
       <Head>
-        <title>{siteConfig.siteTitle}</title>
+        <title>{siteConfig.label.siteTitle}</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"

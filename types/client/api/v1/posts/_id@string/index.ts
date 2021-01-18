@@ -1,4 +1,4 @@
-import { ArticleContent } from '../../../../contentTypes';
+import { PagesContent } from '../../../../contentTypes';
 import { GetContentQuery } from '../../../../queryTypes';
 import { mockMethods } from 'aspida-mock';
 import { mockDataArticles } from '../../../../mockData';
@@ -6,7 +6,7 @@ import { mockDataArticles } from '../../../../mockData';
 export type Methods = {
   get: {
     query?: GetContentQuery;
-    resBody: ArticleContent;
+    resBody: PagesContent;
   };
 };
 
