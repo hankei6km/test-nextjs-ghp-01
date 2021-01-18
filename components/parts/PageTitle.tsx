@@ -6,10 +6,17 @@ import Link from '../Link';
 import { pruneClasses } from '../../utils/classes';
 import PageContext from '../PageContext';
 
-const useStyles = makeStyles(() => ({
-  'PageTitle-root': {}
+const useStyles = makeStyles((theme) => ({
+  'PageTitle-root': {},
+
+  'PageTitle-link': {
+    opacity: 1,
+    color: theme.palette.text.primary,
+    // transition: 'opacity .3s',
+    '&:hover': { textDecorationLine: 'none', opacity: 0.5 }
+  }
 }));
-const classNames = ['PageTitle-root'];
+const classNames = ['PageTitle-root', 'PageTitle-link'];
 
 export type PageTitleComponent = {
   pageTitleComponent: ElementType<any>;
@@ -33,7 +40,13 @@ const PageTitle = ({ link = '', classes: inClasses }: Props) => {
       variant={variant.pageTitleVariant}
       className={classes['PageTitle-root']}
     >
-      {link ? <Link href={link}>{title}</Link> : title}
+      {link ? (
+        <Link href={link} className={classes['PageTitle-link']}>
+          {title}
+        </Link>
+      ) : (
+        title
+      )}
     </Typography>
   );
 };

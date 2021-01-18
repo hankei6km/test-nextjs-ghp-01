@@ -6,10 +6,16 @@ import SectionContext from '../SectionContext';
 import Link from '../Link';
 import { pruneClasses } from '../../utils/classes';
 
-const useStyles = makeStyles(() => ({
-  'SiteTitle-root': {}
+const useStyles = makeStyles((theme) => ({
+  'SiteTitle-root': {},
+  'SiteTitle-link': {
+    opacity: 1,
+    color: theme.palette.text.primary,
+    // transition: 'opacity .3s',
+    '&:hover': { textDecorationLine: 'none', opacity: 0.5 }
+  }
 }));
-const classNames = ['SiteTitle-root'];
+const classNames = ['SiteTitle-root', 'SiteTitle-link'];
 
 export type SiteTitleComponent = {
   siteTitleComponent: ElementType<any>;
@@ -33,7 +39,13 @@ const SiteTitle = ({ link = '', classes: inClasses }: Props) => {
       variant={variant.siteTitleVariant}
       className={classes['SiteTitle-root']}
     >
-      {link ? <Link href={link}>{label.siteTitle}</Link> : label.siteTitle}
+      {link ? (
+        <Link href={link} className={classes['SiteTitle-link']}>
+          {label.siteTitle}
+        </Link>
+      ) : (
+        label.siteTitle
+      )}
     </Typography>
   );
 };

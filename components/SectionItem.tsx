@@ -8,6 +8,7 @@ import ArticleList from './ArticleList';
 import { Section as SectionType } from '../types/pageTypes';
 import { pruneClasses, classNameFromConfigField } from '../utils/classes';
 import SectionContext from './SectionContext';
+import SiteTitle from './parts/SiteTitle';
 import PageTitle from './parts/PageTitle';
 
 const useStyles = makeStyles(() => ({
@@ -147,6 +148,9 @@ const SectionItem = ({ data, classes: inClasses }: Props) => {
                 }
                 return inner;
               })()}
+            {content.kind === 'partsSiteTitle' && (
+              <SiteTitle link={content.link} />
+            )}
             {content.kind === 'partsPageTitle' && (
               <PageTitle link={content.link} />
             )}

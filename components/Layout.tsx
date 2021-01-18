@@ -5,7 +5,6 @@ import Head from 'next/head';
 import Link from './Link';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import siteContext from '../components/SiteContext';
@@ -93,11 +92,6 @@ const Layout = ({
       </Head>
       <header className={classes['LayoutHeader-root']}>
         <Container maxWidth={maxWidth} disableGutters>
-          <Typography component="h1" variant="h3">
-            <Link href="/" underline="none">
-              {siteTitle}
-            </Link>
-          </Typography>
           <Tabs
             indicatorColor="primary"
             textColor="primary"
@@ -115,14 +109,16 @@ const Layout = ({
           </Tabs>
           <Box className={classes['LayoutHeader-sectionTop']}>
             <SectionList
-              sections={headerSections.slice(0, 1)}
+              sections={[
+                { title: '', content: [{ kind: 'partsSiteTitle', link: '/' }] }
+              ]}
               classes={{ ...classes }}
             />
           </Box>
           {headerSectionsLen > 0 && (
             <Box className={classes['LayoutHeader-sectionList']}>
               <SectionList
-                sections={headerSections.slice(1)}
+                sections={headerSections}
                 classes={{ ...classesHeaderFooter }}
               />
             </Box>
