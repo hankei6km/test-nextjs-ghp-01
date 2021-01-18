@@ -122,19 +122,7 @@ describe('getPagesPageData()', () => {
       title: 'title3',
       description: 'my starter home page',
       mainImage: '',
-      header: [
-        {
-          title: '',
-          content: [
-            {
-              kind: 'configImage',
-              field: 'profileImageSmall',
-              alt: 'profile image',
-              link: '/'
-            }
-          ]
-        }
-      ],
+      header: [],
       top: [],
       sections: [
         {
@@ -198,19 +186,7 @@ describe('getPagesPageData()', () => {
       title: 'title4',
       description: 'my starter home page',
       mainImage: '',
-      header: [
-        {
-          title: '',
-          content: [
-            {
-              kind: 'configImage',
-              field: 'profileImageSmall',
-              alt: 'profile image',
-              link: '/'
-            }
-          ]
-        }
-      ],
+      header: [],
       top: [
         {
           title: '',

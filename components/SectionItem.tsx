@@ -11,20 +11,13 @@ import SectionContext from './SectionContext';
 import SiteTitle from './parts/SiteTitle';
 import SiteLogo from './parts/SiteLogo';
 import PageTitle from './parts/PageTitle';
+import ProfileImage from './parts/ProfileImage';
 
 const useStyles = makeStyles(() => ({
-  'SectionItem-root': {
-    width: '100%'
-  },
-  'SectionItem-title': {
-    width: '100%'
-  },
-  'SectionItem-contentBody': {
-    width: '100%'
-  },
-  'SectionItem-contentArticles': {
-    width: '100%'
-  },
+  'SectionItem-root': {},
+  'SectionItem-title': {},
+  'SectionItem-contentBody': {},
+  'SectionItem-contentArticles': {},
   'ConfigLabel-siteTitle': {},
   'ConfigLabel-profileName': {},
   'ConfigImage-profileImageLarge-outer': {},
@@ -161,6 +154,14 @@ const SectionItem = ({ data, classes: inClasses }: Props) => {
             )}
             {content.kind === 'partsPageTitle' && (
               <PageTitle link={content.link} classes={{ ...inClasses }} />
+            )}
+            {content.kind === 'partsProfileImage' && (
+              <ProfileImage
+                size={content.size}
+                name={content.name}
+                link={content.link}
+                classes={{ ...inClasses }}
+              />
             )}
             {content.kind === 'posts' && (
               <Box className={classes['SectionItem-contentArticles']}>

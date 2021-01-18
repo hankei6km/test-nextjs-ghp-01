@@ -48,7 +48,7 @@ export type SectionPartsPageTitle = {
 };
 export type SectionPartsProfileImage = {
   kind: 'partsProfileImage';
-  size: '' | 'large' | 'small';
+  size: '' | 'small' | 'large';
   name: boolean;
   link: string;
 };

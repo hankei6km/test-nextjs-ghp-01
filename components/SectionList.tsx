@@ -6,9 +6,7 @@ import { Section as SectionType } from '../types/pageTypes';
 import { pruneClasses } from '../utils/classes';
 
 const useStyles = makeStyles(() => ({
-  'SectionList-root': {
-    width: '100%'
-  },
+  'SectionList-root': {}
 }));
 // 上記の設定と手動であわせる.
 // 自動化できない?
@@ -24,11 +22,11 @@ const SectionList = ({ sections, classes: inClasses }: Props) => {
   return (
     <Box className={classes['SectionList-root']}>
       {sections.map((section, i) => (
-          <SectionItem
-key={i} 
-            data={section}
-            classes={{ ...inClasses } /* 'Section-*' は除外する?  */}
-          />
+        <SectionItem
+          key={i}
+          data={section}
+          classes={{ ...inClasses } /* 'Section-*' は除外する?  */}
+        />
       ))}
     </Box>
   );

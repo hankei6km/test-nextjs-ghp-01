@@ -13,17 +13,6 @@ export const mockDataPages: PagesContents = {
       description: 'my starter home page',
       sections: [
         {
-          fieldId: 'sectionHeader',
-          content: [
-            {
-              fieldId: 'contentConfigImage',
-              field: 'profileImageSmall',
-              alt: 'profile image',
-              link: '/'
-            }
-          ]
-        },
-        {
           fieldId: 'sectionFooter',
           title: 'language & library',
           content: [
@@ -65,20 +54,6 @@ export const mockDataPages: PagesContents = {
       kind: ['page'],
       description: 'my starter home page',
       sections: [
-        {
-          fieldId: 'sectionHeader',
-          content: [
-            {
-              fieldId: 'contentConfigImage',
-              field: 'profileImage',
-              alt: 'profile image'
-            },
-            {
-              fieldId: 'contentConfigLabel',
-              field: 'profileName'
-            }
-          ]
-        },
         {
           fieldId: 'sectionContent',
           title: 'intro',

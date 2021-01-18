@@ -138,10 +138,16 @@ const Layout = ({
               classes={{ ...classesHeader }}
             />
           </Box>
+          <Box className={classes['LayoutHeader-sectionTop']}>
+            <SectionList
+              sections={headerSections.slice(0, 1)}
+              classes={{ ...classes }}
+            />
+          </Box>
           {headerSectionsLen > 0 && (
             <Box className={classes['LayoutHeader-sectionList']}>
               <SectionList
-                sections={headerSections}
+                sections={headerSections.slice(1)}
                 classes={{ ...classesHeaderFooter }}
               />
             </Box>

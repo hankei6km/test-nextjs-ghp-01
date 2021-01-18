@@ -57,13 +57,13 @@ const siteConfig: {
       process.env.SITE_LOGO_SMALL ||
       'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/my-starter-nextjs-mui-test01/media/my-starter-default-sitelogo1.png?w=50&h=50',
     profileImageLarge:
-      process.env.PROFILE_IMAGE ||
+      process.env.PROFILE_IMAGE_LARGE ||
       'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/hankei6km-pages/media/my-starter-default-profile1.png?w=240&h=240',
     profileImage:
       process.env.PROFILE_IMAGE ||
       'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/hankei6km-pages/media/my-starter-default-profile1.png?w=140&h=140',
     profileImageSmall:
-      process.env.PROFILE_IMAGE ||
+      process.env.PROFILE_IMAGE_SMALL ||
       'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/hankei6km-pages/media/my-starter-default-profile1.png?w=80&h=80'
   }
 };
