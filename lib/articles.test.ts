@@ -138,6 +138,7 @@ describe('getPagesPageData()', () => {
           ]
         }
       ],
+      top: [],
       sections: [
         {
           title: '',
@@ -149,6 +150,7 @@ describe('getPagesPageData()', () => {
           ]
         }
       ],
+      bottom: [],
       footer: [
         {
           title: 'language & library',
@@ -214,6 +216,7 @@ describe('getPagesPageData()', () => {
           ]
         }
       ],
+      top: [],
       sections: [
         {
           title: '',
@@ -225,6 +228,7 @@ describe('getPagesPageData()', () => {
           ]
         }
       ],
+      bottom: [],
       footer: [
         {
           title: 'language & library',

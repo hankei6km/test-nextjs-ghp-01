@@ -35,7 +35,9 @@ export default function Post({
       footerSections={pageData.footer}
     >
       <Box my={1}>
+        <SectionList sections={pageData.top} classes={{ ...classes }} />
         <SectionList sections={pageData.sections} classes={{ ...classes }} />
+        <SectionList sections={pageData.bottom} classes={{ ...classes }} />
       </Box>
       <Link href="/posts">{'Back to posts'}</Link>
     </Layout>

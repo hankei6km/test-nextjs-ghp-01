@@ -210,7 +210,9 @@ export async function getPagesPageData(
       description: rawLayoutData.description || '',
       mainImage: '',
       header: await getSectionFromPages(rawLayoutData, 'sectionHeader'),
+      top: await getSectionFromPages(rawLayoutData, 'sectionTop'),
       sections: await getSectionFromPages(rawLayoutData, 'sectionContent'),
+      bottom: await getSectionFromPages(rawLayoutData, 'sectionBottom'),
       footer: await getSectionFromPages(rawLayoutData, 'sectionFooter')
     };
     const rawPageData = rawPageDatas[1];
@@ -221,7 +223,9 @@ export async function getPagesPageData(
       description: rawPageData.description || '',
       mainImage: '',
       header: await getSectionFromPages(rawPageData, 'sectionHeader'),
+      top: await getSectionFromPages(rawPageData, 'sectionTop'),
       sections: await getSectionFromPages(rawPageData, 'sectionContent'),
+      bottom: await getSectionFromPages(rawPageData, 'sectionBottom'),
       footer: await getSectionFromPages(rawPageData, 'sectionFooter')
     };
     return {
@@ -232,7 +236,9 @@ export async function getPagesPageData(
       description: layoutData.description || pageData.description,
       mainImage: '',
       header: pageData.header.length > 0 ? pageData.header : layoutData.header,
+      top: pageData.top.length > 0 ? pageData.top : layoutData.top,
       sections: pageData.sections,
+      bottom: pageData.bottom.length > 0 ? pageData.bottom : layoutData.bottom,
       footer: pageData.footer.length > 0 ? pageData.footer : layoutData.footer
     };
   } catch (err) {

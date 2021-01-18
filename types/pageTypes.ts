@@ -51,7 +51,9 @@ export type PageData = {
   description: string;
   mainImage: string;
   header: Section[];
+  top: Section[];
   sections: Section[];
+  bottom: Section[];
   footer: Section[];
 };
 
@@ -61,7 +63,9 @@ export const blankPageData = (): PageData => ({
   title: '',
   description: '',
   header: [],
+  top: [],
   sections: [],
+  bottom: [],
   footer: [],
   mainImage: ''
 });

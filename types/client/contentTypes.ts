@@ -55,6 +55,16 @@ type PagesSectionContent = {
   title?: string;
   content: PageContent[]; // array にしているが、API スキーマ等にあわせたもので、１つコンテントという認識(articlesはちょっと違うか)
 };
+type PagesSectionTop = {
+  fieldId: 'sectionTop';
+  title?: string;
+  content: PageContent[];
+};
+type PagesSectionBottom = {
+  fieldId: 'sectionBottom';
+  title?: string;
+  content: PageContent[];
+};
 type PagesSectionHeader = {
   fieldId: 'sectionHeader';
   title?: string;
@@ -67,6 +77,8 @@ type PagesSectionFooter = {
 };
 type PagesSection =
   | PagesSectionContent
+  | PagesSectionTop
+  | PagesSectionBottom
   | PagesSectionHeader
   | PagesSectionFooter;
 export type PagesSectionKind = PagesSection['fieldId'];
