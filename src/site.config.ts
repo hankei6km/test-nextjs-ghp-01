@@ -1,26 +1,13 @@
-import { ElementType } from 'react';
 import { SectionConfig } from '../components/SectionContext';
-import { TypographyProps } from '@material-ui/core/Typography';
 
 const siteConfig: {
-  sectionConfig: SectionConfig & {
-    component: {
-      'configLabel-siteTitle-Component': ElementType<any>;
-      'configLabel-profileName-Component': ElementType<any>;
-    };
-    variant: {
-      'configLabel-siteTitle-Variant': TypographyProps['variant'];
-      'configLabel-profileName-Variant': TypographyProps['variant'];
-    };
-  };
+  sectionConfig: SectionConfig;
   nav: { [key: string]: { label: string; href: string }[] };
   label: { [key: string]: string };
   image: { [key: string]: string };
 } = {
   sectionConfig: {
     component: {
-      'configLabel-siteTitle-Component': 'h1',
-      'configLabel-profileName-Component': 'span',
       sectionTitleComponent: 'h2',
       articleDetailComponent: 'article',
       articleItemComponent: 'li',
@@ -30,8 +17,6 @@ const siteConfig: {
       pageTitleComponent: 'h2'
     },
     variant: {
-      'configLabel-siteTitle-Variant': 'h2',
-      'configLabel-profileName-Variant': 'body1',
       sectionTitleVariant: 'h2',
       articleDetailTitleVariant: 'h3',
       articleItemTitleVariant: 'body1',
