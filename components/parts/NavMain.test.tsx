@@ -16,12 +16,12 @@ describe('NavMain', () => {
     );
     //const navMain = getByText('Home');
     //expect(navMain).toBeInTheDocument();
-    const a = getAllByRole('link');
+    const a = getAllByRole('tab');
     expect(a.length).toEqual(3);
     // expect(a[0].innerText).toEqual('Home');
-    expect(a[0].innerHTML).toEqual('Home');
-    expect(a[1].innerHTML).toEqual('Blog');
-    expect(a[2].innerHTML).toEqual('About');
+    expect(a[0]).toContainHTML('Home');
+    expect(a[1]).toContainHTML('Blog');
+    expect(a[2]).toContainHTML('About');
     expect(a[0].getAttribute('href')).toEqual('/');
     expect(a[1].getAttribute('href')).toEqual('/posts');
     expect(a[2].getAttribute('href')).toEqual('/about');
@@ -33,7 +33,7 @@ describe('NavMain', () => {
         <NavMain />
       </RouterContext.Provider>
     );
-    const a = getAllByRole('link');
+    const a = getAllByRole('tab');
     fireEvent.click(a[1]);
     expect(router.push).toHaveBeenCalledWith('/posts', '/posts', {
       locale: undefined,

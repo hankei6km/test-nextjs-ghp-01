@@ -10,8 +10,7 @@ import { pruneClasses } from '../../utils/classes';
 const useStyles = makeStyles((theme) => ({
   'NavMain-root': {},
   'NavMain-group': {},
-  'NavMain-item': {},
-  'NavMain-link': {
+  'NavMain-item': {
     textTransform: 'none',
     opacity: 1,
     color: theme.palette.text.secondary,
@@ -19,12 +18,7 @@ const useStyles = makeStyles((theme) => ({
     '&:hover': { textDecorationLine: 'none', opacity: 0.5 }
   }
 }));
-const classNames = [
-  'NavMain-root',
-  'NavMain-group',
-  'NavMain-item',
-  'NavMain-link'
-];
+const classNames = ['NavMain-root', 'NavMain-group', 'NavMain-item'];
 
 type Props = {
   classes?: { [key: string]: string };
@@ -46,23 +40,19 @@ const NavMain = ({ classes: inClasses }: Props) => {
       className={classes['NavMain-root']}
     >
       <Tabs
+        id="primary-navigation"
         indicatorColor="primary"
         textColor="primary"
         value={tabValueFromPath()}
-        component="ul"
         className={classes['NavMain-group']}
       >
         {nav.main.map(({ label, href }) => (
           <Tab
             key={`${label}:${href}`}
             className={classes['NavMain-item']}
-            label={
-              <Link className={classes['NavMain-link']} href={href}>
-                {label}
-              </Link>
-            }
-            component="li"
-            //href={href}
+            component={Link}
+            label={label}
+            href={href}
           />
         ))}
       </Tabs>
