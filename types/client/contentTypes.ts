@@ -32,24 +32,11 @@ type PagesContentImage = {
   alt: string;
   link?: string;
 };
-type PagesContentConfigLabel = {
-  fieldId: 'contentConfigLabel';
-  field: string;
-  link?: string;
-};
-type PagesContentConfigImage = {
-  fieldId: 'contentConfigImage';
-  field: string;
-  alt: string;
-  link?: string;
-};
 type PageContent =
   | PagesContentHtml
   | PagesContentMarkdown
   | PagesContentArticles
-  | PagesContentImage
-  | PagesContentConfigLabel
-  | PagesContentConfigImage;
+  | PagesContentImage;
 type PagesSectionContent = {
   fieldId: 'sectionContent';
   title?: string;

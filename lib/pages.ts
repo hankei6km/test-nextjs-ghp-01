@@ -11,7 +11,6 @@ import {
   blankPageContent
 } from '../types/client/contentTypes';
 import { join } from 'path';
-import siteConfig from '../src/site.config';
 import { Section, PageData, blankPageData } from '../types/pageTypes';
 import { markdownToHtml } from './markdown';
 
@@ -150,25 +149,6 @@ async function getSectionFromPages(
             return {
               kind: 'image' as const,
               image: content.image,
-              alt: content.alt,
-              link: content.link || ''
-            };
-          } else if (
-            content.fieldId === 'contentConfigLabel' &&
-            siteConfig.label[content.field] !== undefined
-          ) {
-            return {
-              kind: 'configLabel' as const,
-              field: content.field,
-              link: content.link || ''
-            };
-          } else if (
-            content.fieldId === 'contentConfigImage' &&
-            siteConfig.image[content.field] !== undefined
-          ) {
-            return {
-              kind: 'configImage' as const,
-              field: content.field,
               alt: content.alt,
               link: content.link || ''
             };

@@ -20,17 +20,6 @@ export type SectionImage = {
   alt: string;
   link: string;
 };
-export type SectionConfigLabel = {
-  kind: 'configLabel';
-  field: string;
-  link: string;
-};
-export type SectionConfigImage = {
-  kind: 'configImage';
-  field: string;
-  alt: string;
-  link: string;
-};
 
 // 現時点では Parts>>> は外部からの定義はできない
 export type SectionPartsSiteTitle = {
@@ -66,8 +55,6 @@ export type Section = {
     | SectionContent
     | SectionPosts
     | SectionImage
-    | SectionConfigLabel
-    | SectionConfigImage
     | SectionPartsSiteTitle
     | SectionPartsSiteLogo
     | SectionPartsPageTitle

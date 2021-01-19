@@ -2,11 +2,10 @@ import React, { useContext, ElementType } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Typography, { TypographyProps } from '@material-ui/core/Typography';
-import Link from '../components/Link';
 import SiteContext from '../components/SiteContext';
 import ArticleList from './ArticleList';
 import { Section as SectionType } from '../types/pageTypes';
-import { pruneClasses, classNameFromConfigField } from '../utils/classes';
+import { pruneClasses } from '../utils/classes';
 import SectionContext from './SectionContext';
 import SiteTitle from './parts/SiteTitle';
 import SiteLogo from './parts/SiteLogo';
@@ -19,41 +18,13 @@ const useStyles = makeStyles(() => ({
   'SectionItem-root': {},
   'SectionItem-title': {},
   'SectionItem-contentBody': {},
-  'SectionItem-contentArticles': {},
-  'ConfigLabel-siteTitle': {},
-  'ConfigLabel-profileName': {},
-  'ConfigImage-profileImageLarge-outer': {},
-  'ConfigImage-profileImageLarge': {
-    width: 240,
-    height: 240,
-    borderRadius: '9999px'
-  },
-  'ConfigImage-profileImage-outer': {},
-  'ConfigImage-profileImage': {
-    width: 140,
-    height: 140,
-    borderRadius: '9999px'
-  },
-  'ConfigImage-profileImageSmall-outer': {},
-  'ConfigImage-profileImageSmall': {
-    width: 80,
-    height: 80,
-    borderRadius: '9999px'
-  }
+  'SectionItem-contentArticles': {}
 }));
 const classNames = [
   'SectionItem-root',
   'SectionItem-title',
   'SectionItem-contentBody',
-  'SectionItem-contentArticles',
-  'ConfigLabel-siteTitle',
-  'ConfigLabel-profileName',
-  'ConfigImage-profileImageLarge-outer',
-  'ConfigImage-profileImageLarge',
-  'ConfigImage-profileImage-outer',
-  'ConfigImage-profileImage',
-  'ConfigImage-profileImageSmall-outer',
-  'ConfigImage-profileImageSmall'
+  'SectionItem-contentArticles'
 ];
 
 export type SectionItemComponent = {
@@ -71,7 +42,7 @@ type Props = {
 
 const SectionItem = ({ data, classes: inClasses }: Props) => {
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
-  const { label, image, sectionConfig } = useContext(SiteContext);
+  const { sectionConfig } = useContext(SiteContext);
   const { component, variant } = sectionConfig;
   return (
     <SectionContext.Provider value={sectionConfig}>
@@ -93,57 +64,6 @@ const SectionItem = ({ data, classes: inClasses }: Props) => {
                 dangerouslySetInnerHTML={{ __html: content.contentHtml }}
               ></Box>
             )}
-            {content.kind === 'configLabel' &&
-              (() => {
-                const inner = (
-                  <Typography
-                    component={
-                      (component as { [key: string]: ElementType<any> })[
-                        `configLabel-${content.field}-Component`
-                      ] || 'span'
-                    }
-                    variant={
-                      (variant as {
-                        [key: string]: TypographyProps['variant'];
-                      })[`configLabel-${content.field}-Variant`] || 'body1'
-                    }
-                    className={classNameFromConfigField(
-                      classes,
-                      `ConfigLabel-${content.field}`
-                    )}
-                  >
-                    {label[content.field]}
-                  </Typography>
-                );
-                if (content.link) {
-                  return <Link href={content.link}>{inner}</Link>;
-                }
-                return inner;
-              })()}
-            {content.kind === 'configImage' &&
-              (() => {
-                const inner = (
-                  <Box
-                    className={classNameFromConfigField(
-                      classes,
-                      `ConfigImage-${content.field}-outer`
-                    )}
-                  >
-                    <img
-                      src={image[content.field]}
-                      alt=""
-                      className={classNameFromConfigField(
-                        classes,
-                        `ConfigImage-${content.field}`
-                      )}
-                    />
-                  </Box>
-                );
-                if (content.link) {
-                  return <Link href={content.link}>{inner}</Link>;
-                }
-                return inner;
-              })()}
             {content.kind === 'partsSiteTitle' && (
               <SiteTitle link={content.link} classes={{ ...inClasses }} />
             )}
