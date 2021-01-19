@@ -25,7 +25,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
           class="MuiBox-root MuiBox-root-14 makeStyles-ArticleDetail-updated-10"
         >
           <div
-            class="MuiBox-root MuiBox-root-16 makeStyles-root-15"
+            class="MuiBox-root MuiBox-root-17 makeStyles-DateUpdated-root-15"
           >
             <svg
               aria-hidden="true"
@@ -41,7 +41,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
               />
             </svg>
             <div
-              class="MuiTypography-root MuiTypography-body2"
+              class="MuiTypography-root makeStyles-DateUpdated-date-16 MuiTypography-body2"
             >
               <time
                 datetime="2021-01-13T05:12.157Z"
@@ -53,17 +53,17 @@ exports[`ArticleList should renders ArticleList 1`] = `
         </div>
       </header>
       <div
-        class="MuiBox-root MuiBox-root-17 makeStyles-ArticleDetail-content-7"
+        class="MuiBox-root MuiBox-root-18 makeStyles-ArticleDetail-content-7"
       >
         <div
-          class="MuiBox-root MuiBox-root-18 makeStyles-ArticleDetail-thumbImage-11"
+          class="MuiBox-root MuiBox-root-19 makeStyles-ArticleDetail-thumbImage-11"
         >
           <a
             class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
             href="/posts/mmmmmmmmm"
           >
             <div
-              class="makeStyles-thumb-19"
+              class="makeStyles-thumb-20"
             >
               <img
                 alt="thumbnail for title4"
@@ -75,7 +75,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
         </div>
       </div>
       <footer
-        class="MuiBox-root MuiBox-root-20 makeStyles-ArticleDetail-footer-8"
+        class="MuiBox-root MuiBox-root-21 makeStyles-ArticleDetail-footer-8"
       >
         <a
           aria-disabled="false"
@@ -97,10 +97,10 @@ exports[`ArticleList should renders ArticleList 1`] = `
       </footer>
     </article>
     <article
-      class="MuiBox-root MuiBox-root-21 makeStyles-ArticleDetail-root-5"
+      class="MuiBox-root MuiBox-root-22 makeStyles-ArticleDetail-root-5"
     >
       <header
-        class="MuiBox-root MuiBox-root-22 makeStyles-ArticleDetail-header-6"
+        class="MuiBox-root MuiBox-root-23 makeStyles-ArticleDetail-header-6"
       >
         <h3
           class="MuiTypography-root makeStyles-ArticleDetail-title-9 MuiTypography-h3 MuiTypography-colorTextPrimary"
@@ -113,10 +113,10 @@ exports[`ArticleList should renders ArticleList 1`] = `
           </a>
         </h3>
         <div
-          class="MuiBox-root MuiBox-root-23 makeStyles-ArticleDetail-updated-10"
+          class="MuiBox-root MuiBox-root-24 makeStyles-ArticleDetail-updated-10"
         >
           <div
-            class="MuiBox-root MuiBox-root-24 makeStyles-root-15"
+            class="MuiBox-root MuiBox-root-25 makeStyles-DateUpdated-root-15"
           >
             <svg
               aria-hidden="true"
@@ -132,7 +132,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
               />
             </svg>
             <div
-              class="MuiTypography-root MuiTypography-body2"
+              class="MuiTypography-root makeStyles-DateUpdated-date-16 MuiTypography-body2"
             >
               <time
                 datetime="2020-12-27T04:04:30.107Z"
@@ -144,17 +144,17 @@ exports[`ArticleList should renders ArticleList 1`] = `
         </div>
       </header>
       <div
-        class="MuiBox-root MuiBox-root-25 makeStyles-ArticleDetail-content-7"
+        class="MuiBox-root MuiBox-root-26 makeStyles-ArticleDetail-content-7"
       >
         <div
-          class="MuiBox-root MuiBox-root-26 makeStyles-ArticleDetail-thumbImage-11"
+          class="MuiBox-root MuiBox-root-27 makeStyles-ArticleDetail-thumbImage-11"
         >
           <a
             class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
             href="/posts/zzzzzzzzz"
           >
             <div
-              class="makeStyles-thumb-19"
+              class="makeStyles-thumb-20"
             >
               <img
                 alt="thumbnail for title3"
@@ -166,7 +166,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
         </div>
       </div>
       <footer
-        class="MuiBox-root MuiBox-root-27 makeStyles-ArticleDetail-footer-8"
+        class="MuiBox-root MuiBox-root-28 makeStyles-ArticleDetail-footer-8"
       >
         <a
           aria-disabled="false"
@@ -188,10 +188,10 @@ exports[`ArticleList should renders ArticleList 1`] = `
       </footer>
     </article>
     <article
-      class="MuiBox-root MuiBox-root-28 makeStyles-ArticleDetail-root-5"
+      class="MuiBox-root MuiBox-root-29 makeStyles-ArticleDetail-root-5"
     >
       <header
-        class="MuiBox-root MuiBox-root-29 makeStyles-ArticleDetail-header-6"
+        class="MuiBox-root MuiBox-root-30 makeStyles-ArticleDetail-header-6"
       >
         <h3
           class="MuiTypography-root makeStyles-ArticleDetail-title-9 MuiTypography-h3 MuiTypography-colorTextPrimary"
@@ -204,10 +204,10 @@ exports[`ArticleList should renders ArticleList 1`] = `
           </a>
         </h3>
         <div
-          class="MuiBox-root MuiBox-root-30 makeStyles-ArticleDetail-updated-10"
+          class="MuiBox-root MuiBox-root-31 makeStyles-ArticleDetail-updated-10"
         >
           <div
-            class="MuiBox-root MuiBox-root-31 makeStyles-root-15"
+            class="MuiBox-root MuiBox-root-32 makeStyles-DateUpdated-root-15"
           >
             <svg
               aria-hidden="true"
@@ -223,7 +223,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
               />
             </svg>
             <div
-              class="MuiTypography-root MuiTypography-body2"
+              class="MuiTypography-root makeStyles-DateUpdated-date-16 MuiTypography-body2"
             >
               <time
                 datetime="2020-12-26T15:29:14.476Z"
@@ -235,17 +235,17 @@ exports[`ArticleList should renders ArticleList 1`] = `
         </div>
       </header>
       <div
-        class="MuiBox-root MuiBox-root-32 makeStyles-ArticleDetail-content-7"
+        class="MuiBox-root MuiBox-root-33 makeStyles-ArticleDetail-content-7"
       >
         <div
-          class="MuiBox-root MuiBox-root-33 makeStyles-ArticleDetail-thumbImage-11"
+          class="MuiBox-root MuiBox-root-34 makeStyles-ArticleDetail-thumbImage-11"
         >
           <a
             class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
             href="/posts/yyyyyy-da"
           >
             <div
-              class="makeStyles-thumb-19"
+              class="makeStyles-thumb-20"
             >
               <img
                 alt="thumbnail for title2"
@@ -257,7 +257,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
         </div>
       </div>
       <footer
-        class="MuiBox-root MuiBox-root-34 makeStyles-ArticleDetail-footer-8"
+        class="MuiBox-root MuiBox-root-35 makeStyles-ArticleDetail-footer-8"
       >
         <a
           aria-disabled="false"
@@ -279,10 +279,10 @@ exports[`ArticleList should renders ArticleList 1`] = `
       </footer>
     </article>
     <article
-      class="MuiBox-root MuiBox-root-35 makeStyles-ArticleDetail-root-5"
+      class="MuiBox-root MuiBox-root-36 makeStyles-ArticleDetail-root-5"
     >
       <header
-        class="MuiBox-root MuiBox-root-36 makeStyles-ArticleDetail-header-6"
+        class="MuiBox-root MuiBox-root-37 makeStyles-ArticleDetail-header-6"
       >
         <h3
           class="MuiTypography-root makeStyles-ArticleDetail-title-9 MuiTypography-h3 MuiTypography-colorTextPrimary"
@@ -295,10 +295,10 @@ exports[`ArticleList should renders ArticleList 1`] = `
           </a>
         </h3>
         <div
-          class="MuiBox-root MuiBox-root-37 makeStyles-ArticleDetail-updated-10"
+          class="MuiBox-root MuiBox-root-38 makeStyles-ArticleDetail-updated-10"
         >
           <div
-            class="MuiBox-root MuiBox-root-38 makeStyles-root-15"
+            class="MuiBox-root MuiBox-root-39 makeStyles-DateUpdated-root-15"
           >
             <svg
               aria-hidden="true"
@@ -314,7 +314,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
               />
             </svg>
             <div
-              class="MuiTypography-root MuiTypography-body2"
+              class="MuiTypography-root makeStyles-DateUpdated-date-16 MuiTypography-body2"
             >
               <time
                 datetime="2020-12-26T12:27:22.533Z"
@@ -326,17 +326,17 @@ exports[`ArticleList should renders ArticleList 1`] = `
         </div>
       </header>
       <div
-        class="MuiBox-root MuiBox-root-39 makeStyles-ArticleDetail-content-7"
+        class="MuiBox-root MuiBox-root-40 makeStyles-ArticleDetail-content-7"
       >
         <div
-          class="MuiBox-root MuiBox-root-40 makeStyles-ArticleDetail-thumbImage-11"
+          class="MuiBox-root MuiBox-root-41 makeStyles-ArticleDetail-thumbImage-11"
         >
           <a
             class="MuiTypography-root MuiLink-root MuiLink-underlineNone MuiTypography-colorPrimary"
             href="/posts/xxxxxxxxx"
           >
             <div
-              class="makeStyles-thumb-19"
+              class="makeStyles-thumb-20"
             >
               <img
                 alt="thumbnail for title1"
@@ -348,7 +348,7 @@ exports[`ArticleList should renders ArticleList 1`] = `
         </div>
       </div>
       <footer
-        class="MuiBox-root MuiBox-root-41 makeStyles-ArticleDetail-footer-8"
+        class="MuiBox-root MuiBox-root-42 makeStyles-ArticleDetail-footer-8"
       >
         <a
           aria-disabled="false"

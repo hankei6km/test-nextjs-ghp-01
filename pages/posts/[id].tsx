@@ -45,6 +45,9 @@ export default function Post({
                   {
                     kind: 'partsPageTitle',
                     link: ''
+                  },
+                  {
+                    kind: 'partsUpdated'
                   }
                 ]
               }

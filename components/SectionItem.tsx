@@ -13,6 +13,7 @@ import SiteLogo from './parts/SiteLogo';
 import PageTitle from './parts/PageTitle';
 import ProfileImage from './parts/ProfileImage';
 import NavMain from './parts/NavMain';
+import DateUpdated from './parts/DateUpdated';
 
 const useStyles = makeStyles(() => ({
   'SectionItem-root': {},
@@ -163,6 +164,9 @@ const SectionItem = ({ data, classes: inClasses }: Props) => {
                 link={content.link}
                 classes={{ ...inClasses }}
               />
+            )}
+            {content.kind === 'partsUpdated' && (
+              <DateUpdated classes={{ ...inClasses }} />
             )}
             {content.kind === 'partsNavMain' && (
               <NavMain classes={{ ...inClasses }} />
