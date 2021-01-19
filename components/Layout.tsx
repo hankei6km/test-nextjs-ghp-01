@@ -2,11 +2,8 @@ import React, { useContext, ReactNode } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
 // import Image from 'next/image';
-import Link from './Link';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import siteContext from '../components/SiteContext';
 import { Section } from '../types/pageTypes';
 import SectionList from './SectionList';
@@ -67,21 +64,6 @@ type Props = {
   classes?: { [key: string]: string };
 };
 
-const tabs = [
-  {
-    label: 'Home',
-    href: '/'
-  },
-  {
-    label: 'Blog',
-    href: '/posts'
-  },
-  {
-    label: 'Abouit',
-    href: '/about'
-  }
-];
-
 const Layout = ({
   children,
   title = '',
@@ -109,21 +91,6 @@ const Layout = ({
       </Head>
       <header className={classes['LayoutHeader-root']}>
         <Container maxWidth={maxWidth} disableGutters>
-          <Tabs
-            indicatorColor="primary"
-            textColor="primary"
-            value={0}
-            style={{ position: 'sticky', top: -1 }}
-          >
-            {tabs.map(({ label, href }) => (
-              <Tab
-                key={`${label}:${href}`}
-                label={label}
-                component={Link}
-                href={href}
-              />
-            ))}
-          </Tabs>
           <Box className={classes['LayoutHeader-sectionTop']}>
             <SectionList
               sections={[
@@ -133,6 +100,10 @@ const Layout = ({
                     { kind: 'partsSiteLogo', size: 'small', link: '/' },
                     { kind: 'partsSiteTitle', link: '/' }
                   ]
+                },
+                {
+                  title: '',
+                  content: [{ kind: 'partsNavMain' }]
                 }
               ]}
               classes={{ ...classesHeader }}

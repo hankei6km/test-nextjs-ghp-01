@@ -13,6 +13,7 @@ const siteConfig: {
       'configLabel-profileName-Variant': TypographyProps['variant'];
     };
   };
+  nav: { [key: string]: { label: string; href: string }[] };
   label: { [key: string]: string };
   image: { [key: string]: string };
 } = {
@@ -37,6 +38,22 @@ const siteConfig: {
       siteTitleVariant: 'h2',
       pageTitleVariant: 'h2'
     }
+  },
+  nav: {
+    main: [
+      {
+        label: 'Home',
+        href: '/'
+      },
+      {
+        label: 'Blog',
+        href: '/posts'
+      },
+      {
+        label: 'About',
+        href: '/about'
+      }
+    ]
   },
   label: {
     // contentConfig として参照される値.

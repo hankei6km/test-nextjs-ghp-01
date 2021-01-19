@@ -55,6 +55,9 @@ export type SectionPartsProfileImage = {
 export type SectionPartsUpdated = {
   kind: 'partsUpdated';
 };
+export type SectionPartsNavMain = {
+  kind: 'partsNavMain';
+};
 
 export type Section = {
   title?: string;
@@ -70,6 +73,7 @@ export type Section = {
     | SectionPartsPageTitle
     | SectionPartsProfileImage
     | SectionPartsUpdated
+    | SectionPartsNavMain
   )[];
 };
 

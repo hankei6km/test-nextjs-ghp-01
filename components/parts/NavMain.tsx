@@ -1,0 +1,73 @@
+import React, { useContext, useCallback } from 'react';
+import { useRouter } from 'next/router';
+import { makeStyles } from '@material-ui/core/styles';
+import Link from '../Link';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import SiteContext from '../SiteContext';
+import { pruneClasses } from '../../utils/classes';
+
+const useStyles = makeStyles((theme) => ({
+  'NavMain-root': {},
+  'NavMain-group': {},
+  'NavMain-item': {},
+  'NavMain-link': {
+    textTransform: 'none',
+    opacity: 1,
+    color: theme.palette.text.secondary,
+    // transition: 'opacity .3s',
+    '&:hover': { textDecorationLine: 'none', opacity: 0.5 }
+  }
+}));
+const classNames = [
+  'NavMain-root',
+  'NavMain-group',
+  'NavMain-item',
+  'NavMain-link'
+];
+
+type Props = {
+  classes?: { [key: string]: string };
+};
+
+const NavMain = ({ classes: inClasses }: Props) => {
+  const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
+  const router = useRouter();
+  const { nav } = useContext(SiteContext);
+  // const { component, variant } = useContext(SectionContext);
+  const tabValueFromPath = useCallback(() => {
+    const rref = `/${router.pathname.split('/', 2)[1]}`;
+    return nav.main.findIndex(({ href }) => href === rref);
+  }, [nav.main, router.pathname]);
+
+  return (
+    <nav
+      aria-labelledby="primary-navigation"
+      className={classes['NavMain-root']}
+    >
+      <Tabs
+        indicatorColor="primary"
+        textColor="primary"
+        value={tabValueFromPath()}
+        component="ul"
+        className={classes['NavMain-group']}
+      >
+        {nav.main.map(({ label, href }) => (
+          <Tab
+            key={`${label}:${href}`}
+            className={classes['NavMain-item']}
+            label={
+              <Link className={classes['NavMain-link']} href={href}>
+                {label}
+              </Link>
+            }
+            component="li"
+            //href={href}
+          />
+        ))}
+      </Tabs>
+    </nav>
+  );
+};
+
+export default NavMain;
