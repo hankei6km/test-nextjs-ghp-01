@@ -2,12 +2,8 @@ import React, { useContext, ReactNode } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Head from 'next/head';
 // import Image from 'next/image';
-import Link from './Link';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import Typography from '@material-ui/core/Typography';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import siteContext from '../components/SiteContext';
 import { Section } from '../types/pageTypes';
 import SectionList from './SectionList';
@@ -26,6 +22,20 @@ const useStyles = makeStyles({
     fontWeight: 800
   }
 });
+const useStylesHeader = makeStyles(() => ({
+  'SectionItem-root': {
+    display: 'flex',
+    alignItems: 'center'
+  },
+  'SiteTitle-link': {
+    opacity: 1,
+    '&:hover': { textDecorationLine: 'none', opacity: 1 }
+  },
+  'SiteLogo-link': {
+    opacity: 1,
+    '&:hover': { textDecorationLine: 'none', opacity: 1 }
+  }
+}));
 const useStylesGrid = makeStyles(() => ({
   'SectionList-root': {
     display: 'grid',
@@ -54,31 +64,18 @@ type Props = {
   classes?: { [key: string]: string };
 };
 
-const tabs = [
-  {
-    label: 'Home',
-    href: '/'
-  },
-  {
-    label: 'Blog',
-    href: '/posts'
-  },
-  {
-    label: 'Abouit',
-    href: '/about'
-  }
-];
-
 const Layout = ({
   children,
   title = '',
-  home = false,
   headerSections = [],
   footerSections = [],
   classes: inClasses
 }: Props) => {
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
   const classesHeaderFooter = useStylesGrid({
+    classes: pruneClasses(inClasses, classNames)
+  });
+  const classesHeader = useStylesHeader({
     classes: pruneClasses(inClasses, classNames)
   });
   const { siteTitle } = useContext(siteContext).label;
@@ -94,31 +91,24 @@ const Layout = ({
       </Head>
       <header className={classes['LayoutHeader-root']}>
         <Container maxWidth={maxWidth} disableGutters>
-          <Typography component="h1" variant="h3">
-            <Link href="/" underline="none">
-              {siteTitle}
-            </Link>
-          </Typography>
-          <Tabs
-            indicatorColor="primary"
-            textColor="primary"
-            value={0}
-            style={{ position: 'sticky', top: -1 }}
-          >
-            {tabs.map(({ label, href }) => (
-              <Tab
-                key={`${label}:${href}`}
-                label={label}
-                component={Link}
-                href={href}
-              />
-            ))}
-          </Tabs>
-          {!home && (
-            <Typography component="h2" variant="h3">
-              {title}
-            </Typography>
-          )}
+          <Box className={classes['LayoutHeader-sectionTop']}>
+            <SectionList
+              sections={[
+                {
+                  title: '',
+                  content: [
+                    { kind: 'partsSiteLogo', size: 'small', link: '/' },
+                    { kind: 'partsSiteTitle', link: '/' }
+                  ]
+                },
+                {
+                  title: '',
+                  content: [{ kind: 'partsNavMain' }]
+                }
+              ]}
+              classes={{ ...classesHeader }}
+            />
+          </Box>
           <Box className={classes['LayoutHeader-sectionTop']}>
             <SectionList
               sections={headerSections.slice(0, 1)}

@@ -4,7 +4,7 @@ import '@testing-library/jest-dom';
 // import { act } from 'react-test-renderer';
 
 import ThumbImage from './ThumbImage';
-import { mockImage } from '../test/testUtils';
+import { mockImage } from '../../test/testUtils';
 
 // https://stackoverflow.com/questions/40449434/mocking-globals-in-jest
 const orgImage = global.Image;

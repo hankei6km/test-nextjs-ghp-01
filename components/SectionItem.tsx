@@ -8,20 +8,18 @@ import ArticleList from './ArticleList';
 import { Section as SectionType } from '../types/pageTypes';
 import { pruneClasses, classNameFromConfigField } from '../utils/classes';
 import SectionContext from './SectionContext';
+import SiteTitle from './parts/SiteTitle';
+import SiteLogo from './parts/SiteLogo';
+import PageTitle from './parts/PageTitle';
+import ProfileImage from './parts/ProfileImage';
+import NavMain from './parts/NavMain';
+import DateUpdated from './parts/DateUpdated';
 
 const useStyles = makeStyles(() => ({
-  'SectionItem-root': {
-    width: '100%'
-  },
-  'SectionItem-title': {
-    width: '100%'
-  },
-  'SectionItem-contentBody': {
-    width: '100%'
-  },
-  'SectionItem-contentArticles': {
-    width: '100%'
-  },
+  'SectionItem-root': {},
+  'SectionItem-title': {},
+  'SectionItem-contentBody': {},
+  'SectionItem-contentArticles': {},
   'ConfigLabel-siteTitle': {},
   'ConfigLabel-profileName': {},
   'ConfigImage-profileImageLarge-outer': {},
@@ -146,6 +144,33 @@ const SectionItem = ({ data, classes: inClasses }: Props) => {
                 }
                 return inner;
               })()}
+            {content.kind === 'partsSiteTitle' && (
+              <SiteTitle link={content.link} classes={{ ...inClasses }} />
+            )}
+            {content.kind === 'partsSiteLogo' && (
+              <SiteLogo
+                size={content.size}
+                link={content.link}
+                classes={{ ...inClasses }}
+              />
+            )}
+            {content.kind === 'partsPageTitle' && (
+              <PageTitle link={content.link} classes={{ ...inClasses }} />
+            )}
+            {content.kind === 'partsProfileImage' && (
+              <ProfileImage
+                size={content.size}
+                name={content.name}
+                link={content.link}
+                classes={{ ...inClasses }}
+              />
+            )}
+            {content.kind === 'partsUpdated' && (
+              <DateUpdated classes={{ ...inClasses }} />
+            )}
+            {content.kind === 'partsNavMain' && (
+              <NavMain classes={{ ...inClasses }} />
+            )}
             {content.kind === 'posts' && (
               <Box className={classes['SectionItem-contentArticles']}>
                 <ArticleList

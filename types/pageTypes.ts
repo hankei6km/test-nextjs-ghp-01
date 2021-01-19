@@ -32,6 +32,33 @@ export type SectionConfigImage = {
   link: string;
 };
 
+// 現時点では Parts>>> は外部からの定義はできない
+export type SectionPartsSiteTitle = {
+  kind: 'partsSiteTitle';
+  link: string;
+};
+export type SectionPartsSiteLogo = {
+  kind: 'partsSiteLogo';
+  size: '' | 'small' | 'large';
+  link: string;
+};
+export type SectionPartsPageTitle = {
+  kind: 'partsPageTitle';
+  link: string;
+};
+export type SectionPartsProfileImage = {
+  kind: 'partsProfileImage';
+  size: '' | 'small' | 'large';
+  name: boolean;
+  link: string;
+};
+export type SectionPartsUpdated = {
+  kind: 'partsUpdated';
+};
+export type SectionPartsNavMain = {
+  kind: 'partsNavMain';
+};
+
 export type Section = {
   title?: string;
   content: (
@@ -41,6 +68,12 @@ export type Section = {
     | SectionImage
     | SectionConfigLabel
     | SectionConfigImage
+    | SectionPartsSiteTitle
+    | SectionPartsSiteLogo
+    | SectionPartsPageTitle
+    | SectionPartsProfileImage
+    | SectionPartsUpdated
+    | SectionPartsNavMain
   )[];
 };
 

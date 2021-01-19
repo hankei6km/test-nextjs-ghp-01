@@ -90,20 +90,6 @@ describe('getPagesData()', () => {
       description: 'my starter home page',
       sections: [
         {
-          fieldId: 'sectionHeader',
-          content: [
-            {
-              fieldId: 'contentConfigImage',
-              field: 'profileImage',
-              alt: 'profile image'
-            },
-            {
-              fieldId: 'contentConfigLabel',
-              field: 'profileName'
-            }
-          ]
-        },
-        {
           fieldId: 'sectionContent',
           title: 'intro',
           content: [
@@ -142,24 +128,7 @@ describe('getPagesPageData()', () => {
       title: 'Home',
       description: 'my starter home page',
       mainImage: '',
-      header: [
-        {
-          title: '',
-          content: [
-            {
-              kind: 'configImage',
-              field: 'profileImage',
-              alt: 'profile image',
-              link: ''
-            },
-            {
-              kind: 'configLabel',
-              field: 'profileName',
-              link: ''
-            }
-          ]
-        }
-      ],
+      header: [],
       top: [],
       sections: [
         {

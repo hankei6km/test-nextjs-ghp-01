@@ -7,6 +7,7 @@ import Box from '@material-ui/core/Box';
 import { PageData } from '../../types/pageTypes';
 import { getAllPagesIds, getPagesPageData } from '../../lib/pages';
 import SectionList from '../../components/SectionList';
+import PageContext from '../../components/PageContext';
 // import classes from '*.module.css';
 
 const useStyles = makeStyles(() => ({
@@ -29,18 +30,37 @@ export default function Post({
     return <ErrorPage statusCode={404} />;
   }
   return (
-    <Layout
-      headerSections={pageData.header}
-      title={pageData.title}
-      footerSections={pageData.footer}
-    >
-      <Box my={1}>
-        <SectionList sections={pageData.top} classes={{ ...classes }} />
-        <SectionList sections={pageData.sections} classes={{ ...classes }} />
-        <SectionList sections={pageData.bottom} classes={{ ...classes }} />
-      </Box>
-      <Link href="/posts">{'Back to posts'}</Link>
-    </Layout>
+    <PageContext.Provider value={pageData}>
+      <Layout
+        headerSections={pageData.header}
+        title={pageData.title}
+        footerSections={pageData.footer}
+      >
+        <Box my={1}>
+          <SectionList
+            sections={[
+              {
+                title: '',
+                content: [
+                  {
+                    kind: 'partsPageTitle',
+                    link: ''
+                  },
+                  {
+                    kind: 'partsUpdated'
+                  }
+                ]
+              }
+            ]}
+            classes={{ ...classes }}
+          />
+          <SectionList sections={pageData.top} classes={{ ...classes }} />
+          <SectionList sections={pageData.sections} classes={{ ...classes }} />
+          <SectionList sections={pageData.bottom} classes={{ ...classes }} />
+        </Box>
+        <Link href="/posts">{'Back to posts'}</Link>
+      </Layout>
+    </PageContext.Provider>
   );
 }
 
