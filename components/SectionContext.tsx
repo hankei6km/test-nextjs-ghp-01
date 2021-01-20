@@ -1,4 +1,5 @@
 import React from 'react';
+import merge from 'deepmerge';
 import { ArticleListComponent, ArticleListVariant } from './ArticleList';
 import { SectionItemComponent, SectionItemVariant } from './SectionItem';
 import { ArticleDetailComponent, ArticleDetailVariant } from './ArticleDetail';
@@ -31,6 +32,10 @@ export function defaultSectionConfig(config?: SectionConfig): SectionConfig {
   //   component: { ...siteConfig.sectionConfig.component },
   //   variant: { ...siteConfig.sectionConfig.variant }
   // };
+}
+
+export function mergeSectionConfig(config: any): SectionConfig {
+  return merge(defaultSectionConfig(), config);
 }
 
 const SectionContext = React.createContext(siteConfig.sectionConfig);
