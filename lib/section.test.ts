@@ -1,12 +1,104 @@
 import { mockDataArticleList } from '../types/client/mockData';
 import { FetchMock } from 'jest-fetch-mock';
-import { getSectionFromPages } from './section';
+import { getSectionFromPages, htmlToChildren } from './section';
 import { PagesContent } from '../types/client/contentTypes';
 
 // https://github.com/jefflau/jest-fetch-mock/issues/83
 const fetchMock = fetch as FetchMock;
 beforeEach(() => {
   fetchMock.resetMocks();
+});
+
+describe('htmlToChildren()', () => {
+  it('should returns spread html array', () => {
+    expect(htmlToChildren('<p>test</p>')).toEqual([
+      { tagName: 'p', attribs: {}, html: 'test' }
+    ]);
+    expect(htmlToChildren('<p>test1</p><p id="t2">test2</p>')).toEqual([
+      { tagName: 'p', attribs: {}, html: 'test1' },
+      { tagName: 'p', attribs: { id: 't2' }, html: 'test2' }
+    ]);
+    expect(
+      htmlToChildren('<p>test1</p><p id="t2" class="c2">test2</p>')
+    ).toEqual([
+      { tagName: 'p', attribs: {}, html: 'test1' },
+      { tagName: 'p', attribs: { id: 't2', class: 'c2' }, html: 'test2' }
+    ]);
+    expect(htmlToChildren('<p>test1</p><hr/><p>test2</p>')).toEqual([
+      { tagName: 'p', attribs: {}, html: 'test1' },
+      { tagName: 'hr', attribs: {}, html: '' },
+      { tagName: 'p', attribs: {}, html: 'test2' }
+    ]);
+    expect(htmlToChildren('<img src="/abc" alt="abc thumb"/>')).toEqual([
+      { tagName: 'img', attribs: { src: '/abc', alt: 'abc thumb' }, html: '' }
+    ]);
+    expect(
+      htmlToChildren(
+        '<img src="/abc" alt="abc thumb" data-opt="?q=123&abc=efg"/>'
+      )
+    ).toEqual([
+      {
+        tagName: 'img',
+        attribs: {
+          src: '/abc',
+          alt: 'abc thumb',
+          'data-opt': '?q=123&abc=efg' // dataSet ではない?
+        },
+        html: ''
+      }
+    ]);
+    expect(
+      htmlToChildren('<a href="/"><img src="/abc" alt="abc thumb"/></a>')
+    ).toEqual([
+      {
+        tagName: 'a',
+        attribs: { href: '/' },
+        html: '<img src="/abc" alt="abc thumb">'
+      }
+    ]);
+    expect(
+      htmlToChildren('<a href="/"><p>test1</p>test2<p class="c3">test3</p></a>')
+    ).toEqual([
+      {
+        tagName: 'a',
+        attribs: { href: '/' },
+        html: '<p>test1</p>test2<p class="c3">test3</p>'
+      }
+    ]);
+    expect(
+      htmlToChildren(
+        '<p>test1</p><a href="/" id="a1" class="ca" ><img src="/abc" alt="abc thumb" data-opt="?q=123&abc=efg"/></a><p>test2</p>'
+      )
+    ).toEqual([
+      { tagName: 'p', attribs: {}, html: 'test1' },
+      {
+        tagName: 'a',
+        attribs: { href: '/', id: 'a1', class: 'ca' },
+        html: '<img src="/abc" alt="abc thumb" data-opt="?q=123&amp;abc=efg">'
+      },
+      { tagName: 'p', attribs: {}, html: 'test2' }
+    ]);
+  });
+  it('should fallbacked', () => {
+    expect(htmlToChildren('test')).toEqual([
+      { tagName: 'div', attribs: {}, html: 'test' }
+    ]);
+    expect(htmlToChildren('test<p>123</p><hr/>abc')).toEqual([
+      { tagName: 'div', attribs: {}, html: 'test<p>123</p><hr/>abc' }
+    ]);
+    expect(htmlToChildren('test<p>123</p><hr/>abc')).toEqual([
+      { tagName: 'div', attribs: {}, html: 'test<p>123</p><hr/>abc' }
+    ]);
+    expect(
+      htmlToChildren('<p>test</p><button>abc</button><p>test</p>')
+    ).toEqual([
+      {
+        tagName: 'div',
+        attribs: {},
+        html: '<p>test</p><button>abc</button><p>test</p>'
+      }
+    ]);
+  });
 });
 
 describe('getSectionFromPages()', () => {
