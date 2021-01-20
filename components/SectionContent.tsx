@@ -33,9 +33,16 @@ const SectionContent = ({ content, classes: inClasses }: Props) => {
   const { naked } = useContext(SectionContext);
   const contentNode = (
     <>
-      {content.kind === 'html' && (
-        <Box dangerouslySetInnerHTML={{ __html: content.contentHtml }}></Box>
-      )}
+      {content.kind === 'html' &&
+        content.contentHtml.map((childItem, i) =>
+          React.createElement(childItem.tagName, {
+            ...childItem.attribs,
+            key: `${childItem.tagName}-${i}`,
+            dangerouslySetInnerHTML: childItem.html
+              ? { __html: childItem.html }
+              : undefined
+          })
+        )}
       {content.kind === 'partsSiteTitle' && (
         <SiteTitle link={content.link} classes={{ ...inClasses }} />
       )}

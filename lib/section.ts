@@ -4,13 +4,8 @@ import { getSortedPagesData } from './pages';
 import { markdownToHtml } from './markdown';
 import { ApiNameArticleValues, ApiNameArticle } from './client';
 import { PagesContent, PagesSectionKind } from '../types/client/contentTypes';
-import { Section } from '../types/pageTypes';
+import { Section, SectionContentHtmlChildren } from '../types/pageTypes';
 
-export type SectionContentHtmlChildren = {
-  tagName: string;
-  attribs: { [name: string]: string };
-  html: string;
-};
 // とりあえず、普通に記述された markdown から変換されたときに body の直下にありそうなタグ.
 // いまのところ小文字のみ.
 export const SectionContentHtmlChildrenElemValues = [
@@ -101,12 +96,12 @@ export async function getSectionFromPages(
           if (content.fieldId === 'contentHtml') {
             return {
               kind: 'html' as const,
-              contentHtml: content.html
+              contentHtml: htmlToChildren(content.html)
             };
           } else if (content.fieldId === 'contentMarkdown') {
             return {
               kind: 'html' as const,
-              contentHtml: markdownToHtml(content.markdown)
+              contentHtml: htmlToChildren(markdownToHtml(content.markdown))
             };
           } else if (
             content.fieldId === 'contentArticles' &&

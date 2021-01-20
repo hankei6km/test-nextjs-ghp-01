@@ -169,59 +169,87 @@ describe('getSectionFromPages()', () => {
         }
       ]
     };
-    expect(await getSectionFromPages(mockData, 'sectionContent')).toStrictEqual(
-      [
-        {
-          title: 'content section',
-          content: [
-            {
-              kind: 'html',
-              contentHtml: '<p>content</p>'
-            }
-          ]
-        }
-      ]
-    );
-    expect(await getSectionFromPages(mockData, 'sectionTop')).toStrictEqual([
+    expect(await getSectionFromPages(mockData, 'sectionContent')).toEqual([
+      {
+        title: 'content section',
+        content: [
+          {
+            kind: 'html',
+            contentHtml: [
+              {
+                tagName: 'p',
+                attribs: {},
+                html: 'content'
+              }
+            ]
+          }
+        ]
+      }
+    ]);
+    expect(await getSectionFromPages(mockData, 'sectionTop')).toEqual([
       {
         title: 'top section',
         content: [
           {
             kind: 'html',
-            contentHtml: '<p>top</p>'
+            contentHtml: [
+              {
+                tagName: 'p',
+                attribs: {},
+                html: 'top'
+              }
+            ]
           }
         ]
       }
     ]);
-    expect(await getSectionFromPages(mockData, 'sectionBottom')).toStrictEqual([
+    expect(await getSectionFromPages(mockData, 'sectionBottom')).toEqual([
       {
         title: 'bottom section',
         content: [
           {
             kind: 'html',
-            contentHtml: '<p>bottom</p>'
+            contentHtml: [
+              {
+                tagName: 'p',
+                attribs: {},
+                html: 'bottom'
+              }
+            ]
           }
         ]
       }
     ]);
-    expect(await getSectionFromPages(mockData, 'sectionHeader')).toStrictEqual([
+    expect(await getSectionFromPages(mockData, 'sectionHeader')).toEqual([
       {
         title: 'header section',
         content: [
           {
             kind: 'html',
-            contentHtml: '<p>header</p>'
+            contentHtml: [
+              {
+                tagName: 'p',
+                attribs: {},
+                html: 'header'
+              }
+            ]
           }
         ]
       }
     ]);
-    expect(await getSectionFromPages(mockData, 'sectionFooter')).toStrictEqual([
+    expect(await getSectionFromPages(mockData, 'sectionFooter')).toEqual([
       {
         title: 'footer section',
         content: [
           {
             kind: 'html',
-            contentHtml: '<p>footer</p>'
+            contentHtml: [
+              {
+                tagName: 'p',
+                attribs: {},
+                html: 'footer'
+              }
+            ]
           }
         ]
       }
@@ -243,19 +271,23 @@ describe('getSectionFromPages()', () => {
         }
       ]
     };
-    expect(await getSectionFromPages(mockData, 'sectionContent')).toStrictEqual(
-      [
-        {
-          title: '',
-          content: [
-            {
-              kind: 'html',
-              contentHtml: '<p>content</p>'
-            }
-          ]
-        }
-      ]
-    );
+    expect(await getSectionFromPages(mockData, 'sectionContent')).toEqual([
+      {
+        title: '',
+        content: [
+          {
+            kind: 'html',
+            contentHtml: [
+              {
+                tagName: 'p',
+                attribs: {},
+                html: 'content'
+              }
+            ]
+          }
+        ]
+      }
+    ]);
   });
   it('should returns posts sections', async () => {
     fetchMock.mockResponseOnce(
@@ -280,29 +312,27 @@ describe('getSectionFromPages()', () => {
         }
       ]
     };
-    expect(await getSectionFromPages(mockData, 'sectionContent')).toStrictEqual(
-      [
-        {
-          title: '',
-          content: [
-            {
-              kind: 'posts',
-              contents: [
-                {
-                  id: 'mmmmmmmmm',
-                  createdAt: '2021-01-13T05:12.157Z',
-                  updatedAt: '2021-01-13T05:12.157Z',
-                  publishedAt: '2021-01-13T05:12.157Z',
-                  revisedAt: '2021-01-13T05:12.157Z',
-                  title: 'title4',
-                  path: '/posts'
-                }
-              ],
-              detail: true
-            }
-          ]
-        }
-      ]
-    );
+    expect(await getSectionFromPages(mockData, 'sectionContent')).toEqual([
+      {
+        title: '',
+        content: [
+          {
+            kind: 'posts',
+            contents: [
+              {
+                id: 'mmmmmmmmm',
+                createdAt: '2021-01-13T05:12.157Z',
+                updatedAt: '2021-01-13T05:12.157Z',
+                publishedAt: '2021-01-13T05:12.157Z',
+                revisedAt: '2021-01-13T05:12.157Z',
+                title: 'title4',
+                path: '/posts'
+              }
+            ],
+            detail: true
+          }
+        ]
+      }
+    ]);
   });
 });

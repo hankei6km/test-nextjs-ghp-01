@@ -116,7 +116,7 @@ describe('getPagesPageData()', () => {
       );
     expect(
       await getPagesPageData(testApiName, { params: { id: 'zzzzzzzzz' } })
-    ).toStrictEqual({
+    ).toEqual({
       id: 'zzzzzzzzz',
       updated: '2020-12-27T04:04:30.107Z',
       title: 'title3',
@@ -130,7 +130,13 @@ describe('getPagesPageData()', () => {
           content: [
             {
               kind: 'html',
-              contentHtml: '<p>content3</p>'
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  attribs: {},
+                  html: 'content3'
+                }
+              ]
             }
           ]
         }
@@ -142,8 +148,14 @@ describe('getPagesPageData()', () => {
           content: [
             {
               kind: 'html',
-              contentHtml:
-                '<ul><li>Next.js</li><li>Material-UI</li><li>Typescript</li><li>aspida</li><li>and more</li></ul>'
+              contentHtml: [
+                {
+                  tagName: 'ul',
+                  attribs: {},
+                  html:
+                    '<li>Next.js</li><li>Material-UI</li><li>Typescript</li><li>aspida</li><li>and more</li>'
+                }
+              ]
             }
           ]
         },
@@ -152,7 +164,13 @@ describe('getPagesPageData()', () => {
           content: [
             {
               kind: 'html',
-              contentHtml: '<ul><li>hot mock</li></ul>'
+              contentHtml: [
+                {
+                  tagName: 'ul',
+                  attribs: {},
+                  html: '<li>hot mock</li>'
+                }
+              ]
             }
           ]
         },
@@ -161,7 +179,14 @@ describe('getPagesPageData()', () => {
           content: [
             {
               kind: 'html',
-              contentHtml: '<hr><p>My Starter</p>'
+              contentHtml: [
+                {
+                  tagName: 'hr',
+                  attribs: {},
+                  html: ''
+                },
+                { tagName: 'p', attribs: {}, html: 'My Starter' }
+              ]
             }
           ]
         }
@@ -180,7 +205,7 @@ describe('getPagesPageData()', () => {
       await getPagesPageData(testApiName, { params: { id: 'mmmmmmmmm' } }, [
         'blog-posts'
       ])
-    ).toStrictEqual({
+    ).toEqual({
       id: 'mmmmmmmmm',
       updated: '2021-01-13T05:12.157Z',
       title: 'title4',
@@ -193,7 +218,18 @@ describe('getPagesPageData()', () => {
           content: [
             {
               kind: 'html',
-              contentHtml: '<p>post top</p><hr>'
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  attribs: {},
+                  html: 'post top'
+                },
+                {
+                  tagName: 'hr',
+                  attribs: {},
+                  html: ''
+                }
+              ]
             }
           ]
         }
@@ -204,7 +240,13 @@ describe('getPagesPageData()', () => {
           content: [
             {
               kind: 'html',
-              contentHtml: '<p>markdown content</p>'
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  attribs: {},
+                  html: 'markdown content'
+                }
+              ]
             }
           ]
         }
@@ -215,7 +257,18 @@ describe('getPagesPageData()', () => {
           content: [
             {
               kind: 'html',
-              contentHtml: '<hr><p>post bottom</p>'
+              contentHtml: [
+                {
+                  tagName: 'hr',
+                  attribs: {},
+                  html: ''
+                },
+                {
+                  tagName: 'p',
+                  attribs: {},
+                  html: 'post bottom'
+                }
+              ]
             }
           ]
         }
@@ -226,8 +279,14 @@ describe('getPagesPageData()', () => {
           content: [
             {
               kind: 'html',
-              contentHtml:
-                '<ul><li>Next.js</li><li>Material-UI</li><li>Typescript</li><li>aspida</li><li>and more</li></ul>'
+              contentHtml: [
+                {
+                  tagName: 'ul',
+                  attribs: {},
+                  html:
+                    '<li>Next.js</li><li>Material-UI</li><li>Typescript</li><li>aspida</li><li>and more</li>'
+                }
+              ]
             }
           ]
         },
@@ -236,7 +295,13 @@ describe('getPagesPageData()', () => {
           content: [
             {
               kind: 'html',
-              contentHtml: '<ul><li>hot mock</li></ul>'
+              contentHtml: [
+                {
+                  tagName: 'ul',
+                  attribs: {},
+                  html: '<li>hot mock</li>'
+                }
+              ]
             }
           ]
         },
@@ -245,7 +310,14 @@ describe('getPagesPageData()', () => {
           content: [
             {
               kind: 'html',
-              contentHtml: '<hr><p>My Starter</p>'
+              contentHtml: [
+                {
+                  tagName: 'hr',
+                  attribs: {},
+                  html: ''
+                },
+                { tagName: 'p', attribs: {}, html: 'My Starter' }
+              ]
             }
           ]
         }
