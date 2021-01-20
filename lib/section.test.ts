@@ -80,6 +80,9 @@ describe('htmlToChildren()', () => {
     ]);
   });
   it('should fallbacked', () => {
+    expect(htmlToChildren('')).toEqual([
+      { tagName: 'div', attribs: {}, html: '' }
+    ]);
     expect(htmlToChildren('test')).toEqual([
       { tagName: 'div', attribs: {}, html: 'test' }
     ]);
