@@ -120,108 +120,150 @@ describe('getPagesPageData()', () => {
     fetchMock
       .mockResponseOnce(JSON.stringify(mockDataPagesOuterHome))
       .mockResponseOnce(JSON.stringify(mockDataArticleList));
-    expect(
-      await getPagesPageData('pages', { params: { id: 'home' } })
-    ).toStrictEqual({
-      id: 'home',
-      updated: '2020-12-27T04:04:30.107Z',
-      title: 'Home',
-      description: 'my starter home page',
-      mainImage: '',
-      header: [],
-      top: [],
-      sections: [
-        {
-          title: 'intro',
-          content: [
-            {
-              kind: 'html',
-              contentHtml: '<p>index page</p>'
-            },
-            {
-              kind: 'html',
-              contentHtml: '<h2>markdown</h2><p>described by using markdown</p>'
-            },
-            {
-              kind: 'html',
-              contentHtml: '<h2>blog</h2>'
-            },
-            {
-              kind: 'posts',
-              contents: [
-                {
-                  id: 'mmmmmmmmm',
-                  createdAt: '2021-01-13T05:12.157Z',
-                  updatedAt: '2021-01-13T05:12.157Z',
-                  publishedAt: '2021-01-13T05:12.157Z',
-                  revisedAt: '2021-01-13T05:12.157Z',
-                  title: 'title4',
-                  path: '/posts'
-                },
-                {
-                  id: 'zzzzzzzzz',
-                  createdAt: '2020-12-27T04:04:30.107Z',
-                  updatedAt: '2020-12-27T04:04:30.107Z',
-                  publishedAt: '2020-12-27T04:04:30.107Z',
-                  revisedAt: '2020-12-27T04:04:30.107Z',
-                  title: 'title3',
-                  path: '/posts'
-                },
-                {
-                  id: 'yyyyyy-da',
-                  createdAt: '2020-12-26T15:29:14.476Z',
-                  updatedAt: '2020-12-26T15:29:14.476Z',
-                  publishedAt: '2020-12-26T15:29:14.476Z',
-                  revisedAt: '2020-12-26T15:29:14.476Z',
-                  title: 'title2',
-                  path: '/posts'
-                },
-                {
-                  id: 'xxxxxxxxx',
-                  createdAt: '2020-12-26T12:25:43.532Z',
-                  updatedAt: '2020-12-26T12:27:22.533Z',
-                  publishedAt: '2020-12-26T12:27:22.533Z',
-                  revisedAt: '2020-12-26T12:27:22.533Z',
-                  title: 'title1',
-                  path: '/posts'
-                }
-              ],
-              detail: false
-            }
-          ]
-        }
-      ],
-      bottom: [],
-      footer: [
-        {
-          title: 'language & library',
-          content: [
-            {
-              kind: 'html',
-              contentHtml:
-                '<ul><li>Next.js</li><li>Material-UI</li><li>Typescript</li><li>aspida</li><li>and more</li></ul>'
-            }
-          ]
-        },
-        {
-          title: 'environment',
-          content: [
-            {
-              kind: 'html',
-              contentHtml: '<ul><li>hot mock</li></ul>'
-            }
-          ]
-        },
-        {
-          title: '',
-          content: [
-            {
-              kind: 'html',
-              contentHtml: '<hr><p>My Starter</p>'
-            }
-          ]
-        }
-      ]
-    });
+    expect(await getPagesPageData('pages', { params: { id: 'home' } })).toEqual(
+      {
+        id: 'home',
+        updated: '2020-12-27T04:04:30.107Z',
+        title: 'Home',
+        description: 'my starter home page',
+        mainImage: '',
+        header: [],
+        top: [],
+        sections: [
+          {
+            title: 'intro',
+            content: [
+              {
+                kind: 'html',
+                contentHtml: [
+                  {
+                    tagName: 'p',
+                    attribs: {},
+                    html: 'index page'
+                  }
+                ]
+              },
+              {
+                kind: 'html',
+                contentHtml: [
+                  {
+                    tagName: 'h2',
+                    attribs: {},
+                    html: 'markdown'
+                  },
+                  {
+                    tagName: 'p',
+                    attribs: {},
+                    html: 'described by using markdown'
+                  }
+                ]
+              },
+              {
+                kind: 'html',
+                contentHtml: [
+                  {
+                    tagName: 'h2',
+                    attribs: {},
+                    html: 'blog'
+                  }
+                ]
+              },
+              {
+                kind: 'posts',
+                contents: [
+                  {
+                    id: 'mmmmmmmmm',
+                    createdAt: '2021-01-13T05:12.157Z',
+                    updatedAt: '2021-01-13T05:12.157Z',
+                    publishedAt: '2021-01-13T05:12.157Z',
+                    revisedAt: '2021-01-13T05:12.157Z',
+                    title: 'title4',
+                    path: '/posts'
+                  },
+                  {
+                    id: 'zzzzzzzzz',
+                    createdAt: '2020-12-27T04:04:30.107Z',
+                    updatedAt: '2020-12-27T04:04:30.107Z',
+                    publishedAt: '2020-12-27T04:04:30.107Z',
+                    revisedAt: '2020-12-27T04:04:30.107Z',
+                    title: 'title3',
+                    path: '/posts'
+                  },
+                  {
+                    id: 'yyyyyy-da',
+                    createdAt: '2020-12-26T15:29:14.476Z',
+                    updatedAt: '2020-12-26T15:29:14.476Z',
+                    publishedAt: '2020-12-26T15:29:14.476Z',
+                    revisedAt: '2020-12-26T15:29:14.476Z',
+                    title: 'title2',
+                    path: '/posts'
+                  },
+                  {
+                    id: 'xxxxxxxxx',
+                    createdAt: '2020-12-26T12:25:43.532Z',
+                    updatedAt: '2020-12-26T12:27:22.533Z',
+                    publishedAt: '2020-12-26T12:27:22.533Z',
+                    revisedAt: '2020-12-26T12:27:22.533Z',
+                    title: 'title1',
+                    path: '/posts'
+                  }
+                ],
+                detail: false
+              }
+            ]
+          }
+        ],
+        bottom: [],
+        footer: [
+          {
+            title: 'language & library',
+            content: [
+              {
+                kind: 'html',
+                contentHtml: [
+                  {
+                    tagName: 'ul',
+                    attribs: {},
+                    html:
+                      '<li>Next.js</li><li>Material-UI</li><li>Typescript</li><li>aspida</li><li>and more</li>'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            title: 'environment',
+            content: [
+              {
+                kind: 'html',
+                contentHtml: [
+                  {
+                    tagName: 'ul',
+                    attribs: {},
+                    html: '<li>hot mock</li>'
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            title: '',
+            content: [
+              {
+                kind: 'html',
+                contentHtml: [
+                  {
+                    tagName: 'hr',
+                    attribs: {},
+                    html: ''
+                  },
+                  { tagName: 'p', attribs: {}, html: 'My Starter' }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    );
   });
 });

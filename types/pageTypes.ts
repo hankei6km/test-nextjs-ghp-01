@@ -2,12 +2,20 @@ import { PagesIndex } from './client/contentTypes';
 // export type SectionKind = 'content' | 'posts';
 type SectionArticleIndexPath = { path: string };
 export type SectionArticleIndex = PagesIndex & SectionArticleIndexPath;
+export type SectionContentHtmlChildren = {
+  tagName: string;
+  attribs: { [name: string]: string };
+  html: string;
+};
 export type SectionBlank = {
   kind: '';
 };
 export type SectionContent = {
   kind: 'html';
-  contentHtml: string; // 変換済の html 、mmarkdonw もhtml に変換され統合される
+  // contentHtml: string; // 変換済の html 、mmarkdonw もhtml に変換され統合される
+  // React で dangerouslySetInnerHTML を使うと他の element でラップされてしまうので、
+  // children に分割して child の root でラップするようにする
+  contentHtml: SectionContentHtmlChildren[];
 };
 export type SectionPosts = {
   kind: 'posts';
