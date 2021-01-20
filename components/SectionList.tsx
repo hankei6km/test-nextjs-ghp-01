@@ -4,6 +4,10 @@ import Box from '@material-ui/core/Box';
 import SectionItem from './SectionItem';
 import { Section as SectionType } from '../types/pageTypes';
 import { pruneClasses } from '../utils/classes';
+import SectionContext, {
+  SectionConfig,
+  defaultSectionConfig
+} from './SectionContext';
 
 const useStyles = makeStyles(() => ({
   'SectionList-root': {}
@@ -14,13 +18,18 @@ const classNames = ['SectionList-root', 'Section-item'];
 
 type Props = {
   sections: SectionType[];
+  config?: SectionConfig;
   classes?: { [key: string]: string };
 };
 
-const SectionList = ({ sections, classes: inClasses }: Props) => {
+const SectionList = ({
+  sections,
+  config = defaultSectionConfig(),
+  classes: inClasses
+}: Props) => {
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
-  return (
-    <Box className={classes['SectionList-root']}>
+  const listNode = (
+    <SectionContext.Provider value={config}>
       {sections.map((section, i) => (
         <SectionItem
           key={i}
@@ -28,8 +37,12 @@ const SectionList = ({ sections, classes: inClasses }: Props) => {
           classes={{ ...inClasses } /* 'Section-*' は除外する?  */}
         />
       ))}
-    </Box>
+    </SectionContext.Provider>
   );
+  if (config.naked) {
+    return listNode;
+  }
+  return <Box className={classes['SectionList-root']}>{listNode}</Box>;
 };
 
 export default SectionList;

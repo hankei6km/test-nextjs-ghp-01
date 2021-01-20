@@ -16,7 +16,10 @@ import {
   mockDataSectionArticleList
 } from '../test/testUtils';
 
-import SectionContext, { sectionContextDefault } from './SectionContext';
+import SectionContext, {
+  defaultSectionConfig,
+  mergeSectionConfig
+} from './SectionContext';
 import ArticleItem from './ArticleItem';
 
 // https://stackoverflow.com/questions/40449434/mocking-globals-in-jest
@@ -41,7 +44,7 @@ describe('ArticleItem', () => {
       const sectionArticleData = mockDataSectionArticleList[1]; // id: 'zzzzzzzzz'
       const { container, getByText, getByRole, queryByText } = render(
         <RouterContext.Provider value={router}>
-          <SectionContext.Provider value={sectionContextDefault}>
+          <SectionContext.Provider value={defaultSectionConfig()}>
             <ArticleItem data={sectionArticleData} />
           </SectionContext.Provider>
         </RouterContext.Provider>
@@ -102,14 +105,12 @@ describe('ArticleItem', () => {
       const { container } = render(
         <RouterContext.Provider value={router}>
           <SectionContext.Provider
-            value={{
-              ...sectionContextDefault,
+            value={mergeSectionConfig({
               component: {
-                ...sectionContextDefault.component,
                 articleItemComponent: 'article',
                 articleItemTitleComponent: 'h3'
               }
-            }}
+            })}
           >
             <ArticleItem data={sectionArticleData} />
           </SectionContext.Provider>

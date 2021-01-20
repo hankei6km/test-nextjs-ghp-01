@@ -5,6 +5,7 @@ import Head from 'next/head';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import siteContext from '../components/SiteContext';
+import { mergeSectionConfig } from '../components/SectionContext';
 import { Section } from '../types/pageTypes';
 import SectionList from './SectionList';
 import { pruneClasses } from '../utils/classes';
@@ -54,6 +55,10 @@ const classNames = [
   'LayoutFooter-sectionList',
   'LayoutFooter-sectionBottom'
 ];
+
+const sectionConfigInLayout = mergeSectionConfig({
+  component: { sectionComponent: 'div' } // section とは、と思わなくはない。
+});
 
 type Props = {
   children?: ReactNode;
@@ -106,12 +111,14 @@ const Layout = ({
                   content: [{ kind: 'partsNavMain' }]
                 }
               ]}
+              config={sectionConfigInLayout}
               classes={{ ...classesHeader }}
             />
           </Box>
           <Box className={classes['LayoutHeader-sectionTop']}>
             <SectionList
               sections={headerSections.slice(0, 1)}
+              config={sectionConfigInLayout}
               classes={{ ...classes }}
             />
           </Box>
@@ -119,6 +126,7 @@ const Layout = ({
             <Box className={classes['LayoutHeader-sectionList']}>
               <SectionList
                 sections={headerSections.slice(1)}
+                config={sectionConfigInLayout}
                 classes={{ ...classesHeaderFooter }}
               />
             </Box>
@@ -134,6 +142,7 @@ const Layout = ({
             <Box className={classes['LayoutFooter-sectionList']}>
               <SectionList
                 sections={footerSections.slice(0, footerSectionsLen - 1)}
+                config={sectionConfigInLayout}
                 classes={{ ...classesHeaderFooter }}
               />
             </Box>
@@ -141,6 +150,7 @@ const Layout = ({
           <Box className={classes['LayoutFooter-sectionBottom']}>
             <SectionList
               sections={footerSections.slice(-1)}
+              config={sectionConfigInLayout}
               classes={{ ...classes }}
             />
           </Box>
