@@ -42,12 +42,9 @@ type Props = {
 
 const SectionItem = ({ data, classes: inClasses }: Props) => {
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
-  const { component, variant } = useContext(SectionContext);
-  return (
-    <Box
-      component={component.sectionComponent}
-      className={classes['SectionItem-root']}
-    >
+  const { naked, component, variant } = useContext(SectionContext);
+  const itemNode = (
+    <>
       {data.title && (
         <Typography
           variant={variant.sectionTitleVariant}
@@ -103,6 +100,17 @@ const SectionItem = ({ data, classes: inClasses }: Props) => {
           )}
         </Box>
       ))}
+    </>
+  );
+  if (naked) {
+    return itemNode;
+  }
+  return (
+    <Box
+      component={component.sectionComponent}
+      className={classes['SectionItem-root']}
+    >
+      {itemNode}
     </Box>
   );
 };

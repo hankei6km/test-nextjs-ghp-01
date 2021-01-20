@@ -28,19 +28,21 @@ const SectionList = ({
   classes: inClasses
 }: Props) => {
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
-  return (
-    <Box className={classes['SectionList-root']}>
-      <SectionContext.Provider value={config}>
-        {sections.map((section, i) => (
-          <SectionItem
-            key={i}
-            data={section}
-            classes={{ ...inClasses } /* 'Section-*' は除外する?  */}
-          />
-        ))}
-      </SectionContext.Provider>
-    </Box>
+  const listNode = (
+    <SectionContext.Provider value={config}>
+      {sections.map((section, i) => (
+        <SectionItem
+          key={i}
+          data={section}
+          classes={{ ...inClasses } /* 'Section-*' は除外する?  */}
+        />
+      ))}
+    </SectionContext.Provider>
   );
+  if (config.naked) {
+    return listNode;
+  }
+  return <Box className={classes['SectionList-root']}>{listNode}</Box>;
 };
 
 export default SectionList;

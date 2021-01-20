@@ -6,6 +6,7 @@ import Link from '../../components/Link';
 import Box from '@material-ui/core/Box';
 import { PageData } from '../../types/pageTypes';
 import { getAllPagesIds, getPagesPageData } from '../../lib/pages';
+import { mergeSectionConfig } from '../../components/SectionContext';
 import SectionList from '../../components/SectionList';
 import PageContext from '../../components/PageContext';
 // import classes from '*.module.css';
@@ -18,6 +19,10 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center'
   }
 }));
+
+const sectionConfigInPosts = mergeSectionConfig({
+  naked: true
+});
 
 export default function Post({
   pageData
@@ -55,7 +60,11 @@ export default function Post({
             classes={{ ...classes }}
           />
           <SectionList sections={pageData.top} classes={{ ...classes }} />
-          <SectionList sections={pageData.sections} classes={{ ...classes }} />
+          <SectionList
+            sections={pageData.sections}
+            config={sectionConfigInPosts}
+            classes={{ ...classes }}
+          />
           <SectionList sections={pageData.bottom} classes={{ ...classes }} />
         </Box>
         <Link href="/posts">{'Back to posts'}</Link>

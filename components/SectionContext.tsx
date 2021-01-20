@@ -9,6 +9,7 @@ import { PageTitleComponent, PageTitleVariant } from './parts/PageTitle';
 import siteConfig from '../src/site.config';
 
 export type SectionConfig = {
+  naked: boolean;
   component: SectionItemComponent &
     ArticleListComponent &
     ArticleDetailComponent &

@@ -7,6 +7,7 @@ const siteConfig: {
   image: { [key: string]: string };
 } = {
   sectionConfig: {
+    naked: false,
     component: {
       sectionComponent: 'section',
       sectionTitleComponent: 'h2',
