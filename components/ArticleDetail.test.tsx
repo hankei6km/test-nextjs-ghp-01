@@ -3,7 +3,10 @@ import { render, act, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
-import SectionContext, { sectionContextDefault } from './SectionContext';
+import SectionContext, {
+  defaultSectionConfig,
+  mergeSectionConfig
+} from './SectionContext';
 import {
   mockRouter,
   mockImage,
@@ -33,7 +36,7 @@ describe('ArticleDetail', () => {
       const sectionArticleData = mockDataSectionArticleList[1]; // id: 'zzzzzzzzz'
       const { container, getByText, getByRole, queryByText } = render(
         <RouterContext.Provider value={router}>
-          <SectionContext.Provider value={sectionContextDefault}>
+          <SectionContext.Provider value={defaultSectionConfig()}>
             <ArticleDetail data={sectionArticleData} />
           </SectionContext.Provider>
         </RouterContext.Provider>
@@ -87,14 +90,12 @@ describe('ArticleDetail', () => {
       const { container } = render(
         <RouterContext.Provider value={router}>
           <SectionContext.Provider
-            value={{
-              ...sectionContextDefault,
+            value={mergeSectionConfig({
               component: {
-                ...sectionContextDefault.component,
                 articleDetailComponent: 'li',
                 articleDetailTitleComponent: 'h5'
               }
-            }}
+            })}
           >
             <ArticleDetail data={sectionArticleData} />
           </SectionContext.Provider>
