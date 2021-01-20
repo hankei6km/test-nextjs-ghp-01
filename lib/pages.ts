@@ -1,18 +1,9 @@
 import { ParsedUrlQuery } from 'querystring';
 import { GetStaticPropsContext } from 'next';
-import client, {
-  fetchConfig,
-  ApiNameArticleValues,
-  ApiNameArticle
-} from './client';
-import {
-  PagesSectionKind,
-  PagesContent,
-  blankPageContent
-} from '../types/client/contentTypes';
-import { join } from 'path';
-import { Section, PageData, blankPageData } from '../types/pageTypes';
-import { markdownToHtml } from './markdown';
+import client, { fetchConfig, ApiNameArticle } from './client';
+import { PagesContent, blankPageContent } from '../types/client/contentTypes';
+import { PageData, blankPageData } from '../types/pageTypes';
+import { getSectionFromPages } from './section';
 
 const globalPageId = '_global';
 
@@ -107,69 +98,6 @@ export async function getPagesDataWithOuter(
     console.error(`getPagesDataWithLayout error: ${err.name}`);
   }
   return [blankPageContent(), blankPageContent()];
-}
-
-async function getSectionFromPages(
-  page: PagesContent,
-  kind: PagesSectionKind
-): Promise<Section[]> {
-  const sections = page.sections
-    .filter(({ fieldId }) => fieldId === kind)
-    .map((section) => ({
-      title: section.title || '',
-      content: section.content.map((content) => {
-        return async () => {
-          if (content.fieldId === 'contentHtml') {
-            return {
-              kind: 'html' as const,
-              contentHtml: content.html
-            };
-          } else if (content.fieldId === 'contentMarkdown') {
-            return {
-              kind: 'html' as const,
-              contentHtml: markdownToHtml(content.markdown)
-            };
-          } else if (
-            content.fieldId === 'contentArticles' &&
-            ApiNameArticleValues.some((v) => v === content.apiName)
-          ) {
-            const contents = await getSortedPagesData(
-              content.apiName as ApiNameArticle
-            );
-            return {
-              kind: 'posts' as const,
-              contents: contents.map((c) => ({
-                ...c,
-                // path: normalize(`/${content.apiName}`)
-                path: join('/', content.apiName)
-              })),
-              detail: content.detail || false
-            };
-          } else if (content.fieldId === 'contentImage') {
-            return {
-              kind: 'image' as const,
-              image: content.image,
-              alt: content.alt,
-              link: content.link || ''
-            };
-          }
-          return {
-            kind: '' as const
-          };
-        };
-      })
-    }));
-  // all だと fetch が同時に実行されすぎる?
-  // (いっても 2 セクションもないだろうけど)
-  return await Promise.all(
-    sections.map(async (section) => {
-      return {
-        title: section.title,
-        // content: []
-        content: await Promise.all(section.content.map((content) => content()))
-      };
-    })
-  );
 }
 
 export async function getPagesPageData(
