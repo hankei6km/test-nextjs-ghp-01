@@ -4,7 +4,7 @@ import {
   mockDataArticleIds,
   mockDataPagesOuter,
   mockDataPagesOuterPosts
-} from '../types/client/mockData';
+} from '../test/testMockData';
 import { FetchMock } from 'jest-fetch-mock';
 import {
   getSortedPagesData,
