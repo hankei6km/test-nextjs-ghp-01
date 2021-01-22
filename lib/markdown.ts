@@ -1,6 +1,7 @@
 import unified from 'unified';
 import markdown from 'remark-parse';
 import remark2rehype from 'remark-rehype';
+import gfm from 'remark-gfm';
 import rehypeMinifyWhitespace from 'rehype-minify-whitespace';
 import rehypeStringify from 'rehype-stringify';
 import rehypeSanitize from 'rehype-sanitize';
@@ -14,6 +15,7 @@ const schema = merge(gh, {
 });
 const processorMarkdown = unified()
   .use(markdown)
+  .use(gfm)
   .use(remark2rehype)
   .use(rehypeMinifyWhitespace)
   .use(rehypeSanitize, (schema as unknown) as Schema)
