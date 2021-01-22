@@ -16,7 +16,9 @@ const siteConfig: {
       articleDetailTitleComponent: 'h3',
       articleItemTitleComponent: 'span',
       siteTitleComponent: 'h1',
-      pageTitleComponent: 'h2'
+      pageTitleComponent: 'h2',
+      navCategoryComponent: 'nav',
+      navAllCategoryComponent: 'nav'
     },
     variant: {
       sectionTitleVariant: 'h2',

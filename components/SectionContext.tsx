@@ -6,6 +6,7 @@ import { ArticleDetailComponent, ArticleDetailVariant } from './ArticleDetail';
 import { ArticleItemComponent, ArticleItemVariant } from './ArticleItem';
 import { SiteTitleComponent, SiteTitleVariant } from './parts/SiteTitle';
 import { PageTitleComponent, PageTitleVariant } from './parts/PageTitle';
+import { NavCategoryComponent } from './parts/NavCategory';
 import siteConfig from '../src/site.config';
 
 export type SectionConfig = {
@@ -15,7 +16,8 @@ export type SectionConfig = {
     ArticleDetailComponent &
     ArticleItemComponent &
     SiteTitleComponent &
-    PageTitleComponent;
+    PageTitleComponent &
+    NavCategoryComponent;
   variant: SectionItemVariant &
     ArticleListVariant &
     ArticleDetailVariant &

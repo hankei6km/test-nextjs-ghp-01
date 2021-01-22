@@ -187,9 +187,6 @@ export async function getPagesPageData(
           pageData.category = rawPageDatas[rawPageDataLen - 1].category;
         }
     }
-    console.log('title:', pageData.title);
-    console.log('a:', pageData.allCategory);
-    console.log('c:', pageData.category);
     return pageData;
   } catch (err) {
     console.error(`getPagesPageData error: ${err.name}`);

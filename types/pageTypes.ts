@@ -55,6 +55,11 @@ export type SectionPartsUpdated = {
 export type SectionPartsNavMain = {
   kind: 'partsNavMain';
 };
+export type SectionPartsNavCategory = {
+  kind: 'partsNavCategory';
+  all: boolean;
+  categoryPath: string;
+};
 
 export type Section = {
   title?: string;
@@ -69,6 +74,7 @@ export type Section = {
     | SectionPartsProfileImage
     | SectionPartsUpdated
     | SectionPartsNavMain
+    | SectionPartsNavCategory
   )[];
 };
 
