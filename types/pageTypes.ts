@@ -72,12 +72,19 @@ export type Section = {
   )[];
 };
 
+export type PageCategory = {
+  id: string;
+  title: string;
+};
+
 export type PageData = {
   id: string;
   updated: string; // この段階では Date にはしない
   title: string;
   description: string;
   mainImage: string;
+  allCategory: PageCategory[];
+  category: PageCategory[];
   header: Section[];
   top: Section[];
   sections: Section[];
@@ -90,10 +97,12 @@ export const blankPageData = (): PageData => ({
   updated: '',
   title: '',
   description: '',
+  mainImage: '',
+  allCategory: [],
+  category: [],
   header: [],
   top: [],
   sections: [],
   bottom: [],
-  footer: [],
-  mainImage: ''
+  footer: []
 });

@@ -15,6 +15,7 @@ export type GetQuery = {
 
 export type GetContentQuery = {
   draftKey?: string;
+  fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections';
   // fields?: string;
   // depth?: number;
 };
@@ -27,19 +28,10 @@ type GetPagesItemsWithLayoutId = string;
 export type GetPagesItemsWithLayout = {
   // ids: `_layout,${GetPagesItemsWithLayoutId}`
   ids: GetPagesItemsWithLayoutId;
+  fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections';
 };
 
 export type GetPagesItemQuery = {
   // 型のリファクト?が面倒、、、
-  fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title';
-} & GetQuery;
-
-export type GetPostsItemQuery = {
-  // 型のリファクト?が面倒、、、
-  fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title';
-} & GetQuery;
-
-export type GetTest1ItemQuery = {
-  // 型のリファクト?が面倒、、、
-  fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title';
+  fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title';
 } & GetQuery;

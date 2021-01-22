@@ -2,16 +2,22 @@ import { ParsedUrlQuery } from 'querystring';
 import { GetStaticPropsContext } from 'next';
 import client, { fetchConfig, ApiNameArticle } from './client';
 import { PagesContent, blankPageContent } from '../types/client/contentTypes';
+import { GetQuery } from '../types/client/queryTypes';
 import { PageData, blankPageData } from '../types/pageTypes';
 import { getSectionFromPages } from './section';
 
 const globalPageId = '_global';
 
-export async function getSortedPagesData(apiName: ApiNameArticle) {
+export async function getSortedPagesData(
+  apiName: ApiNameArticle,
+  query: GetQuery = {}
+) {
   try {
     const res = await client[apiName].get({
       query: {
-        fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title'
+        ...query,
+        fields:
+          'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title'
       },
       config: fetchConfig
     });
@@ -52,7 +58,9 @@ export async function getPagesData(
       ._id(!preview ? params.id : previewData.slug) // 似たような3項式がバラけていてすっきりしない
       .$get({
         query: {
-          draftKey: !preview ? '' : previewData.draftKey
+          draftKey: !preview ? '' : previewData.draftKey,
+          fields:
+            'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
         },
         config: fetchConfig
       });
@@ -77,7 +85,9 @@ export async function getPagesDataWithOuter(
     if (apiName === 'pages') {
       const res = await client[apiName].get({
         query: {
-          ids: [globalPageId].concat(outerIds, params.id).join(',')
+          ids: [globalPageId].concat(outerIds, params.id).join(','),
+          fields:
+            'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
         },
         config: fetchConfig
       });
@@ -85,7 +95,9 @@ export async function getPagesDataWithOuter(
     }
     const res = await client['pages'].get({
       query: {
-        ids: [globalPageId].concat(outerIds).join(',')
+        ids: [globalPageId].concat(outerIds).join(','),
+        fields:
+          'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
       },
       config: fetchConfig
     });
@@ -119,12 +131,14 @@ export async function getPagesPageData(
       },
       outerIds
     );
-    const pageData = {
+    const pageData: PageData = {
       id: rawPageDatas[0].id,
       updated: rawPageDatas[0].revisedAt || rawPageDatas[0].updatedAt,
       title: rawPageDatas[0].title,
       description: rawPageDatas[0].description || '',
       mainImage: '',
+      allCategory: [],
+      category: [],
       header: await getSectionFromPages(rawPageDatas[0], 'sectionHeader'),
       top: await getSectionFromPages(rawPageDatas[0], 'sectionTop'),
       sections: await getSectionFromPages(rawPageDatas[0], 'sectionContent'),
@@ -140,6 +154,8 @@ export async function getPagesPageData(
         rawPageData.title !== '' ? rawPageData.title : pageData.title;
       pageData.description = rawPageData.description || pageData.description;
       pageData.mainImage = '';
+      pageData.allCategory = [];
+      pageData.category = [];
       const header = await getSectionFromPages(rawPageData, 'sectionHeader');
       pageData.header = header.length > 0 ? header : pageData.header;
       const top = await getSectionFromPages(rawPageData, 'sectionTop');
@@ -151,6 +167,29 @@ export async function getPagesPageData(
       const footer = await getSectionFromPages(rawPageData, 'sectionFooter');
       pageData.footer = footer.length > 0 ? footer : pageData.footer;
     }
+    switch (apiName) {
+      case 'pages':
+        if (rawPageDataLen > 1) {
+          // pages の場合 glogab,id のみのはずだが念のため
+          pageData.allCategory = rawPageDatas[rawPageDataLen - 1].category;
+        }
+        break;
+      case 'category':
+        // category はなもしない
+        break;
+      default:
+        // pages 意外では通常のカテゴリーとして扱う.
+        // TODO: allCategory でフィルター.
+        if (rawPageDataLen > 1) {
+          if (rawPageDataLen > 2) {
+            pageData.allCategory = rawPageDatas[rawPageDataLen - 2].category;
+          }
+          pageData.category = rawPageDatas[rawPageDataLen - 1].category;
+        }
+    }
+    console.log('title:', pageData.title);
+    console.log('a:', pageData.allCategory);
+    console.log('c:', pageData.category);
     return pageData;
   } catch (err) {
     console.error(`getPagesPageData error: ${err.name}`);

@@ -31,7 +31,8 @@ describe('getSortedPagesData()', () => {
         updatedAt: '2021-01-13T05:12.157Z',
         publishedAt: '2021-01-13T05:12.157Z',
         revisedAt: '2021-01-13T05:12.157Z',
-        title: 'title4'
+        title: 'title4',
+        category: []
       },
       {
         id: 'zzzzzzzzz',
@@ -39,7 +40,8 @@ describe('getSortedPagesData()', () => {
         updatedAt: '2020-12-27T04:04:30.107Z',
         publishedAt: '2020-12-27T04:04:30.107Z',
         revisedAt: '2020-12-27T04:04:30.107Z',
-        title: 'title3'
+        title: 'title3',
+        category: []
       },
       {
         id: 'yyyyyy-da',
@@ -47,7 +49,8 @@ describe('getSortedPagesData()', () => {
         updatedAt: '2020-12-26T15:29:14.476Z',
         publishedAt: '2020-12-26T15:29:14.476Z',
         revisedAt: '2020-12-26T15:29:14.476Z',
-        title: 'title2'
+        title: 'title2',
+        category: []
       },
       {
         id: 'xxxxxxxxx',
@@ -55,7 +58,8 @@ describe('getSortedPagesData()', () => {
         updatedAt: '2020-12-26T12:27:22.533Z',
         publishedAt: '2020-12-26T12:27:22.533Z',
         revisedAt: '2020-12-26T12:27:22.533Z',
-        title: 'title1'
+        title: 'title1',
+        category: []
       }
     ]);
   });
@@ -90,6 +94,7 @@ describe('getPagesData()', () => {
       revisedAt: '2020-12-27T04:04:30.107Z',
       title: 'title3',
       kind: ['page'],
+      category: [],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -122,6 +127,8 @@ describe('getPagesPageData()', () => {
       title: 'title3',
       description: 'my starter home page',
       mainImage: '',
+      allCategory: [],
+      category: [],
       header: [],
       top: [],
       sections: [
@@ -211,6 +218,8 @@ describe('getPagesPageData()', () => {
       title: 'title4',
       description: 'my starter home page',
       mainImage: '',
+      allCategory: [],
+      category: [],
       header: [],
       top: [
         {

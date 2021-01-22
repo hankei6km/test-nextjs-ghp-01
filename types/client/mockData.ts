@@ -11,6 +11,7 @@ export const mockDataPages: PagesContents = {
       title: 'My Starter MOCK',
       kind: ['page'],
       description: 'my starter home page',
+      category: [],
       sections: [
         {
           fieldId: 'sectionFooter',
@@ -53,6 +54,7 @@ export const mockDataPages: PagesContents = {
       title: 'Home',
       kind: ['page'],
       description: 'my starter home page',
+      category: [],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -86,6 +88,7 @@ export const mockDataPages: PagesContents = {
       revisedAt: '2020-12-26T15:29:14.476Z',
       title: 'Blog',
       kind: ['posts'],
+      category: [],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -108,6 +111,7 @@ export const mockDataPages: PagesContents = {
       revisedAt: '2020-12-26T15:29:14.476Z',
       title: 'Blog',
       kind: ['posts'],
+      category: [],
       sections: [
         {
           fieldId: 'sectionTop',
@@ -180,6 +184,7 @@ export const mockDataArticles: PagesContents = {
       revisedAt: '2021-01-13T05:12.157Z',
       title: 'title4',
       kind: ['page'],
+      category: [],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -200,6 +205,7 @@ export const mockDataArticles: PagesContents = {
       revisedAt: '2020-12-27T04:04:30.107Z',
       title: 'title3',
       kind: ['page'],
+      category: [],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -220,6 +226,7 @@ export const mockDataArticles: PagesContents = {
       revisedAt: '2020-12-26T15:29:14.476Z',
       title: 'title2',
       kind: ['page'],
+      category: [],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -240,6 +247,7 @@ export const mockDataArticles: PagesContents = {
       revisedAt: '2020-12-26T12:27:22.533Z',
       title: 'title1',
       kind: ['page'],
+      category: [],
       sections: [
         {
           fieldId: 'sectionContent',

@@ -114,11 +114,13 @@ describe('getSectionFromPages()', () => {
     title: 'Home',
     kind: ['page'],
     description: 'my starter home page',
+    category: [],
     sections: []
   };
   it('should returns sections that filtered kind', async () => {
     const mockData: PagesContent = {
       ...mockBase,
+      category: [],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -261,6 +263,7 @@ describe('getSectionFromPages()', () => {
   it('should returns content sections from markdown', async () => {
     const mockData: PagesContent = {
       ...mockBase,
+      category: [],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -301,6 +304,7 @@ describe('getSectionFromPages()', () => {
     );
     const mockData: PagesContent = {
       ...mockBase,
+      category: [],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -329,6 +333,7 @@ describe('getSectionFromPages()', () => {
                 publishedAt: '2021-01-13T05:12.157Z',
                 revisedAt: '2021-01-13T05:12.157Z',
                 title: 'title4',
+                category: [],
                 path: '/posts'
               }
             ],

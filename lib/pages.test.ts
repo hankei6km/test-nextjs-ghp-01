@@ -30,7 +30,8 @@ describe('getSortedPagesData()', () => {
         updatedAt: '2020-12-27T04:04:30.107Z',
         publishedAt: '2020-12-27T04:04:30.107Z',
         revisedAt: '2020-12-27T04:04:30.107Z',
-        title: 'My Starter MOCK'
+        title: 'My Starter MOCK',
+        category: []
       },
       {
         id: 'home',
@@ -38,7 +39,8 @@ describe('getSortedPagesData()', () => {
         updatedAt: '2020-12-27T04:04:30.107Z',
         publishedAt: '2020-12-27T04:04:30.107Z',
         revisedAt: '2020-12-27T04:04:30.107Z',
-        title: 'Home'
+        title: 'Home',
+        category: []
       },
       {
         id: 'blog',
@@ -46,7 +48,12 @@ describe('getSortedPagesData()', () => {
         updatedAt: '2020-12-26T15:29:14.476Z',
         publishedAt: '2020-12-26T15:29:14.476Z',
         revisedAt: '2020-12-26T15:29:14.476Z',
-        title: 'Blog'
+        title: 'Blog',
+        category: [
+          { id: 'cat1', title: 'Category1' },
+          { id: 'cat2', title: 'Category2' },
+          { id: 'cat3', title: 'Category3' }
+        ]
       },
       {
         id: 'blog-posts',
@@ -54,7 +61,8 @@ describe('getSortedPagesData()', () => {
         updatedAt: '2020-12-26T15:29:14.476Z',
         publishedAt: '2020-12-26T15:29:14.476Z',
         revisedAt: '2020-12-26T15:29:14.476Z',
-        title: 'Blog'
+        title: 'Blog',
+        category: []
       }
     ]);
   });
@@ -88,6 +96,7 @@ describe('getPagesData()', () => {
       title: 'Home',
       kind: ['page'],
       description: 'my starter home page',
+      category: [],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -127,6 +136,8 @@ describe('getPagesPageData()', () => {
         title: 'Home',
         description: 'my starter home page',
         mainImage: '',
+        allCategory: [],
+        category: [],
         header: [],
         top: [],
         sections: [
@@ -178,6 +189,7 @@ describe('getPagesPageData()', () => {
                     publishedAt: '2021-01-13T05:12.157Z',
                     revisedAt: '2021-01-13T05:12.157Z',
                     title: 'title4',
+                    category: [],
                     path: '/posts'
                   },
                   {
@@ -187,6 +199,7 @@ describe('getPagesPageData()', () => {
                     publishedAt: '2020-12-27T04:04:30.107Z',
                     revisedAt: '2020-12-27T04:04:30.107Z',
                     title: 'title3',
+                    category: [],
                     path: '/posts'
                   },
                   {
@@ -196,6 +209,7 @@ describe('getPagesPageData()', () => {
                     publishedAt: '2020-12-26T15:29:14.476Z',
                     revisedAt: '2020-12-26T15:29:14.476Z',
                     title: 'title2',
+                    category: [],
                     path: '/posts'
                   },
                   {
@@ -205,6 +219,7 @@ describe('getPagesPageData()', () => {
                     publishedAt: '2020-12-26T12:27:22.533Z',
                     revisedAt: '2020-12-26T12:27:22.533Z',
                     title: 'title1',
+                    category: [],
                     path: '/posts'
                   }
                 ],
