@@ -15,5 +15,9 @@ module.exports = {
     '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
     '\\.(gif|ttf|eot|svg|png)$': '<rootDir>/test/__mocks__/fileMock.js'
   },
-  setupFilesAfterEnv: ['<rootDir>/setupTests.ts']
+  setupFilesAfterEnv: ['<rootDir>/setupTests.ts'],
+  coveragePathIgnorePatterns: [
+    '<rootDir>/test/',
+    '<rootDir>/types/client/(\\$mock\\.ts|@.+\\.ts$|mockData\\.ts$|api/)'
+  ]
 };

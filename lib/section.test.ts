@@ -1,4 +1,4 @@
-import { mockDataArticleList } from '../types/client/mockData';
+import { mockDataArticleList } from '../test/testMockData';
 import { FetchMock } from 'jest-fetch-mock';
 import { getSectionFromPages, htmlToChildren } from './section';
 import { PagesContent } from '../types/client/contentTypes';

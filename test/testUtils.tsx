@@ -1,5 +1,5 @@
 import { NextRouter } from 'next/router';
-import { mockDataArticleList } from '../types/client/mockData';
+import { mockDataArticleList } from './testMockData';
 // import { CreateMockRouterOptions } from 'next-router-provider';
 
 export const mockDataSectionArticleList = mockDataArticleList.contents.map(
