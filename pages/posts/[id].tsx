@@ -65,6 +65,21 @@ export default function Post({
             config={sectionConfigInPosts}
             classes={{ ...classes }}
           />
+          <SectionList
+            sections={[
+              {
+                title: '',
+                content: [
+                  {
+                    kind: 'partsNavCategory',
+                    all: false,
+                    categoryPath: '/posts/category'
+                  }
+                ]
+              }
+            ]}
+            classes={{ ...classes }}
+          />
           <SectionList sections={pageData.bottom} classes={{ ...classes }} />
         </Box>
         <Link href="/posts">{'Back to posts'}</Link>

@@ -32,7 +32,8 @@ describe('SectionItem', () => {
                 {
                   kind: 'posts',
                   contents: mockDataSectionArticleList,
-                  detail: true
+                  detail: true,
+                  category: []
                 }
               ]
             }}

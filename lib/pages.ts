@@ -215,7 +215,11 @@ export async function getPagesPageData(
         }
         break;
       case 'category':
-        // category はなもしない
+        // category は allCategory のみ
+        // ( allCategory 自身のページにも定義できるが、outer からとってくる)
+        if (rawPageDataLen > 2) {
+          pageData.allCategory = rawPageDatas[rawPageDataLen - 2].category;
+        }
         break;
       default:
         // pages 意外では通常のカテゴリーとして扱う.

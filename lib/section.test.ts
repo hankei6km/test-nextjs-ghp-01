@@ -1,6 +1,10 @@
 import { mockDataArticleList } from '../test/testMockData';
 import { FetchMock } from 'jest-fetch-mock';
-import { getSectionFromPages, htmlToChildren } from './section';
+import {
+  getSectionFromPages,
+  htmlToChildren,
+  getApiNameArticle
+} from './section';
 import { PagesContent } from '../types/client/contentTypes';
 
 // https://github.com/jefflau/jest-fetch-mock/issues/83
@@ -101,6 +105,23 @@ describe('htmlToChildren()', () => {
         html: '<p>test</p><button>abc</button><p>test</p>'
       }
     ]);
+  });
+});
+
+describe('getApiNameArticle()', () => {
+  it('should pass through passed apitName', () => {
+    expect(getApiNameArticle('posts')).toEqual('posts');
+    expect(getApiNameArticle('posts', undefined)).toEqual('posts');
+    expect(getApiNameArticle('posts', 'pages')).toEqual('posts');
+  });
+  it('should return default api name', () => {
+    expect(getApiNameArticle('%articles', 'posts')).toEqual('posts');
+  });
+  it('should return blank when invalid api name passed', () => {
+    expect(getApiNameArticle('testtest')).toEqual('');
+    expect(getApiNameArticle('testtest', 'posts')).toEqual('');
+    // expect(getApiNameArticle('%articles', 'post')).toEqual('posts');  // type guard
+    // expect(getApiNameArticle(undefined, 'posts')).toEqual('');
   });
 });
 
@@ -313,7 +334,8 @@ describe('getSectionFromPages()', () => {
             {
               fieldId: 'contentArticles',
               apiName: 'posts',
-              detail: true
+              detail: true,
+              category: []
             }
           ]
         }
@@ -337,7 +359,8 @@ describe('getSectionFromPages()', () => {
                 path: '/posts'
               }
             ],
-            detail: true
+            detail: true,
+            category: []
           }
         ]
       }

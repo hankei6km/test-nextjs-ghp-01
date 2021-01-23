@@ -43,11 +43,13 @@ export default function Post({
                 title: '',
                 content: [
                   {
-                    kind: 'partsPageTitle',
-                    link: ''
+                    kind: 'partsNavCategory',
+                    all: true,
+                    categoryPath: '/posts/category'
                   },
                   {
-                    kind: 'partsUpdated'
+                    kind: 'partsPageTitle',
+                    link: ''
                   }
                 ]
               }

@@ -116,7 +116,8 @@ describe('getPagesData()', () => {
             },
             {
               fieldId: 'contentArticles',
-              apiName: 'posts'
+              apiName: 'posts',
+              category: []
             }
           ]
         }
@@ -223,7 +224,8 @@ describe('getPagesPageData()', () => {
                     path: '/posts'
                   }
                 ],
-                detail: false
+                detail: false,
+                category: []
               }
             ]
           }

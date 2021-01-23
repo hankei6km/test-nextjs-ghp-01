@@ -1,4 +1,4 @@
-import { PagesIndex } from './client/contentTypes';
+import { PagesIndex, PagesCategory } from './client/contentTypes';
 // export type SectionKind = 'content' | 'posts';
 type SectionArticleIndexPath = { path: string };
 export type SectionArticleIndex = PagesIndex & SectionArticleIndexPath;
@@ -21,6 +21,7 @@ export type SectionPosts = {
   kind: 'posts';
   contents: SectionArticleIndex[];
   detail: boolean;
+  category: PagesCategory[];
 };
 export type SectionImage = {
   kind: 'image';
@@ -78,19 +79,14 @@ export type Section = {
   )[];
 };
 
-export type PageCategory = {
-  id: string;
-  title: string;
-};
-
 export type PageData = {
   id: string;
   updated: string; // この段階では Date にはしない
   title: string;
   description: string;
   mainImage: string;
-  allCategory: PageCategory[];
-  category: PageCategory[];
+  allCategory: PagesCategory[];
+  category: PagesCategory[];
   header: Section[];
   top: Section[];
   sections: Section[];

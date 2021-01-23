@@ -74,7 +74,8 @@ export const mockDataPages: PagesContents = {
             },
             {
               fieldId: 'contentArticles',
-              apiName: 'posts'
+              apiName: 'posts',
+              category: []
             }
           ]
         }
@@ -97,7 +98,8 @@ export const mockDataPages: PagesContents = {
             {
               fieldId: 'contentArticles',
               apiName: 'posts',
-              detail: true
+              detail: true,
+              category: []
             }
           ]
         }

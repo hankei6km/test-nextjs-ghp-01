@@ -13,6 +13,10 @@ type ContentList<T> = {
   limit: number;
 };
 
+export type PagesCategory = {
+  id: string;
+  title: string;
+};
 type PagesContentHtml = {
   fieldId: 'contentHtml';
   html: string;
@@ -25,6 +29,7 @@ type PagesContentArticles = {
   fieldId: 'contentArticles';
   apiName: string;
   detail?: boolean;
+  category: PagesCategory[];
 };
 type PagesContentImage = {
   fieldId: 'contentImage';
