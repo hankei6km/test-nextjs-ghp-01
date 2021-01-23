@@ -209,9 +209,11 @@ describe('getPagesPageData()', () => {
         )
       );
     expect(
-      await getPagesPageData(testApiName, { params: { id: 'mmmmmmmmm' } }, [
-        'blog-posts'
-      ])
+      await getPagesPageData(
+        testApiName,
+        { params: { id: 'mmmmmmmmm' } },
+        { outerIds: ['blog-posts'] }
+      )
     ).toEqual({
       id: 'mmmmmmmmm',
       updated: '2021-01-13T05:12.157Z',

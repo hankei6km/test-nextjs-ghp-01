@@ -65,7 +65,7 @@ export default function Post({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = await getAllPagesIds('posts');
+  const paths = await getAllPagesIds('category');
   return {
     paths,
     fallback: true
@@ -73,7 +73,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const pageData = await getPagesPageData('posts', context, ['blog-posts']);
+  const pageData = await getPagesPageData('category', context, {
+    outerIds: ['blog-category'],
+    defaultApiNameArticle: 'posts' as const
+  });
   return {
     props: {
       pageData,

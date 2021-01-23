@@ -82,7 +82,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const pageData = await getPagesPageData('posts', context, ['blog-posts']);
+  const pageData = await getPagesPageData('posts', context, {
+    outerIds: ['blog-posts']
+  });
   return {
     props: {
       pageData,

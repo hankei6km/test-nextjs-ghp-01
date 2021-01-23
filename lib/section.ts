@@ -1,6 +1,6 @@
 import { join } from 'path';
 import cheerio from 'cheerio';
-import { getSortedPagesData } from './pages';
+import { PageDataGetOptions, getSortedPagesData } from './pages';
 import { markdownToHtml } from './markdown';
 import { ApiNameArticleValues, ApiNameArticle } from './client';
 import { PagesContent, PagesSectionKind } from '../types/client/contentTypes';
@@ -85,7 +85,8 @@ export function htmlToChildren(html: string): SectionContentHtmlChildren[] {
 
 export async function getSectionFromPages(
   page: PagesContent,
-  kind: PagesSectionKind
+  kind: PagesSectionKind,
+  options: PageDataGetOptions = { outerIds: [] }
 ): Promise<Section[]> {
   const sections = page.sections
     .filter(({ fieldId }) => fieldId === kind)
@@ -105,10 +106,13 @@ export async function getSectionFromPages(
             };
           } else if (
             content.fieldId === 'contentArticles' &&
-            ApiNameArticleValues.some((v) => v === content.apiName)
+            (content.apiName === '%articles' ||
+              ApiNameArticleValues.some((v) => v === content.apiName)) // テキストフィールドからの入力なので値のチェック
           ) {
             const contents = await getSortedPagesData(
-              content.apiName as ApiNameArticle
+              content.apiName === '%articles' && options.defaultApiNameArticle // 外部からの入力ではないので型だけで判定
+                ? options.defaultApiNameArticle
+                : (content.apiName as ApiNameArticle)
             );
             return {
               kind: 'posts' as const,
