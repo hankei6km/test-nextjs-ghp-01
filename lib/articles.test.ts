@@ -79,10 +79,10 @@ describe('getAllPagesIds()', () => {
   it('should returns all ids', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataArticleIds));
     expect(await getAllPagesIds(testApiName)).toStrictEqual([
-      { params: { id: 'mmmmmmmmm' } },
-      { params: { id: 'zzzzzzzzz' } },
-      { params: { id: 'yyyyyy-da' } },
-      { params: { id: 'xxxxxxxxx' } }
+      'mmmmmmmmm',
+      'zzzzzzzzz',
+      'yyyyyy-da',
+      'xxxxxxxxx'
     ]);
     expect(fetchMock.mock.calls[0][0]).toContain('/posts?');
     expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({

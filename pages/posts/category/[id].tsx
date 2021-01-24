@@ -67,7 +67,9 @@ export default function Post({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = await getAllPagesIds('category');
+  const paths = (await getAllPagesIds('category')).map((id) => ({
+    params: { id }
+  }));
   return {
     paths,
     fallback: true

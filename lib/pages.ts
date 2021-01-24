@@ -38,7 +38,7 @@ export async function getAllPagesIds(apiName: ApiNameArticle) {
       },
       config: fetchConfig
     });
-    return res.body.contents.map(({ id }) => ({ params: { id } }));
+    return res.body.contents.map(({ id }) => id);
   } catch (err) {
     console.error(`getAllPagesIds error: ${err.name}`);
   }

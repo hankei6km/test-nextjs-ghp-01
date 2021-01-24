@@ -96,11 +96,11 @@ describe('getAllPagesIds()', () => {
   it('should returns all ids', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPagesIds));
     expect(await getAllPagesIds('pages')).toStrictEqual([
-      { params: { id: '_global' } },
-      { params: { id: 'home' } },
-      { params: { id: 'blog' } },
-      { params: { id: 'blog-posts' } },
-      { params: { id: 'blog-category' } }
+      '_global',
+      'home',
+      'blog',
+      'blog-posts',
+      'blog-category'
     ]);
     expect(fetchMock.mock.calls[0][0]).toContain('/pages?');
     expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
