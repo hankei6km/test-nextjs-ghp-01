@@ -12,6 +12,7 @@ import {
   getPagesData,
   getPagesPageData
 } from './pages';
+import { queryParams } from '../test/testUtils';
 
 // https://github.com/jefflau/jest-fetch-mock/issues/83
 const fetchMock = fetch as FetchMock;
@@ -21,7 +22,6 @@ beforeEach(() => {
 
 describe('getSortedPagesData()', () => {
   it('should returns contents array with out contet filed', async () => {
-    // aspida-mock 使う?
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPagesList));
     expect(await getSortedPagesData('pages')).toStrictEqual([
       {
@@ -62,9 +62,33 @@ describe('getSortedPagesData()', () => {
         publishedAt: '2020-12-26T15:29:14.476Z',
         revisedAt: '2020-12-26T15:29:14.476Z',
         title: 'Blog',
-        category: []
+        category: [
+          { id: 'cat1', title: 'Category1' },
+          { id: 'cat2', title: 'Category2' },
+          { id: 'cat3', title: 'Category3' }
+        ]
+      },
+      {
+        id: 'blog-category',
+        createdAt: '2020-12-26T15:29:14.476Z',
+        updatedAt: '2020-12-26T15:29:14.476Z',
+        publishedAt: '2020-12-26T15:29:14.476Z',
+        revisedAt: '2020-12-26T15:29:14.476Z',
+        title: 'Blog Category',
+        category: [
+          { id: 'cat1', title: 'Category1' },
+          { id: 'cat2', title: 'Category2' },
+          { id: 'cat3', title: 'Category3' }
+        ]
       }
     ]);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock.mock.calls[0][0]).toContain('/pages?');
+    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title'
+    });
+    // expect(fetchMock.mock.calls[0][1]?.headers) 環境変数の設定とメッセージによっては API キーが漏洩する可能性があるのでとりあえずやめる
   });
 });
 
@@ -75,8 +99,13 @@ describe('getAllPagesIds()', () => {
       { params: { id: '_global' } },
       { params: { id: 'home' } },
       { params: { id: 'blog' } },
-      { params: { id: 'blog-posts' } }
+      { params: { id: 'blog-posts' } },
+      { params: { id: 'blog-category' } }
     ]);
+    expect(fetchMock.mock.calls[0][0]).toContain('/pages?');
+    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
+      fields: 'id'
+    });
   });
 });
 
@@ -122,6 +151,12 @@ describe('getPagesData()', () => {
           ]
         }
       ]
+    });
+    expect(fetchMock.mock.calls[0][0]).toContain('/pages/home?');
+    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
+      draftKey: '',
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
     });
   });
 });
@@ -190,7 +225,7 @@ describe('getPagesPageData()', () => {
                     publishedAt: '2021-01-13T05:12.157Z',
                     revisedAt: '2021-01-13T05:12.157Z',
                     title: 'title4',
-                    category: [],
+                    category: [{ id: 'cat3', title: 'category3' }],
                     path: '/posts'
                   },
                   {
@@ -210,7 +245,10 @@ describe('getPagesPageData()', () => {
                     publishedAt: '2020-12-26T15:29:14.476Z',
                     revisedAt: '2020-12-26T15:29:14.476Z',
                     title: 'title2',
-                    category: [],
+                    category: [
+                      { id: 'cat1', title: 'category1' },
+                      { id: 'cat2', title: 'category2' }
+                    ],
                     path: '/posts'
                   },
                   {
@@ -220,7 +258,7 @@ describe('getPagesPageData()', () => {
                     publishedAt: '2020-12-26T12:27:22.533Z',
                     revisedAt: '2020-12-26T12:27:22.533Z',
                     title: 'title1',
-                    category: [],
+                    category: [{ id: 'cat2', title: 'category2' }],
                     path: '/posts'
                   }
                 ],
@@ -282,5 +320,19 @@ describe('getPagesPageData()', () => {
         ]
       }
     );
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    // pages から global と home の取得.
+    expect(fetchMock.mock.calls[0][0]).toContain('/pages?');
+    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
+      ids: '_global,home',
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
+    });
+    // posts から artcles の取得.
+    expect(fetchMock.mock.calls[1][0]).toContain('/posts?');
+    expect(queryParams(String(fetchMock.mock.calls[1][0]))).toStrictEqual({
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title'
+    });
   });
 });

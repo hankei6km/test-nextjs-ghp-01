@@ -355,7 +355,7 @@ describe('getSectionFromPages()', () => {
                 publishedAt: '2021-01-13T05:12.157Z',
                 revisedAt: '2021-01-13T05:12.157Z',
                 title: 'title4',
-                category: [],
+                category: [{ id: 'cat3', title: 'category3' }],
                 path: '/posts'
               }
             ],

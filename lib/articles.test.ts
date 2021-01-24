@@ -12,6 +12,7 @@ import {
   getPagesData,
   getPagesPageData
 } from './pages';
+import { queryParams } from '../test/testUtils';
 
 // https://github.com/jefflau/jest-fetch-mock/issues/83
 const fetchMock = fetch as FetchMock;
@@ -32,7 +33,7 @@ describe('getSortedPagesData()', () => {
         publishedAt: '2021-01-13T05:12.157Z',
         revisedAt: '2021-01-13T05:12.157Z',
         title: 'title4',
-        category: []
+        category: [{ id: 'cat3', title: 'category3' }]
       },
       {
         id: 'zzzzzzzzz',
@@ -50,7 +51,10 @@ describe('getSortedPagesData()', () => {
         publishedAt: '2020-12-26T15:29:14.476Z',
         revisedAt: '2020-12-26T15:29:14.476Z',
         title: 'title2',
-        category: []
+        category: [
+          { id: 'cat1', title: 'category1' },
+          { id: 'cat2', title: 'category2' }
+        ]
       },
       {
         id: 'xxxxxxxxx',
@@ -59,9 +63,15 @@ describe('getSortedPagesData()', () => {
         publishedAt: '2020-12-26T12:27:22.533Z',
         revisedAt: '2020-12-26T12:27:22.533Z',
         title: 'title1',
-        category: []
+        category: [{ id: 'cat2', title: 'category2' }]
       }
     ]);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock.mock.calls[0][0]).toContain('/posts?');
+    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title'
+    });
   });
 });
 
@@ -74,6 +84,10 @@ describe('getAllPagesIds()', () => {
       { params: { id: 'yyyyyy-da' } },
       { params: { id: 'xxxxxxxxx' } }
     ]);
+    expect(fetchMock.mock.calls[0][0]).toContain('/posts?');
+    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
+      fields: 'id'
+    });
   });
 });
 
@@ -106,6 +120,12 @@ describe('getPagesData()', () => {
           ]
         }
       ]
+    });
+    expect(fetchMock.mock.calls[0][0]).toContain('/posts/zzzzzzzzz?');
+    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
+      draftKey: '',
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
     });
   });
 });
@@ -199,6 +219,21 @@ describe('getPagesPageData()', () => {
         }
       ]
     });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    // pages から globalとの取得.
+    expect(fetchMock.mock.calls[0][0]).toContain('/pages?');
+    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
+      ids: '_global',
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
+    });
+    // posts から記事ページ(zzzzzzzzz)) の取得. -> getPagesPageData で指定した id
+    expect(fetchMock.mock.calls[1][0]).toContain('/posts/zzzzzzzzz?');
+    expect(queryParams(String(fetchMock.mock.calls[1][0]))).toStrictEqual({
+      draftKey: '',
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
+    });
   });
   it('should returns post data of "mmmmmmmmm" (markdown) with outer', async () => {
     fetchMock
@@ -220,8 +255,12 @@ describe('getPagesPageData()', () => {
       title: 'title4',
       description: 'my starter home page',
       mainImage: '',
-      allCategory: [],
-      category: [],
+      allCategory: [
+        { id: 'cat1', title: 'Category1' },
+        { id: 'cat2', title: 'Category2' },
+        { id: 'cat3', title: 'Category3' }
+      ],
+      category: [{ id: 'cat3', title: 'category3' }],
       header: [],
       top: [
         {
@@ -333,6 +372,21 @@ describe('getPagesPageData()', () => {
           ]
         }
       ]
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    // pages から globalと bolg-posts(outer) の取得.
+    expect(fetchMock.mock.calls[0][0]).toContain('/pages?');
+    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
+      ids: '_global,blog-posts',
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
+    });
+    // posts から記事ページ(mmmmmmmmm)) の取得. -> getPagesPageData で指定した id
+    expect(fetchMock.mock.calls[1][0]).toContain('/posts/mmmmmmmmm?');
+    expect(queryParams(String(fetchMock.mock.calls[1][0]))).toStrictEqual({
+      draftKey: '',
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
     });
   });
 });
