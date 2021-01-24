@@ -68,7 +68,7 @@ export default function Post({
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const paths = (await getAllPagesIds('category')).map((id) => ({
-    params: { id }
+    params: { id: [id] }
   }));
   return {
     paths,
@@ -77,10 +77,14 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const pageData = await getPagesPageData('category', context, {
-    outerIds: ['blog-category'],
-    defaultApiNameArticle: 'posts' as const
-  });
+  const pageData = await getPagesPageData(
+    'category',
+    { ...context, params: { id: context.params?.id || '' } },
+    {
+      outerIds: ['blog-category'],
+      mapApiNameArticle: { articles: 'posts' as const }
+    }
+  );
   return {
     props: {
       pageData,

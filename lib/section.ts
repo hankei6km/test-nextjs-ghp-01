@@ -1,6 +1,10 @@
 import { join } from 'path';
 import cheerio from 'cheerio';
-import { PageDataGetOptions, getSortedPagesData } from './pages';
+import {
+  PageDataGetOptions,
+  getSortedPagesData,
+  MapApiNameArticle
+} from './pages';
 import { markdownToHtml } from './markdown';
 import { ApiNameArticleValues, ApiNameArticle } from './client';
 import { PagesContent, PagesSectionKind } from '../types/client/contentTypes';
@@ -86,10 +90,14 @@ export function htmlToChildren(html: string): SectionContentHtmlChildren[] {
 
 export function getApiNameArticle(
   apiNameFromContent: string,
-  defaultApiNameArticle?: ApiNameArticle
+  mapApiNameArticle?: MapApiNameArticle
 ): '' | ApiNameArticle {
-  if (apiNameFromContent === '%articles' && defaultApiNameArticle) {
-    return defaultApiNameArticle;
+  if (
+    apiNameFromContent === '%articles' &&
+    mapApiNameArticle &&
+    mapApiNameArticle.articles
+  ) {
+    return mapApiNameArticle.articles;
   } else if (ApiNameArticleValues.some((v) => v === apiNameFromContent)) {
     return apiNameFromContent as ApiNameArticle;
   }
@@ -99,7 +107,7 @@ export function getApiNameArticle(
 export async function getSectionFromPages(
   page: PagesContent,
   kind: PagesSectionKind,
-  options: PageDataGetOptions = { outerIds: [] }
+  { mapApiNameArticle }: PageDataGetOptions = { outerIds: [] }
 ): Promise<Section[]> {
   const sections = page.sections
     .filter(({ fieldId }) => fieldId === kind)
@@ -119,11 +127,11 @@ export async function getSectionFromPages(
             };
           } else if (
             content.fieldId === 'contentArticles' &&
-            getApiNameArticle(content.apiName, options.defaultApiNameArticle)
+            getApiNameArticle(content.apiName, mapApiNameArticle)
           ) {
             const apiName = getApiNameArticle(
               content.apiName,
-              options.defaultApiNameArticle
+              mapApiNameArticle
             ) as ApiNameArticle;
             // if での評価と２回実行される.
             // 型ガードが効かない & ちょっともったいないが、

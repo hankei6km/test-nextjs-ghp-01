@@ -33,7 +33,10 @@ describe('getSortedPagesData()', () => {
       await getPagesPageData(
         testApiName,
         { params: { id: 'cat2' } },
-        { outerIds: ['blog-category'], defaultApiNameArticle: 'posts' }
+        {
+          outerIds: ['blog-category'],
+          mapApiNameArticle: { articles: 'posts' }
+        }
       )
     ).toEqual({
       id: 'cat2',
