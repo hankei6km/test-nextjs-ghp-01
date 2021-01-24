@@ -89,7 +89,11 @@ export const mockDataPages: PagesContents = {
       revisedAt: '2020-12-26T15:29:14.476Z',
       title: 'Blog',
       kind: ['posts'],
-      category: [],
+      category: [
+        { id: 'cat1', title: 'Category1' },
+        { id: 'cat2', title: 'Category2' },
+        { id: 'cat3', title: 'Category3' }
+      ],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -113,7 +117,11 @@ export const mockDataPages: PagesContents = {
       revisedAt: '2020-12-26T15:29:14.476Z',
       title: 'Blog',
       kind: ['posts'],
-      category: [],
+      category: [
+        { id: 'cat1', title: 'Category1' },
+        { id: 'cat2', title: 'Category2' },
+        { id: 'cat3', title: 'Category3' }
+      ],
       sections: [
         {
           fieldId: 'sectionTop',
@@ -130,6 +138,40 @@ export const mockDataPages: PagesContents = {
             {
               fieldId: 'contentMarkdown',
               markdown: '---\n\npost bottom'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'blog-category',
+      createdAt: '2020-12-26T15:29:14.476Z',
+      updatedAt: '2020-12-26T15:29:14.476Z',
+      publishedAt: '2020-12-26T15:29:14.476Z',
+      revisedAt: '2020-12-26T15:29:14.476Z',
+      title: 'Blog Category',
+      kind: ['posts'],
+      category: [
+        { id: 'cat1', title: 'Category1' },
+        { id: 'cat2', title: 'Category2' },
+        { id: 'cat3', title: 'Category3' }
+      ],
+      sections: [
+        {
+          fieldId: 'sectionTop',
+          content: [
+            {
+              fieldId: 'contentMarkdown',
+              markdown: 'category top\n\n---'
+            }
+          ]
+        },
+        {
+          fieldId: 'sectionBottom',
+          content: [
+            {
+              fieldId: 'contentMarkdown',
+              markdown: '---\n\ncategory bottom'
             }
           ]
         }
@@ -186,7 +228,7 @@ export const mockDataArticles: PagesContents = {
       revisedAt: '2021-01-13T05:12.157Z',
       title: 'title4',
       kind: ['page'],
-      category: [],
+      category: [{ id: 'cat3', title: 'category3' }],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -228,7 +270,10 @@ export const mockDataArticles: PagesContents = {
       revisedAt: '2020-12-26T15:29:14.476Z',
       title: 'title2',
       kind: ['page'],
-      category: [],
+      category: [
+        { id: 'cat1', title: 'category1' },
+        { id: 'cat2', title: 'category2' }
+      ],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -249,7 +294,7 @@ export const mockDataArticles: PagesContents = {
       revisedAt: '2020-12-26T12:27:22.533Z',
       title: 'title1',
       kind: ['page'],
-      category: [],
+      category: [{ id: 'cat2', title: 'category2' }],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -281,4 +326,93 @@ export const mockDataArticleList = {
 export const mockDataArticleIds = {
   ...mockDataArticles,
   contents: mockDataArticles.contents.map(({ id }) => ({ id }))
+};
+
+export const mockDataCategory: PagesContents = {
+  contents: [
+    {
+      id: 'cat1',
+      createdAt: '2021-01-23T20:32.477Z',
+      updatedAt: '2021-01-23T20:32.477Z',
+      publishedAt: '2021-01-23T20:32.477Z',
+      revisedAt: '2021-01-23T20:32.477Z',
+      title: 'category1',
+      kind: ['page'],
+      category: [],
+      sections: [
+        {
+          fieldId: 'sectionContent',
+          content: [
+            {
+              fieldId: 'contentArticles',
+              apiName: '%articles',
+              category: [{ id: 'cat1', title: 'category1' }]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'cat2',
+      createdAt: '2021-01-23T20:32.477Z',
+      updatedAt: '2021-01-23T20:32.477Z',
+      publishedAt: '2021-01-23T20:32.477Z',
+      revisedAt: '2021-01-23T20:32.477Z',
+      title: 'category2',
+      kind: ['page'],
+      category: [],
+      sections: [
+        {
+          fieldId: 'sectionContent',
+          content: [
+            {
+              fieldId: 'contentArticles',
+              apiName: '%articles',
+              category: [{ id: 'cat2', title: 'category2' }]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'cat3',
+      createdAt: '2021-01-23T20:32.477Z',
+      updatedAt: '2021-01-23T20:32.477Z',
+      publishedAt: '2021-01-23T20:32.477Z',
+      revisedAt: '2021-01-23T20:32.477Z',
+      title: 'category3',
+      kind: ['page'],
+      category: [],
+      sections: [
+        {
+          fieldId: 'sectionContent',
+          content: [
+            {
+              fieldId: 'contentArticles',
+              apiName: '%articles',
+              category: [{ id: 'cat3', title: 'category3' }]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  totalCount: 3,
+  offset: 0,
+  limit: 10
+};
+
+export const mockDataCategoryList = {
+  ...mockDataCategory,
+  contents: mockDataCategory.contents.map((v) => ({
+    ...v,
+    kind: undefined,
+    description: undefined,
+    sections: undefined
+  }))
+};
+
+export const mockDataCategoryIds = {
+  ...mockDataCategory,
+  contents: mockDataCategory.contents.map(({ id }) => ({ id }))
 };
