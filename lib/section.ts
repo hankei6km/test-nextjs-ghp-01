@@ -107,7 +107,11 @@ export function getApiNameArticle(
 export async function getSectionFromPages(
   page: PagesContent,
   kind: PagesSectionKind,
-  { mapApiNameArticle }: PageDataGetOptions = { outerIds: [] }
+  { mapApiNameArticle, pageNo, itemsPerPage }: PageDataGetOptions = {
+    outerIds: [],
+    pageNo: 1,
+    itemsPerPage: 10
+  }
 ): Promise<Section[]> {
   const sections = page.sections
     .filter(({ fieldId }) => fieldId === kind)
@@ -137,6 +141,12 @@ export async function getSectionFromPages(
             // 型ガードが効かない & ちょっともったいないが、
             // 外に出すと関係のないカスタムフィールドでも実行されるので、とりあえずここで
             const q: GetQuery = {};
+            if (itemsPerPage !== undefined) {
+              q.limit = itemsPerPage;
+              if (pageNo !== undefined) {
+                q.offset = itemsPerPage * (pageNo - 1);
+              }
+            }
             if (content.category.length > 0) {
               q.filters = `category[contains]${content.category
                 .map(({ id }) => id)

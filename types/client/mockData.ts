@@ -1,4 +1,4 @@
-import { PagesContents } from './contentTypes';
+import { PagesContents, PagesContent } from './contentTypes';
 
 export const mockDataPages: PagesContents = {
   contents: [
@@ -218,96 +218,135 @@ export const mockDataPagesIds = {
   contents: mockDataPages.contents.map(({ id }) => ({ id }))
 };
 
+function makeDummyContent(
+  n: number,
+  prefix: string,
+  cat: string
+): PagesContent[] {
+  const ret = [];
+  for (let i = n; i > 0; i--) {
+    ret.push({
+      id: `${cat}-${prefix}-${i}`,
+      createdAt: '2021-01-23T20:32.477Z',
+      updatedAt: '2021-01-23T20:32.477Z',
+      publishedAt: '2021-01-23T20:32.477Z',
+      revisedAt: '2021-01-23T20:32.477Z',
+      title: `mock dummy ${prefix}-${i}`,
+      kind: ['page'] as ['page'],
+      category: [{ id: cat, title: `category-${cat}` }],
+      sections: [
+        {
+          fieldId: 'sectionContent' as 'sectionContent',
+          content: [
+            {
+              fieldId: 'contentMarkdown' as 'contentMarkdown',
+              markdown: `mock dummy ${prefix}-${i}`
+            }
+          ]
+        }
+      ]
+    });
+  }
+  return ret;
+}
+
+const useMockDummy = true;
+
 export const mockDataArticles: PagesContents = {
-  contents: [
-    {
-      id: 'mmmmmmmmm',
-      createdAt: '2021-01-13T05:12.157Z',
-      updatedAt: '2021-01-13T05:12.157Z',
-      publishedAt: '2021-01-13T05:12.157Z',
-      revisedAt: '2021-01-13T05:12.157Z',
-      title: 'title4',
-      kind: ['page'],
-      category: [{ id: 'cat3', title: 'category3' }],
-      sections: [
+  contents: useMockDummy
+    ? makeDummyContent(30, 'dummy1', 'cat1').concat(
+        makeDummyContent(21, 'dummy2', 'cat2'),
+        makeDummyContent(49, 'dummy3', 'cat3')
+      )
+    : [
         {
-          fieldId: 'sectionContent',
-          content: [
+          id: 'mmmmmmmmm',
+          createdAt: '2021-01-13T05:12.157Z',
+          updatedAt: '2021-01-13T05:12.157Z',
+          publishedAt: '2021-01-13T05:12.157Z',
+          revisedAt: '2021-01-13T05:12.157Z',
+          title: 'title4',
+          kind: ['page'],
+          category: [{ id: 'cat3', title: 'category3' }],
+          sections: [
             {
-              fieldId: 'contentMarkdown',
-              markdown: 'markdown content'
+              fieldId: 'sectionContent',
+              content: [
+                {
+                  fieldId: 'contentMarkdown',
+                  markdown: 'markdown content'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'zzzzzzzzz',
+          createdAt: '2020-12-27T04:04:30.107Z',
+          updatedAt: '2020-12-27T04:04:30.107Z',
+          publishedAt: '2020-12-27T04:04:30.107Z',
+          revisedAt: '2020-12-27T04:04:30.107Z',
+          title: 'title3',
+          kind: ['page'],
+          category: [],
+          sections: [
+            {
+              fieldId: 'sectionContent',
+              content: [
+                {
+                  fieldId: 'contentHtml',
+                  html: '<p>content3</p>'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'yyyyyy-da',
+          createdAt: '2020-12-26T15:29:14.476Z',
+          updatedAt: '2020-12-26T15:29:14.476Z',
+          publishedAt: '2020-12-26T15:29:14.476Z',
+          revisedAt: '2020-12-26T15:29:14.476Z',
+          title: 'title2',
+          kind: ['page'],
+          category: [
+            { id: 'cat1', title: 'category1' },
+            { id: 'cat2', title: 'category2' }
+          ],
+          sections: [
+            {
+              fieldId: 'sectionContent',
+              content: [
+                {
+                  fieldId: 'contentHtml',
+                  html: '<p>content2</p>'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          id: 'xxxxxxxxx',
+          createdAt: '2020-12-26T12:25:43.532Z',
+          updatedAt: '2020-12-26T12:27:22.533Z',
+          publishedAt: '2020-12-26T12:27:22.533Z',
+          revisedAt: '2020-12-26T12:27:22.533Z',
+          title: 'title1',
+          kind: ['page'],
+          category: [{ id: 'cat2', title: 'category2' }],
+          sections: [
+            {
+              fieldId: 'sectionContent',
+              content: [
+                {
+                  fieldId: 'contentHtml',
+                  html: '<p>content1</p>'
+                }
+              ]
             }
           ]
         }
-      ]
-    },
-    {
-      id: 'zzzzzzzzz',
-      createdAt: '2020-12-27T04:04:30.107Z',
-      updatedAt: '2020-12-27T04:04:30.107Z',
-      publishedAt: '2020-12-27T04:04:30.107Z',
-      revisedAt: '2020-12-27T04:04:30.107Z',
-      title: 'title3',
-      kind: ['page'],
-      category: [],
-      sections: [
-        {
-          fieldId: 'sectionContent',
-          content: [
-            {
-              fieldId: 'contentHtml',
-              html: '<p>content3</p>'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'yyyyyy-da',
-      createdAt: '2020-12-26T15:29:14.476Z',
-      updatedAt: '2020-12-26T15:29:14.476Z',
-      publishedAt: '2020-12-26T15:29:14.476Z',
-      revisedAt: '2020-12-26T15:29:14.476Z',
-      title: 'title2',
-      kind: ['page'],
-      category: [
-        { id: 'cat1', title: 'category1' },
-        { id: 'cat2', title: 'category2' }
       ],
-      sections: [
-        {
-          fieldId: 'sectionContent',
-          content: [
-            {
-              fieldId: 'contentHtml',
-              html: '<p>content2</p>'
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: 'xxxxxxxxx',
-      createdAt: '2020-12-26T12:25:43.532Z',
-      updatedAt: '2020-12-26T12:27:22.533Z',
-      publishedAt: '2020-12-26T12:27:22.533Z',
-      revisedAt: '2020-12-26T12:27:22.533Z',
-      title: 'title1',
-      kind: ['page'],
-      category: [{ id: 'cat2', title: 'category2' }],
-      sections: [
-        {
-          fieldId: 'sectionContent',
-          content: [
-            {
-              fieldId: 'contentHtml',
-              html: '<p>content1</p>'
-            }
-          ]
-        }
-      ]
-    }
-  ],
   totalCount: 3,
   offset: 0,
   limit: 10
@@ -336,7 +375,7 @@ export const mockDataCategory: PagesContents = {
       updatedAt: '2021-01-23T20:32.477Z',
       publishedAt: '2021-01-23T20:32.477Z',
       revisedAt: '2021-01-23T20:32.477Z',
-      title: 'category1',
+      title: 'category-cat1',
       kind: ['page'],
       category: [],
       sections: [
@@ -358,7 +397,7 @@ export const mockDataCategory: PagesContents = {
       updatedAt: '2021-01-23T20:32.477Z',
       publishedAt: '2021-01-23T20:32.477Z',
       revisedAt: '2021-01-23T20:32.477Z',
-      title: 'category2',
+      title: 'category-cat2',
       kind: ['page'],
       category: [],
       sections: [
@@ -380,7 +419,7 @@ export const mockDataCategory: PagesContents = {
       updatedAt: '2021-01-23T20:32.477Z',
       publishedAt: '2021-01-23T20:32.477Z',
       revisedAt: '2021-01-23T20:32.477Z',
-      title: 'category3',
+      title: 'category-cat3',
       kind: ['page'],
       category: [],
       sections: [

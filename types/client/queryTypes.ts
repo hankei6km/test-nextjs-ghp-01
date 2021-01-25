@@ -22,7 +22,7 @@ export type GetContentQuery = {
 
 export type GetFieldsIdQuery = {
   fields: 'id';
-} & Omit<GetQuery, 'ids' | 'filters'>;
+} & Omit<GetQuery, 'ids'>;
 
 type GetPagesItemsWithLayoutId = string;
 export type GetPagesItemsWithLayout = {

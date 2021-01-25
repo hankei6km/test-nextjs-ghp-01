@@ -104,7 +104,8 @@ describe('getAllPagesIds()', () => {
     ]);
     expect(fetchMock.mock.calls[0][0]).toContain('/pages?');
     expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
-      fields: 'id'
+      fields: 'id',
+      limit: '120000'
     });
   });
 });
@@ -333,6 +334,25 @@ describe('getPagesPageData()', () => {
     expect(queryParams(String(fetchMock.mock.calls[1][0]))).toStrictEqual({
       fields:
         'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title'
+    });
+  });
+  it('should recives options that specified pagination info', async () => {
+    fetchMock
+      .mockResponseOnce(JSON.stringify(mockDataPagesOuterHome))
+      .mockResponseOnce(JSON.stringify(mockDataArticleList));
+    await getPagesPageData(
+      'pages',
+      { params: { id: 'home' } },
+      { outerIds: [], pageNo: 3, itemsPerPage: 10 }
+    );
+    // offset と  limit の指定のみ確認
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(fetchMock.mock.calls[1][0]).toContain('/posts?');
+    expect(queryParams(String(fetchMock.mock.calls[1][0]))).toStrictEqual({
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title',
+      limit: '10',
+      offset: '20'
     });
   });
 });

@@ -69,15 +69,40 @@ export default mockMiddleware([
           resBody: mockDataPagesList
         })
       : next(),
-  (req, res, next) =>
-    req.path === '/api/v1/posts' &&
-    req.method === 'GET' &&
-    req.query?.fields === 'id'
-      ? res({
+  (req, res, next) => {
+    if (
+      req.path === '/api/v1/posts' &&
+      req.method === 'GET' &&
+      req.query?.fields === 'id'
+    ) {
+      const m = (req.query.filters || '').match(/category\[contains\](.+)$/);
+      const limit = req.query.limit === undefined ? 10 : req.query.limit;
+      const offset = req.query.offset === undefined ? 0 : req.query.offset;
+      if (m) {
+        res({
           status: 200,
-          resBody: mockDataArticleIds
-        })
-      : next(),
+          resBody: {
+            ...mockDataArticleIds,
+            contents: mockDataArticleList.contents
+              .filter(({ category }) => category.some(({ id }) => id === m[1]))
+              .map(({ id }) => ({ id }))
+              .slice(offset, offset + limit)
+          }
+        });
+        return;
+      } else {
+        res({
+          status: 200,
+          resBody: {
+            ...mockDataArticleIds,
+            contents: mockDataArticleIds.contents.slice(offset, offset + limit)
+          }
+        });
+        return;
+      }
+    }
+    next();
+  },
   (req, res, next) => {
     if (
       req.path === '/api/v1/posts' &&
@@ -86,19 +111,27 @@ export default mockMiddleware([
         'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title'
     ) {
       const m = (req.query.filters || '').match(/category\[contains\](.+)$/);
+      const limit = req.query.limit === undefined ? 10 : req.query.limit;
+      const offset = req.query.offset === undefined ? 0 : req.query.offset;
       if (m) {
         res({
           status: 200,
           resBody: {
             ...mockDataArticleList,
-            contents: mockDataArticleList.contents.filter(({ category }) =>
-              category.some(({ id }) => id === m[1])
-            )
+            contents: mockDataArticleList.contents
+              .filter(({ category }) => category.some(({ id }) => id === m[1]))
+              .slice(offset, offset + limit)
           }
         });
         return;
       } else {
-        res({ status: 200, resBody: mockDataArticleList });
+        res({
+          status: 200,
+          resBody: {
+            ...mockDataArticleList,
+            contents: mockDataArticleList.contents.slice(offset, offset + limit)
+          }
+        });
         return;
       }
     }

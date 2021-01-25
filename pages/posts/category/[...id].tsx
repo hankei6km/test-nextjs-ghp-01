@@ -5,7 +5,11 @@ import Layout from '../../../components/Layout';
 import Link from '../../../components/Link';
 import Box from '@material-ui/core/Box';
 import { PageData } from '../../../types/pageTypes';
-import { getAllPagesIds, getPagesPageData } from '../../../lib/pages';
+import {
+  getPagesPageData,
+  getPagesData,
+  getAllCategolizedPaginationIds
+} from '../../../lib/pages';
 import SectionList from '../../../components/SectionList';
 import PageContext from '../../../components/PageContext';
 // import classes from '*.module.css';
@@ -67,9 +71,19 @@ export default function Post({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = (await getAllPagesIds('category')).map((id) => ({
-    params: { id: [id] }
+  const category = (
+    await getPagesData('pages', {
+      params: { id: 'blog-category' }
+    })
+  ).category.map(({ id }) => id);
+  const paths = (
+    await getAllCategolizedPaginationIds('posts', category, 10)
+  ).map((id) => ({
+    params: { id: id }
   }));
+  // console.log('paths');
+  // paths.forEach((p) => console.log(p.params));
+
   return {
     paths,
     fallback: true
@@ -77,12 +91,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
+  const id = context.params?.id || [''];
+  const pageNo = id.length > 1 ? parseInt(id[1], 10) : 1;
   const pageData = await getPagesPageData(
     'category',
-    { ...context, params: { id: context.params?.id || '' } },
+    { ...context, params: { id: id[0] } },
     {
       outerIds: ['blog-category'],
-      mapApiNameArticle: { articles: 'posts' as const }
+      mapApiNameArticle: { articles: 'posts' as const },
+      itemsPerPage: 10,
+      pageNo
     }
   );
   return {

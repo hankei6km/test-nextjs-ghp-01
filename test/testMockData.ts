@@ -1,4 +1,4 @@
-import { PagesContents } from '../types/client/contentTypes';
+import { PagesContents, PagesContent } from '../types/client/contentTypes';
 
 export const mockDataPages: PagesContents = {
   contents: [
@@ -333,11 +333,39 @@ export const mockDataArticleIds = {
   contents: mockDataArticles.contents.map(({ id }) => ({ id }))
 };
 
+export const mockDataArticleCat1 = {
+  ...mockDataArticles,
+  contents: mockDataArticleList.contents.filter(({ category }) =>
+    category.some(({ id }) => id === 'cat1')
+  )
+};
+
 export const mockDataArticleCat2 = {
   ...mockDataArticles,
   contents: mockDataArticleList.contents.filter(({ category }) =>
     category.some(({ id }) => id === 'cat2')
   )
+};
+export const mockDataArticleCat3 = {
+  ...mockDataArticles,
+  contents: mockDataArticleList.contents.filter(({ category }) =>
+    category.some(({ id }) => id === 'cat3')
+  )
+};
+
+export const mockDataArticleCat1Ids = {
+  ...mockDataArticleCat1,
+  contents: mockDataArticleCat1.contents.map(({ id }) => ({ id }))
+};
+
+export const mockDataArticleCat2Ids = {
+  ...mockDataArticleCat2,
+  contents: mockDataArticleCat2.contents.map(({ id }) => ({ id }))
+};
+
+export const mockDataArticleCat3Ids = {
+  ...mockDataArticleCat3,
+  contents: mockDataArticleCat3.contents.map(({ id }) => ({ id }))
 };
 
 export const mockDataCategory: PagesContents = {
@@ -427,4 +455,83 @@ export const mockDataCategoryList = {
 export const mockDataCategoryIds = {
   ...mockDataCategory,
   contents: mockDataCategory.contents.map(({ id }) => ({ id }))
+};
+
+function makeDummyContent(n: number, cat: string): PagesContent[] {
+  const ret = [];
+  for (let i = 0; i < n; i++) {
+    ret.push({
+      id: `pa${cat}${i}`,
+      createdAt: '2021-01-23T20:32.477Z',
+      updatedAt: '2021-01-23T20:32.477Z',
+      publishedAt: '2021-01-23T20:32.477Z',
+      revisedAt: '2021-01-23T20:32.477Z',
+      title: `pa${cat}${i}`,
+      kind: ['page'] as ['page'],
+      category: [{ id: cat, title: `category-${cat}` }],
+      sections: []
+    });
+  }
+  return ret;
+}
+
+export const mockDataPagination: PagesContents = {
+  // contents: makeDummyContent(30, 'cat1'),
+  contents: makeDummyContent(30, 'cat1').concat(
+    makeDummyContent(55, 'cat2'),
+    makeDummyContent(21, 'cat3')
+  ),
+  totalCount: 3,
+  offset: 0,
+  limit: 10
+};
+
+export const mockDataPaginationList = {
+  ...mockDataPagination,
+  contents: mockDataPagination.contents.map((v) => ({
+    ...v,
+    kind: undefined,
+    description: undefined,
+    sections: undefined
+  }))
+};
+
+export const mockDataPaginationIds = {
+  ...mockDataPagination,
+  contents: mockDataPagination.contents.map(({ id }) => ({ id }))
+};
+
+export const mockDataPaginationCat1 = {
+  ...mockDataPagination,
+  contents: mockDataPaginationList.contents.filter(({ category }) =>
+    category.some(({ id }) => id === 'cat1')
+  )
+};
+
+export const mockDataPaginationCat2 = {
+  ...mockDataPagination,
+  contents: mockDataPaginationList.contents.filter(({ category }) =>
+    category.some(({ id }) => id === 'cat2')
+  )
+};
+export const mockDataPaginationCat3 = {
+  ...mockDataPagination,
+  contents: mockDataPaginationList.contents.filter(({ category }) =>
+    category.some(({ id }) => id === 'cat3')
+  )
+};
+
+export const mockDataPaginationCat1Ids = {
+  ...mockDataPaginationCat1,
+  contents: mockDataPaginationCat1.contents.map(({ id }) => ({ id }))
+};
+
+export const mockDataPaginationCat2Ids = {
+  ...mockDataPaginationCat2,
+  contents: mockDataPaginationCat2.contents.map(({ id }) => ({ id }))
+};
+
+export const mockDataPaginationCat3Ids = {
+  ...mockDataPaginationCat3,
+  contents: mockDataPaginationCat3.contents.map(({ id }) => ({ id }))
 };
