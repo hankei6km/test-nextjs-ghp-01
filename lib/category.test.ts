@@ -29,16 +29,38 @@ describe('getSortedPagesData()', () => {
         )
       )
       .mockResponseOnce(JSON.stringify(mockDataArticleCat2));
-    expect(
-      await getPagesPageData(
-        testApiName,
-        { params: { id: 'cat2' } },
-        {
-          outerIds: ['blog-category'],
-          mapApiNameArticle: { articles: 'posts' }
-        }
-      )
-    ).toEqual({
+    const res = await getPagesPageData(
+      testApiName,
+      { params: { id: 'cat2' } },
+      {
+        outerIds: ['blog-category'],
+        articlesApi: 'posts',
+        curCategory: 'cat2'
+      }
+    );
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    // pages から global 等の取得.
+    expect(fetchMock.mock.calls[0][0]).toContain('/pages?');
+    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
+      ids: '_global,blog-category',
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
+    });
+    // categoyから項目取得.
+    expect(fetchMock.mock.calls[1][0]).toContain('/category/cat2?');
+    expect(queryParams(String(fetchMock.mock.calls[1][0]))).toStrictEqual({
+      draftKey: '',
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
+    });
+    // posts からカテゴリ指定で artcles の取得.
+    expect(fetchMock.mock.calls[2][0]).toContain('/posts?');
+    expect(queryParams(String(fetchMock.mock.calls[2][0]))).toStrictEqual({
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title',
+      filters: 'category[contains]cat2'
+    });
+    expect(res).toEqual({
       id: 'cat2',
       updated: '2021-01-23T20:32.477Z',
       pageNo: 1,
@@ -52,7 +74,7 @@ describe('getSortedPagesData()', () => {
         { id: 'cat3', title: 'Category3' }
       ],
       category: [],
-      curCategory: '',
+      curCategory: 'cat2',
       header: [],
       top: [
         {
@@ -78,7 +100,7 @@ describe('getSortedPagesData()', () => {
       ],
       sections: [
         {
-          title: '',
+          title: 'all posts',
           content: [
             {
               kind: 'posts',
@@ -107,8 +129,7 @@ describe('getSortedPagesData()', () => {
                   path: '/posts'
                 }
               ],
-              detail: false,
-              category: [{ id: 'cat2', title: 'category2' }]
+              detail: false
             }
           ]
         }
@@ -184,28 +205,6 @@ describe('getSortedPagesData()', () => {
           ]
         }
       ]
-    });
-    expect(fetchMock).toHaveBeenCalledTimes(3);
-    // pages から global 等の取得.
-    expect(fetchMock.mock.calls[0][0]).toContain('/pages?');
-    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
-      ids: '_global,blog-category',
-      fields:
-        'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
-    });
-    // categoyから項目取得.
-    expect(fetchMock.mock.calls[1][0]).toContain('/category/cat2?');
-    expect(queryParams(String(fetchMock.mock.calls[1][0]))).toStrictEqual({
-      draftKey: '',
-      fields:
-        'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
-    });
-    // posts からカテゴリ指定で artcles の取得.
-    expect(fetchMock.mock.calls[2][0]).toContain('/posts?');
-    expect(queryParams(String(fetchMock.mock.calls[2][0]))).toStrictEqual({
-      fields:
-        'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title',
-      filters: 'category[contains]cat2'
     });
   });
 });

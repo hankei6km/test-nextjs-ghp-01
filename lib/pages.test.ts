@@ -3,7 +3,8 @@ import {
   mockDataPagesOuterHome,
   mockDataPagesList,
   mockDataPagesIds,
-  mockDataArticleList
+  mockDataArticleList,
+  mockDataPagesOuterBlog
 } from '../test/testMockData';
 import { FetchMock } from 'jest-fetch-mock';
 import {
@@ -266,8 +267,7 @@ describe('getPagesPageData()', () => {
                     path: '/posts'
                   }
                 ],
-                detail: false,
-                category: []
+                detail: false
               }
             ]
           }
@@ -339,14 +339,14 @@ describe('getPagesPageData()', () => {
         'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title'
     });
   });
-  it('should recives options that specified pagination info', async () => {
+  it('should get articles data via contentPageArticles', async () => {
     fetchMock
-      .mockResponseOnce(JSON.stringify(mockDataPagesOuterHome))
+      .mockResponseOnce(JSON.stringify(mockDataPagesOuterBlog))
       .mockResponseOnce(JSON.stringify(mockDataArticleList));
     await getPagesPageData(
       'pages',
-      { params: { id: 'home' } },
-      { outerIds: [], pageNo: 3, itemsPerPage: 10 }
+      { params: { id: 'blog' } },
+      { outerIds: [], articlesApi: 'posts', pageNo: 3, itemsPerPage: 10 }
     );
     // offset と  limit の指定のみ確認
     expect(fetchMock).toHaveBeenCalledTimes(2);
@@ -356,6 +356,49 @@ describe('getPagesPageData()', () => {
         'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title',
       limit: '10',
       offset: '20'
+    });
+  });
+  it('should get articles data via contentPageArticles with category', async () => {
+    fetchMock
+      .mockResponseOnce(JSON.stringify(mockDataPagesOuterBlog))
+      .mockResponseOnce(JSON.stringify(mockDataArticleList));
+    await getPagesPageData(
+      'pages',
+      { params: { id: 'blog' } },
+      {
+        outerIds: [],
+        articlesApi: 'posts',
+        curCategory: 'cat1',
+        pageNo: 3,
+        itemsPerPage: 10
+      }
+    );
+    // filters (category 指定あり) も確認
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(fetchMock.mock.calls[1][0]).toContain('/posts?');
+    expect(queryParams(String(fetchMock.mock.calls[1][0]))).toStrictEqual({
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title',
+      filters: 'category[contains]cat1',
+      limit: '10',
+      offset: '20'
+    });
+  });
+  it('should get articles data via contentFragArticles', async () => {
+    fetchMock
+      .mockResponseOnce(JSON.stringify(mockDataPagesOuterHome))
+      .mockResponseOnce(JSON.stringify(mockDataArticleList));
+    await getPagesPageData(
+      'pages',
+      { params: { id: 'blog' } },
+      { outerIds: [], articlesApi: 'posts', pageNo: 3, itemsPerPage: 10 }
+    );
+    // offset と  limit の指定がない(fragArticles では指定されない)ことを確認
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(fetchMock.mock.calls[1][0]).toContain('/posts?');
+    expect(queryParams(String(fetchMock.mock.calls[1][0]))).toStrictEqual({
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title'
     });
   });
 });

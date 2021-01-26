@@ -88,7 +88,7 @@ export const getStaticProps: GetStaticProps = async () => {
     { params: { id } },
     {
       outerIds: [],
-      mapApiNameArticle: { articles: 'posts' as const },
+      articlesApi: 'posts',
       curCategory,
       itemsPerPage,
       pageNo,

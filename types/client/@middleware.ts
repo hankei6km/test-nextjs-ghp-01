@@ -7,10 +7,10 @@ import {
   mockDataPagesOuterHome,
   mockDataPagesOuterBlog,
   mockDataPagesOuterPosts,
+  mockDataPagesOuterCategory,
   mockDataCategoryIds,
   mockDataCategoryList
 } from './mockData';
-import { mockDataPagesOuterCategory } from '../../test/testMockData';
 
 // polymorph 対応
 export default mockMiddleware([

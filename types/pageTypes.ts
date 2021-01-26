@@ -21,7 +21,11 @@ export type SectionPosts = {
   kind: 'posts';
   contents: SectionArticleIndex[];
   detail: boolean;
-  category: PagesCategory[];
+  // 再利用することはなさそう、
+  // title が保持できないときがある (getStaticProps では id のみわたされるので、
+  // ページデータから取得する必要がある)
+  // よって一旦削除。
+  // category: PagesCategory[];
 };
 export type SectionImage = {
   kind: 'image';
