@@ -25,8 +25,8 @@ type PagesContentMarkdown = {
   fieldId: 'contentMarkdown';
   markdown: string;
 };
-type PagesContentArticles = {
-  fieldId: 'contentArticles';
+type PagesContentFragArticles = {
+  fieldId: 'contentFragArticles';
   apiName: string;
   detail?: boolean;
   category: PagesCategory[];
@@ -40,7 +40,7 @@ type PagesContentImage = {
 type PageContent =
   | PagesContentHtml
   | PagesContentMarkdown
-  | PagesContentArticles
+  | PagesContentFragArticles
   | PagesContentImage;
 type PagesSectionContent = {
   fieldId: 'sectionContent';

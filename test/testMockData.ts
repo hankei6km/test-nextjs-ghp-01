@@ -73,7 +73,7 @@ export const mockDataPages: PagesContents = {
               markdown: '## blog'
             },
             {
-              fieldId: 'contentArticles',
+              fieldId: 'contentFragArticles',
               apiName: 'posts',
               category: []
             }
@@ -100,7 +100,7 @@ export const mockDataPages: PagesContents = {
           title: 'all posts',
           content: [
             {
-              fieldId: 'contentArticles',
+              fieldId: 'contentFragArticles',
               apiName: 'posts',
               detail: true,
               category: []
@@ -384,7 +384,7 @@ export const mockDataCategory: PagesContents = {
           fieldId: 'sectionContent',
           content: [
             {
-              fieldId: 'contentArticles',
+              fieldId: 'contentFragArticles',
               apiName: '%articles',
               category: [{ id: 'cat1', title: 'category1' }]
             }
@@ -406,7 +406,7 @@ export const mockDataCategory: PagesContents = {
           fieldId: 'sectionContent',
           content: [
             {
-              fieldId: 'contentArticles',
+              fieldId: 'contentFragArticles',
               apiName: '%articles',
               category: [{ id: 'cat2', title: 'category2' }]
             }
@@ -428,7 +428,7 @@ export const mockDataCategory: PagesContents = {
           fieldId: 'sectionContent',
           content: [
             {
-              fieldId: 'contentArticles',
+              fieldId: 'contentFragArticles',
               apiName: '%articles',
               category: [{ id: 'cat3', title: 'category3' }]
             }

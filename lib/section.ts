@@ -131,7 +131,7 @@ export async function getSectionFromPages(
               contentHtml: htmlToChildren(markdownToHtml(content.markdown))
             };
           } else if (
-            content.fieldId === 'contentArticles' &&
+            content.fieldId === 'contentFragArticles' &&
             getApiNameArticle(content.apiName, mapApiNameArticle)
           ) {
             const apiName = getApiNameArticle(

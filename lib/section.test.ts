@@ -334,7 +334,7 @@ describe('getSectionFromPages()', () => {
           title: '',
           content: [
             {
-              fieldId: 'contentArticles',
+              fieldId: 'contentFragArticles',
               apiName: 'posts',
               detail: true,
               category: []

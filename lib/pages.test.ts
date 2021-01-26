@@ -145,7 +145,7 @@ describe('getPagesData()', () => {
               markdown: '## blog'
             },
             {
-              fieldId: 'contentArticles',
+              fieldId: 'contentFragArticles',
               apiName: 'posts',
               category: []
             }
