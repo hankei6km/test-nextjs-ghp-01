@@ -122,7 +122,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   // ユーティリティにすることも考える?
   const id = context.params?.id || [''];
   const idLen = id.length;
-  const pageNo = idLen > 1 ? parseInt(id[idLen - 1], itemsPerPage) : 1;
+  const pageNo = idLen > 1 ? parseInt(id[idLen - 1], 10) : 1;
   const curCategory = id[0];
   // paths を求めたときの値はもってこれない?
   const pageCount = (
