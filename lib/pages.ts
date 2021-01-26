@@ -157,9 +157,14 @@ export async function getPagesDataWithOuter(
   try {
     // TODO: preview 対応
     if (apiName === 'pages') {
+      const ids =
+        // TODO: id='' のテスト
+        params.id !== ''
+          ? [globalPageId].concat(outerIds, params.id).join(',')
+          : [globalPageId].concat(outerIds).join(',');
       const res = await client[apiName].get({
         query: {
-          ids: [globalPageId].concat(outerIds, params.id).join(','),
+          ids: ids,
           fields:
             'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
         },
@@ -175,11 +180,14 @@ export async function getPagesDataWithOuter(
       },
       config: fetchConfig
     });
-    return res.body.contents.concat(
-      await getPagesData(apiName, {
-        params
-      })
-    );
+    if (params.id !== '') {
+      return res.body.contents.concat(
+        await getPagesData(apiName, {
+          params
+        })
+      );
+    }
+    return res.body.contents;
   } catch (err) {
     console.error(`getPagesDataWithLayout error: ${err.name}`);
   }
