@@ -2,16 +2,43 @@ import { ParsedUrlQuery } from 'querystring';
 import { GetStaticPropsContext } from 'next';
 import client, { fetchConfig, ApiNameArticle } from './client';
 import { PagesContent, blankPageContent } from '../types/client/contentTypes';
+import { GetQuery } from '../types/client/queryTypes';
 import { PageData, blankPageData } from '../types/pageTypes';
 import { getSectionFromPages } from './section';
 
 const globalPageId = '_global';
+// id が 1件で 40byte  と想定、 content-length が 5M 程度とのことなので、1000*1000*5 / 40 で余裕を見て決めた値。
+const allIdsLimit = 120000;
+// const itemsPerPage = 10;
 
-export async function getSortedPagesData(apiName: ApiNameArticle) {
+// ページングされる API 名など、pages の項目側で固定できないような API 名をマップする.
+// 項目側では %articles のように % を付加して指定する
+export type MapApiNameArticle = {
+  articles: ApiNameArticle;
+};
+export type PageDataGetOptions = {
+  // posts などの場合で、共通の top 等を持つ page を指定指定する (id. blog-post など)
+  outerIds: string[];
+  // ページングされる API 名など、pages の項目側で固定できないような API 名をマップする
+  mapApiNameArticle?: MapApiNameArticle;
+  // route 上で選択されているカテゴリ(page ないの category[] のうちの１つになるはず).
+  curCategory?: string;
+  // ページング用j
+  itemsPerPage?: number;
+  pageNo?: number;
+  pageCount?: number;
+};
+
+export async function getSortedPagesData(
+  apiName: ApiNameArticle,
+  query: GetQuery = {}
+) {
   try {
     const res = await client[apiName].get({
       query: {
-        fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title'
+        ...query,
+        fields:
+          'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title'
       },
       config: fetchConfig
     });
@@ -24,17 +51,68 @@ export async function getSortedPagesData(apiName: ApiNameArticle) {
   return [];
 }
 
-export async function getAllPagesIds(apiName: ApiNameArticle) {
+export async function getAllPagesIds(
+  apiName: ApiNameArticle,
+  query: GetQuery = {}
+) {
   try {
     const res = await client[apiName].get({
       query: {
-        fields: 'id'
+        ...query,
+        fields: 'id',
+        limit: allIdsLimit
       },
       config: fetchConfig
     });
-    return res.body.contents.map(({ id }) => ({ params: { id } }));
+    return res.body.contents.map(({ id }) => id);
   } catch (err) {
     console.error(`getAllPagesIds error: ${err.name}`);
+  }
+  return [];
+}
+
+export async function getAllPaginationIds(
+  apiName: ApiNameArticle,
+  itemsPerPage: number,
+  pagePath: string[] = [],
+  query: GetQuery = {}
+): Promise<string[][]> {
+  try {
+    const ids = await getAllPagesIds(apiName, query);
+    const count = Math.floor((ids.length + (itemsPerPage - 1)) / itemsPerPage);
+    const ret: string[][] = new Array(count);
+    for (let i = 0; i < count; i++) {
+      ret[i] = [...pagePath, `${i + 1}`];
+    }
+    return ret;
+  } catch (err) {
+    console.error(`getAllPagesIdsPageCount error: ${err.name}`);
+  }
+  return [];
+}
+
+export async function getAllCategolizedPaginationIds(
+  apiName: ApiNameArticle,
+  category: string[],
+  itemsPerPage: number,
+  pagePath: string[] = ['page'],
+  query: GetQuery = {}
+) {
+  try {
+    let ret: string[][] = category.map((cat) => [cat]);
+    // Promis.all だと、各カテゴリの ids をすべて保持しておく瞬間があるのでやめておく
+    const categoryLen = category.length;
+    for (let idx = 0; idx < categoryLen; idx++) {
+      const cat = category[idx];
+      const ids = await getAllPaginationIds(apiName, itemsPerPage, pagePath, {
+        ...query,
+        filters: `category[contains]${cat}`
+      });
+      ret = ret.concat(ids.map((id) => [cat, ...id]));
+    }
+    return ret;
+  } catch (err) {
+    console.error(`getAllPagesIdsPageCount error: ${err.name}`);
   }
   return [];
 }
@@ -52,7 +130,9 @@ export async function getPagesData(
       ._id(!preview ? params.id : previewData.slug) // 似たような3項式がバラけていてすっきりしない
       .$get({
         query: {
-          draftKey: !preview ? '' : previewData.draftKey
+          draftKey: !preview ? '' : previewData.draftKey,
+          fields:
+            'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
         },
         config: fetchConfig
       });
@@ -70,14 +150,18 @@ export async function getPagesDataWithOuter(
   }: // preview = false,
   // previewData = {}
   GetStaticPropsContext<ParsedUrlQuery>,
-  outerIds: string[]
+  { outerIds = [] }: PageDataGetOptions = {
+    outerIds: []
+  }
 ): Promise<PagesContent[]> {
   try {
     // TODO: preview 対応
     if (apiName === 'pages') {
       const res = await client[apiName].get({
         query: {
-          ids: [globalPageId].concat(outerIds, params.id).join(',')
+          ids: [globalPageId].concat(outerIds, params.id).join(','),
+          fields:
+            'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
         },
         config: fetchConfig
       });
@@ -85,7 +169,9 @@ export async function getPagesDataWithOuter(
     }
     const res = await client['pages'].get({
       query: {
-        ids: [globalPageId].concat(outerIds).join(',')
+        ids: [globalPageId].concat(outerIds).join(','),
+        fields:
+          'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
       },
       config: fetchConfig
     });
@@ -107,7 +193,9 @@ export async function getPagesPageData(
     preview = false,
     previewData = {}
   }: GetStaticPropsContext<ParsedUrlQuery>,
-  outerIds: string[] = []
+  options: PageDataGetOptions = {
+    outerIds: []
+  }
 ): Promise<PageData> {
   try {
     const rawPageDatas = await getPagesDataWithOuter(
@@ -117,19 +205,40 @@ export async function getPagesPageData(
         preview,
         previewData
       },
-      outerIds
+      options
     );
-    const pageData = {
+    const pageData: PageData = {
       id: rawPageDatas[0].id,
       updated: rawPageDatas[0].revisedAt || rawPageDatas[0].updatedAt,
       title: rawPageDatas[0].title,
+      pageNo: options.pageNo !== undefined ? options.pageNo : 1,
+      pageCount: options.pageCount !== undefined ? options.pageCount : -1,
       description: rawPageDatas[0].description || '',
       mainImage: '',
-      header: await getSectionFromPages(rawPageDatas[0], 'sectionHeader'),
-      top: await getSectionFromPages(rawPageDatas[0], 'sectionTop'),
-      sections: await getSectionFromPages(rawPageDatas[0], 'sectionContent'),
-      bottom: await getSectionFromPages(rawPageDatas[0], 'sectionBottom'),
-      footer: await getSectionFromPages(rawPageDatas[0], 'sectionFooter')
+      allCategory: [],
+      category: [],
+      curCategory: options.curCategory || '',
+      header: await getSectionFromPages(
+        rawPageDatas[0],
+        'sectionHeader',
+        options
+      ),
+      top: await getSectionFromPages(rawPageDatas[0], 'sectionTop', options),
+      sections: await getSectionFromPages(
+        rawPageDatas[0],
+        'sectionContent',
+        options
+      ),
+      bottom: await getSectionFromPages(
+        rawPageDatas[0],
+        'sectionBottom',
+        options
+      ),
+      footer: await getSectionFromPages(
+        rawPageDatas[0],
+        'sectionFooter',
+        options
+      )
     };
     const rawPageDataLen = rawPageDatas.length;
     for (let idx = 1; idx < rawPageDataLen; idx++) {
@@ -140,16 +249,58 @@ export async function getPagesPageData(
         rawPageData.title !== '' ? rawPageData.title : pageData.title;
       pageData.description = rawPageData.description || pageData.description;
       pageData.mainImage = '';
-      const header = await getSectionFromPages(rawPageData, 'sectionHeader');
+      pageData.allCategory = [];
+      pageData.category = [];
+      const header = await getSectionFromPages(
+        rawPageData,
+        'sectionHeader',
+        options
+      );
       pageData.header = header.length > 0 ? header : pageData.header;
-      const top = await getSectionFromPages(rawPageData, 'sectionTop');
+      const top = await getSectionFromPages(rawPageData, 'sectionTop', options);
       pageData.top = top.length > 0 ? top : pageData.top;
-      const sections = await getSectionFromPages(rawPageData, 'sectionContent');
+      const sections = await getSectionFromPages(
+        rawPageData,
+        'sectionContent',
+        options
+      );
       pageData.sections = sections.length > 0 ? sections : pageData.sections;
-      const bottom = await getSectionFromPages(rawPageData, 'sectionBottom');
+      const bottom = await getSectionFromPages(
+        rawPageData,
+        'sectionBottom',
+        options
+      );
       pageData.bottom = bottom.length > 0 ? bottom : pageData.bottom;
-      const footer = await getSectionFromPages(rawPageData, 'sectionFooter');
+      const footer = await getSectionFromPages(
+        rawPageData,
+        'sectionFooter',
+        options
+      );
       pageData.footer = footer.length > 0 ? footer : pageData.footer;
+    }
+    switch (apiName) {
+      case 'pages':
+        if (rawPageDataLen > 1) {
+          // pages の場合 glogab,id のみのはずだが念のため
+          pageData.allCategory = rawPageDatas[rawPageDataLen - 1].category;
+        }
+        break;
+      case 'category':
+        // category は allCategory のみ
+        // ( allCategory 自身のページにも定義できるが、outer からとってくる)
+        if (rawPageDataLen > 2) {
+          pageData.allCategory = rawPageDatas[rawPageDataLen - 2].category;
+        }
+        break;
+      default:
+        // pages 意外では通常のカテゴリーとして扱う.
+        // TODO: allCategory でフィルター.
+        if (rawPageDataLen > 1) {
+          if (rawPageDataLen > 2) {
+            pageData.allCategory = rawPageDatas[rawPageDataLen - 2].category;
+          }
+          pageData.category = rawPageDatas[rawPageDataLen - 1].category;
+        }
     }
     return pageData;
   } catch (err) {

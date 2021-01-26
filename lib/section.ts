@@ -1,10 +1,15 @@
 import { join } from 'path';
 import cheerio from 'cheerio';
-import { getSortedPagesData } from './pages';
+import {
+  PageDataGetOptions,
+  getSortedPagesData,
+  MapApiNameArticle
+} from './pages';
 import { markdownToHtml } from './markdown';
 import { ApiNameArticleValues, ApiNameArticle } from './client';
 import { PagesContent, PagesSectionKind } from '../types/client/contentTypes';
 import { Section, SectionContentHtmlChildren } from '../types/pageTypes';
+import { GetQuery } from '../types/client/queryTypes';
 
 // とりあえず、普通に記述された markdown から変換されたときに body の直下にありそうなタグ.
 // いまのところ小文字のみ.
@@ -83,9 +88,31 @@ export function htmlToChildren(html: string): SectionContentHtmlChildren[] {
   return ret;
 }
 
+export function getApiNameArticle(
+  apiNameFromContent: string,
+  mapApiNameArticle?: MapApiNameArticle
+): '' | ApiNameArticle {
+  if (
+    apiNameFromContent === '%articles' &&
+    mapApiNameArticle &&
+    mapApiNameArticle.articles
+  ) {
+    return mapApiNameArticle.articles;
+  } else if (ApiNameArticleValues.some((v) => v === apiNameFromContent)) {
+    return apiNameFromContent as ApiNameArticle;
+  }
+  return '';
+}
+
 export async function getSectionFromPages(
   page: PagesContent,
-  kind: PagesSectionKind
+  kind: PagesSectionKind,
+  { mapApiNameArticle, itemsPerPage, pageNo }: PageDataGetOptions = {
+    outerIds: [],
+    pageNo: 1,
+    itemsPerPage: 10,
+    pageCount: 1
+  }
 ): Promise<Section[]> {
   const sections = page.sections
     .filter(({ fieldId }) => fieldId === kind)
@@ -105,19 +132,37 @@ export async function getSectionFromPages(
             };
           } else if (
             content.fieldId === 'contentArticles' &&
-            ApiNameArticleValues.some((v) => v === content.apiName)
+            getApiNameArticle(content.apiName, mapApiNameArticle)
           ) {
-            const contents = await getSortedPagesData(
-              content.apiName as ApiNameArticle
-            );
+            const apiName = getApiNameArticle(
+              content.apiName,
+              mapApiNameArticle
+            ) as ApiNameArticle;
+            // if での評価と２回実行される.
+            // 型ガードが効かない & ちょっともったいないが、
+            // 外に出すと関係のないカスタムフィールドでも実行されるので、とりあえずここで
+            const q: GetQuery = {};
+            if (itemsPerPage !== undefined) {
+              q.limit = itemsPerPage;
+              if (pageNo !== undefined) {
+                q.offset = itemsPerPage * (pageNo - 1);
+              }
+            }
+            if (content.category.length > 0) {
+              q.filters = `category[contains]${content.category
+                .map(({ id }) => id)
+                .join(',')}`;
+            }
+            const contents = await getSortedPagesData(apiName, q);
             return {
               kind: 'posts' as const,
               contents: contents.map((c) => ({
                 ...c,
                 // path: normalize(`/${content.apiName}`)
-                path: join('/', content.apiName)
+                path: join('/', apiName)
               })),
-              detail: content.detail || false
+              detail: content.detail || false,
+              category: content.category
             };
           } else if (content.fieldId === 'contentImage') {
             return {

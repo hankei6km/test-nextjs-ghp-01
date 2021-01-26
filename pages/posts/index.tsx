@@ -32,6 +32,11 @@ const PostsPage = ({ pageData }: { pageData: PageData }) => {
                 title: '',
                 content: [
                   {
+                    kind: 'partsNavCategory',
+                    all: true,
+                    categoryPath: '/posts/category'
+                  },
+                  {
                     kind: 'partsPageTitle',
                     link: ''
                   }

@@ -1,6 +1,10 @@
 import { mockDataArticleList } from '../test/testMockData';
 import { FetchMock } from 'jest-fetch-mock';
-import { getSectionFromPages, htmlToChildren } from './section';
+import {
+  getSectionFromPages,
+  htmlToChildren,
+  getApiNameArticle
+} from './section';
 import { PagesContent } from '../types/client/contentTypes';
 
 // https://github.com/jefflau/jest-fetch-mock/issues/83
@@ -104,6 +108,25 @@ describe('htmlToChildren()', () => {
   });
 });
 
+describe('getApiNameArticle()', () => {
+  it('should pass through passed apitName', () => {
+    expect(getApiNameArticle('posts')).toEqual('posts');
+    expect(getApiNameArticle('posts', undefined)).toEqual('posts');
+    expect(getApiNameArticle('posts', { articles: 'pages' })).toEqual('posts');
+  });
+  it('should return default api name', () => {
+    expect(getApiNameArticle('%articles', { articles: 'posts' })).toEqual(
+      'posts'
+    );
+  });
+  it('should return blank when invalid api name passed', () => {
+    expect(getApiNameArticle('testtest')).toEqual('');
+    expect(getApiNameArticle('testtest', { articles: 'pages' })).toEqual('');
+    // expect(getApiNameArticle('%articles', 'post')).toEqual('posts');  // type guard
+    // expect(getApiNameArticle(undefined, 'posts')).toEqual('');
+  });
+});
+
 describe('getSectionFromPages()', () => {
   const mockBase: PagesContent = {
     id: 'home',
@@ -114,11 +137,13 @@ describe('getSectionFromPages()', () => {
     title: 'Home',
     kind: ['page'],
     description: 'my starter home page',
+    category: [],
     sections: []
   };
   it('should returns sections that filtered kind', async () => {
     const mockData: PagesContent = {
       ...mockBase,
+      category: [],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -261,6 +286,7 @@ describe('getSectionFromPages()', () => {
   it('should returns content sections from markdown', async () => {
     const mockData: PagesContent = {
       ...mockBase,
+      category: [],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -301,6 +327,7 @@ describe('getSectionFromPages()', () => {
     );
     const mockData: PagesContent = {
       ...mockBase,
+      category: [],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -309,7 +336,8 @@ describe('getSectionFromPages()', () => {
             {
               fieldId: 'contentArticles',
               apiName: 'posts',
-              detail: true
+              detail: true,
+              category: []
             }
           ]
         }
@@ -329,10 +357,12 @@ describe('getSectionFromPages()', () => {
                 publishedAt: '2021-01-13T05:12.157Z',
                 revisedAt: '2021-01-13T05:12.157Z',
                 title: 'title4',
+                category: [{ id: 'cat3', title: 'category3' }],
                 path: '/posts'
               }
             ],
-            detail: true
+            detail: true,
+            category: []
           }
         ]
       }

@@ -1,4 +1,4 @@
-import { PagesIndex } from './client/contentTypes';
+import { PagesIndex, PagesCategory } from './client/contentTypes';
 // export type SectionKind = 'content' | 'posts';
 type SectionArticleIndexPath = { path: string };
 export type SectionArticleIndex = PagesIndex & SectionArticleIndexPath;
@@ -21,6 +21,7 @@ export type SectionPosts = {
   kind: 'posts';
   contents: SectionArticleIndex[];
   detail: boolean;
+  category: PagesCategory[];
 };
 export type SectionImage = {
   kind: 'image';
@@ -55,6 +56,17 @@ export type SectionPartsUpdated = {
 export type SectionPartsNavMain = {
   kind: 'partsNavMain';
 };
+export type SectionPartsNavCategory = {
+  kind: 'partsNavCategory';
+  all: boolean;
+  categoryPath: string;
+};
+export type SectionPartsNavPagination = {
+  kind: 'partsNavPagination';
+  href: string;
+  baseAs: string;
+  pagePath: string[];
+};
 
 export type Section = {
   title?: string;
@@ -69,15 +81,22 @@ export type Section = {
     | SectionPartsProfileImage
     | SectionPartsUpdated
     | SectionPartsNavMain
+    | SectionPartsNavCategory
+    | SectionPartsNavPagination
   )[];
 };
 
 export type PageData = {
   id: string;
   updated: string; // この段階では Date にはしない
+  pageNo: number; // pagination 用、getStaticProps で付与される.
+  pageCount: number; // pagination しないときは -1.
   title: string;
   description: string;
   mainImage: string;
+  allCategory: PagesCategory[];
+  category: PagesCategory[];
+  curCategory: string; //  route 上で選択されているカテゴリ、getStaticProps で付与される.選択されていないときは ''.
   header: Section[];
   top: Section[];
   sections: Section[];
@@ -88,12 +107,17 @@ export type PageData = {
 export const blankPageData = (): PageData => ({
   id: '',
   updated: '',
+  pageNo: 1,
+  pageCount: -1,
   title: '',
   description: '',
+  mainImage: '',
+  allCategory: [],
+  category: [],
+  curCategory: '',
   header: [],
   top: [],
   sections: [],
   bottom: [],
-  footer: [],
-  mainImage: ''
+  footer: []
 });

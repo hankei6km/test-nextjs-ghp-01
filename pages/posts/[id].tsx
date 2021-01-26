@@ -65,6 +65,21 @@ export default function Post({
             config={sectionConfigInPosts}
             classes={{ ...classes }}
           />
+          <SectionList
+            sections={[
+              {
+                title: '',
+                content: [
+                  {
+                    kind: 'partsNavCategory',
+                    all: false,
+                    categoryPath: '/posts/category'
+                  }
+                ]
+              }
+            ]}
+            classes={{ ...classes }}
+          />
           <SectionList sections={pageData.bottom} classes={{ ...classes }} />
         </Box>
         <Link href="/posts">{'Back to posts'}</Link>
@@ -74,7 +89,9 @@ export default function Post({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = await getAllPagesIds('posts');
+  const paths = (await getAllPagesIds('posts')).map((id) => ({
+    params: { id }
+  }));
   return {
     paths,
     fallback: true
@@ -82,7 +99,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  const pageData = await getPagesPageData('posts', context, ['blog-posts']);
+  const pageData = await getPagesPageData('posts', context, {
+    outerIds: ['blog-posts']
+  });
   return {
     props: {
       pageData,

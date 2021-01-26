@@ -6,8 +6,11 @@ import {
   mockDataArticleList,
   mockDataPagesOuterHome,
   mockDataPagesOuterBlog,
-  mockDataPagesOuterPosts
+  mockDataPagesOuterPosts,
+  mockDataCategoryIds,
+  mockDataCategoryList
 } from './mockData';
+import { mockDataPagesOuterCategory } from '../../test/testMockData';
 
 // polymorph 対応
 export default mockMiddleware([
@@ -41,6 +44,15 @@ export default mockMiddleware([
   (req, res, next) =>
     req.path === '/api/v1/pages' &&
     req.method === 'GET' &&
+    req.query?.ids === '_global,blog-category'
+      ? res({
+          status: 200,
+          resBody: mockDataPagesOuterCategory
+        })
+      : next(),
+  (req, res, next) =>
+    req.path === '/api/v1/pages' &&
+    req.method === 'GET' &&
     req.query?.fields === 'id'
       ? res({
           status: 200,
@@ -50,28 +62,99 @@ export default mockMiddleware([
   (req, res, next) =>
     req.path === '/api/v1/pages' &&
     req.method === 'GET' &&
-    req.query?.fields === 'id,createdAt,updatedAt,publishedAt,revisedAt,title'
+    req.query?.fields ===
+      'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title'
       ? res({
           status: 200,
           resBody: mockDataPagesList
         })
       : next(),
+  (req, res, next) => {
+    if (
+      req.path === '/api/v1/posts' &&
+      req.method === 'GET' &&
+      req.query?.fields === 'id'
+    ) {
+      const m = (req.query.filters || '').match(/category\[contains\](.+)$/);
+      const limit = req.query.limit === undefined ? 10 : req.query.limit;
+      const offset = req.query.offset === undefined ? 0 : req.query.offset;
+      if (m) {
+        res({
+          status: 200,
+          resBody: {
+            ...mockDataArticleIds,
+            contents: mockDataArticleList.contents
+              .filter(({ category }) => category.some(({ id }) => id === m[1]))
+              .map(({ id }) => ({ id }))
+              .slice(offset, offset + limit)
+          }
+        });
+        return;
+      } else {
+        res({
+          status: 200,
+          resBody: {
+            ...mockDataArticleIds,
+            contents: mockDataArticleIds.contents.slice(offset, offset + limit)
+          }
+        });
+        return;
+      }
+    }
+    next();
+  },
+  (req, res, next) => {
+    if (
+      req.path === '/api/v1/posts' &&
+      req.method === 'GET' &&
+      req.query?.fields ===
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title'
+    ) {
+      const m = (req.query.filters || '').match(/category\[contains\](.+)$/);
+      const limit = req.query.limit === undefined ? 10 : req.query.limit;
+      const offset = req.query.offset === undefined ? 0 : req.query.offset;
+      if (m) {
+        res({
+          status: 200,
+          resBody: {
+            ...mockDataArticleList,
+            contents: mockDataArticleList.contents
+              .filter(({ category }) => category.some(({ id }) => id === m[1]))
+              .slice(offset, offset + limit)
+          }
+        });
+        return;
+      } else {
+        res({
+          status: 200,
+          resBody: {
+            ...mockDataArticleList,
+            contents: mockDataArticleList.contents.slice(offset, offset + limit)
+          }
+        });
+        return;
+      }
+    }
+    next();
+  },
+  // category でリスト系は実行されないはずだが、とりあえず
   (req, res, next) =>
-    req.path === '/api/v1/posts' &&
+    req.path === '/api/v1/category' &&
     req.method === 'GET' &&
     req.query?.fields === 'id'
       ? res({
           status: 200,
-          resBody: mockDataArticleIds
+          resBody: mockDataCategoryIds
         })
       : next(),
   (req, res, next) =>
-    req.path === '/api/v1/posts' &&
+    req.path === '/api/v1/category' &&
     req.method === 'GET' &&
-    req.query?.fields === 'id,createdAt,updatedAt,publishedAt,revisedAt,title'
+    req.query?.fields ===
+      'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title'
       ? res({
           status: 200,
-          resBody: mockDataArticleList
+          resBody: mockDataCategoryList
         })
       : next()
 ]);

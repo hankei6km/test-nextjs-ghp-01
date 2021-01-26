@@ -10,7 +10,7 @@ import {
   GetFieldsIdQuery,
   GetPagesItemQuery
 } from '../../../queryTypes';
-import { mockDataArticles } from '../../../mockData';
+import { mockDataCategory } from '../../../mockData';
 
 export type Methods = {
   get: {
@@ -40,7 +40,7 @@ export default mockMethods<Methods>({
     return {
       status: 200,
       resHeaders: {},
-      resBody: mockDataArticles
+      resBody: mockDataCategory
     };
   }
 });

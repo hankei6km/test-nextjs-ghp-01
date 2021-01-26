@@ -1,4 +1,4 @@
-import { PagesContents } from '../types/client/contentTypes';
+import { PagesContents, PagesContent } from '../types/client/contentTypes';
 
 export const mockDataPages: PagesContents = {
   contents: [
@@ -11,6 +11,7 @@ export const mockDataPages: PagesContents = {
       title: 'My Starter MOCK',
       kind: ['page'],
       description: 'my starter home page',
+      category: [],
       sections: [
         {
           fieldId: 'sectionFooter',
@@ -53,6 +54,7 @@ export const mockDataPages: PagesContents = {
       title: 'Home',
       kind: ['page'],
       description: 'my starter home page',
+      category: [],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -72,7 +74,8 @@ export const mockDataPages: PagesContents = {
             },
             {
               fieldId: 'contentArticles',
-              apiName: 'posts'
+              apiName: 'posts',
+              category: []
             }
           ]
         }
@@ -86,6 +89,11 @@ export const mockDataPages: PagesContents = {
       revisedAt: '2020-12-26T15:29:14.476Z',
       title: 'Blog',
       kind: ['posts'],
+      category: [
+        { id: 'cat1', title: 'Category1' },
+        { id: 'cat2', title: 'Category2' },
+        { id: 'cat3', title: 'Category3' }
+      ],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -94,7 +102,8 @@ export const mockDataPages: PagesContents = {
             {
               fieldId: 'contentArticles',
               apiName: 'posts',
-              detail: true
+              detail: true,
+              category: []
             }
           ]
         }
@@ -108,6 +117,11 @@ export const mockDataPages: PagesContents = {
       revisedAt: '2020-12-26T15:29:14.476Z',
       title: 'Blog',
       kind: ['posts'],
+      category: [
+        { id: 'cat1', title: 'Category1' },
+        { id: 'cat2', title: 'Category2' },
+        { id: 'cat3', title: 'Category3' }
+      ],
       sections: [
         {
           fieldId: 'sectionTop',
@@ -124,6 +138,40 @@ export const mockDataPages: PagesContents = {
             {
               fieldId: 'contentMarkdown',
               markdown: '---\n\npost bottom'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'blog-category',
+      createdAt: '2020-12-26T15:29:14.476Z',
+      updatedAt: '2020-12-26T15:29:14.476Z',
+      publishedAt: '2020-12-26T15:29:14.476Z',
+      revisedAt: '2020-12-26T15:29:14.476Z',
+      title: 'Blog Category',
+      kind: ['posts'],
+      category: [
+        { id: 'cat1', title: 'Category1' },
+        { id: 'cat2', title: 'Category2' },
+        { id: 'cat3', title: 'Category3' }
+      ],
+      sections: [
+        {
+          fieldId: 'sectionTop',
+          content: [
+            {
+              fieldId: 'contentMarkdown',
+              markdown: 'category top\n\n---'
+            }
+          ]
+        },
+        {
+          fieldId: 'sectionBottom',
+          content: [
+            {
+              fieldId: 'contentMarkdown',
+              markdown: '---\n\ncategory bottom'
             }
           ]
         }
@@ -155,6 +203,11 @@ export const mockDataPagesOuterPosts = {
   contents: [mockDataPages.contents[0], mockDataPages.contents[3]]
 };
 
+export const mockDataPagesOuterCategory = {
+  ...mockDataPages,
+  contents: [mockDataPages.contents[0], mockDataPages.contents[4]]
+};
+
 export const mockDataPagesList = {
   ...mockDataPages,
   contents: mockDataPages.contents.map((v) => ({
@@ -180,6 +233,7 @@ export const mockDataArticles: PagesContents = {
       revisedAt: '2021-01-13T05:12.157Z',
       title: 'title4',
       kind: ['page'],
+      category: [{ id: 'cat3', title: 'category3' }],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -200,6 +254,7 @@ export const mockDataArticles: PagesContents = {
       revisedAt: '2020-12-27T04:04:30.107Z',
       title: 'title3',
       kind: ['page'],
+      category: [],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -220,6 +275,10 @@ export const mockDataArticles: PagesContents = {
       revisedAt: '2020-12-26T15:29:14.476Z',
       title: 'title2',
       kind: ['page'],
+      category: [
+        { id: 'cat1', title: 'category1' },
+        { id: 'cat2', title: 'category2' }
+      ],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -240,6 +299,7 @@ export const mockDataArticles: PagesContents = {
       revisedAt: '2020-12-26T12:27:22.533Z',
       title: 'title1',
       kind: ['page'],
+      category: [{ id: 'cat2', title: 'category2' }],
       sections: [
         {
           fieldId: 'sectionContent',
@@ -271,4 +331,207 @@ export const mockDataArticleList = {
 export const mockDataArticleIds = {
   ...mockDataArticles,
   contents: mockDataArticles.contents.map(({ id }) => ({ id }))
+};
+
+export const mockDataArticleCat1 = {
+  ...mockDataArticles,
+  contents: mockDataArticleList.contents.filter(({ category }) =>
+    category.some(({ id }) => id === 'cat1')
+  )
+};
+
+export const mockDataArticleCat2 = {
+  ...mockDataArticles,
+  contents: mockDataArticleList.contents.filter(({ category }) =>
+    category.some(({ id }) => id === 'cat2')
+  )
+};
+export const mockDataArticleCat3 = {
+  ...mockDataArticles,
+  contents: mockDataArticleList.contents.filter(({ category }) =>
+    category.some(({ id }) => id === 'cat3')
+  )
+};
+
+export const mockDataArticleCat1Ids = {
+  ...mockDataArticleCat1,
+  contents: mockDataArticleCat1.contents.map(({ id }) => ({ id }))
+};
+
+export const mockDataArticleCat2Ids = {
+  ...mockDataArticleCat2,
+  contents: mockDataArticleCat2.contents.map(({ id }) => ({ id }))
+};
+
+export const mockDataArticleCat3Ids = {
+  ...mockDataArticleCat3,
+  contents: mockDataArticleCat3.contents.map(({ id }) => ({ id }))
+};
+
+export const mockDataCategory: PagesContents = {
+  contents: [
+    {
+      id: 'cat1',
+      createdAt: '2021-01-23T20:32.477Z',
+      updatedAt: '2021-01-23T20:32.477Z',
+      publishedAt: '2021-01-23T20:32.477Z',
+      revisedAt: '2021-01-23T20:32.477Z',
+      title: 'category1',
+      kind: ['page'],
+      category: [],
+      sections: [
+        {
+          fieldId: 'sectionContent',
+          content: [
+            {
+              fieldId: 'contentArticles',
+              apiName: '%articles',
+              category: [{ id: 'cat1', title: 'category1' }]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'cat2',
+      createdAt: '2021-01-23T20:32.477Z',
+      updatedAt: '2021-01-23T20:32.477Z',
+      publishedAt: '2021-01-23T20:32.477Z',
+      revisedAt: '2021-01-23T20:32.477Z',
+      title: 'category2',
+      kind: ['page'],
+      category: [],
+      sections: [
+        {
+          fieldId: 'sectionContent',
+          content: [
+            {
+              fieldId: 'contentArticles',
+              apiName: '%articles',
+              category: [{ id: 'cat2', title: 'category2' }]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: 'cat3',
+      createdAt: '2021-01-23T20:32.477Z',
+      updatedAt: '2021-01-23T20:32.477Z',
+      publishedAt: '2021-01-23T20:32.477Z',
+      revisedAt: '2021-01-23T20:32.477Z',
+      title: 'category3',
+      kind: ['page'],
+      category: [],
+      sections: [
+        {
+          fieldId: 'sectionContent',
+          content: [
+            {
+              fieldId: 'contentArticles',
+              apiName: '%articles',
+              category: [{ id: 'cat3', title: 'category3' }]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  totalCount: 3,
+  offset: 0,
+  limit: 10
+};
+
+export const mockDataCategoryList = {
+  ...mockDataCategory,
+  contents: mockDataCategory.contents.map((v) => ({
+    ...v,
+    kind: undefined,
+    description: undefined,
+    sections: undefined
+  }))
+};
+
+export const mockDataCategoryIds = {
+  ...mockDataCategory,
+  contents: mockDataCategory.contents.map(({ id }) => ({ id }))
+};
+
+function makeDummyContent(n: number, cat: string): PagesContent[] {
+  const ret = [];
+  for (let i = 0; i < n; i++) {
+    ret.push({
+      id: `pa${cat}${i}`,
+      createdAt: '2021-01-23T20:32.477Z',
+      updatedAt: '2021-01-23T20:32.477Z',
+      publishedAt: '2021-01-23T20:32.477Z',
+      revisedAt: '2021-01-23T20:32.477Z',
+      title: `pa${cat}${i}`,
+      kind: ['page'] as ['page'],
+      category: [{ id: cat, title: `category-${cat}` }],
+      sections: []
+    });
+  }
+  return ret;
+}
+
+export const mockDataPagination: PagesContents = {
+  // contents: makeDummyContent(30, 'cat1'),
+  contents: makeDummyContent(30, 'cat1').concat(
+    makeDummyContent(55, 'cat2'),
+    makeDummyContent(21, 'cat3')
+  ),
+  totalCount: 3,
+  offset: 0,
+  limit: 10
+};
+
+export const mockDataPaginationList = {
+  ...mockDataPagination,
+  contents: mockDataPagination.contents.map((v) => ({
+    ...v,
+    kind: undefined,
+    description: undefined,
+    sections: undefined
+  }))
+};
+
+export const mockDataPaginationIds = {
+  ...mockDataPagination,
+  contents: mockDataPagination.contents.map(({ id }) => ({ id }))
+};
+
+export const mockDataPaginationCat1 = {
+  ...mockDataPagination,
+  contents: mockDataPaginationList.contents.filter(({ category }) =>
+    category.some(({ id }) => id === 'cat1')
+  )
+};
+
+export const mockDataPaginationCat2 = {
+  ...mockDataPagination,
+  contents: mockDataPaginationList.contents.filter(({ category }) =>
+    category.some(({ id }) => id === 'cat2')
+  )
+};
+export const mockDataPaginationCat3 = {
+  ...mockDataPagination,
+  contents: mockDataPaginationList.contents.filter(({ category }) =>
+    category.some(({ id }) => id === 'cat3')
+  )
+};
+
+export const mockDataPaginationCat1Ids = {
+  ...mockDataPaginationCat1,
+  contents: mockDataPaginationCat1.contents.map(({ id }) => ({ id }))
+};
+
+export const mockDataPaginationCat2Ids = {
+  ...mockDataPaginationCat2,
+  contents: mockDataPaginationCat2.contents.map(({ id }) => ({ id }))
+};
+
+export const mockDataPaginationCat3Ids = {
+  ...mockDataPaginationCat3,
+  contents: mockDataPaginationCat3.contents.map(({ id }) => ({ id }))
 };

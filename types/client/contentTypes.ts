@@ -13,6 +13,10 @@ type ContentList<T> = {
   limit: number;
 };
 
+export type PagesCategory = {
+  id: string;
+  title: string;
+};
 type PagesContentHtml = {
   fieldId: 'contentHtml';
   html: string;
@@ -25,6 +29,7 @@ type PagesContentArticles = {
   fieldId: 'contentArticles';
   apiName: string;
   detail?: boolean;
+  category: PagesCategory[];
 };
 type PagesContentImage = {
   fieldId: 'contentImage';
@@ -74,6 +79,7 @@ type Pages = {
   kind: ['posts' | 'gallery' | 'page']; // 複数選択にしていない
   description?: string;
   mainImage?: string;
+  category: Pick<PagesContent, 'id' | 'title'>[]; // 必須ではないが undefined にはならいもよう(配列だから?)
   sections: PagesSection[];
 };
 export type PagesContent = ContentBase & Pages;
@@ -105,5 +111,6 @@ export const blankPageContent = (): PagesContent => ({
   title: '',
   kind: ['page'],
   description: '',
+  category: [],
   sections: []
 });
