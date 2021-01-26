@@ -12,6 +12,7 @@ import ProfileImage from './parts/ProfileImage';
 import NavMain from './parts/NavMain';
 import DateUpdated from './parts/DateUpdated';
 import NavCategory from './parts/NavCategory';
+import NavPagination from './parts/NavPagination';
 
 const useStyles = makeStyles(() => ({
   'SectionContent-root': {},
@@ -32,6 +33,9 @@ type Props = {
 const SectionContent = ({ content, classes: inClasses }: Props) => {
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
   const { naked } = useContext(SectionContext);
+  // if (content.kind === 'partsNavPagination') {
+  //   console.log(content.href);
+  // }
   const contentNode = (
     <>
       {content.kind === 'html' &&
@@ -75,6 +79,14 @@ const SectionContent = ({ content, classes: inClasses }: Props) => {
         <NavCategory
           all={content.all}
           categoryPath={content.categoryPath}
+          classes={{ ...inClasses }}
+        />
+      )}
+      {content.kind === 'partsNavPagination' && (
+        <NavPagination
+          paginationHref={content.href}
+          paginationBaseAs={content.baseAs}
+          paginationPagePath={content.pagePath}
           classes={{ ...inClasses }}
         />
       )}

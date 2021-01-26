@@ -170,11 +170,14 @@ describe('getPagesPageData()', () => {
       {
         id: 'home',
         updated: '2020-12-27T04:04:30.107Z',
+        pageNo: 1,
+        pageCount: -1,
         title: 'Home',
         description: 'my starter home page',
         mainImage: '',
         allCategory: [],
         category: [],
+        curCategory: '',
         header: [],
         top: [],
         sections: [

@@ -41,6 +41,8 @@ describe('getSortedPagesData()', () => {
     ).toEqual({
       id: 'cat2',
       updated: '2021-01-23T20:32.477Z',
+      pageNo: 1,
+      pageCount: -1,
       title: 'category2',
       description: 'my starter home page',
       mainImage: '',
@@ -50,6 +52,7 @@ describe('getSortedPagesData()', () => {
         { id: 'cat3', title: 'Category3' }
       ],
       category: [],
+      curCategory: '',
       header: [],
       top: [
         {

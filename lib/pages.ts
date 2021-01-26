@@ -21,9 +21,12 @@ export type PageDataGetOptions = {
   outerIds: string[];
   // ページングされる API 名など、pages の項目側で固定できないような API 名をマップする
   mapApiNameArticle?: MapApiNameArticle;
+  // route 上で選択されているカテゴリ(page ないの category[] のうちの１つになるはず).
+  curCategory?: string;
   // ページング用j
   itemsPerPage?: number;
   pageNo?: number;
+  pageCount?: number;
 };
 
 export async function getSortedPagesData(
@@ -71,14 +74,15 @@ export async function getAllPagesIds(
 export async function getAllPaginationIds(
   apiName: ApiNameArticle,
   itemsPerPage: number,
+  pagePath: string[] = [],
   query: GetQuery = {}
-) {
+): Promise<string[][]> {
   try {
     const ids = await getAllPagesIds(apiName, query);
     const count = Math.floor((ids.length + (itemsPerPage - 1)) / itemsPerPage);
-    const ret: string[] = new Array(count);
+    const ret: string[][] = new Array(count);
     for (let i = 0; i < count; i++) {
-      ret[i] = `${i + 1}`;
+      ret[i] = [...pagePath, `${i + 1}`];
     }
     return ret;
   } catch (err) {
@@ -91,6 +95,7 @@ export async function getAllCategolizedPaginationIds(
   apiName: ApiNameArticle,
   category: string[],
   itemsPerPage: number,
+  pagePath: string[] = ['page'],
   query: GetQuery = {}
 ) {
   try {
@@ -99,11 +104,11 @@ export async function getAllCategolizedPaginationIds(
     const categoryLen = category.length;
     for (let idx = 0; idx < categoryLen; idx++) {
       const cat = category[idx];
-      const ids = await getAllPaginationIds(apiName, itemsPerPage, {
+      const ids = await getAllPaginationIds(apiName, itemsPerPage, pagePath, {
         ...query,
         filters: `category[contains]${cat}`
       });
-      ret = ret.concat(ids.map((id) => [cat, id]));
+      ret = ret.concat(ids.map((id) => [cat, ...id]));
     }
     return ret;
   } catch (err) {
@@ -188,12 +193,7 @@ export async function getPagesPageData(
     preview = false,
     previewData = {}
   }: GetStaticPropsContext<ParsedUrlQuery>,
-  {
-    outerIds = [],
-    mapApiNameArticle,
-    itemsPerPage,
-    pageNo = 1
-  }: PageDataGetOptions = {
+  options: PageDataGetOptions = {
     outerIds: []
   }
 ): Promise<PageData> {
@@ -205,46 +205,40 @@ export async function getPagesPageData(
         preview,
         previewData
       },
-      { outerIds, mapApiNameArticle, itemsPerPage, pageNo }
+      options
     );
     const pageData: PageData = {
       id: rawPageDatas[0].id,
       updated: rawPageDatas[0].revisedAt || rawPageDatas[0].updatedAt,
       title: rawPageDatas[0].title,
+      pageNo: options.pageNo !== undefined ? options.pageNo : 1,
+      pageCount: options.pageCount !== undefined ? options.pageCount : -1,
       description: rawPageDatas[0].description || '',
       mainImage: '',
       allCategory: [],
       category: [],
-      header: await getSectionFromPages(rawPageDatas[0], 'sectionHeader', {
-        outerIds,
-        mapApiNameArticle,
-        itemsPerPage,
-        pageNo
-      }),
-      top: await getSectionFromPages(rawPageDatas[0], 'sectionTop', {
-        outerIds,
-        mapApiNameArticle,
-        itemsPerPage,
-        pageNo
-      }),
-      sections: await getSectionFromPages(rawPageDatas[0], 'sectionContent', {
-        outerIds,
-        mapApiNameArticle,
-        itemsPerPage,
-        pageNo
-      }),
-      bottom: await getSectionFromPages(rawPageDatas[0], 'sectionBottom', {
-        outerIds,
-        mapApiNameArticle,
-        itemsPerPage,
-        pageNo
-      }),
-      footer: await getSectionFromPages(rawPageDatas[0], 'sectionFooter', {
-        outerIds,
-        mapApiNameArticle,
-        itemsPerPage,
-        pageNo
-      })
+      curCategory: options.curCategory || '',
+      header: await getSectionFromPages(
+        rawPageDatas[0],
+        'sectionHeader',
+        options
+      ),
+      top: await getSectionFromPages(rawPageDatas[0], 'sectionTop', options),
+      sections: await getSectionFromPages(
+        rawPageDatas[0],
+        'sectionContent',
+        options
+      ),
+      bottom: await getSectionFromPages(
+        rawPageDatas[0],
+        'sectionBottom',
+        options
+      ),
+      footer: await getSectionFromPages(
+        rawPageDatas[0],
+        'sectionFooter',
+        options
+      )
     };
     const rawPageDataLen = rawPageDatas.length;
     for (let idx = 1; idx < rawPageDataLen; idx++) {
@@ -257,39 +251,31 @@ export async function getPagesPageData(
       pageData.mainImage = '';
       pageData.allCategory = [];
       pageData.category = [];
-      const header = await getSectionFromPages(rawPageData, 'sectionHeader', {
-        outerIds,
-        mapApiNameArticle,
-        itemsPerPage,
-        pageNo
-      });
+      const header = await getSectionFromPages(
+        rawPageData,
+        'sectionHeader',
+        options
+      );
       pageData.header = header.length > 0 ? header : pageData.header;
-      const top = await getSectionFromPages(rawPageData, 'sectionTop', {
-        outerIds,
-        mapApiNameArticle,
-        itemsPerPage,
-        pageNo
-      });
+      const top = await getSectionFromPages(rawPageData, 'sectionTop', options);
       pageData.top = top.length > 0 ? top : pageData.top;
       const sections = await getSectionFromPages(
         rawPageData,
         'sectionContent',
-        { outerIds, mapApiNameArticle, itemsPerPage, pageNo }
+        options
       );
       pageData.sections = sections.length > 0 ? sections : pageData.sections;
-      const bottom = await getSectionFromPages(rawPageData, 'sectionBottom', {
-        outerIds,
-        mapApiNameArticle,
-        itemsPerPage,
-        pageNo
-      });
+      const bottom = await getSectionFromPages(
+        rawPageData,
+        'sectionBottom',
+        options
+      );
       pageData.bottom = bottom.length > 0 ? bottom : pageData.bottom;
-      const footer = await getSectionFromPages(rawPageData, 'sectionFooter', {
-        outerIds,
-        mapApiNameArticle,
-        itemsPerPage,
-        pageNo
-      });
+      const footer = await getSectionFromPages(
+        rawPageData,
+        'sectionFooter',
+        options
+      );
       pageData.footer = footer.length > 0 ? footer : pageData.footer;
     }
     switch (apiName) {

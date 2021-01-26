@@ -81,7 +81,7 @@ const NavCategory = ({
               classes[all ? 'NavCategory-all-link' : 'NavCategory-link']
             }
           >
-            <Link href={`${categoryPath}/[id]`} as={`${categoryPath}/${id}`}>
+            <Link href={`${categoryPath}/[...id]`} as={`${categoryPath}/${id}`}>
               {title}
             </Link>
           </Typography>

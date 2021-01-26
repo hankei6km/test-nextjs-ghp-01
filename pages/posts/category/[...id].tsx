@@ -8,6 +8,7 @@ import { PageData } from '../../../types/pageTypes';
 import {
   getPagesPageData,
   getPagesData,
+  getAllPaginationIds,
   getAllCategolizedPaginationIds
 } from '../../../lib/pages';
 import SectionList from '../../../components/SectionList';
@@ -22,6 +23,9 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center'
   }
 }));
+
+const itemsPerPage = 10;
+const pagePath = ['page'];
 
 export default function Post({
   pageData
@@ -63,6 +67,24 @@ export default function Post({
           <SectionList sections={pageData.top} classes={{ ...classes }} />
           <SectionList sections={pageData.sections} classes={{ ...classes }} />
           <SectionList sections={pageData.bottom} classes={{ ...classes }} />
+          <SectionList
+            sections={[
+              {
+                title: '',
+                content: [
+                  {
+                    kind: 'partsNavPagination',
+                    // section 側で展開した場合、取得できない情報が含まれている.
+                    // コンテンツ側で parts 指定することにした場合扱えないので注意
+                    href: '/posts/category/[...id]',
+                    baseAs: '/posts/category',
+                    pagePath: pagePath
+                  }
+                ]
+              }
+            ]}
+            classes={{ ...classes }}
+          />
         </Box>
         <Link href="/posts">{'Back to posts'}</Link>
       </Layout>
@@ -77,7 +99,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
     })
   ).category.map(({ id }) => id);
   const paths = (
-    await getAllCategolizedPaginationIds('posts', category, 10)
+    await getAllCategolizedPaginationIds(
+      'posts',
+      category,
+      itemsPerPage,
+      pagePath
+    )
   ).map((id) => ({
     params: { id: id }
   }));
@@ -91,16 +118,28 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
+  // /path/to/category/[id as cat][id as 'page'][id] となっているので、そのように分割.
+  // ユーティリティにすることも考える?
   const id = context.params?.id || [''];
-  const pageNo = id.length > 1 ? parseInt(id[1], 10) : 1;
+  const idLen = id.length;
+  const pageNo = idLen > 1 ? parseInt(id[idLen - 1], itemsPerPage) : 1;
+  const curCategory = id[0];
+  // paths を求めたときの値はもってこれない?
+  const pageCount = (
+    await getAllPaginationIds('posts', itemsPerPage, ['page'], {
+      filters: `category[contains]${id[0]}`
+    })
+  ).length;
   const pageData = await getPagesPageData(
     'category',
     { ...context, params: { id: id[0] } },
     {
       outerIds: ['blog-category'],
       mapApiNameArticle: { articles: 'posts' as const },
-      itemsPerPage: 10,
-      pageNo
+      curCategory,
+      itemsPerPage,
+      pageNo,
+      pageCount
     }
   );
   return {

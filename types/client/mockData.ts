@@ -231,7 +231,7 @@ function makeDummyContent(
       updatedAt: '2021-01-23T20:32.477Z',
       publishedAt: '2021-01-23T20:32.477Z',
       revisedAt: '2021-01-23T20:32.477Z',
-      title: `mock dummy ${prefix}-${i}`,
+      title: `mock ${prefix}-${i}`,
       kind: ['page'] as ['page'],
       category: [{ id: cat, title: `category-${cat}` }],
       sections: [
@@ -254,9 +254,12 @@ const useMockDummy = true;
 
 export const mockDataArticles: PagesContents = {
   contents: useMockDummy
-    ? makeDummyContent(30, 'dummy1', 'cat1').concat(
-        makeDummyContent(21, 'dummy2', 'cat2'),
-        makeDummyContent(49, 'dummy3', 'cat3')
+    ? makeDummyContent(5, 'dummy1-1', 'cat1').concat(
+        makeDummyContent(5, 'dummy2-1', 'cat2'),
+        makeDummyContent(5, 'dummy1-2', 'cat1'),
+        makeDummyContent(29, 'dummy3-1', 'cat3'),
+        makeDummyContent(21, 'dummy1-3', 'cat1'),
+        makeDummyContent(40, 'dummy3-1', 'cat3')
       )
     : [
         {

@@ -61,6 +61,12 @@ export type SectionPartsNavCategory = {
   all: boolean;
   categoryPath: string;
 };
+export type SectionPartsNavPagination = {
+  kind: 'partsNavPagination';
+  href: string;
+  baseAs: string;
+  pagePath: string[];
+};
 
 export type Section = {
   title?: string;
@@ -76,17 +82,21 @@ export type Section = {
     | SectionPartsUpdated
     | SectionPartsNavMain
     | SectionPartsNavCategory
+    | SectionPartsNavPagination
   )[];
 };
 
 export type PageData = {
   id: string;
   updated: string; // この段階では Date にはしない
+  pageNo: number; // pagination 用、getStaticProps で付与される.
+  pageCount: number; // pagination しないときは -1.
   title: string;
   description: string;
   mainImage: string;
   allCategory: PagesCategory[];
   category: PagesCategory[];
+  curCategory: string; //  route 上で選択されているカテゴリ、getStaticProps で付与される.選択されていないときは ''.
   header: Section[];
   top: Section[];
   sections: Section[];
@@ -97,11 +107,14 @@ export type PageData = {
 export const blankPageData = (): PageData => ({
   id: '',
   updated: '',
+  pageNo: 1,
+  pageCount: -1,
   title: '',
   description: '',
   mainImage: '',
   allCategory: [],
   category: [],
+  curCategory: '',
   header: [],
   top: [],
   sections: [],

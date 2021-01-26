@@ -119,17 +119,17 @@ describe('getAllPaginationIds()', () => {
   it('should returns all pagination ids', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPagination));
     expect(await getAllPaginationIds(testApiName, 10)).toStrictEqual([
-      '1',
-      '2',
-      '3',
-      '4',
-      '5',
-      '6',
-      '7',
-      '8',
-      '9',
-      '10',
-      '11'
+      ['1'],
+      ['2'],
+      ['3'],
+      ['4'],
+      ['5'],
+      ['6'],
+      ['7'],
+      ['8'],
+      ['9'],
+      ['10'],
+      ['11']
     ]);
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock.mock.calls[0][0]).toContain('/posts?');
@@ -141,10 +141,32 @@ describe('getAllPaginationIds()', () => {
   it('should returns filtered pagination ids', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPaginationCat2Ids));
     expect(
-      await getAllPaginationIds(testApiName, 10, {
+      await getAllPaginationIds(testApiName, 10, [], {
         filters: 'category[contains]cat2'
       })
-    ).toStrictEqual(['1', '2', '3', '4', '5', '6']);
+    ).toStrictEqual([['1'], ['2'], ['3'], ['4'], ['5'], ['6']]);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock.mock.calls[0][0]).toContain('/posts?');
+    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
+      fields: 'id',
+      limit: '120000',
+      filters: 'category[contains]cat2'
+    });
+  });
+  it('should returns ids in deep path', async () => {
+    fetchMock.mockResponseOnce(JSON.stringify(mockDataPaginationCat2Ids));
+    expect(
+      await getAllPaginationIds(testApiName, 10, ['pages'], {
+        filters: 'category[contains]cat2'
+      })
+    ).toStrictEqual([
+      ['pages', '1'],
+      ['pages', '2'],
+      ['pages', '3'],
+      ['pages', '4'],
+      ['pages', '5'],
+      ['pages', '6']
+    ]);
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock.mock.calls[0][0]).toContain('/posts?');
     expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
@@ -171,18 +193,18 @@ describe('getAllCategolizedPaginationIds()', () => {
       ['cat1'],
       ['cat2'],
       ['cat3'],
-      ['cat1', '1'],
-      ['cat1', '2'],
-      ['cat1', '3'],
-      ['cat2', '1'],
-      ['cat2', '2'],
-      ['cat2', '3'],
-      ['cat2', '4'],
-      ['cat2', '5'],
-      ['cat2', '6'],
-      ['cat3', '1'],
-      ['cat3', '2'],
-      ['cat3', '3']
+      ['cat1', 'page', '1'],
+      ['cat1', 'page', '2'],
+      ['cat1', 'page', '3'],
+      ['cat2', 'page', '1'],
+      ['cat2', 'page', '2'],
+      ['cat2', 'page', '3'],
+      ['cat2', 'page', '4'],
+      ['cat2', 'page', '5'],
+      ['cat2', 'page', '6'],
+      ['cat3', 'page', '1'],
+      ['cat3', 'page', '2'],
+      ['cat3', 'page', '3']
     ]);
     expect(fetchMock).toHaveBeenCalledTimes(3);
     expect(fetchMock.mock.calls[0][0]).toContain('/posts?');
@@ -259,11 +281,14 @@ describe('getPagesPageData()', () => {
     ).toEqual({
       id: 'zzzzzzzzz',
       updated: '2020-12-27T04:04:30.107Z',
+      pageNo: 1,
+      pageCount: -1,
       title: 'title3',
       description: 'my starter home page',
       mainImage: '',
       allCategory: [],
       category: [],
+      curCategory: '',
       header: [],
       top: [],
       sections: [
@@ -367,6 +392,8 @@ describe('getPagesPageData()', () => {
     ).toEqual({
       id: 'mmmmmmmmm',
       updated: '2021-01-13T05:12.157Z',
+      pageNo: 1,
+      pageCount: -1,
       title: 'title4',
       description: 'my starter home page',
       mainImage: '',
@@ -376,6 +403,7 @@ describe('getPagesPageData()', () => {
         { id: 'cat3', title: 'Category3' }
       ],
       category: [{ id: 'cat3', title: 'category3' }],
+      curCategory: '',
       header: [],
       top: [
         {

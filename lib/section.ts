@@ -107,10 +107,11 @@ export function getApiNameArticle(
 export async function getSectionFromPages(
   page: PagesContent,
   kind: PagesSectionKind,
-  { mapApiNameArticle, pageNo, itemsPerPage }: PageDataGetOptions = {
+  { mapApiNameArticle, itemsPerPage, pageNo }: PageDataGetOptions = {
     outerIds: [],
     pageNo: 1,
-    itemsPerPage: 10
+    itemsPerPage: 10,
+    pageCount: 1
   }
 ): Promise<Section[]> {
   const sections = page.sections

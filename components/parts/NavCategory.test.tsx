@@ -44,7 +44,7 @@ describe('NavCategory', () => {
     expect(a[1].getAttribute('href')).toEqual('/posts/category/cat3');
     fireEvent.click(a[0]);
     expect(router.push).toHaveBeenCalledWith(
-      '/posts/category/[id]',
+      '/posts/category/[...id]',
       '/posts/category/cat1',
       {
         locale: undefined,
@@ -78,7 +78,7 @@ describe('NavCategory', () => {
     expect(a[2].getAttribute('href')).toEqual('/posts/category/cat3');
     fireEvent.click(a[0]);
     expect(router.push).toHaveBeenCalledWith(
-      '/posts/category/[id]',
+      '/posts/category/[...id]',
       '/posts/category/cat1',
       {
         locale: undefined,
