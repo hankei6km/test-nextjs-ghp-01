@@ -30,6 +30,7 @@ describe('NavPagination', () => {
               paginationHref="/posts/category/[...id]"
               paginationBaseAs="/posts/category"
               paginationPagePath={['page']}
+              paginationFirstPageHref={''}
             />
           </PageContext.Provider>
         </SiteContext.Provider>
@@ -60,6 +61,51 @@ describe('NavPagination', () => {
       }
     );
   });
+  test('renders nav pagination with href of first page', () => {
+    const config = siteConfig;
+    const router = mockRouter();
+    const { getByRole, getByText } = render(
+      <RouterContext.Provider value={router}>
+        <SiteContext.Provider value={config}>
+          <PageContext.Provider
+            value={{
+              ...pageData,
+              pageNo: 7,
+              pageCount: 10,
+              curCategory: ''
+            }}
+          >
+            <NavPagination
+              paginationHref="/posts/page/[..id]"
+              paginationBaseAs="/posts/page"
+              paginationPagePath={[]}
+              paginationFirstPageHref={'/posts'}
+            />
+          </PageContext.Provider>
+        </SiteContext.Provider>
+      </RouterContext.Provider>
+    );
+    const rootNav = getByRole('navigation');
+    expect(rootNav).toBeInTheDocument();
+    const rootUl = getByRole('list');
+    expect(rootUl).toBeInTheDocument();
+
+    const btn1 = getByText(/^1$/);
+    expect(btn1).toBeInTheDocument();
+    expect(btn1.getAttribute('href')).toEqual('/posts');
+    const btn10 = getByText(/^10$/);
+    expect(btn10).toBeInTheDocument();
+    expect(btn10.getAttribute('href')).toEqual('/posts/page/10');
+
+    const btnSelected = getByText(/^7$/);
+    expect(btnSelected).toBeInTheDocument();
+
+    fireEvent.click(btn1);
+    expect(router.push).toHaveBeenCalledWith('/posts', '/posts', {
+      locale: undefined,
+      shallow: undefined
+    });
+  });
   test('renders nav pagination without curCategory', () => {
     const config = siteConfig;
     const router = mockRouter();
@@ -78,6 +124,7 @@ describe('NavPagination', () => {
               paginationHref="/posts/category/[...id]"
               paginationBaseAs="/posts/category"
               paginationPagePath={['page']}
+              paginationFirstPageHref={''}
             />
           </PageContext.Provider>
         </SiteContext.Provider>

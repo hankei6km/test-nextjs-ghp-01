@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box';
 import Layout from '../../components/Layout';
 import SectionList from '../../components/SectionList';
 import { PageData } from '../../types/pageTypes';
-import { getPagesPageData } from '../../lib/pages';
+import { getPagesPageData, getAllPaginationIds } from '../../lib/pages';
 import PageContext from '../../components/PageContext';
 
 const useStyles = makeStyles(() => ({
@@ -15,6 +15,9 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center'
   }
 }));
+
+const itemsPerPage = 10;
+const pagePath: string[] = [];
 
 const PostsPage = ({ pageData }: { pageData: PageData }) => {
   const classes = useStyles();
@@ -48,6 +51,25 @@ const PostsPage = ({ pageData }: { pageData: PageData }) => {
           <SectionList sections={pageData.top} classes={{ ...classes }} />
           <SectionList sections={pageData.sections} classes={{ ...classes }} />
           <SectionList sections={pageData.bottom} classes={{ ...classes }} />
+          <SectionList
+            sections={[
+              {
+                title: '',
+                content: [
+                  {
+                    kind: 'partsNavPagination',
+                    // section 側で展開した場合、取得できない情報が含まれている.
+                    // コンテンツ側で parts 指定することにした場合扱えないので注意
+                    href: '/posts/page/[..id]',
+                    baseAs: '/posts/page',
+                    pagePath: pagePath,
+                    firstPageHref: '/posts'
+                  }
+                ]
+              }
+            ]}
+            classes={{ ...classes }}
+          />
         </Box>
       </Layout>
     </PageContext.Provider>
@@ -57,7 +79,22 @@ const PostsPage = ({ pageData }: { pageData: PageData }) => {
 export default PostsPage;
 
 export const getStaticProps: GetStaticProps = async () => {
-  const pageData = await getPagesPageData('pages', { params: { id: 'blog' } });
+  const id = 'blog';
+  const pageNo = 1;
+  const curCategory = '';
+  const pageCount = (await getAllPaginationIds('posts', itemsPerPage)).length;
+  const pageData = await getPagesPageData(
+    'pages',
+    { params: { id } },
+    {
+      outerIds: [],
+      mapApiNameArticle: { articles: 'posts' as const },
+      curCategory,
+      itemsPerPage,
+      pageNo,
+      pageCount
+    }
+  );
   return {
     props: {
       pageData

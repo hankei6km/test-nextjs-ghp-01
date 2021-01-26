@@ -66,6 +66,7 @@ export type SectionPartsNavPagination = {
   href: string;
   baseAs: string;
   pagePath: string[];
+  firstPageHref: string;
 };
 
 export type Section = {

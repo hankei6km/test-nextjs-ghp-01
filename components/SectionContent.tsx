@@ -87,6 +87,7 @@ const SectionContent = ({ content, classes: inClasses }: Props) => {
           paginationHref={content.href}
           paginationBaseAs={content.baseAs}
           paginationPagePath={content.pagePath}
+          paginationFirstPageHref={content.firstPageHref}
           classes={{ ...inClasses }}
         />
       )}
