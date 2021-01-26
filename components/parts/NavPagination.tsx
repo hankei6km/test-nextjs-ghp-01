@@ -18,6 +18,7 @@ type Props = {
   paginationHref: string;
   paginationBaseAs: string;
   paginationPagePath: string[];
+  paginationFirstPageHref: string;
   classes?: { [key: string]: string };
 };
 
@@ -25,6 +26,7 @@ const NavPagination = ({
   paginationHref,
   paginationBaseAs,
   paginationPagePath,
+  paginationFirstPageHref = '',
   classes: inClasses
 }: Props) => {
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
@@ -46,8 +48,18 @@ const NavPagination = ({
       renderItem={(item) => (
         <PaginationItem
           component={Link}
-          href={paginationHref}
-          as={`${asRoot}${item.page === 1 ? '' : `${asPagePath}/${item.page}`}`}
+          href={
+            item.page === 1 && paginationFirstPageHref
+              ? paginationFirstPageHref
+              : paginationHref
+          }
+          as={
+            item.page === 1 && paginationFirstPageHref
+              ? undefined
+              : `${asRoot}${
+                  item.page === 1 ? '' : `${asPagePath}/${item.page}`
+                }`
+          }
           //{...item}
           page={item.page}
           disabled={item.disabled}

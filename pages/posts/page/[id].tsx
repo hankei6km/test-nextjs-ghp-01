@@ -5,12 +5,7 @@ import Layout from '../../../components/Layout';
 import Link from '../../../components/Link';
 import Box from '@material-ui/core/Box';
 import { PageData } from '../../../types/pageTypes';
-import {
-  getPagesPageData,
-  getPagesData,
-  getAllPaginationIds,
-  getAllCategolizedPaginationIds
-} from '../../../lib/pages';
+import { getPagesPageData, getAllPaginationIds } from '../../../lib/pages';
 import SectionList from '../../../components/SectionList';
 import PageContext from '../../../components/PageContext';
 // import classes from '*.module.css';
@@ -25,9 +20,11 @@ const useStyles = makeStyles(() => ({
 }));
 
 const itemsPerPage = 10;
-const pagePath = ['page'];
+const pagePath: string[] = [];
 
-export default function Post({
+// このページは /pages/posts/index.tsx とほぼ同じ.
+// (category では [...id].tsx で同じファイルで処理できている)
+export default function Page({
   pageData
 }: {
   pageData: PageData;
@@ -76,10 +73,10 @@ export default function Post({
                     kind: 'partsNavPagination',
                     // section 側で展開した場合、取得できない情報が含まれている.
                     // コンテンツ側で parts 指定することにした場合扱えないので注意
-                    href: '/posts/category/[...id]',
-                    baseAs: '/posts/category',
+                    href: '/posts/page/[..id]',
+                    baseAs: '/posts/page',
                     pagePath: pagePath,
-                    firstPageHref: ''
+                    firstPageHref: '/posts'
                   }
                 ]
               }
@@ -94,20 +91,10 @@ export default function Post({
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const category = (
-    await getPagesData('pages', {
-      params: { id: 'blog-category' }
-    })
-  ).category.map(({ id }) => id);
   const paths = (
-    await getAllCategolizedPaginationIds(
-      'posts',
-      category,
-      itemsPerPage,
-      pagePath
-    )
+    await getAllPaginationIds('posts', itemsPerPage, pagePath)
   ).map((id) => ({
-    params: { id: id }
+    params: { id: id[0] }
   }));
   // console.log('paths');
   // paths.forEach((p) => console.log(p.params));
@@ -119,23 +106,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  // /path/to/category/[id as cat][id as 'page'][id] となっているので、そのように分割.
-  // ユーティリティにすることも考える?
-  const id = context.params?.id || [''];
-  const idLen = id.length;
-  const pageNo = idLen > 1 ? parseInt(id[idLen - 1], 10) : 1;
-  const curCategory = id[0];
+  const id = typeof context.params?.id === 'string' ? context.params.id : '';
+  const pageNo = id !== '' ? parseInt(id, 10) : 1;
+  const curCategory = '';
   // paths を求めたときの値はもってこれない?
-  const pageCount = (
-    await getAllPaginationIds('posts', itemsPerPage, ['page'], {
-      filters: `category[contains]${id[0]}`
-    })
-  ).length;
+  const pageCount = (await getAllPaginationIds('posts', itemsPerPage)).length;
   const pageData = await getPagesPageData(
-    'category',
-    { ...context, params: { id: id[0] } },
+    'pages',
+    { ...context, params: { id: 'blog' } },
     {
-      outerIds: ['blog-category'],
+      outerIds: [],
       mapApiNameArticle: { articles: 'posts' as const },
       curCategory,
       itemsPerPage,
@@ -145,8 +125,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   );
   return {
     props: {
-      pageData,
-      preview: context.preview ? context.preview : null
+      pageData
     }
   };
 };
