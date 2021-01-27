@@ -75,7 +75,8 @@ export const mockDataPages: PagesContents = {
             {
               fieldId: 'contentFragArticles',
               apiName: 'posts',
-              category: []
+              category: [],
+              limit: 5
             }
           ]
         }
@@ -100,10 +101,8 @@ export const mockDataPages: PagesContents = {
           title: 'all posts',
           content: [
             {
-              fieldId: 'contentFragArticles',
-              apiName: 'posts',
-              detail: true,
-              category: []
+              fieldId: 'contentPageArticles',
+              detail: true
             }
           ]
         }
