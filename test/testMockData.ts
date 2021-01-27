@@ -76,6 +76,12 @@ export const mockDataPages: PagesContents = {
               fieldId: 'contentFragArticles',
               apiName: 'posts',
               category: []
+            },
+            {
+              fieldId: 'contentFragArticles',
+              apiName: 'posts',
+              category: [{ id: 'cat2', title: 'category2' }],
+              limit: 5
             }
           ]
         }

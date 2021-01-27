@@ -43,6 +43,7 @@ type PagesContentFragArticles = {
   apiName: string;
   detail?: boolean;
   category: PagesCategory[];
+  limit?: number;
 };
 type PagesContentImage = {
   fieldId: 'contentImage';

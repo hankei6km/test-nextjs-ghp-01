@@ -139,7 +139,7 @@ export async function getSectionFromPages(
                 // path: normalize(`/${content.apiName}`)
                 path: join('/', apiName)
               })),
-              detail: content.detail || false,
+              detail: content.detail || false
             };
           } else if (
             content.fieldId === 'contentFragArticles' &&
@@ -152,6 +152,9 @@ export async function getSectionFromPages(
             // 型ガードが効かない & ちょっともったいないが、
             // 外に出すと関係のないカスタムフィールドでも実行されるので、とりあえずここで
             const q: GetQuery = {};
+            if (content.limit !== undefined) {
+              q.limit = content.limit;
+            }
             if (content.category.length > 0) {
               q.filters = `category[contains]${content.category
                 .map(({ id }) => id)
@@ -165,7 +168,7 @@ export async function getSectionFromPages(
                 // path: normalize(`/${content.apiName}`)
                 path: join('/', apiName)
               })),
-              detail: content.detail || false,
+              detail: content.detail || false
             };
           } else if (content.fieldId === 'contentImage') {
             return {
