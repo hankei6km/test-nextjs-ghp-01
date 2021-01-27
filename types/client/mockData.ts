@@ -73,9 +73,10 @@ export const mockDataPages: PagesContents = {
               markdown: '## blog'
             },
             {
-              fieldId: 'contentArticles',
+              fieldId: 'contentFragArticles',
               apiName: 'posts',
-              category: []
+              category: [],
+              limit: 5
             }
           ]
         }
@@ -100,10 +101,8 @@ export const mockDataPages: PagesContents = {
           title: 'all posts',
           content: [
             {
-              fieldId: 'contentArticles',
-              apiName: 'posts',
-              detail: true,
-              category: []
+              fieldId: 'contentPageArticles',
+              detail: true
             }
           ]
         }
@@ -167,6 +166,14 @@ export const mockDataPages: PagesContents = {
           ]
         },
         {
+          fieldId: 'sectionContent',
+          content: [
+            {
+              fieldId: 'contentPageArticles'
+            }
+          ]
+        },
+        {
           fieldId: 'sectionBottom',
           content: [
             {
@@ -201,6 +208,11 @@ export const mockDataPagesOuter = {
 export const mockDataPagesOuterPosts = {
   ...mockDataPages,
   contents: [mockDataPages.contents[0], mockDataPages.contents[3]]
+};
+
+export const mockDataPagesOuterCategory = {
+  ...mockDataPages,
+  contents: [mockDataPages.contents[0], mockDataPages.contents[4]]
 };
 
 export const mockDataPagesList = {
@@ -381,18 +393,7 @@ export const mockDataCategory: PagesContents = {
       title: 'category-cat1',
       kind: ['page'],
       category: [],
-      sections: [
-        {
-          fieldId: 'sectionContent',
-          content: [
-            {
-              fieldId: 'contentArticles',
-              apiName: '%articles',
-              category: [{ id: 'cat1', title: 'category1' }]
-            }
-          ]
-        }
-      ]
+      sections: []
     },
     {
       id: 'cat2',
@@ -403,18 +404,7 @@ export const mockDataCategory: PagesContents = {
       title: 'category-cat2',
       kind: ['page'],
       category: [],
-      sections: [
-        {
-          fieldId: 'sectionContent',
-          content: [
-            {
-              fieldId: 'contentArticles',
-              apiName: '%articles',
-              category: [{ id: 'cat2', title: 'category2' }]
-            }
-          ]
-        }
-      ]
+      sections: []
     },
     {
       id: 'cat3',
@@ -425,18 +415,7 @@ export const mockDataCategory: PagesContents = {
       title: 'category-cat3',
       kind: ['page'],
       category: [],
-      sections: [
-        {
-          fieldId: 'sectionContent',
-          content: [
-            {
-              fieldId: 'contentArticles',
-              apiName: '%articles',
-              category: [{ id: 'cat3', title: 'category3' }]
-            }
-          ]
-        }
-      ]
+      sections: []
     }
   ],
   totalCount: 3,

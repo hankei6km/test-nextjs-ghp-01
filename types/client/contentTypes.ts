@@ -25,11 +25,25 @@ type PagesContentMarkdown = {
   fieldId: 'contentMarkdown';
   markdown: string;
 };
-type PagesContentArticles = {
-  fieldId: 'contentArticles';
+type PagesContentPageArticles = {
+  // ページの主題の一覧.
+  // 項目がページに対応する一覧ではない.
+  // たとえば、ブログのページなら記事の一覧となる.
+  // 記事の一覧を取得する API は
+  // route(getStaticPaths など)で固定的に指定されている.
+  // pagination 処理も行われる.
+  fieldId: 'contentPageArticles';
+  detail?: boolean;
+};
+type PagesContentFragArticles = {
+  // ページに埋め込む一覧.
+  // API 等はコンテンツ側で指定ができる。
+  // pagination 等は行われない
+  fieldId: 'contentFragArticles';
   apiName: string;
   detail?: boolean;
   category: PagesCategory[];
+  limit?: number;
 };
 type PagesContentImage = {
   fieldId: 'contentImage';
@@ -40,7 +54,8 @@ type PagesContentImage = {
 type PageContent =
   | PagesContentHtml
   | PagesContentMarkdown
-  | PagesContentArticles
+  | PagesContentPageArticles
+  | PagesContentFragArticles
   | PagesContentImage;
 type PagesSectionContent = {
   fieldId: 'sectionContent';

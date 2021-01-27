@@ -3,7 +3,9 @@ import {
   mockDataPagesOuterHome,
   mockDataPagesList,
   mockDataPagesIds,
-  mockDataArticleList
+  mockDataArticleList,
+  mockDataPagesOuterBlog,
+  mockDataArticleCat2
 } from '../test/testMockData';
 import { FetchMock } from 'jest-fetch-mock';
 import {
@@ -145,9 +147,15 @@ describe('getPagesData()', () => {
               markdown: '## blog'
             },
             {
-              fieldId: 'contentArticles',
+              fieldId: 'contentFragArticles',
               apiName: 'posts',
               category: []
+            },
+            {
+              fieldId: 'contentFragArticles',
+              apiName: 'posts',
+              category: [{ id: 'cat2', title: 'category2' }],
+              limit: 5
             }
           ]
         }
@@ -165,7 +173,8 @@ describe('getPagesPageData()', () => {
   it('should returns PageData', async () => {
     fetchMock
       .mockResponseOnce(JSON.stringify(mockDataPagesOuterHome))
-      .mockResponseOnce(JSON.stringify(mockDataArticleList));
+      .mockResponseOnce(JSON.stringify(mockDataArticleList))
+      .mockResponseOnce(JSON.stringify(mockDataArticleCat2));
     expect(await getPagesPageData('pages', { params: { id: 'home' } })).toEqual(
       {
         id: 'home',
@@ -266,8 +275,36 @@ describe('getPagesPageData()', () => {
                     path: '/posts'
                   }
                 ],
-                detail: false,
-                category: []
+                detail: false
+              },
+              {
+                kind: 'posts',
+                contents: [
+                  {
+                    id: 'yyyyyy-da',
+                    createdAt: '2020-12-26T15:29:14.476Z',
+                    updatedAt: '2020-12-26T15:29:14.476Z',
+                    publishedAt: '2020-12-26T15:29:14.476Z',
+                    revisedAt: '2020-12-26T15:29:14.476Z',
+                    title: 'title2',
+                    category: [
+                      { id: 'cat1', title: 'category1' },
+                      { id: 'cat2', title: 'category2' }
+                    ],
+                    path: '/posts'
+                  },
+                  {
+                    id: 'xxxxxxxxx',
+                    createdAt: '2020-12-26T12:25:43.532Z',
+                    updatedAt: '2020-12-26T12:27:22.533Z',
+                    publishedAt: '2020-12-26T12:27:22.533Z',
+                    revisedAt: '2020-12-26T12:27:22.533Z',
+                    title: 'title1',
+                    category: [{ id: 'cat2', title: 'category2' }],
+                    path: '/posts'
+                  }
+                ],
+                detail: false
               }
             ]
           }
@@ -324,7 +361,7 @@ describe('getPagesPageData()', () => {
         ]
       }
     );
-    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(fetchMock).toHaveBeenCalledTimes(3);
     // pages から global と home の取得.
     expect(fetchMock.mock.calls[0][0]).toContain('/pages?');
     expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
@@ -339,14 +376,14 @@ describe('getPagesPageData()', () => {
         'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title'
     });
   });
-  it('should recives options that specified pagination info', async () => {
+  it('should get articles data via contentPageArticles', async () => {
     fetchMock
-      .mockResponseOnce(JSON.stringify(mockDataPagesOuterHome))
+      .mockResponseOnce(JSON.stringify(mockDataPagesOuterBlog))
       .mockResponseOnce(JSON.stringify(mockDataArticleList));
     await getPagesPageData(
       'pages',
-      { params: { id: 'home' } },
-      { outerIds: [], pageNo: 3, itemsPerPage: 10 }
+      { params: { id: 'blog' } },
+      { outerIds: [], articlesApi: 'posts', pageNo: 3, itemsPerPage: 10 }
     );
     // offset と  limit の指定のみ確認
     expect(fetchMock).toHaveBeenCalledTimes(2);
@@ -356,6 +393,57 @@ describe('getPagesPageData()', () => {
         'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title',
       limit: '10',
       offset: '20'
+    });
+  });
+  it('should get articles data via contentPageArticles with category', async () => {
+    fetchMock
+      .mockResponseOnce(JSON.stringify(mockDataPagesOuterBlog))
+      .mockResponseOnce(JSON.stringify(mockDataArticleList));
+    await getPagesPageData(
+      'pages',
+      { params: { id: 'blog' } },
+      {
+        outerIds: [],
+        articlesApi: 'posts',
+        curCategory: 'cat1',
+        pageNo: 3,
+        itemsPerPage: 10
+      }
+    );
+    // filters (category 指定あり) も確認
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    expect(fetchMock.mock.calls[1][0]).toContain('/posts?');
+    expect(queryParams(String(fetchMock.mock.calls[1][0]))).toStrictEqual({
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title',
+      filters: 'category[contains]cat1',
+      limit: '10',
+      offset: '20'
+    });
+  });
+  it('should get articles data via contentFragArticles', async () => {
+    fetchMock
+      .mockResponseOnce(JSON.stringify(mockDataPagesOuterHome))
+      .mockResponseOnce(JSON.stringify(mockDataArticleList))
+      .mockResponseOnce(JSON.stringify(mockDataArticleCat2));
+    await getPagesPageData(
+      'pages',
+      { params: { id: 'blog' } },
+      { outerIds: [], articlesApi: 'posts', pageNo: 3, itemsPerPage: 10 }
+    );
+    // offset と  limit の指定がない(fragArticles では指定されない)ことを確認
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(fetchMock.mock.calls[1][0]).toContain('/posts?');
+    expect(queryParams(String(fetchMock.mock.calls[1][0]))).toStrictEqual({
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title'
+    });
+    expect(fetchMock.mock.calls[2][0]).toContain('/posts?');
+    expect(queryParams(String(fetchMock.mock.calls[2][0]))).toStrictEqual({
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title',
+      filters: 'category[contains]cat2',
+      limit: '5'
     });
   });
 });

@@ -11,17 +11,14 @@ const globalPageId = '_global';
 const allIdsLimit = 120000;
 // const itemsPerPage = 10;
 
-// ページングされる API 名など、pages の項目側で固定できないような API 名をマップする.
-// 項目側では %articles のように % を付加して指定する
-export type MapApiNameArticle = {
-  articles: ApiNameArticle;
-};
 export type PageDataGetOptions = {
   // posts などの場合で、共通の top 等を持つ page を指定指定する (id. blog-post など)
   outerIds: string[];
-  // ページングされる API 名など、pages の項目側で固定できないような API 名をマップする
-  mapApiNameArticle?: MapApiNameArticle;
-  // route 上で選択されているカテゴリ(page ないの category[] のうちの１つになるはず).
+  // ページの主題となる一覧を取得する場合に指定(ブログページで posps API を指定するなど)
+  // コンテンツ側からは congtentPageArticles として指定する。
+  // カテゴリは下記の curCategory が使われる.
+  articlesApi?: ApiNameArticle;
+  // route 上で選択されているカテゴリ(page 内の category[] のうちの１つになるはず).
   curCategory?: string;
   // ページング用j
   itemsPerPage?: number;

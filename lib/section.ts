@@ -1,10 +1,6 @@
 import { join } from 'path';
 import cheerio from 'cheerio';
-import {
-  PageDataGetOptions,
-  getSortedPagesData,
-  MapApiNameArticle
-} from './pages';
+import { PageDataGetOptions, getSortedPagesData } from './pages';
 import { markdownToHtml } from './markdown';
 import { ApiNameArticleValues, ApiNameArticle } from './client';
 import { PagesContent, PagesSectionKind } from '../types/client/contentTypes';
@@ -89,16 +85,9 @@ export function htmlToChildren(html: string): SectionContentHtmlChildren[] {
 }
 
 export function getApiNameArticle(
-  apiNameFromContent: string,
-  mapApiNameArticle?: MapApiNameArticle
+  apiNameFromContent: string
 ): '' | ApiNameArticle {
-  if (
-    apiNameFromContent === '%articles' &&
-    mapApiNameArticle &&
-    mapApiNameArticle.articles
-  ) {
-    return mapApiNameArticle.articles;
-  } else if (ApiNameArticleValues.some((v) => v === apiNameFromContent)) {
+  if (ApiNameArticleValues.some((v) => v === apiNameFromContent)) {
     return apiNameFromContent as ApiNameArticle;
   }
   return '';
@@ -107,7 +96,7 @@ export function getApiNameArticle(
 export async function getSectionFromPages(
   page: PagesContent,
   kind: PagesSectionKind,
-  { mapApiNameArticle, itemsPerPage, pageNo }: PageDataGetOptions = {
+  { articlesApi, curCategory, itemsPerPage, pageNo }: PageDataGetOptions = {
     outerIds: [],
     pageNo: 1,
     itemsPerPage: 10,
@@ -130,23 +119,41 @@ export async function getSectionFromPages(
               kind: 'html' as const,
               contentHtml: htmlToChildren(markdownToHtml(content.markdown))
             };
-          } else if (
-            content.fieldId === 'contentArticles' &&
-            getApiNameArticle(content.apiName, mapApiNameArticle)
-          ) {
-            const apiName = getApiNameArticle(
-              content.apiName,
-              mapApiNameArticle
-            ) as ApiNameArticle;
-            // if での評価と２回実行される.
-            // 型ガードが効かない & ちょっともったいないが、
-            // 外に出すと関係のないカスタムフィールドでも実行されるので、とりあえずここで
+          } else if (content.fieldId === 'contentPageArticles' && articlesApi) {
+            const apiName = articlesApi;
             const q: GetQuery = {};
             if (itemsPerPage !== undefined) {
               q.limit = itemsPerPage;
               if (pageNo !== undefined) {
                 q.offset = itemsPerPage * (pageNo - 1);
               }
+            }
+            if (curCategory) {
+              q.filters = `category[contains]${curCategory}`;
+            }
+            const contents = await getSortedPagesData(apiName, q);
+            return {
+              kind: 'posts' as const,
+              contents: contents.map((c) => ({
+                ...c,
+                // path: normalize(`/${content.apiName}`)
+                path: join('/', apiName)
+              })),
+              detail: content.detail || false
+            };
+          } else if (
+            content.fieldId === 'contentFragArticles' &&
+            getApiNameArticle(content.apiName)
+          ) {
+            const apiName = getApiNameArticle(
+              content.apiName
+            ) as ApiNameArticle;
+            // if での評価と２回実行される.
+            // 型ガードが効かない & ちょっともったいないが、
+            // 外に出すと関係のないカスタムフィールドでも実行されるので、とりあえずここで
+            const q: GetQuery = {};
+            if (content.limit !== undefined) {
+              q.limit = content.limit;
             }
             if (content.category.length > 0) {
               q.filters = `category[contains]${content.category
@@ -161,8 +168,7 @@ export async function getSectionFromPages(
                 // path: normalize(`/${content.apiName}`)
                 path: join('/', apiName)
               })),
-              detail: content.detail || false,
-              category: content.category
+              detail: content.detail || false
             };
           } else if (content.fieldId === 'contentImage') {
             return {

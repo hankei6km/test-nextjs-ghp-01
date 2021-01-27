@@ -111,17 +111,9 @@ describe('htmlToChildren()', () => {
 describe('getApiNameArticle()', () => {
   it('should pass through passed apitName', () => {
     expect(getApiNameArticle('posts')).toEqual('posts');
-    expect(getApiNameArticle('posts', undefined)).toEqual('posts');
-    expect(getApiNameArticle('posts', { articles: 'pages' })).toEqual('posts');
-  });
-  it('should return default api name', () => {
-    expect(getApiNameArticle('%articles', { articles: 'posts' })).toEqual(
-      'posts'
-    );
   });
   it('should return blank when invalid api name passed', () => {
     expect(getApiNameArticle('testtest')).toEqual('');
-    expect(getApiNameArticle('testtest', { articles: 'pages' })).toEqual('');
     // expect(getApiNameArticle('%articles', 'post')).toEqual('posts');  // type guard
     // expect(getApiNameArticle(undefined, 'posts')).toEqual('');
   });
@@ -334,7 +326,7 @@ describe('getSectionFromPages()', () => {
           title: '',
           content: [
             {
-              fieldId: 'contentArticles',
+              fieldId: 'contentFragArticles',
               apiName: 'posts',
               detail: true,
               category: []
@@ -361,8 +353,7 @@ describe('getSectionFromPages()', () => {
                 path: '/posts'
               }
             ],
-            detail: true,
-            category: []
+            detail: true
           }
         ]
       }
