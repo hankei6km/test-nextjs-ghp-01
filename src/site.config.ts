@@ -2,7 +2,10 @@ import { SectionConfig } from '../components/SectionContext';
 
 const siteConfig: {
   sectionConfig: SectionConfig;
-  nav: { [key: string]: { label: string; href: string }[] };
+  nav: {
+    main: { label: string; href: string }[];
+    breadcrumbs: { [key: string]: { label: string; href: string }[] };
+  };
   label: { [key: string]: string };
   image: { [key: string]: string };
 } = {
@@ -42,7 +45,18 @@ const siteConfig: {
         label: 'About',
         href: '/about'
       }
-    ]
+    ],
+    breadcrumbs: {
+      '/': [{ label: 'Home', href: '/' }],
+      '/posts': [
+        { label: 'Home', href: '/' },
+        { label: 'Blog', href: '/posts' }
+      ],
+      '/about': [
+        { label: 'Home', href: '/' },
+        { label: 'About', href: '/about' }
+      ]
+    }
   },
   label: {
     // contentConfig として参照される値.
