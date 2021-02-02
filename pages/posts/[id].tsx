@@ -48,6 +48,10 @@ export default function Post({
                 title: '',
                 content: [
                   {
+                    kind: 'partsNavBreadcrumbs',
+                    lastBreadcrumb: pageData.title
+                  },
+                  {
                     kind: 'partsPageTitle',
                     link: ''
                   },

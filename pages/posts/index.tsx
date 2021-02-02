@@ -35,6 +35,10 @@ const PostsPage = ({ pageData }: { pageData: PageData }) => {
                 title: '',
                 content: [
                   {
+                    kind: 'partsNavBreadcrumbs',
+                    lastBreadcrumb: ''
+                  },
+                  {
                     kind: 'partsNavCategory',
                     all: true,
                     categoryPath: '/posts/category'

@@ -13,6 +13,7 @@ import NavMain from './parts/NavMain';
 import DateUpdated from './parts/DateUpdated';
 import NavCategory from './parts/NavCategory';
 import NavPagination from './parts/NavPagination';
+import NavBreadcrumbs from './parts/NavBreadcrumbs';
 
 const useStyles = makeStyles(() => ({
   'SectionContent-root': {},
@@ -74,6 +75,12 @@ const SectionContent = ({ content, classes: inClasses }: Props) => {
       )}
       {content.kind === 'partsNavMain' && (
         <NavMain classes={{ ...inClasses }} />
+      )}
+      {content.kind === 'partsNavBreadcrumbs' && (
+        <NavBreadcrumbs
+          lastBreadcrumb={content.lastBreadcrumb}
+          classes={{ ...inClasses }}
+        />
       )}
       {content.kind === 'partsNavCategory' && (
         <NavCategory

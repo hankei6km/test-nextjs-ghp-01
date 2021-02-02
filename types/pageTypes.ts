@@ -60,6 +60,10 @@ export type SectionPartsUpdated = {
 export type SectionPartsNavMain = {
   kind: 'partsNavMain';
 };
+export type SectionPartsNavBreadcrumbs = {
+  kind: 'partsNavBreadcrumbs';
+  lastBreadcrumb: string;
+};
 export type SectionPartsNavCategory = {
   kind: 'partsNavCategory';
   all: boolean;
@@ -86,6 +90,7 @@ export type Section = {
     | SectionPartsProfileImage
     | SectionPartsUpdated
     | SectionPartsNavMain
+    | SectionPartsNavBreadcrumbs
     | SectionPartsNavCategory
     | SectionPartsNavPagination
   )[];
