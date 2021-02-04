@@ -27,12 +27,6 @@ export type SectionPosts = {
   // よって一旦削除。
   // category: PagesCategory[];
 };
-export type SectionImage = {
-  kind: 'image';
-  image: string;
-  alt: string;
-  link: string;
-};
 
 // 現時点では Parts>>> は外部からの定義はできない
 export type SectionPartsSiteTitle = {
@@ -83,7 +77,6 @@ export type Section = {
     | SectionBlank
     | SectionContent
     | SectionPosts
-    | SectionImage
     | SectionPartsSiteTitle
     | SectionPartsSiteLogo
     | SectionPartsPageTitle

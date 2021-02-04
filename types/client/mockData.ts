@@ -233,10 +233,34 @@ export const mockDataPagesIds = {
 function makeDummyContent(
   n: number,
   prefix: string,
-  cat: string
+  cat: string,
+  image: boolean = false
 ): PagesContent[] {
   const ret = [];
   for (let i = n; i > 0; i--) {
+    const sections: PagesContent['sections'] = [
+      {
+        fieldId: 'sectionContent' as 'sectionContent',
+        content: [
+          {
+            fieldId: 'contentMarkdown' as 'contentMarkdown',
+            markdown: `mock dummy ${prefix}-${i}`
+          }
+        ]
+      }
+    ];
+    if (image) {
+      sections[0].content.push({
+        fieldId: 'contentImage' as 'contentImage',
+        image: {
+          url:
+            'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/hankei6km-pages/media/my-starter-default-main-image.png',
+          width: 1000,
+          height: 600
+        },
+        alt: 'dummy'
+      });
+    }
     ret.push({
       id: `${cat}-${prefix}-${i}`,
       createdAt: '2021-01-23T20:32.477Z',
@@ -246,17 +270,7 @@ function makeDummyContent(
       title: `mock ${prefix}-${i}`,
       kind: ['page'] as ['page'],
       category: [{ id: cat, title: `category-${cat}` }],
-      sections: [
-        {
-          fieldId: 'sectionContent' as 'sectionContent',
-          content: [
-            {
-              fieldId: 'contentMarkdown' as 'contentMarkdown',
-              markdown: `mock dummy ${prefix}-${i}`
-            }
-          ]
-        }
-      ]
+      sections: sections
     });
   }
   return ret;
@@ -266,7 +280,7 @@ const useMockDummy = true;
 
 export const mockDataArticles: PagesContents = {
   contents: useMockDummy
-    ? makeDummyContent(5, 'dummy1-1', 'cat1').concat(
+    ? makeDummyContent(5, 'dummy1-1', 'cat1', true).concat(
         makeDummyContent(5, 'dummy2-1', 'cat2'),
         makeDummyContent(5, 'dummy1-2', 'cat1'),
         makeDummyContent(29, 'dummy3-1', 'cat3'),

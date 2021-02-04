@@ -6,6 +6,7 @@ import { ApiNameArticleValues, ApiNameArticle } from './client';
 import { PagesContent, PagesSectionKind } from '../types/client/contentTypes';
 import { Section, SectionContentHtmlChildren } from '../types/pageTypes';
 import { GetQuery } from '../types/client/queryTypes';
+import { imageToHtml } from './image';
 
 // とりあえず、普通に記述された markdown から変換されたときに body の直下にありそうなタグ.
 // いまのところ小文字のみ.
@@ -119,6 +120,11 @@ export async function getSectionFromPages(
               kind: 'html' as const,
               contentHtml: htmlToChildren(markdownToHtml(content.markdown))
             };
+          } else if (content.fieldId === 'contentImage') {
+            return {
+              kind: 'html' as const,
+              contentHtml: htmlToChildren(imageToHtml({ ...content }))
+            };
           } else if (content.fieldId === 'contentPageArticles' && articlesApi) {
             const apiName = articlesApi;
             const q: GetQuery = {};
@@ -169,13 +175,6 @@ export async function getSectionFromPages(
                 path: join('/', apiName)
               })),
               detail: content.detail || false
-            };
-          } else if (content.fieldId === 'contentImage') {
-            return {
-              kind: 'image' as const,
-              image: content.image,
-              alt: content.alt,
-              link: content.link || ''
             };
           }
           return {
