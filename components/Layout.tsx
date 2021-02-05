@@ -83,7 +83,7 @@ const Layout = ({
   const classesHeader = useStylesHeader({
     classes: pruneClasses(inClasses, classNames)
   });
-  const { siteTitle } = useContext(siteContext).label;
+  const { siteTitle } = useContext(siteContext).labels;
   const headerSectionsLen = headerSections.length;
   const footerSectionsLen = footerSections.length;
   const maxWidth = 'sm';

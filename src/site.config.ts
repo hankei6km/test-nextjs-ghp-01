@@ -6,8 +6,8 @@ const siteConfig: {
     main: { label: string; href: string }[];
     breadcrumbs: { [key: string]: { label: string; href: string }[] };
   };
-  label: { [key: string]: string };
-  image: { [key: string]: string };
+  labels: { [key: string]: string };
+  images: { [key: string]: string };
 } = {
   sectionConfig: {
     naked: false,
@@ -58,13 +58,13 @@ const siteConfig: {
       ]
     }
   },
-  label: {
+  labels: {
     // contentConfig として参照される値.
     // pages api の入力によってページ上にラベルとして表示されるので注意.
     siteTitle: process.env.SITE_TITLE || 'My Starter',
     profileName: process.env.PROFILE_NAME || 'starter'
   },
-  image: {
+  images: {
     // contentConfig として参照される値.
     // pages api の入力によってページ上に画像として表示されるので注意.
     siteLogoLarge:

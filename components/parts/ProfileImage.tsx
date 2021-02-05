@@ -42,7 +42,7 @@ const ProfileImage = ({
   classes: inClasses
 }: Props) => {
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
-  const { label, image } = useContext(SiteContext);
+  const { labels: label, images: image } = useContext(SiteContext);
   const imgNode = (
     <>
       <img
