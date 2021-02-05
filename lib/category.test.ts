@@ -85,11 +85,13 @@ describe('getSortedPagesData()', () => {
               contentHtml: [
                 {
                   tagName: 'p',
+                  style: {},
                   attribs: {},
                   html: 'category top'
                 },
                 {
                   tagName: 'hr',
+                  style: {},
                   attribs: {},
                   html: ''
                 }
@@ -143,11 +145,13 @@ describe('getSortedPagesData()', () => {
               contentHtml: [
                 {
                   tagName: 'hr',
+                  style: {},
                   attribs: {},
                   html: ''
                 },
                 {
                   tagName: 'p',
+                  style: {},
                   attribs: {},
                   html: 'category bottom'
                 }
@@ -165,6 +169,7 @@ describe('getSortedPagesData()', () => {
               contentHtml: [
                 {
                   tagName: 'ul',
+                  style: {},
                   attribs: {},
                   html:
                     '<li>Next.js</li><li>Material-UI</li><li>Typescript</li><li>aspida</li><li>and more</li>'
@@ -181,6 +186,7 @@ describe('getSortedPagesData()', () => {
               contentHtml: [
                 {
                   tagName: 'ul',
+                  style: {},
                   attribs: {},
                   html: '<li>hot mock</li>'
                 }
@@ -196,10 +202,11 @@ describe('getSortedPagesData()', () => {
               contentHtml: [
                 {
                   tagName: 'hr',
+                  style: {},
                   attribs: {},
                   html: ''
                 },
-                { tagName: 'p', attribs: {}, html: 'My Starter' }
+                { tagName: 'p', style: {}, attribs: {}, html: 'My Starter' }
               ]
             }
           ]

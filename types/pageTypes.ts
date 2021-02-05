@@ -4,6 +4,7 @@ type SectionArticleIndexPath = { path: string };
 export type SectionArticleIndex = PagesIndex & SectionArticleIndexPath;
 export type SectionContentHtmlChildren = {
   tagName: string;
+  style: { [name: string]: string };
   attribs: { [name: string]: string };
   html: string;
 };

@@ -300,7 +300,7 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'p',
-                  attribs: {},
+                  style:{},attribs: {},
                   html: 'content3'
                 }
               ]
@@ -318,7 +318,7 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'ul',
-                  attribs: {},
+                  style:{},attribs: {},
                   html:
                     '<li>Next.js</li><li>Material-UI</li><li>Typescript</li><li>aspida</li><li>and more</li>'
                 }
@@ -334,7 +334,7 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'ul',
-                  attribs: {},
+                  style:{},attribs: {},
                   html: '<li>hot mock</li>'
                 }
               ]
@@ -349,10 +349,10 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'hr',
-                  attribs: {},
+                  style:{},attribs: {},
                   html: ''
                 },
-                { tagName: 'p', attribs: {}, html: 'My Starter' }
+                { tagName: 'p', style:{},attribs: {}, html: 'My Starter' }
               ]
             }
           ]
@@ -414,12 +414,12 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'p',
-                  attribs: {},
+                  style:{},attribs: {},
                   html: 'post top'
                 },
                 {
                   tagName: 'hr',
-                  attribs: {},
+                  style:{},attribs: {},
                   html: ''
                 }
               ]
@@ -436,7 +436,7 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'p',
-                  attribs: {},
+                  style:{},attribs: {},
                   html: 'markdown content'
                 }
               ]
@@ -453,12 +453,12 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'hr',
-                  attribs: {},
+                  style:{},attribs: {},
                   html: ''
                 },
                 {
                   tagName: 'p',
-                  attribs: {},
+                  style:{},attribs: {},
                   html: 'post bottom'
                 }
               ]
@@ -475,7 +475,7 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'ul',
-                  attribs: {},
+                  style:{},attribs: {},
                   html:
                     '<li>Next.js</li><li>Material-UI</li><li>Typescript</li><li>aspida</li><li>and more</li>'
                 }
@@ -491,7 +491,7 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'ul',
-                  attribs: {},
+                  style:{},attribs: {},
                   html: '<li>hot mock</li>'
                 }
               ]
@@ -506,10 +506,10 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'hr',
-                  attribs: {},
+                  style:{},attribs: {},
                   html: ''
                 },
-                { tagName: 'p', attribs: {}, html: 'My Starter' }
+                { tagName: 'p', style:{},attribs: {}, html: 'My Starter' }
               ]
             }
           ]

@@ -42,6 +42,7 @@ const SectionContent = ({ content, classes: inClasses }: Props) => {
       {content.kind === 'html' &&
         content.contentHtml.map((childItem, i) =>
           React.createElement(childItem.tagName, {
+            style: childItem.style,
             ...childItem.attribs,
             key: `${childItem.tagName}-${i}`,
             dangerouslySetInnerHTML: childItem.html

@@ -10,7 +10,7 @@ import { Schema } from 'hast-util-sanitize';
 
 const schema = merge(gh, {
   tagNames: ['picture', 'source'],
-  attributes: { source: ['srcSet', 'sizes'], img: ['srcSet', 'sizes'] }
+  attributes: { source: ['srcSet', 'sizes'], img: ['srcSet', 'sizes', 'style'] }
 });
 const processorHtml = unified()
   .use(rehypeParse, { fragment: true })
