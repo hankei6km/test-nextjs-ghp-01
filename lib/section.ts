@@ -79,6 +79,10 @@ export function htmlToChildren(html: string): SectionContentHtmlChildren[] {
               style = styleToJsxStyle(elm.attribs.style);
               delete attribs.style;
             }
+            if (elm.attribs.class) {
+              attribs.className = elm.attribs.class;
+              delete attribs.class;
+            }
             ret.push({
               tagName: elm.tagName,
               style: style,

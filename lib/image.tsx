@@ -7,10 +7,14 @@ import rehypeSanitize from 'rehype-sanitize';
 import merge from 'deepmerge';
 import gh from 'hast-util-sanitize/lib/github.json';
 import { Schema } from 'hast-util-sanitize';
+import siteServerSideConfig from '../src/site.server-side-config';
 
 const schema = merge(gh, {
   tagNames: ['picture', 'source'],
-  attributes: { source: ['srcSet', 'sizes'], img: ['srcSet', 'sizes', 'style'] }
+  attributes: {
+    source: ['srcSet', 'sizes'],
+    img: ['srcSet', 'sizes', 'className']
+  }
 });
 const processorHtml = unified()
   .use(rehypeParse, { fragment: true })
@@ -52,6 +56,7 @@ function toElm(contentImage: ContentImage) {
       src={`${contentImage.image.url}?${q.toString()}`}
       alt={contentImage.alt}
       // style={{ maxWidth: '100%' }}
+      className={siteServerSideConfig.imageConfig.contentImageClassName}
       width={width}
       height={height}
     />
@@ -72,6 +77,7 @@ function toElm(contentImage: ContentImage) {
 
 export function imageToHtml(contentImage: ContentImage): string {
   const image = ReactDomServer.renderToStaticMarkup(toElm(contentImage));
+  // return image;
   let ret = '';
   processorHtml.process(image, (err, file) => {
     if (err) {

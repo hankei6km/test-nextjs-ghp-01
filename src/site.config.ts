@@ -2,6 +2,9 @@ import { SectionConfig } from '../components/SectionContext';
 
 const siteConfig: {
   sectionConfig: SectionConfig;
+  iamgeConfig: {
+    contentImageClassName: string;
+  };
   nav: {
     main: { label: string; href: string }[];
     breadcrumbs: { [key: string]: { label: string; href: string }[] };
@@ -30,6 +33,10 @@ const siteConfig: {
       siteTitleVariant: 'h2',
       pageTitleVariant: 'h2'
     }
+  },
+  iamgeConfig: {
+    // siteServerConfig と重複している項目
+    contentImageClassName: 'contentImage-root'
   },
   nav: {
     main: [

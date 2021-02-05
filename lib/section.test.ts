@@ -50,7 +50,7 @@ describe('htmlToChildren()', () => {
       {
         tagName: 'p',
         style: {},
-        attribs: { id: 't2', class: 'c2' },
+        attribs: { id: 't2', className: 'c2' },
         html: 'test2'
       }
     ]);
@@ -112,7 +112,7 @@ describe('htmlToChildren()', () => {
       {
         tagName: 'a',
         style: {},
-        attribs: { href: '/', id: 'a1', class: 'ca' },
+        attribs: { href: '/', id: 'a1', className: 'ca' },
         html: '<img src="/abc" alt="abc thumb" data-opt="?q=123&amp;abc=efg">'
       },
       { tagName: 'p', style: {}, attribs: {}, html: 'test2' }
