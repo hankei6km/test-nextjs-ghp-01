@@ -184,6 +184,7 @@ export async function getSectionFromPages(
                 // path: normalize(`/${content.apiName}`)
                 path: join('/', apiName)
               })),
+              totalCount: pagesList.totalCount,
               detail: content.detail || false
             };
           } else if (
@@ -213,6 +214,7 @@ export async function getSectionFromPages(
                 // path: normalize(`/${content.apiName}`)
                 path: join('/', apiName)
               })),
+              totalCount: pagesList.totalCount,
               detail: content.detail || false
             };
           }

@@ -284,6 +284,7 @@ describe('getPagesPageData()', () => {
                     path: '/posts'
                   }
                 ],
+                totalCount: 50,
                 detail: false
               },
               {
@@ -313,6 +314,7 @@ describe('getPagesPageData()', () => {
                     path: '/posts'
                   }
                 ],
+                totalCount: 50,
                 detail: false
               }
             ]

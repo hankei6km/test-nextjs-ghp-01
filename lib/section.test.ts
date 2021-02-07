@@ -407,6 +407,7 @@ describe('getSectionFromPages()', () => {
                 path: '/posts'
               }
             ],
+            totalCount: 50,
             detail: true
           }
         ]
