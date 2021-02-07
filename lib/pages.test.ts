@@ -25,65 +25,70 @@ beforeEach(() => {
 describe('getSortedPagesData()', () => {
   it('should returns contents array with out contet filed', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPagesList));
-    expect(await getSortedPagesData('pages')).toStrictEqual([
-      {
-        id: '_global',
-        createdAt: '2020-12-27T04:04:30.107Z',
-        updatedAt: '2020-12-27T04:04:30.107Z',
-        publishedAt: '2020-12-27T04:04:30.107Z',
-        revisedAt: '2020-12-27T04:04:30.107Z',
-        title: 'My Starter MOCK',
-        category: []
-      },
-      {
-        id: 'home',
-        createdAt: '2020-12-27T04:04:30.107Z',
-        updatedAt: '2020-12-27T04:04:30.107Z',
-        publishedAt: '2020-12-27T04:04:30.107Z',
-        revisedAt: '2020-12-27T04:04:30.107Z',
-        title: 'Home',
-        category: []
-      },
-      {
-        id: 'blog',
-        createdAt: '2020-12-26T15:29:14.476Z',
-        updatedAt: '2020-12-26T15:29:14.476Z',
-        publishedAt: '2020-12-26T15:29:14.476Z',
-        revisedAt: '2020-12-26T15:29:14.476Z',
-        title: 'Blog',
-        category: [
-          { id: 'cat1', title: 'Category1' },
-          { id: 'cat2', title: 'Category2' },
-          { id: 'cat3', title: 'Category3' }
-        ]
-      },
-      {
-        id: 'blog-posts',
-        createdAt: '2020-12-26T15:29:14.476Z',
-        updatedAt: '2020-12-26T15:29:14.476Z',
-        publishedAt: '2020-12-26T15:29:14.476Z',
-        revisedAt: '2020-12-26T15:29:14.476Z',
-        title: 'Blog',
-        category: [
-          { id: 'cat1', title: 'Category1' },
-          { id: 'cat2', title: 'Category2' },
-          { id: 'cat3', title: 'Category3' }
-        ]
-      },
-      {
-        id: 'blog-category',
-        createdAt: '2020-12-26T15:29:14.476Z',
-        updatedAt: '2020-12-26T15:29:14.476Z',
-        publishedAt: '2020-12-26T15:29:14.476Z',
-        revisedAt: '2020-12-26T15:29:14.476Z',
-        title: 'Blog Category',
-        category: [
-          { id: 'cat1', title: 'Category1' },
-          { id: 'cat2', title: 'Category2' },
-          { id: 'cat3', title: 'Category3' }
-        ]
-      }
-    ]);
+    expect(await getSortedPagesData('pages')).toStrictEqual({
+      contents: [
+        {
+          id: '_global',
+          createdAt: '2020-12-27T04:04:30.107Z',
+          updatedAt: '2020-12-27T04:04:30.107Z',
+          publishedAt: '2020-12-27T04:04:30.107Z',
+          revisedAt: '2020-12-27T04:04:30.107Z',
+          title: 'My Starter MOCK',
+          category: []
+        },
+        {
+          id: 'home',
+          createdAt: '2020-12-27T04:04:30.107Z',
+          updatedAt: '2020-12-27T04:04:30.107Z',
+          publishedAt: '2020-12-27T04:04:30.107Z',
+          revisedAt: '2020-12-27T04:04:30.107Z',
+          title: 'Home',
+          category: []
+        },
+        {
+          id: 'blog',
+          createdAt: '2020-12-26T15:29:14.476Z',
+          updatedAt: '2020-12-26T15:29:14.476Z',
+          publishedAt: '2020-12-26T15:29:14.476Z',
+          revisedAt: '2020-12-26T15:29:14.476Z',
+          title: 'Blog',
+          category: [
+            { id: 'cat1', title: 'Category1' },
+            { id: 'cat2', title: 'Category2' },
+            { id: 'cat3', title: 'Category3' }
+          ]
+        },
+        {
+          id: 'blog-posts',
+          createdAt: '2020-12-26T15:29:14.476Z',
+          updatedAt: '2020-12-26T15:29:14.476Z',
+          publishedAt: '2020-12-26T15:29:14.476Z',
+          revisedAt: '2020-12-26T15:29:14.476Z',
+          title: 'Blog',
+          category: [
+            { id: 'cat1', title: 'Category1' },
+            { id: 'cat2', title: 'Category2' },
+            { id: 'cat3', title: 'Category3' }
+          ]
+        },
+        {
+          id: 'blog-category',
+          createdAt: '2020-12-26T15:29:14.476Z',
+          updatedAt: '2020-12-26T15:29:14.476Z',
+          publishedAt: '2020-12-26T15:29:14.476Z',
+          revisedAt: '2020-12-26T15:29:14.476Z',
+          title: 'Blog Category',
+          category: [
+            { id: 'cat1', title: 'Category1' },
+            { id: 'cat2', title: 'Category2' },
+            { id: 'cat3', title: 'Category3' }
+          ]
+        }
+      ],
+      totalCount: 10,
+      offset: 0,
+      limit: 120000
+    });
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock.mock.calls[0][0]).toContain('/pages?');
     expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({

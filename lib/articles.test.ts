@@ -32,47 +32,52 @@ describe('getSortedPagesData()', () => {
   it('should returns contents array with out contet filed', async () => {
     // aspida-mock 使う?
     fetchMock.mockResponseOnce(JSON.stringify(mockDataArticleList));
-    expect(await getSortedPagesData(testApiName)).toStrictEqual([
-      {
-        id: 'mmmmmmmmm',
-        createdAt: '2021-01-13T05:12.157Z',
-        updatedAt: '2021-01-13T05:12.157Z',
-        publishedAt: '2021-01-13T05:12.157Z',
-        revisedAt: '2021-01-13T05:12.157Z',
-        title: 'title4',
-        category: [{ id: 'cat3', title: 'category3' }]
-      },
-      {
-        id: 'zzzzzzzzz',
-        createdAt: '2020-12-27T04:04:30.107Z',
-        updatedAt: '2020-12-27T04:04:30.107Z',
-        publishedAt: '2020-12-27T04:04:30.107Z',
-        revisedAt: '2020-12-27T04:04:30.107Z',
-        title: 'title3',
-        category: []
-      },
-      {
-        id: 'yyyyyy-da',
-        createdAt: '2020-12-26T15:29:14.476Z',
-        updatedAt: '2020-12-26T15:29:14.476Z',
-        publishedAt: '2020-12-26T15:29:14.476Z',
-        revisedAt: '2020-12-26T15:29:14.476Z',
-        title: 'title2',
-        category: [
-          { id: 'cat1', title: 'category1' },
-          { id: 'cat2', title: 'category2' }
-        ]
-      },
-      {
-        id: 'xxxxxxxxx',
-        createdAt: '2020-12-26T12:25:43.532Z',
-        updatedAt: '2020-12-26T12:27:22.533Z',
-        publishedAt: '2020-12-26T12:27:22.533Z',
-        revisedAt: '2020-12-26T12:27:22.533Z',
-        title: 'title1',
-        category: [{ id: 'cat2', title: 'category2' }]
-      }
-    ]);
+    expect(await getSortedPagesData(testApiName)).toStrictEqual({
+      contents: [
+        {
+          id: 'mmmmmmmmm',
+          createdAt: '2021-01-13T05:12.157Z',
+          updatedAt: '2021-01-13T05:12.157Z',
+          publishedAt: '2021-01-13T05:12.157Z',
+          revisedAt: '2021-01-13T05:12.157Z',
+          title: 'title4',
+          category: [{ id: 'cat3', title: 'category3' }]
+        },
+        {
+          id: 'zzzzzzzzz',
+          createdAt: '2020-12-27T04:04:30.107Z',
+          updatedAt: '2020-12-27T04:04:30.107Z',
+          publishedAt: '2020-12-27T04:04:30.107Z',
+          revisedAt: '2020-12-27T04:04:30.107Z',
+          title: 'title3',
+          category: []
+        },
+        {
+          id: 'yyyyyy-da',
+          createdAt: '2020-12-26T15:29:14.476Z',
+          updatedAt: '2020-12-26T15:29:14.476Z',
+          publishedAt: '2020-12-26T15:29:14.476Z',
+          revisedAt: '2020-12-26T15:29:14.476Z',
+          title: 'title2',
+          category: [
+            { id: 'cat1', title: 'category1' },
+            { id: 'cat2', title: 'category2' }
+          ]
+        },
+        {
+          id: 'xxxxxxxxx',
+          createdAt: '2020-12-26T12:25:43.532Z',
+          updatedAt: '2020-12-26T12:27:22.533Z',
+          publishedAt: '2020-12-26T12:27:22.533Z',
+          revisedAt: '2020-12-26T12:27:22.533Z',
+          title: 'title1',
+          category: [{ id: 'cat2', title: 'category2' }]
+        }
+      ],
+      totalCount: 50,
+      offset: 0,
+      limit: 120000
+    });
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock.mock.calls[0][0]).toContain('/posts?');
     expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
@@ -300,7 +305,8 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'p',
-                  style:{},attribs: {},
+                  style: {},
+                  attribs: {},
                   html: 'content3'
                 }
               ]
@@ -318,7 +324,8 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'ul',
-                  style:{},attribs: {},
+                  style: {},
+                  attribs: {},
                   html:
                     '<li>Next.js</li><li>Material-UI</li><li>Typescript</li><li>aspida</li><li>and more</li>'
                 }
@@ -334,7 +341,8 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'ul',
-                  style:{},attribs: {},
+                  style: {},
+                  attribs: {},
                   html: '<li>hot mock</li>'
                 }
               ]
@@ -349,10 +357,11 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'hr',
-                  style:{},attribs: {},
+                  style: {},
+                  attribs: {},
                   html: ''
                 },
-                { tagName: 'p', style:{},attribs: {}, html: 'My Starter' }
+                { tagName: 'p', style: {}, attribs: {}, html: 'My Starter' }
               ]
             }
           ]
@@ -414,12 +423,14 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'p',
-                  style:{},attribs: {},
+                  style: {},
+                  attribs: {},
                   html: 'post top'
                 },
                 {
                   tagName: 'hr',
-                  style:{},attribs: {},
+                  style: {},
+                  attribs: {},
                   html: ''
                 }
               ]
@@ -436,7 +447,8 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'p',
-                  style:{},attribs: {},
+                  style: {},
+                  attribs: {},
                   html: 'markdown content'
                 }
               ]
@@ -453,12 +465,14 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'hr',
-                  style:{},attribs: {},
+                  style: {},
+                  attribs: {},
                   html: ''
                 },
                 {
                   tagName: 'p',
-                  style:{},attribs: {},
+                  style: {},
+                  attribs: {},
                   html: 'post bottom'
                 }
               ]
@@ -475,7 +489,8 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'ul',
-                  style:{},attribs: {},
+                  style: {},
+                  attribs: {},
                   html:
                     '<li>Next.js</li><li>Material-UI</li><li>Typescript</li><li>aspida</li><li>and more</li>'
                 }
@@ -491,7 +506,8 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'ul',
-                  style:{},attribs: {},
+                  style: {},
+                  attribs: {},
                   html: '<li>hot mock</li>'
                 }
               ]
@@ -506,10 +522,11 @@ describe('getPagesPageData()', () => {
               contentHtml: [
                 {
                   tagName: 'hr',
-                  style:{},attribs: {},
+                  style: {},
+                  attribs: {},
                   html: ''
                 },
-                { tagName: 'p', style:{},attribs: {}, html: 'My Starter' }
+                { tagName: 'p', style: {}, attribs: {}, html: 'My Starter' }
               ]
             }
           ]

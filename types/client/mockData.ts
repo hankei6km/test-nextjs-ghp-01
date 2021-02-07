@@ -185,9 +185,9 @@ export const mockDataPages: PagesContents = {
       ]
     }
   ],
-  totalCount: 2,
+  totalCount: 10,
   offset: 0,
-  limit: 10
+  limit: 120000
 };
 
 export const mockDataPagesOuterHome = {

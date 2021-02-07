@@ -191,9 +191,9 @@ export const mockDataPages: PagesContents = {
       ]
     }
   ],
-  totalCount: 2,
+  totalCount: 10,
   offset: 0,
-  limit: 10
+  limit: 120000
 };
 
 export const mockDataPagesOuterHome = {
@@ -326,9 +326,9 @@ export const mockDataArticles: PagesContents = {
       ]
     }
   ],
-  totalCount: 3,
+  totalCount: 50,
   offset: 0,
-  limit: 10
+  limit: 120000
 };
 
 export const mockDataArticleList = {

@@ -1,7 +1,12 @@
 import { ParsedUrlQuery } from 'querystring';
 import { GetStaticPropsContext } from 'next';
 import client, { fetchConfig, ApiNameArticle } from './client';
-import { PagesContent, blankPageContent } from '../types/client/contentTypes';
+import {
+  PagesList,
+  PagesContent,
+  blankPagesList,
+  blankPageContent
+} from '../types/client/contentTypes';
 import { GetQuery } from '../types/client/queryTypes';
 import { PageData, blankPageData } from '../types/pageTypes';
 import { getSectionFromPages } from './section';
@@ -29,7 +34,7 @@ export type PageDataGetOptions = {
 export async function getSortedPagesData(
   apiName: ApiNameArticle,
   query: GetQuery = {}
-) {
+): Promise<PagesList> {
   try {
     const res = await client[apiName].get({
       query: {
@@ -39,13 +44,13 @@ export async function getSortedPagesData(
       },
       config: fetchConfig
     });
-    return res.body.contents;
+    return res.body;
   } catch (err) {
     // res.status = 404 などでも throw される(試した限りでは)
     // res.status を知る方法は?
     console.error(`getSortedPagesData error: ${err.name}`);
   }
-  return [];
+  return blankPagesList();
 }
 
 export async function getAllPagesIds(

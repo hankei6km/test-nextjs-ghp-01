@@ -176,10 +176,10 @@ export async function getSectionFromPages(
             if (curCategory) {
               q.filters = `category[contains]${curCategory}`;
             }
-            const contents = await getSortedPagesData(apiName, q);
+            const pagesList = await getSortedPagesData(apiName, q);
             return {
               kind: 'posts' as const,
-              contents: contents.map((c) => ({
+              contents: pagesList.contents.map((c) => ({
                 ...c,
                 // path: normalize(`/${content.apiName}`)
                 path: join('/', apiName)
@@ -205,10 +205,10 @@ export async function getSectionFromPages(
                 .map(({ id }) => id)
                 .join(',')}`;
             }
-            const contents = await getSortedPagesData(apiName, q);
+            const pagesList = await getSortedPagesData(apiName, q);
             return {
               kind: 'posts' as const,
-              contents: contents.map((c) => ({
+              contents: pagesList.contents.map((c) => ({
                 ...c,
                 // path: normalize(`/${content.apiName}`)
                 path: join('/', apiName)
