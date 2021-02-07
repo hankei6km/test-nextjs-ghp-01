@@ -12,7 +12,8 @@ import PageContext from '../../components/PageContext';
 const useStyles = makeStyles(() => ({
   pageMain: {
     ...wrapStyle(`& .${siteConfig.iamgeConfig.contentImageClassName}`, {
-      maxWidth: '100%'
+      maxWidth: '100%',
+      objectFit: 'contain'
     })
   },
   'SectionItem-root': {},

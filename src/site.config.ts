@@ -36,7 +36,7 @@ const siteConfig: {
   },
   iamgeConfig: {
     // siteServerConfig と重複している項目
-    contentImageClassName: 'contentImage-root'
+    contentImageClassName: 'contentImage-img'
   },
   nav: {
     main: [

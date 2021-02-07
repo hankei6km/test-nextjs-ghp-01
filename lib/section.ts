@@ -8,7 +8,7 @@ import { ApiNameArticleValues, ApiNameArticle } from './client';
 import { PagesContent, PagesSectionKind } from '../types/client/contentTypes';
 import { Section, SectionContentHtmlChildren } from '../types/pageTypes';
 import { GetQuery } from '../types/client/queryTypes';
-import { imageToHtml } from './image';
+import { imageToHtml, imageInfo } from './image';
 
 export function styleToJsxStyle(
   s: string
@@ -155,7 +155,14 @@ export async function getSectionFromPages(
           } else if (content.fieldId === 'contentImage') {
             return {
               kind: 'html' as const,
-              contentHtml: htmlToChildren(imageToHtml({ ...content }))
+              // contentHtml: htmlToChildren(imageToHtml({ ...content }))
+              contentHtml: htmlToChildren(
+                imageToHtml({
+                  image: await imageInfo(content.image.url),
+                  alt: content.alt,
+                  asThumb: true
+                })
+              )
             };
           } else if (content.fieldId === 'contentPageArticles' && articlesApi) {
             const apiName = articlesApi;
