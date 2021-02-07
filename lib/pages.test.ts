@@ -239,6 +239,7 @@ describe('getPagesPageData()', () => {
               },
               {
                 kind: 'posts',
+                postsKind: 'fragment',
                 contents: [
                   {
                     id: 'mmmmmmmmm',
@@ -289,6 +290,7 @@ describe('getPagesPageData()', () => {
               },
               {
                 kind: 'posts',
+                postsKind: 'fragment',
                 contents: [
                   {
                     id: 'yyyyyy-da',

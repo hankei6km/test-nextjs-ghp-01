@@ -179,6 +179,7 @@ export async function getSectionFromPages(
             const pagesList = await getSortedPagesData(apiName, q);
             return {
               kind: 'posts' as const,
+              postsKind: 'page' as const,
               contents: pagesList.contents.map((c) => ({
                 ...c,
                 // path: normalize(`/${content.apiName}`)
@@ -209,6 +210,7 @@ export async function getSectionFromPages(
             const pagesList = await getSortedPagesData(apiName, q);
             return {
               kind: 'posts' as const,
+              postsKind: 'fragment' as const,
               contents: pagesList.contents.map((c) => ({
                 ...c,
                 // path: normalize(`/${content.apiName}`)

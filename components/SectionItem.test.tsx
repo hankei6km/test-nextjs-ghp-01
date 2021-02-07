@@ -31,6 +31,7 @@ describe('SectionItem', () => {
               content: [
                 {
                   kind: 'posts',
+                  postsKind: 'fragment',
                   contents: mockDataSectionArticleList,
                   totalCount: 50,
                   detail: true

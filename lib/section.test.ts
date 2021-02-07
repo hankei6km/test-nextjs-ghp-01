@@ -395,6 +395,7 @@ describe('getSectionFromPages()', () => {
         content: [
           {
             kind: 'posts',
+            postsKind: 'fragment',
             contents: [
               {
                 id: 'mmmmmmmmm',
