@@ -2,12 +2,15 @@ import { SectionConfig } from '../components/SectionContext';
 
 const siteConfig: {
   sectionConfig: SectionConfig;
+  iamgeConfig: {
+    contentImageClassName: string;
+  };
   nav: {
     main: { label: string; href: string }[];
     breadcrumbs: { [key: string]: { label: string; href: string }[] };
   };
-  label: { [key: string]: string };
-  image: { [key: string]: string };
+  labels: { [key: string]: string };
+  images: { [key: string]: string };
 } = {
   sectionConfig: {
     naked: false,
@@ -30,6 +33,10 @@ const siteConfig: {
       siteTitleVariant: 'h2',
       pageTitleVariant: 'h2'
     }
+  },
+  iamgeConfig: {
+    // siteServerConfig と重複している項目
+    contentImageClassName: 'contentImage-img'
   },
   nav: {
     main: [
@@ -58,13 +65,13 @@ const siteConfig: {
       ]
     }
   },
-  label: {
+  labels: {
     // contentConfig として参照される値.
     // pages api の入力によってページ上にラベルとして表示されるので注意.
     siteTitle: process.env.SITE_TITLE || 'My Starter',
     profileName: process.env.PROFILE_NAME || 'starter'
   },
-  image: {
+  images: {
     // contentConfig として参照される値.
     // pages api の入力によってページ上に画像として表示されるので注意.
     siteLogoLarge:

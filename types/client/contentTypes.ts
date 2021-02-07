@@ -47,9 +47,15 @@ type PagesContentFragArticles = {
 };
 type PagesContentImage = {
   fieldId: 'contentImage';
-  image: string;
+  image: {
+    url: string;
+    width: number;
+    height: number;
+  };
   alt: string;
   link?: string;
+  newTab?: boolean;
+  asThumb?: boolean;
 };
 type PageContent =
   | PagesContentHtml

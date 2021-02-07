@@ -8,10 +8,18 @@ import { PageData } from '../../types/pageTypes';
 import { getAllPagesIds, getPagesPageData } from '../../lib/pages';
 import { mergeSectionConfig } from '../../components/SectionContext';
 import SectionList from '../../components/SectionList';
+import siteConfig from '../../src/site.config';
+import { wrapStyle } from '../../utils/classes';
 import PageContext from '../../components/PageContext';
 // import classes from '*.module.css';
 
 const useStyles = makeStyles(() => ({
+  pageMain: {
+    ...wrapStyle(`& .${siteConfig.iamgeConfig.contentImageClassName}`, {
+      maxWidth: '100%',
+      objectFit: 'scale-down'
+    })
+  },
   'SectionItem-root': {},
   'SectionItem-title': {
     width: '100%',
@@ -64,11 +72,13 @@ export default function Post({
             classes={{ ...classes }}
           />
           <SectionList sections={pageData.top} classes={{ ...classes }} />
-          <SectionList
-            sections={pageData.sections}
-            config={sectionConfigInPosts}
-            classes={{ ...classes }}
-          />
+          <Box className={classes.pageMain}>
+            <SectionList
+              sections={pageData.sections}
+              config={sectionConfigInPosts}
+              classes={{ ...classes }}
+            />
+          </Box>
           <SectionList
             sections={[
               {

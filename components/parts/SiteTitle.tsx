@@ -31,7 +31,7 @@ type Props = {
 
 const SiteTitle = ({ link = '', classes: inClasses }: Props) => {
   const classes = useStyles({ classes: pruneClasses(inClasses, classNames) });
-  const { label } = useContext(SiteContext);
+  const { labels: label } = useContext(SiteContext);
   const { component, variant } = useContext(SectionContext);
   return (
     <Typography

@@ -4,6 +4,7 @@ type SectionArticleIndexPath = { path: string };
 export type SectionArticleIndex = PagesIndex & SectionArticleIndexPath;
 export type SectionContentHtmlChildren = {
   tagName: string;
+  style: { [name: string]: string };
   attribs: { [name: string]: string };
   html: string;
 };
@@ -26,12 +27,6 @@ export type SectionPosts = {
   // ページデータから取得する必要がある)
   // よって一旦削除。
   // category: PagesCategory[];
-};
-export type SectionImage = {
-  kind: 'image';
-  image: string;
-  alt: string;
-  link: string;
 };
 
 // 現時点では Parts>>> は外部からの定義はできない
@@ -83,7 +78,6 @@ export type Section = {
     | SectionBlank
     | SectionContent
     | SectionPosts
-    | SectionImage
     | SectionPartsSiteTitle
     | SectionPartsSiteLogo
     | SectionPartsPageTitle

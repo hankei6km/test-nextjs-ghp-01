@@ -1,11 +1,31 @@
 import { join } from 'path';
 import cheerio from 'cheerio';
+import parseStyle from 'style-to-object';
+// import camelcaseKeys from 'camelcase-keys';  // vedor prefix が jsx styleにならない?
 import { PageDataGetOptions, getSortedPagesData } from './pages';
 import { markdownToHtml } from './markdown';
 import { ApiNameArticleValues, ApiNameArticle } from './client';
 import { PagesContent, PagesSectionKind } from '../types/client/contentTypes';
 import { Section, SectionContentHtmlChildren } from '../types/pageTypes';
 import { GetQuery } from '../types/client/queryTypes';
+import { imageToHtml, imageInfo } from './image';
+
+export function styleToJsxStyle(
+  s: string
+): SectionContentHtmlChildren['style'] {
+  const p = parseStyle(s) || {};
+  const ret: SectionContentHtmlChildren['style'] = {};
+  Object.entries(p).forEach((kv) => {
+    const [first, ...names] = kv[0].split('-');
+    const capitalizedNames = names.map(
+      (r) => `${r[0].toLocaleUpperCase()}${r.slice(1)}`
+    );
+    const k = `${first}${capitalizedNames.join('')}`;
+
+    ret[k] = kv[1];
+  });
+  return ret;
+}
 
 // とりあえず、普通に記述された markdown から変換されたときに body の直下にありそうなタグ.
 // いまのところ小文字のみ.
@@ -53,9 +73,20 @@ export function htmlToChildren(html: string): SectionContentHtmlChildren[] {
             SectionContentHtmlChildrenElemValues.some((v) => v === elm.tagName)
           ) {
             const $elm = $(elm);
+            const attribs = elm.attribs ? { ...elm.attribs } : {};
+            let style: SectionContentHtmlChildren['style'] = {};
+            if (elm.attribs.style) {
+              style = styleToJsxStyle(elm.attribs.style);
+              delete attribs.style;
+            }
+            if (elm.attribs.class) {
+              attribs.className = elm.attribs.class;
+              delete attribs.class;
+            }
             ret.push({
               tagName: elm.tagName,
-              attribs: elm.attribs || {},
+              style: style,
+              attribs: attribs,
               html: $elm.html() || ''
             });
           } else {
@@ -70,6 +101,7 @@ export function htmlToChildren(html: string): SectionContentHtmlChildren[] {
   } catch (_e) {
     ret.splice(0, ret.length, {
       tagName: 'div',
+      style: {},
       attribs: {},
       html: html
     });
@@ -77,6 +109,7 @@ export function htmlToChildren(html: string): SectionContentHtmlChildren[] {
   if (ret.length === 0) {
     ret.push({
       tagName: 'div',
+      style: {},
       attribs: {},
       html: html
     });
@@ -118,6 +151,18 @@ export async function getSectionFromPages(
             return {
               kind: 'html' as const,
               contentHtml: htmlToChildren(markdownToHtml(content.markdown))
+            };
+          } else if (content.fieldId === 'contentImage') {
+            return {
+              kind: 'html' as const,
+              // contentHtml: htmlToChildren(imageToHtml({ ...content }))
+              contentHtml: htmlToChildren(
+                imageToHtml({
+                  image: await imageInfo(content.image.url),
+                  alt: content.alt,
+                  asThumb: true
+                })
+              )
             };
           } else if (content.fieldId === 'contentPageArticles' && articlesApi) {
             const apiName = articlesApi;
@@ -169,13 +214,6 @@ export async function getSectionFromPages(
                 path: join('/', apiName)
               })),
               detail: content.detail || false
-            };
-          } else if (content.fieldId === 'contentImage') {
-            return {
-              kind: 'image' as const,
-              image: content.image,
-              alt: content.alt,
-              link: content.link || ''
             };
           }
           return {

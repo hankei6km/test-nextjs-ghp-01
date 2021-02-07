@@ -41,3 +41,9 @@ export function classNamesFromConfigField(
   }
   return '';
 }
+
+export function wrapStyle(name: string, style: { [key: string]: any }) {
+  const s: { [key: string]: { [key: string]: any } } = {};
+  s[name] = { ...style };
+  return s;
+}
