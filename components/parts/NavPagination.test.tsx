@@ -155,4 +155,62 @@ describe('NavPagination', () => {
       }
     );
   });
+  test('renders no elements if pagCount===0 ', () => {
+    const config = siteConfig;
+    const router = mockRouter();
+    const { queryByRole, queryByText } = render(
+      <RouterContext.Provider value={router}>
+        <SiteContext.Provider value={config}>
+          <PageContext.Provider
+            value={{
+              ...pageData,
+              pageNo: 0,
+              pageCount: 0,
+              curCategory: ''
+            }}
+          >
+            <NavPagination
+              paginationHref="/posts/category/[...id]"
+              paginationBaseAs="/posts/category"
+              paginationPagePath={['page']}
+              paginationFirstPageHref={''}
+            />
+          </PageContext.Provider>
+        </SiteContext.Provider>
+      </RouterContext.Provider>
+    );
+    const rootNav = queryByRole('navigation');
+    expect(rootNav).not.toBeInTheDocument();
+    const btn1 = queryByText(/^1$/);
+    expect(btn1).not.toBeInTheDocument();
+  });
+  test('renders no elements if pagCount==-1 ', () => {
+    const config = siteConfig;
+    const router = mockRouter();
+    const { queryByRole, queryByText } = render(
+      <RouterContext.Provider value={router}>
+        <SiteContext.Provider value={config}>
+          <PageContext.Provider
+            value={{
+              ...pageData,
+              pageNo: 0,
+              pageCount: -1,
+              curCategory: ''
+            }}
+          >
+            <NavPagination
+              paginationHref="/posts/category/[...id]"
+              paginationBaseAs="/posts/category"
+              paginationPagePath={['page']}
+              paginationFirstPageHref={''}
+            />
+          </PageContext.Provider>
+        </SiteContext.Provider>
+      </RouterContext.Provider>
+    );
+    const rootNav = queryByRole('navigation');
+    expect(rootNav).not.toBeInTheDocument();
+    const btn1 = queryByText(/^1$/);
+    expect(btn1).not.toBeInTheDocument();
+  });
 });
