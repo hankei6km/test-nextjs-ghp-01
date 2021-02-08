@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box';
 import Layout from '../../components/Layout';
 import SectionList from '../../components/SectionList';
 import { PageData } from '../../types/pageTypes';
-import { getPagesPageData, getAllPaginationIds } from '../../lib/pages';
+import { getPagesPageData } from '../../lib/pages';
 import siteConfig from '../../src/site.config';
 import { wrapStyle } from '../../utils/classes';
 import PageContext from '../../components/PageContext';
@@ -99,7 +99,6 @@ export const getStaticProps: GetStaticProps = async () => {
   const id = 'blog';
   const pageNo = 1;
   const curCategory = '';
-  const pageCount = (await getAllPaginationIds('posts', itemsPerPage)).length;
   const pageData = await getPagesPageData(
     'pages',
     { params: { id } },
@@ -108,8 +107,7 @@ export const getStaticProps: GetStaticProps = async () => {
       articlesApi: 'posts',
       curCategory,
       itemsPerPage,
-      pageNo,
-      pageCount
+      pageNo
     }
   );
   return {

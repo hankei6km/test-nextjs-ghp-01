@@ -25,7 +25,14 @@ beforeEach(() => {
 describe('getSortedPagesData()', () => {
   it('should returns contents array with out contet filed', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPagesList));
-    expect(await getSortedPagesData('pages')).toStrictEqual({
+    const res = await getSortedPagesData('pages');
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock.mock.calls[0][0]).toContain('/pages?');
+    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title'
+    });
+    expect(res).toStrictEqual({
       contents: [
         {
           id: '_global',
@@ -85,15 +92,9 @@ describe('getSortedPagesData()', () => {
           ]
         }
       ],
-      totalCount: 10,
+      totalCount: 5,
       offset: 0,
       limit: 120000
-    });
-    expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(fetchMock.mock.calls[0][0]).toContain('/pages?');
-    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
-      fields:
-        'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title'
     });
     // expect(fetchMock.mock.calls[0][1]?.headers) 環境変数の設定とメッセージによっては API キーが漏洩する可能性があるのでとりあえずやめる
   });
@@ -285,7 +286,7 @@ describe('getPagesPageData()', () => {
                     path: '/posts'
                   }
                 ],
-                totalCount: 50,
+                totalCount: 4,
                 detail: false
               },
               {
@@ -316,7 +317,7 @@ describe('getPagesPageData()', () => {
                     path: '/posts'
                   }
                 ],
-                totalCount: 50,
+                totalCount: 2,
                 detail: false
               }
             ]

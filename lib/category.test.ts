@@ -132,7 +132,7 @@ describe('getSortedPagesData()', () => {
                   path: '/posts'
                 }
               ],
-              totalCount: 50,
+              totalCount: 2,
               detail: false
             }
           ]

@@ -79,14 +79,17 @@ export default mockMiddleware([
       const limit = req.query.limit === undefined ? 10 : req.query.limit;
       const offset = req.query.offset === undefined ? 0 : req.query.offset;
       if (m) {
+        const contents = mockDataArticleList.contents.filter(({ category }) =>
+          category.some(({ id }) => id === m[1])
+        );
         res({
           status: 200,
           resBody: {
             ...mockDataArticleIds,
-            contents: mockDataArticleList.contents
-              .filter(({ category }) => category.some(({ id }) => id === m[1]))
+            contents: contents
               .map(({ id }) => ({ id }))
-              .slice(offset, offset + limit)
+              .slice(offset, offset + limit),
+            totalCount: contents.length
           }
         });
         return;
@@ -114,13 +117,15 @@ export default mockMiddleware([
       const limit = req.query.limit === undefined ? 10 : req.query.limit;
       const offset = req.query.offset === undefined ? 0 : req.query.offset;
       if (m) {
+        const contents = mockDataArticleList.contents.filter(({ category }) =>
+          category.some(({ id }) => id === m[1])
+        );
         res({
           status: 200,
           resBody: {
             ...mockDataArticleList,
-            contents: mockDataArticleList.contents
-              .filter(({ category }) => category.some(({ id }) => id === m[1]))
-              .slice(offset, offset + limit)
+            contents: contents.slice(offset, offset + limit),
+            totalCount: contents.length
           }
         });
         return;

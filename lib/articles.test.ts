@@ -29,7 +29,7 @@ beforeEach(() => {
 const testApiName = 'posts';
 
 describe('getSortedPagesData()', () => {
-  it('should returns contents array with out contet filed', async () => {
+  it('should returns contents array with out contet field', async () => {
     // aspida-mock 使う?
     fetchMock.mockResponseOnce(JSON.stringify(mockDataArticleList));
     expect(await getSortedPagesData(testApiName)).toStrictEqual({
@@ -74,7 +74,7 @@ describe('getSortedPagesData()', () => {
           category: [{ id: 'cat2', title: 'category2' }]
         }
       ],
-      totalCount: 50,
+      totalCount: 4,
       offset: 0,
       limit: 120000
     });
@@ -123,7 +123,14 @@ describe('getAllPagesIds()', () => {
 describe('getAllPaginationIds()', () => {
   it('should returns all pagination ids', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPagination));
-    expect(await getAllPaginationIds(testApiName, 10)).toStrictEqual([
+    const res = await getAllPaginationIds(testApiName, 10);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock.mock.calls[0][0]).toContain('/posts?');
+    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
+      fields: 'id',
+      limit: '0'
+    });
+    expect(res).toStrictEqual([
       ['1'],
       ['2'],
       ['3'],
@@ -136,35 +143,34 @@ describe('getAllPaginationIds()', () => {
       ['10'],
       ['11']
     ]);
-    expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(fetchMock.mock.calls[0][0]).toContain('/posts?');
-    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
-      fields: 'id',
-      limit: '120000'
-    });
   });
   it('should returns filtered pagination ids', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPaginationCat2Ids));
-    expect(
-      await getAllPaginationIds(testApiName, 10, [], {
-        filters: 'category[contains]cat2'
-      })
-    ).toStrictEqual([['1'], ['2'], ['3'], ['4'], ['5'], ['6']]);
+    const res = await getAllPaginationIds(testApiName, 10, [], {
+      filters: 'category[contains]cat2'
+    });
     expect(fetchMock).toHaveBeenCalledTimes(1);
     expect(fetchMock.mock.calls[0][0]).toContain('/posts?');
     expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
       fields: 'id',
-      limit: '120000',
+      limit: '0',
       filters: 'category[contains]cat2'
     });
+    expect(res).toStrictEqual([['1'], ['2'], ['3'], ['4'], ['5'], ['6']]);
   });
   it('should returns ids in deep path', async () => {
     fetchMock.mockResponseOnce(JSON.stringify(mockDataPaginationCat2Ids));
-    expect(
-      await getAllPaginationIds(testApiName, 10, ['pages'], {
-        filters: 'category[contains]cat2'
-      })
-    ).toStrictEqual([
+    const res = await getAllPaginationIds(testApiName, 10, ['pages'], {
+      filters: 'category[contains]cat2'
+    });
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock.mock.calls[0][0]).toContain('/posts?');
+    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
+      fields: 'id',
+      limit: '0',
+      filters: 'category[contains]cat2'
+    });
+    expect(res).toStrictEqual([
       ['pages', '1'],
       ['pages', '2'],
       ['pages', '3'],
@@ -172,13 +178,6 @@ describe('getAllPaginationIds()', () => {
       ['pages', '5'],
       ['pages', '6']
     ]);
-    expect(fetchMock).toHaveBeenCalledTimes(1);
-    expect(fetchMock.mock.calls[0][0]).toContain('/posts?');
-    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
-      fields: 'id',
-      limit: '120000',
-      filters: 'category[contains]cat2'
-    });
   });
 });
 
@@ -188,13 +187,31 @@ describe('getAllCategolizedPaginationIds()', () => {
       .mockResponseOnce(JSON.stringify(mockDataPaginationCat1Ids))
       .mockResponseOnce(JSON.stringify(mockDataPaginationCat2Ids))
       .mockResponseOnce(JSON.stringify(mockDataPaginationCat3Ids));
-    expect(
-      await getAllCategolizedPaginationIds(
-        testApiName,
-        ['cat1', 'cat2', 'cat3'],
-        10
-      )
-    ).toStrictEqual([
+    const res = await getAllCategolizedPaginationIds(
+      testApiName,
+      ['cat1', 'cat2', 'cat3'],
+      10
+    );
+    expect(fetchMock).toHaveBeenCalledTimes(3);
+    expect(fetchMock.mock.calls[0][0]).toContain('/posts?');
+    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
+      fields: 'id',
+      limit: '0',
+      filters: 'category[contains]cat1'
+    });
+    expect(fetchMock.mock.calls[1][0]).toContain('/posts?');
+    expect(queryParams(String(fetchMock.mock.calls[1][0]))).toStrictEqual({
+      fields: 'id',
+      limit: '0',
+      filters: 'category[contains]cat2'
+    });
+    expect(fetchMock.mock.calls[2][0]).toContain('/posts?');
+    expect(queryParams(String(fetchMock.mock.calls[2][0]))).toStrictEqual({
+      fields: 'id',
+      limit: '0',
+      filters: 'category[contains]cat3'
+    });
+    expect(res).toStrictEqual([
       ['cat1'],
       ['cat2'],
       ['cat3'],
@@ -211,25 +228,6 @@ describe('getAllCategolizedPaginationIds()', () => {
       ['cat3', 'page', '2'],
       ['cat3', 'page', '3']
     ]);
-    expect(fetchMock).toHaveBeenCalledTimes(3);
-    expect(fetchMock.mock.calls[0][0]).toContain('/posts?');
-    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
-      fields: 'id',
-      limit: '120000',
-      filters: 'category[contains]cat1'
-    });
-    expect(fetchMock.mock.calls[1][0]).toContain('/posts?');
-    expect(queryParams(String(fetchMock.mock.calls[1][0]))).toStrictEqual({
-      fields: 'id',
-      limit: '120000',
-      filters: 'category[contains]cat2'
-    });
-    expect(fetchMock.mock.calls[2][0]).toContain('/posts?');
-    expect(queryParams(String(fetchMock.mock.calls[2][0]))).toStrictEqual({
-      fields: 'id',
-      limit: '120000',
-      filters: 'category[contains]cat3'
-    });
   });
 });
 

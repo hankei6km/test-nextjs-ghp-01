@@ -122,8 +122,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const id = typeof context.params?.id === 'string' ? context.params.id : '';
   const pageNo = id !== '' ? parseInt(id, 10) : 1;
   const curCategory = '';
-  // paths を求めたときの値はもってこれない?
-  const pageCount = (await getAllPaginationIds('posts', itemsPerPage)).length;
   const pageData = await getPagesPageData(
     'pages',
     { ...context, params: { id: 'blog' } },
@@ -132,8 +130,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       articlesApi: 'posts',
       curCategory,
       itemsPerPage,
-      pageNo,
-      pageCount
+      pageNo
     }
   );
   return {

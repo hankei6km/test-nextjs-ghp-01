@@ -126,14 +126,28 @@ export function getApiNameArticle(
   return '';
 }
 
+export function getPagePostsTotalCountFromSection(sections: Section[]): number {
+  let totalCount = -1;
+  sections.findIndex(
+    (section) =>
+      section.content.findIndex((content) => {
+        if (content.kind === 'posts' && content.postsKind === 'page') {
+          totalCount = content.totalCount;
+          return true;
+        }
+        return false;
+      }) >= 0
+  );
+  return totalCount;
+}
+
 export async function getSectionFromPages(
   page: PagesContent,
   kind: PagesSectionKind,
   { articlesApi, curCategory, itemsPerPage, pageNo }: PageDataGetOptions = {
     outerIds: [],
     pageNo: 1,
-    itemsPerPage: 10,
-    pageCount: 1
+    itemsPerPage: 10
   }
 ): Promise<Section[]> {
   const sections = page.sections
