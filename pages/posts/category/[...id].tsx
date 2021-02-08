@@ -8,7 +8,6 @@ import { PageData } from '../../../types/pageTypes';
 import {
   getPagesPageData,
   getPagesData,
-  getAllPaginationIds,
   getAllCategolizedPaginationIds
 } from '../../../lib/pages';
 import SectionList from '../../../components/SectionList';
@@ -138,12 +137,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
   const idLen = id.length;
   const pageNo = idLen > 1 ? parseInt(id[idLen - 1], 10) : 1;
   const curCategory = id[0];
-  // paths を求めたときの値はもってこれない?
-  const pageCount = (
-    await getAllPaginationIds('posts', itemsPerPage, ['page'], {
-      filters: `category[contains]${id[0]}`
-    })
-  ).length;
   const pageData = await getPagesPageData(
     'category',
     { ...context, params: { id: id[0] } },
@@ -152,8 +145,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       articlesApi: 'posts',
       curCategory,
       itemsPerPage,
-      pageNo,
-      pageCount
+      pageNo
     }
   );
   return {

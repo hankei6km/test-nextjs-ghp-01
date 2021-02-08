@@ -1,10 +1,23 @@
 import { ParsedUrlQuery } from 'querystring';
 import { GetStaticPropsContext } from 'next';
 import client, { fetchConfig, ApiNameArticle } from './client';
-import { PagesContent, blankPageContent } from '../types/client/contentTypes';
+import {
+  PagesList,
+  PagesIds,
+  PagesContent,
+  blankPagesList,
+  blankPageContent
+} from '../types/client/contentTypes';
 import { GetQuery } from '../types/client/queryTypes';
 import { PageData, blankPageData } from '../types/pageTypes';
-import { getSectionFromPages } from './section';
+import {
+  getSectionFromPages,
+  getPagePostsTotalCountFromSection
+} from './section';
+import {
+  pageCountFromTotalCount,
+  paginationIdsFromPageCount
+} from '../utils/pagination';
 
 const globalPageId = '_global';
 // id が 1件で 40byte  と想定、 content-length が 5M 程度とのことなので、1000*1000*5 / 40 で余裕を見て決めた値。
@@ -23,13 +36,12 @@ export type PageDataGetOptions = {
   // ページング用j
   itemsPerPage?: number;
   pageNo?: number;
-  pageCount?: number;
 };
 
 export async function getSortedPagesData(
   apiName: ApiNameArticle,
   query: GetQuery = {}
-) {
+): Promise<PagesList> {
   try {
     const res = await client[apiName].get({
       query: {
@@ -39,13 +51,32 @@ export async function getSortedPagesData(
       },
       config: fetchConfig
     });
-    return res.body.contents;
+    return res.body;
   } catch (err) {
     // res.status = 404 などでも throw される(試した限りでは)
     // res.status を知る方法は?
     console.error(`getSortedPagesData error: ${err.name}`);
   }
-  return [];
+  return blankPagesList();
+}
+
+export async function getPagesIdsList(
+  apiName: ApiNameArticle,
+  query: GetQuery = {}
+): Promise<PagesIds> {
+  try {
+    const res = await client[apiName].get({
+      query: {
+        ...query,
+        fields: 'id'
+      },
+      config: fetchConfig
+    });
+    return res.body;
+  } catch (err) {
+    console.error(`getPagesIdsList error: ${err.name}`);
+  }
+  return blankPagesList();
 }
 
 export async function getAllPagesIds(
@@ -53,15 +84,13 @@ export async function getAllPagesIds(
   query: GetQuery = {}
 ) {
   try {
-    const res = await client[apiName].get({
-      query: {
+    return (
+      await getPagesIdsList(apiName, {
         ...query,
-        fields: 'id',
+
         limit: allIdsLimit
-      },
-      config: fetchConfig
-    });
-    return res.body.contents.map(({ id }) => id);
+      })
+    ).contents.map(({ id }) => id);
   } catch (err) {
     console.error(`getAllPagesIds error: ${err.name}`);
   }
@@ -75,13 +104,11 @@ export async function getAllPaginationIds(
   query: GetQuery = {}
 ): Promise<string[][]> {
   try {
-    const ids = await getAllPagesIds(apiName, query);
-    const count = Math.floor((ids.length + (itemsPerPage - 1)) / itemsPerPage);
-    const ret: string[][] = new Array(count);
-    for (let i = 0; i < count; i++) {
-      ret[i] = [...pagePath, `${i + 1}`];
-    }
-    return ret;
+    const idsList = await getPagesIdsList(apiName, { ...query, limit: 0 });
+    return paginationIdsFromPageCount(
+      pageCountFromTotalCount(idsList.totalCount, itemsPerPage),
+      pagePath
+    );
   } catch (err) {
     console.error(`getAllPagesIdsPageCount error: ${err.name}`);
   }
@@ -97,7 +124,8 @@ export async function getAllCategolizedPaginationIds(
 ) {
   try {
     let ret: string[][] = category.map((cat) => [cat]);
-    // Promis.all だと、各カテゴリの ids をすべて保持しておく瞬間があるのでやめておく
+    // Promis.all だと、各カテゴリの ids をすべて保持しておく瞬間があるのでやめておく.
+    // totalCount を使うようにしたので、上記の制約はないが、とりあえずそのまま
     const categoryLen = category.length;
     for (let idx = 0; idx < categoryLen; idx++) {
       const cat = category[idx];
@@ -199,7 +227,8 @@ export async function getPagesPageData(
     previewData = {}
   }: GetStaticPropsContext<ParsedUrlQuery>,
   options: PageDataGetOptions = {
-    outerIds: []
+    outerIds: [],
+    itemsPerPage: 10
   }
 ): Promise<PageData> {
   try {
@@ -217,7 +246,7 @@ export async function getPagesPageData(
       updated: rawPageDatas[0].revisedAt || rawPageDatas[0].updatedAt,
       title: rawPageDatas[0].title,
       pageNo: options.pageNo !== undefined ? options.pageNo : 1,
-      pageCount: options.pageCount !== undefined ? options.pageCount : -1,
+      pageCount: -1, // あとで設定する
       description: rawPageDatas[0].description || '',
       mainImage: '',
       allCategory: [],
@@ -307,6 +336,13 @@ export async function getPagesPageData(
           pageData.category = rawPageDatas[rawPageDataLen - 1].category;
         }
     }
+    pageData.pageCount =
+      options.itemsPerPage !== undefined
+        ? pageCountFromTotalCount(
+            getPagePostsTotalCountFromSection(pageData.sections),
+            options.itemsPerPage
+          )
+        : -1;
     return pageData;
   } catch (err) {
     console.error(`getPagesPageData error: ${err.name}`);

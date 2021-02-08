@@ -126,14 +126,28 @@ export function getApiNameArticle(
   return '';
 }
 
+export function getPagePostsTotalCountFromSection(sections: Section[]): number {
+  let totalCount = -1;
+  sections.findIndex(
+    (section) =>
+      section.content.findIndex((content) => {
+        if (content.kind === 'posts' && content.postsKind === 'page') {
+          totalCount = content.totalCount;
+          return true;
+        }
+        return false;
+      }) >= 0
+  );
+  return totalCount;
+}
+
 export async function getSectionFromPages(
   page: PagesContent,
   kind: PagesSectionKind,
   { articlesApi, curCategory, itemsPerPage, pageNo }: PageDataGetOptions = {
     outerIds: [],
     pageNo: 1,
-    itemsPerPage: 10,
-    pageCount: 1
+    itemsPerPage: 10
   }
 ): Promise<Section[]> {
   const sections = page.sections
@@ -176,14 +190,16 @@ export async function getSectionFromPages(
             if (curCategory) {
               q.filters = `category[contains]${curCategory}`;
             }
-            const contents = await getSortedPagesData(apiName, q);
+            const pagesList = await getSortedPagesData(apiName, q);
             return {
               kind: 'posts' as const,
-              contents: contents.map((c) => ({
+              postsKind: 'page' as const,
+              contents: pagesList.contents.map((c) => ({
                 ...c,
                 // path: normalize(`/${content.apiName}`)
                 path: join('/', apiName)
               })),
+              totalCount: pagesList.totalCount,
               detail: content.detail || false
             };
           } else if (
@@ -205,14 +221,16 @@ export async function getSectionFromPages(
                 .map(({ id }) => id)
                 .join(',')}`;
             }
-            const contents = await getSortedPagesData(apiName, q);
+            const pagesList = await getSortedPagesData(apiName, q);
             return {
               kind: 'posts' as const,
-              contents: contents.map((c) => ({
+              postsKind: 'fragment' as const,
+              contents: pagesList.contents.map((c) => ({
                 ...c,
                 // path: normalize(`/${content.apiName}`)
                 path: join('/', apiName)
               })),
+              totalCount: pagesList.totalCount,
               detail: content.detail || false
             };
           }

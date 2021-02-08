@@ -20,7 +20,9 @@ export type SectionContent = {
 };
 export type SectionPosts = {
   kind: 'posts';
+  postsKind: 'page' | 'fragment';
   contents: SectionArticleIndex[];
+  totalCount: number;
   detail: boolean;
   // 再利用することはなさそう、
   // title が保持できないときがある (getStaticProps では id のみわたされるので、

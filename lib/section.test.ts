@@ -4,7 +4,8 @@ import {
   getSectionFromPages,
   styleToJsxStyle,
   htmlToChildren,
-  getApiNameArticle
+  getApiNameArticle,
+  getPagePostsTotalCountFromSection
 } from './section';
 import { PagesContent } from '../types/client/contentTypes';
 
@@ -164,6 +165,92 @@ describe('getApiNameArticle()', () => {
     expect(getApiNameArticle('testtest')).toEqual('');
     // expect(getApiNameArticle('%articles', 'post')).toEqual('posts');  // type guard
     // expect(getApiNameArticle(undefined, 'posts')).toEqual('');
+  });
+});
+
+describe('getPagePostsTotalCountFromSection()', () => {
+  it('should returns totalCount from sections', async () => {
+    expect(
+      getPagePostsTotalCountFromSection([
+        {
+          title: 'content section',
+          content: [
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'content'
+                }
+              ]
+            },
+            {
+              kind: 'posts' as const,
+              postsKind: 'page',
+              contents: [],
+              totalCount: 50,
+              detail: false
+            }
+          ]
+        }
+      ])
+    ).toEqual(50);
+    expect(
+      getPagePostsTotalCountFromSection([
+        {
+          title: 'content section',
+          content: [
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'content'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          title: 'content section',
+          content: [
+            {
+              kind: 'posts' as const,
+              postsKind: 'page',
+              contents: [],
+              totalCount: 50,
+              detail: false
+            }
+          ]
+        }
+      ])
+    ).toEqual(50);
+  });
+  it('should returns -1 from sections', async () => {
+    expect(
+      getPagePostsTotalCountFromSection([
+        {
+          title: 'content section',
+          content: [
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'content'
+                }
+              ]
+            }
+          ]
+        }
+      ])
+    ).toEqual(-1);
   });
 });
 
@@ -389,12 +476,14 @@ describe('getSectionFromPages()', () => {
         }
       ]
     };
-    expect(await getSectionFromPages(mockData, 'sectionContent')).toEqual([
+    const res = await getSectionFromPages(mockData, 'sectionContent');
+    expect(res).toEqual([
       {
         title: '',
         content: [
           {
             kind: 'posts',
+            postsKind: 'fragment',
             contents: [
               {
                 id: 'mmmmmmmmm',
@@ -407,6 +496,7 @@ describe('getSectionFromPages()', () => {
                 path: '/posts'
               }
             ],
+            totalCount: 4,
             detail: true
           }
         ]

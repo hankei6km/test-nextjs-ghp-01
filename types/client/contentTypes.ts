@@ -127,6 +127,13 @@ const contentBase: ContentBase = {
 //   contentHtml: ''
 // };
 
+export const blankPagesList = (): PagesList => ({
+  contents: [],
+  totalCount: 0,
+  limit: 0,
+  offset: 0
+});
+
 export const blankPageContent = (): PagesContent => ({
   ...contentBase,
   title: '',

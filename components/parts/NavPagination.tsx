@@ -37,6 +37,10 @@ const NavPagination = ({
     paginationPagePath.length > 0 ? `/${paginationPagePath.join('/')}` : ''
   }`;
 
+  if (pageCount <= 0) {
+    return <></>;
+  }
+
   // Buttons do not have an accessible name になる.
   // next と prev ボタンが問題らしい。
   return (

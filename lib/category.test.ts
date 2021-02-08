@@ -106,6 +106,7 @@ describe('getSortedPagesData()', () => {
           content: [
             {
               kind: 'posts',
+              postsKind: 'page',
               contents: [
                 {
                   id: 'yyyyyy-da',
@@ -131,6 +132,7 @@ describe('getSortedPagesData()', () => {
                   path: '/posts'
                 }
               ],
+              totalCount: 2,
               detail: false
             }
           ]
