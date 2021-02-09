@@ -1,5 +1,5 @@
 import { ContentImage } from './image';
-import { PictureNode, ImgNode } from './intermediate';
+import { SrcAttr, PictureNode, ImgNode } from './intermediate';
 
 export type ImageMatcher = (content: ContentImage) => boolean;
 
@@ -12,11 +12,10 @@ export type ImageTransform = {
 
 export type ImageTemplate = {
   matcher: ImageMatcher;
-  template?: string;
   intermediate: PictureNode | ImgNode;
   asThumb: boolean;
   largeImage?: ImageTransform;
-  overrideParams?: string[];
+  overrideParams?: SrcAttr['url']['params'];
   templateSrc?: string;
 };
 

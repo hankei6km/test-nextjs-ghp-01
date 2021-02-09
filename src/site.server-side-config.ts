@@ -19,12 +19,6 @@ const siteServerSideConfig: SiteServerSideConfig = {
     template: [
       {
         matcher: imageMatcherLandscape(0),
-        template: `
-        <picture>
-          <source srcset="https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?dpr64=Mw&#x26;fit64=Y3JvcA&#x26;h64=MzAw&#x26;w64=NTAw 3x, https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?dpr64=Mg&#x26;fit64=Y3JvcA&#x26;h64=MzAw&#x26;w64=NTAw 2x, https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?dpr64=MQ&#x26;fit64=Y3JvcA&#x26;h64=MzAw&#x26;w64=NTAw 1x" media="(min-width: 410px)">
-          <img src="https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?fit64=Y3JvcA&#x26;h64=MzAw&#x26;w64=NTAw" alt="" width="500" height="300">
-        </picture>
-        `,
         intermediate: {
           kind: 'picture',
           sources: [
@@ -487,12 +481,6 @@ const siteServerSideConfig: SiteServerSideConfig = {
       },
       {
         matcher: imageMatcherPortrait(0),
-        template: `
-        <picture>
-          <source srcset="https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?dpr64=Mw&#x26;fit64=Y3JvcA&#x26;h64=NTAw&#x26;w64=MzAw 3x, https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?dpr64=Mg&#x26;fit64=Y3JvcA&#x26;h64=NTAw&#x26;w64=MzAw 2x, https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?dpr64=MQ&#x26;fit64=Y3JvcA&#x26;h64=NTAw&#x26;w64=MzAw 1x" media="(min-width: 240px)">
-          <img src="https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?fit64=Y3JvcA&#x26;h64=NTAw&#x26;w64=MzAw" alt="" width="300" height="500">
-        </picture>
-        `,
         intermediate: {
           kind: 'picture',
           sources: [
