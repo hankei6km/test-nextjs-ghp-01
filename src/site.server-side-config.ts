@@ -24,6 +24,249 @@ const siteServerSideConfig: {
           <img src="https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?fit64=Y3JvcA&#x26;h64=MzAw&#x26;w64=NTAw" alt="" width="500" height="300">
         </picture>
         `,
+        intermediate: {
+          kind: 'picture',
+          sources: [
+            {
+              kind: 'suorce',
+              width: 500,
+              breakPoint: 'auto',
+              suggestMedia: '(min-width: 410px)',
+              srcset: {
+                kind: 'srcSet',
+                descriptor: 'x',
+                set: [
+                  {
+                    src: {
+                      kind: 'src',
+                      url: {
+                        base:
+                          'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg',
+                        params: [
+                          {
+                            key64: 'dpr64',
+                            value64: 'Mw'
+                          },
+                          {
+                            key64: 'fit64',
+                            value64: 'Y3JvcA'
+                          },
+                          {
+                            key64: 'h64',
+                            value64: 'MzAw'
+                          },
+                          {
+                            key64: 'w64',
+                            value64: 'NTAw'
+                          }
+                        ],
+                        paramsStr: 'dpr64=Mw&fit64=Y3JvcA&h64=MzAw&w64=NTAw'
+                      }
+                    },
+                    width: 1500,
+                    height: 900,
+                    density: '3'
+                  },
+                  {
+                    src: {
+                      kind: 'src',
+                      url: {
+                        base:
+                          'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg',
+                        params: [
+                          {
+                            key64: 'dpr64',
+                            value64: 'Mg'
+                          },
+                          {
+                            key64: 'fit64',
+                            value64: 'Y3JvcA'
+                          },
+                          {
+                            key64: 'h64',
+                            value64: 'MzAw'
+                          },
+                          {
+                            key64: 'w64',
+                            value64: 'NTAw'
+                          }
+                        ],
+                        paramsStr: 'dpr64=Mg&fit64=Y3JvcA&h64=MzAw&w64=NTAw'
+                      }
+                    },
+                    width: 1000,
+                    height: 600,
+                    density: '2'
+                  },
+                  {
+                    src: {
+                      kind: 'src',
+                      url: {
+                        base:
+                          'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg',
+                        params: [
+                          {
+                            key64: 'dpr64',
+                            value64: 'MQ'
+                          },
+                          {
+                            key64: 'fit64',
+                            value64: 'Y3JvcA'
+                          },
+                          {
+                            key64: 'h64',
+                            value64: 'MzAw'
+                          },
+                          {
+                            key64: 'w64',
+                            value64: 'NTAw'
+                          }
+                        ],
+                        paramsStr: 'dpr64=MQ&fit64=Y3JvcA&h64=MzAw&w64=NTAw'
+                      }
+                    },
+                    width: 500,
+                    height: 300,
+                    density: '1'
+                  }
+                ]
+              }
+            },
+            {
+              kind: 'suorce',
+              width: 350,
+              breakPoint: 'auto',
+              suggestMedia: '(min-width: 330px)',
+              srcset: {
+                kind: 'srcSet',
+                descriptor: 'x',
+                set: [
+                  {
+                    src: {
+                      kind: 'src',
+                      url: {
+                        base:
+                          'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg',
+                        params: [
+                          {
+                            key64: 'dpr64',
+                            value64: 'Mw'
+                          },
+                          {
+                            key64: 'fit64',
+                            value64: 'Y3JvcA'
+                          },
+                          {
+                            key64: 'h64',
+                            value64: 'MjEw'
+                          },
+                          {
+                            key64: 'w64',
+                            value64: 'MzUw'
+                          }
+                        ],
+                        paramsStr: 'dpr64=Mw&fit64=Y3JvcA&h64=MjEw&w64=MzUw'
+                      }
+                    },
+                    width: 1050,
+                    height: 630,
+                    density: '3'
+                  },
+                  {
+                    src: {
+                      kind: 'src',
+                      url: {
+                        base:
+                          'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg',
+                        params: [
+                          {
+                            key64: 'dpr64',
+                            value64: 'Mg'
+                          },
+                          {
+                            key64: 'fit64',
+                            value64: 'Y3JvcA'
+                          },
+                          {
+                            key64: 'h64',
+                            value64: 'MjEw'
+                          },
+                          {
+                            key64: 'w64',
+                            value64: 'MzUw'
+                          }
+                        ],
+                        paramsStr: 'dpr64=Mg&fit64=Y3JvcA&h64=MjEw&w64=MzUw'
+                      }
+                    },
+                    width: 700,
+                    height: 420,
+                    density: '2'
+                  },
+                  {
+                    src: {
+                      kind: 'src',
+                      url: {
+                        base:
+                          'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg',
+                        params: [
+                          {
+                            key64: 'dpr64',
+                            value64: 'MQ'
+                          },
+                          {
+                            key64: 'fit64',
+                            value64: 'Y3JvcA'
+                          },
+                          {
+                            key64: 'h64',
+                            value64: 'MjEw'
+                          },
+                          {
+                            key64: 'w64',
+                            value64: 'MzUw'
+                          }
+                        ],
+                        paramsStr: 'dpr64=MQ&fit64=Y3JvcA&h64=MjEw&w64=MzUw'
+                      }
+                    },
+                    width: 350,
+                    height: 210,
+                    density: '1'
+                  }
+                ]
+              }
+            }
+          ],
+          img: {
+            kind: 'img',
+            alt: '',
+            src: {
+              kind: 'src',
+              url: {
+                base:
+                  'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg',
+                params: [
+                  {
+                    key64: 'fit64',
+                    value64: 'Y3JvcA'
+                  },
+                  {
+                    key64: 'h64',
+                    value64: 'MzAw'
+                  },
+                  {
+                    key64: 'w64',
+                    value64: 'NTAw'
+                  }
+                ],
+                paramsStr: 'fit64=Y3JvcA&h64=MzAw&w64=NTAw'
+              }
+            },
+            width: 500,
+            height: 300
+          }
+        },
         asThumb: true,
         templateSrc: `{
           "imageBaseUrl": "https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg",
@@ -152,6 +395,87 @@ const siteServerSideConfig: {
               "imgHeight": 300,
               "imgDispDensity": 1,
               "media": "auto"
+            },
+            {
+              "itemKey": "EDIT-TARGET-KEY",
+              "previewUrl": "https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?dpr64=Mw&fit64=Y3JvcA&h64=MjEw&w64=MzUw",
+              "baseImageUrl": "https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg",
+              "imageParams": [
+                {
+                  "key": "dpr",
+                  "value": "3"
+                },
+                {
+                  "key": "fit",
+                  "value": "crop"
+                },
+                {
+                  "key": "h",
+                  "value": "210"
+                },
+                {
+                  "key": "w",
+                  "value": "350"
+                }
+              ],
+              "imgWidth": 1050,
+              "imgHeight": 630,
+              "imgDispDensity": 3,
+              "media": "auto"
+            },
+            {
+              "itemKey": "ITEM-KEY-6",
+              "previewUrl": "https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?dpr64=Mg&fit64=Y3JvcA&h64=MjEw&w64=MzUw",
+              "baseImageUrl": "https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg",
+              "imageParams": [
+                {
+                  "key": "dpr",
+                  "value": "2"
+                },
+                {
+                  "key": "fit",
+                  "value": "crop"
+                },
+                {
+                  "key": "h",
+                  "value": "210"
+                },
+                {
+                  "key": "w",
+                  "value": "350"
+                }
+              ],
+              "imgWidth": 700,
+              "imgHeight": 420,
+              "imgDispDensity": 2,
+              "media": "auto"
+            },
+            {
+              "itemKey": "ITEM-KEY-7",
+              "previewUrl": "https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?dpr64=MQ&fit64=Y3JvcA&h64=MjEw&w64=MzUw",
+              "baseImageUrl": "https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg",
+              "imageParams": [
+                {
+                  "key": "dpr",
+                  "value": "1"
+                },
+                {
+                  "key": "fit",
+                  "value": "crop"
+                },
+                {
+                  "key": "h",
+                  "value": "210"
+                },
+                {
+                  "key": "w",
+                  "value": "350"
+                }
+              ],
+              "imgWidth": 350,
+              "imgHeight": 210,
+              "imgDispDensity": 1,
+              "media": "auto"
             }
           ]
         }`
@@ -164,6 +488,144 @@ const siteServerSideConfig: {
           <img src="https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?fit64=Y3JvcA&#x26;h64=NTAw&#x26;w64=MzAw" alt="" width="300" height="500">
         </picture>
         `,
+        intermediate: {
+          kind: 'picture',
+          sources: [
+            {
+              kind: 'suorce',
+              width: 300,
+              breakPoint: 'auto',
+              suggestMedia: '(min-width: 240px)',
+              srcset: {
+                kind: 'srcSet',
+                descriptor: 'x',
+                set: [
+                  {
+                    src: {
+                      kind: 'src',
+                      url: {
+                        base:
+                          'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg',
+                        params: [
+                          {
+                            key64: 'dpr64',
+                            value64: 'Mw'
+                          },
+                          {
+                            key64: 'fit64',
+                            value64: 'Y3JvcA'
+                          },
+                          {
+                            key64: 'h64',
+                            value64: 'NTAw'
+                          },
+                          {
+                            key64: 'w64',
+                            value64: 'MzAw'
+                          }
+                        ],
+                        paramsStr: 'dpr64=Mw&fit64=Y3JvcA&h64=NTAw&w64=MzAw'
+                      }
+                    },
+                    width: 900,
+                    height: 1500,
+                    density: '3'
+                  },
+                  {
+                    src: {
+                      kind: 'src',
+                      url: {
+                        base:
+                          'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg',
+                        params: [
+                          {
+                            key64: 'dpr64',
+                            value64: 'Mg'
+                          },
+                          {
+                            key64: 'fit64',
+                            value64: 'Y3JvcA'
+                          },
+                          {
+                            key64: 'h64',
+                            value64: 'NTAw'
+                          },
+                          {
+                            key64: 'w64',
+                            value64: 'MzAw'
+                          }
+                        ],
+                        paramsStr: 'dpr64=Mg&fit64=Y3JvcA&h64=NTAw&w64=MzAw'
+                      }
+                    },
+                    width: 600,
+                    height: 1000,
+                    density: '2'
+                  },
+                  {
+                    src: {
+                      kind: 'src',
+                      url: {
+                        base:
+                          'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg',
+                        params: [
+                          {
+                            key64: 'dpr64',
+                            value64: 'MQ'
+                          },
+                          {
+                            key64: 'fit64',
+                            value64: 'Y3JvcA'
+                          },
+                          {
+                            key64: 'h64',
+                            value64: 'NTAw'
+                          },
+                          {
+                            key64: 'w64',
+                            value64: 'MzAw'
+                          }
+                        ],
+                        paramsStr: 'dpr64=MQ&fit64=Y3JvcA&h64=NTAw&w64=MzAw'
+                      }
+                    },
+                    width: 300,
+                    height: 500,
+                    density: '1'
+                  }
+                ]
+              }
+            }
+          ],
+          img: {
+            kind: 'img',
+            alt: '',
+            src: {
+              kind: 'src',
+              url: {
+                base:
+                  'https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg',
+                params: [
+                  {
+                    key64: 'fit64',
+                    value64: 'Y3JvcA'
+                  },
+                  {
+                    key64: 'h64',
+                    value64: 'NTAw'
+                  },
+                  {
+                    key64: 'w64',
+                    value64: 'MzAw'
+                  }
+                ],
+                paramsStr: 'fit64=Y3JvcA&h64=NTAw&w64=MzAw'
+              }
+            },
+            width: 300,
+            height: 500
+          }
+        },
         asThumb: true,
         templateSrc: `{
           "imageBaseUrl": "https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg",

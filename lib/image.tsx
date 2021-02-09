@@ -7,8 +7,8 @@ import rehypeSanitize from 'rehype-sanitize';
 import merge from 'deepmerge';
 import gh from 'hast-util-sanitize/lib/github.json';
 import { Schema } from 'hast-util-sanitize';
-import cheerio from 'cheerio';
 import siteServerSideConfig from '../src/site.server-side-config';
+import { PictureNode, ImgNode } from './intermediate';
 
 export type ImageInfo = {
   // カラーパレット、顔認識情報等も含める予定
@@ -26,7 +26,8 @@ export type ContentImage = {
 
 export type ImageTemplate = {
   matcher: (content: ContentImage) => boolean;
-  template: string;
+  template?: string;
+  intermediate: PictureNode | ImgNode;
   asThumb: boolean;
   overrideParams?: string[];
   templateSrc?: string;
@@ -67,33 +68,48 @@ function toElm(
 ): string {
   const idx = templateList.findIndex((t) => t.matcher(contentImage));
   if (idx >= 0) {
-    const template = templateList[idx].template;
-    const $imageTempl = cheerio.load(template);
-    $imageTempl('picture source').each((_idx, elm) => {
-      const $elm = $imageTempl(elm);
-      const srcSet = $elm.attr('srcset');
-      if (srcSet) {
-        const srcSetParams = srcSet.split(', ').map((v) => v.split('?', 2)[1]);
-        $elm.attr(
-          'srcset',
-          srcSetParams.map((v) => `${contentImage.image.url}?${v}`).join(',')
+    const intermediate = templateList[idx].intermediate;
+    if (intermediate.kind === 'picture') {
+      // picture タグのみ.
+      // descriptor 'x' で決め打ち('w' でも 'x' 扱い)
+      const PictureTag = (
+        <picture>
+          {intermediate.sources.map((source, i) => {
+            return (
+              <source
+                key={i}
+                media={source.suggestMedia}
+                srcSet={source.srcset.set
+                  .map((set) => {
+                    return `${contentImage.image.url}?${set.src.url.paramsStr} ${set.density}${source.srcset.descriptor}`;
+                  })
+                  .join(' ,')}
+              />
+            );
+          })}
+          <img
+            src={`${contentImage.image.url}?${intermediate.img.src.url.paramsStr}`}
+            alt={intermediate.img.alt}
+            className={className}
+            width={intermediate.img.width}
+            height={intermediate.img.height}
+          />
+        </picture>
+      );
+      if (contentImage.asThumb) {
+        return ReactDomServer.renderToStaticMarkup(
+          <a
+            href={contentImage.image.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {PictureTag}
+          </a>
         );
       }
-      const $img = $imageTempl('picture img');
-      const params = ($img.attr('src') || '').split('?', 2)[1];
-      $img.attr('src', `${contentImage.image.url}?${params}`);
-      $img.attr('alt', contentImage.alt);
-      $img.attr('class', className);
-    });
-    if (contentImage.asThumb) {
-      const $a = cheerio.load('<a></a>')('a');
-      $a.attr('href', contentImage.image.url);
-      $a.attr('target', '_blank');
-      $a.attr('target', '_blank');
-      $a.attr('rel', 'noopener noreferrer');
-      $imageTempl('picture').wrap($a);
+      return ReactDomServer.renderToStaticMarkup(PictureTag);
     }
-    return $imageTempl('body').html() || '';
+    return '';
   }
   // とりあえず.
   const width =
