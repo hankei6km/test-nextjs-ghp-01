@@ -2,22 +2,23 @@ import {
   ImageTemplate,
   imageMatcherLandscape,
   imageMatcherPortrait
-} from '../lib/image';
+} from '../lib/imageTemplate';
 // サーバー側で使う設定.
 // ブラウザでは使わない or 見せたくない項目(セキュリティ的にの他にサイズ的な等
 
-const siteServerSideConfig: {
+type SiteServerSideConfig = {
   imageConfig: {
     contentImageClassName: string;
     template: ImageTemplate[];
   };
-} = {
+};
+const siteServerSideConfig: SiteServerSideConfig = {
   imageConfig: {
     // siteConfig と重複している項目
     contentImageClassName: 'contentImage-img',
     template: [
       {
-        matcher: (content) => imageMatcherLandscape(0)(content),
+        matcher: imageMatcherLandscape(0),
         template: `
         <picture>
           <source srcset="https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?dpr64=Mw&#x26;fit64=Y3JvcA&#x26;h64=MzAw&#x26;w64=NTAw 3x, https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?dpr64=Mg&#x26;fit64=Y3JvcA&#x26;h64=MzAw&#x26;w64=NTAw 2x, https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?dpr64=MQ&#x26;fit64=Y3JvcA&#x26;h64=MzAw&#x26;w64=NTAw 1x" media="(min-width: 410px)">
@@ -268,6 +269,10 @@ const siteServerSideConfig: {
           }
         },
         asThumb: true,
+        largeImage: {
+          matcher: imageMatcherLandscape(1500),
+          paramsStr: 'w64=MTUwMA'
+        },
         templateSrc: `{
           "imageBaseUrl": "https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg",
           "baseParameterSet": [
@@ -481,7 +486,7 @@ const siteServerSideConfig: {
         }`
       },
       {
-        matcher: (content) => imageMatcherPortrait(0)(content),
+        matcher: imageMatcherPortrait(0),
         template: `
         <picture>
           <source srcset="https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?dpr64=Mw&#x26;fit64=Y3JvcA&#x26;h64=NTAw&#x26;w64=MzAw 3x, https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?dpr64=Mg&#x26;fit64=Y3JvcA&#x26;h64=NTAw&#x26;w64=MzAw 2x, https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg?dpr64=MQ&#x26;fit64=Y3JvcA&#x26;h64=NTAw&#x26;w64=MzAw 1x" media="(min-width: 240px)">
@@ -627,6 +632,10 @@ const siteServerSideConfig: {
           }
         },
         asThumb: true,
+        largeImage: {
+          matcher: imageMatcherPortrait(1500),
+          paramsStr: 'h64=MTUwMA'
+        },
         templateSrc: `{
           "imageBaseUrl": "https://images.microcms-assets.io/protected/ap-northeast-1:9063452c-019d-4ffe-a96f-1a4524853eda/service/re-plotter/media/2020-10-24-jog1.jpg",
           "baseParameterSet": [

@@ -7,8 +7,8 @@ import rehypeSanitize from 'rehype-sanitize';
 import merge from 'deepmerge';
 import gh from 'hast-util-sanitize/lib/github.json';
 import { Schema } from 'hast-util-sanitize';
+import { ImageTemplate, imageTransformedUrl } from './imageTemplate';
 import siteServerSideConfig from '../src/site.server-side-config';
-import { PictureNode, ImgNode } from './intermediate';
 
 export type ImageInfo = {
   // カラーパレット、顔認識情報等も含める予定
@@ -23,44 +23,6 @@ export type ContentImage = {
   newTab?: boolean;
   asThumb?: boolean;
 };
-
-export type ImageTemplate = {
-  matcher: (content: ContentImage) => boolean;
-  template?: string;
-  intermediate: PictureNode | ImgNode;
-  asThumb: boolean;
-  overrideParams?: string[];
-  templateSrc?: string;
-};
-
-export const imageMatcherLandscape = (
-  min: number,
-  max: number = -1
-): ImageTemplate['matcher'] => {
-  return (content: ContentImage): boolean => {
-    if (content.image.width >= content.image.height) {
-      return (
-        min <= content.image.width && (max < 0 || content.image.width <= max)
-      );
-    }
-    return false;
-  };
-};
-
-export const imageMatcherPortrait = (
-  min: number,
-  max: number = -1
-): ImageTemplate['matcher'] => {
-  return (content: ContentImage): boolean => {
-    if (content.image.height > content.image.width) {
-      return (
-        min <= content.image.height && (max < 0 || content.image.height <= max)
-      );
-    }
-    return false;
-  };
-};
-
 function toElm(
   contentImage: ContentImage,
   className: string,
@@ -97,12 +59,12 @@ function toElm(
         </picture>
       );
       if (contentImage.asThumb) {
+        const largeImage = templateList[idx].largeImage;
+        const largeImageUrl = largeImage
+          ? imageTransformedUrl(contentImage, largeImage)
+          : contentImage.image.url;
         return ReactDomServer.renderToStaticMarkup(
-          <a
-            href={contentImage.image.url}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href={largeImageUrl} target="_blank" rel="noopener noreferrer">
             {PictureTag}
           </a>
         );
