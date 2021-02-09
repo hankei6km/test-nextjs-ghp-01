@@ -7,7 +7,7 @@ import rehypeSanitize from 'rehype-sanitize';
 import merge from 'deepmerge';
 import gh from 'hast-util-sanitize/lib/github.json';
 import { Schema } from 'hast-util-sanitize';
-import cheerio from 'cheerio';
+import { ImageTemplate, imageTransformedUrl } from './imageTemplate';
 import siteServerSideConfig from '../src/site.server-side-config';
 
 export type ImageInfo = {
@@ -23,43 +23,6 @@ export type ContentImage = {
   newTab?: boolean;
   asThumb?: boolean;
 };
-
-export type ImageTemplate = {
-  matcher: (content: ContentImage) => boolean;
-  template: string;
-  asThumb: boolean;
-  overrideParams?: string[];
-  templateSrc?: string;
-};
-
-export const imageMatcherLandscape = (
-  min: number,
-  max: number = -1
-): ImageTemplate['matcher'] => {
-  return (content: ContentImage): boolean => {
-    if (content.image.width >= content.image.height) {
-      return (
-        min <= content.image.width && (max < 0 || content.image.width <= max)
-      );
-    }
-    return false;
-  };
-};
-
-export const imageMatcherPortrait = (
-  min: number,
-  max: number = -1
-): ImageTemplate['matcher'] => {
-  return (content: ContentImage): boolean => {
-    if (content.image.height > content.image.width) {
-      return (
-        min <= content.image.height && (max < 0 || content.image.height <= max)
-      );
-    }
-    return false;
-  };
-};
-
 function toElm(
   contentImage: ContentImage,
   className: string,
@@ -67,33 +30,48 @@ function toElm(
 ): string {
   const idx = templateList.findIndex((t) => t.matcher(contentImage));
   if (idx >= 0) {
-    const template = templateList[idx].template;
-    const $imageTempl = cheerio.load(template);
-    $imageTempl('picture source').each((_idx, elm) => {
-      const $elm = $imageTempl(elm);
-      const srcSet = $elm.attr('srcset');
-      if (srcSet) {
-        const srcSetParams = srcSet.split(', ').map((v) => v.split('?', 2)[1]);
-        $elm.attr(
-          'srcset',
-          srcSetParams.map((v) => `${contentImage.image.url}?${v}`).join(',')
+    const intermediate = templateList[idx].intermediate;
+    if (intermediate.kind === 'picture') {
+      // picture タグのみ.
+      // descriptor 'x' で決め打ち('w' でも 'x' 扱い)
+      const PictureTag = (
+        <picture>
+          {intermediate.sources.map((source, i) => {
+            return (
+              <source
+                key={i}
+                media={source.suggestMedia}
+                srcSet={source.srcset.set
+                  .map((set) => {
+                    return `${contentImage.image.url}?${set.src.url.paramsStr} ${set.density}${source.srcset.descriptor}`;
+                  })
+                  .join(' ,')}
+              />
+            );
+          })}
+          <img
+            src={`${contentImage.image.url}?${intermediate.img.src.url.paramsStr}`}
+            alt={intermediate.img.alt}
+            className={className}
+            width={intermediate.img.width}
+            height={intermediate.img.height}
+          />
+        </picture>
+      );
+      if (contentImage.asThumb) {
+        const largeImage = templateList[idx].largeImage;
+        const largeImageUrl = largeImage
+          ? imageTransformedUrl(contentImage, largeImage)
+          : contentImage.image.url;
+        return ReactDomServer.renderToStaticMarkup(
+          <a href={largeImageUrl} target="_blank" rel="noopener noreferrer">
+            {PictureTag}
+          </a>
         );
       }
-      const $img = $imageTempl('picture img');
-      const params = ($img.attr('src') || '').split('?', 2)[1];
-      $img.attr('src', `${contentImage.image.url}?${params}`);
-      $img.attr('alt', contentImage.alt);
-      $img.attr('class', className);
-    });
-    if (contentImage.asThumb) {
-      const $a = cheerio.load('<a></a>')('a');
-      $a.attr('href', contentImage.image.url);
-      $a.attr('target', '_blank');
-      $a.attr('target', '_blank');
-      $a.attr('rel', 'noopener noreferrer');
-      $imageTempl('picture').wrap($a);
+      return ReactDomServer.renderToStaticMarkup(PictureTag);
     }
-    return $imageTempl('body').html() || '';
+    return '';
   }
   // とりあえず.
   const width =
