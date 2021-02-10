@@ -333,6 +333,8 @@ export const mockDataArticles: PagesContents = {
   limit: 120000
 };
 
+export const mockDataArticleLContent = mockDataArticles.contents[0];
+
 const mockDataArticleListContens = mockDataArticles.contents.map((v) => ({
   ...v,
   kind: undefined,

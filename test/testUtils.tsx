@@ -1,4 +1,5 @@
 import { NextRouter } from 'next/router';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { mockDataArticleList } from './testMockData';
 // import { CreateMockRouterOptions } from 'next-router-provider';
 
@@ -44,6 +45,27 @@ export function mockImage(srcSetter = jest.fn(), addEventListener = jest.fn()) {
     image.addEventListener = addEventListener;
     return image;
   });
+}
+
+export function mockNextApiRequest(query: NextApiRequest['query']) {
+  return jest.fn().mockImplementation(() => {
+    return ({
+      query: query
+    } as unknown) as NextApiRequest;
+  })();
+}
+export function mockNextApiResponse() {
+  return jest.fn().mockImplementation(() => {
+    return ({
+      end: jest.fn(),
+      status: jest.fn().mockReturnValue({
+        end: jest.fn(),
+        json: jest.fn()
+      }),
+      writeHead: jest.fn(),
+      setPreviewData: jest.fn()
+    } as unknown) as NextApiResponse;
+  })();
 }
 
 export function queryParams(src?: string): { [key: string]: string } {

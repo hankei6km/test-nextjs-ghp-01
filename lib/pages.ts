@@ -210,6 +210,7 @@ export async function getPagesDataWithOuter(
       });
       return res.body.contents;
     }
+    // その他 API と outer 用に pages API を実行する場合
     const res = await client['pages'].get({
       query: {
         ids: [globalPageId].concat(outerIds).join(','),
