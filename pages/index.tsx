@@ -51,8 +51,12 @@ const IndexPage = ({ pageData }: { pageData: PageData }) => {
 
 export default IndexPage;
 
-export const getStaticProps: GetStaticProps = async () => {
-  const pageData = await getPagesPageData('pages', { params: { id: 'home' } });
+export const getStaticProps: GetStaticProps = async (context) => {
+  const pageData = await getPagesPageData('pages', {
+    params: { id: 'home' },
+    preview: context.preview,
+    previewData: context.previewData
+  });
   return {
     props: {
       pageData

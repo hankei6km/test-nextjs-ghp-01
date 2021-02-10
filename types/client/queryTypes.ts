@@ -26,6 +26,7 @@ export type GetFieldsIdQuery = {
 
 type GetPagesItemsWithLayoutId = string;
 export type GetPagesItemsWithLayout = {
+  draftKey?: string;
   // ids: `_layout,${GetPagesItemsWithLayoutId}`
   ids: GetPagesItemsWithLayoutId;
   fields: 'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections';

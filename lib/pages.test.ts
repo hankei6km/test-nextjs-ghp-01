@@ -169,7 +169,6 @@ describe('getPagesData()', () => {
     });
     expect(fetchMock.mock.calls[0][0]).toContain('/pages/home?');
     expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
-      draftKey: '',
       fields:
         'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
     });
