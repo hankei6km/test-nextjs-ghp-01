@@ -15,7 +15,8 @@ export const previewSetupHandler = (
   ) {
     return res.status(404).end();
   }
-  if (!ApiNameArticleValues.some((v) => v === req.query.apiName)) {
+  const apiName: string = req.query.apiName as string;
+  if (!ApiNameArticleValues.some((v) => v === apiName)) {
     // 有効な API 名ではなかった
     return res.status(404).end();
   }
@@ -24,7 +25,7 @@ export const previewSetupHandler = (
     q.append('fields', 'id');
     q.append('draftKey', req.query.draftKey as string);
     const fres = await fetch(
-      `${process.env.API_BASE_URL}api/v1/${req.query.apiName}/${
+      `${process.env.API_BASE_URL}api/v1/${apiName}/${
         req.query.slug
       }?${q.toString()}`,
       {
@@ -35,6 +36,7 @@ export const previewSetupHandler = (
     if (fres.ok) {
       const content = await fres.json();
       res.setPreviewData({
+        apiName: apiName,
         slug: content.id,
         draftKey: req.query.draftKey
       });

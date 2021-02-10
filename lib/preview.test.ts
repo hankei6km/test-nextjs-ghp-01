@@ -57,6 +57,7 @@ describe('previewSetupHandler()', () => {
     });
     expect(res.setPreviewData).toHaveBeenCalledTimes(1);
     expect(res.setPreviewData.mock.calls[0][0]).toStrictEqual({
+        apiName: 'posts',
       slug: 'abcdefg-123',
       draftKey: 'qqqqqq-56'
     });
@@ -144,6 +145,7 @@ describe('getPagesPageData()', () => {
       params: { id: 'home' },
       preview: true,
       previewData: {
+        apiName: 'posts',
         slug: 'abcdefg-123',
         draftKey: 'qqqqqq-56'
       }
