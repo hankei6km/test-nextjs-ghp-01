@@ -50,6 +50,7 @@ export function mockImage(srcSetter = jest.fn(), addEventListener = jest.fn()) {
 export function mockNextApiRequest(query: NextApiRequest['query']) {
   return jest.fn().mockImplementation(() => {
     return ({
+      _mockName: 'mockNextApiRequest',
       query: query
     } as unknown) as NextApiRequest;
   })();
@@ -57,6 +58,7 @@ export function mockNextApiRequest(query: NextApiRequest['query']) {
 export function mockNextApiResponse() {
   return jest.fn().mockImplementation(() => {
     return ({
+      _mockName: 'mockNextApiResponse',
       end: jest.fn(),
       status: jest.fn().mockReturnValue({
         end: jest.fn(),
