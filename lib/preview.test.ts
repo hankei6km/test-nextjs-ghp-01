@@ -35,7 +35,6 @@ describe('previewSetupHandler()', () => {
   afterAll(() => {
     process.env = OLD_ENV;
   });
-
   it('should enter preview mode', async () => {
     fetchMock.mockResponseOnce(
       JSON.stringify({ id: 'abcdefg-123', draftKey: 'qqqqqq-56' })
@@ -51,7 +50,6 @@ describe('previewSetupHandler()', () => {
     const res = mockNextApiResponse();
     await previewSetupHandler(fn)(req, res);
     expect(fetchMock).toHaveBeenCalledTimes(1);
-    // pages から global と home の取得. ここでは draftKey が使われない.
     expect(fetchMock.mock.calls[0][0]).toContain('/posts/abcdefg-123?');
     expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
       fields: 'id',
@@ -66,6 +64,73 @@ describe('previewSetupHandler()', () => {
     expect(fn.mock.calls[0][0]._mockName).toStrictEqual('mockNextApiRequest');
     expect(fn.mock.calls[0][1]._mockName).toStrictEqual('mockNextApiResponse');
     expect(fn.mock.calls[0][2]).toStrictEqual('abcdefg-123');
+  });
+  it('should entering has been failed by invalid previewSecret', async () => {
+    fetchMock.mockResponseOnce(
+      JSON.stringify({ id: 'abcdefg-123', draftKey: 'qqqqqq-56' })
+    );
+    const reqQuery = {
+      previewSecret: 'invalid',
+      apiName: 'posts',
+      slug: 'abcdefg-123',
+      draftKey: 'qqqqqq-56'
+    };
+    const fn = jest.fn();
+    const req = mockNextApiRequest(reqQuery);
+    const res = mockNextApiResponse();
+    await previewSetupHandler(fn)(req, res);
+    expect(fetchMock).toHaveBeenCalledTimes(0);
+    expect(res.setPreviewData).toHaveBeenCalledTimes(0);
+    expect(fn).toHaveBeenCalledTimes(0);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.status.mock.calls[0][0]).toStrictEqual(404);
+    expect(res.end).toHaveBeenCalledTimes(1);
+    expect(res.end.mock.calls[0][0]).toBeUndefined();
+  });
+  it('should entering has been failed by invalid apiName', async () => {
+    fetchMock.mockResponseOnce(
+      JSON.stringify({ id: 'abcdefg-123', draftKey: 'qqqqqq-56' })
+    );
+    const reqQuery = {
+      previewSecret,
+      apiName: 'invalid',
+      slug: 'abcdefg-123',
+      draftKey: 'qqqqqq-56'
+    };
+    const fn = jest.fn();
+    const req = mockNextApiRequest(reqQuery);
+    const res = mockNextApiResponse();
+    await previewSetupHandler(fn)(req, res);
+    expect(fetchMock).toHaveBeenCalledTimes(0);
+    expect(res.setPreviewData).toHaveBeenCalledTimes(0);
+    expect(fn).toHaveBeenCalledTimes(0);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.status.mock.calls[0][0]).toStrictEqual(404);
+    expect(res.end).toHaveBeenCalledTimes(1);
+    expect(res.end.mock.calls[0][0]).toBeUndefined();
+  });
+  it('should entering has been failed by error from fetch', async () => {
+    // get api で slug / draftKey の指定ミスをした場合は  HTTP/2 404
+    fetchMock.mockResponses([JSON.stringify({}), { status: 404 }]);
+    const reqQuery = {
+      previewSecret,
+      apiName: 'posts',
+      slug: 'abcdefg-123',
+      draftKey: 'qqqqqq-56'
+    };
+    const fn = jest.fn();
+    const req = mockNextApiRequest(reqQuery);
+    const res = mockNextApiResponse();
+    await previewSetupHandler(fn)(req, res);
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(res.setPreviewData).toHaveBeenCalledTimes(0);
+    expect(fn).toHaveBeenCalledTimes(0);
+    expect(res.status).toHaveBeenCalledTimes(1);
+    expect(res.status.mock.calls[0][0]).toStrictEqual(401);
+    expect(res.json).toHaveBeenCalledTimes(1);
+    expect(res.json.mock.calls[0][0]).toStrictEqual({
+      message: 'Invalid slug / draftKey'
+    });
   });
 });
 

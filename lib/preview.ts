@@ -40,7 +40,7 @@ export const previewSetupHandler = (
       });
       return await fn(req, res, content.id);
     } else {
-      return res.status(401).json({ message: 'Invalid slug' });
+      return res.status(401).json({ message: 'Invalid slug / draftKey' });
     }
   } catch (err) {
     return res.status(401).json({ message: err.name });

@@ -56,18 +56,28 @@ export function mockNextApiRequest(query: NextApiRequest['query']) {
   })();
 }
 export function mockNextApiResponse() {
-  return jest.fn().mockImplementation(() => {
-    return ({
+  const mock = {
+    end: jest.fn(),
+    json: jest.fn(),
+    status: jest.fn(),
+    writeHead: jest.fn(),
+    setPreviewData: jest.fn()
+  };
+  const res = jest.fn().mockImplementation(() => {
+    const o = {
+      end: mock.end.mockReturnValue(mock),
+      json: mock.json.mockReturnValue(mock),
+      status: mock.status.mockReturnValue(mock),
+      writeHead: mock.writeHead.mockReturnValue(mock),
+      setPreviewData: mock.setPreviewData.mockReturnValue(mock)
+    };
+    const res = ({
       _mockName: 'mockNextApiResponse',
-      end: jest.fn(),
-      status: jest.fn().mockReturnValue({
-        end: jest.fn(),
-        json: jest.fn()
-      }),
-      writeHead: jest.fn(),
-      setPreviewData: jest.fn()
+      ...o
     } as unknown) as NextApiResponse;
+    return res;
   })();
+  return res;
 }
 
 export function queryParams(src?: string): { [key: string]: string } {
