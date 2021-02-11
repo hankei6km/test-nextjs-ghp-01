@@ -61,6 +61,7 @@ export function mockNextApiResponse() {
     json: jest.fn(),
     status: jest.fn(),
     writeHead: jest.fn(),
+    clearPreviewData: jest.fn(),
     setPreviewData: jest.fn()
   };
   const res = jest.fn().mockImplementation(() => {
@@ -69,6 +70,7 @@ export function mockNextApiResponse() {
       json: mock.json.mockReturnValue(mock),
       status: mock.status.mockReturnValue(mock),
       writeHead: mock.writeHead.mockReturnValue(mock),
+      clearPreviewData: mock.clearPreviewData.mockReturnValue(mock),
       setPreviewData: mock.setPreviewData.mockReturnValue(mock)
     };
     const res = ({

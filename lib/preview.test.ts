@@ -14,6 +14,7 @@ import {
 } from '../test/testUtils';
 import { previewSetupHandler, applyPreviewDataToIdQuery } from './preview';
 import handlerEnter from '../pages/api/enter-preview/[apiName]';
+import handlerExit from '../pages/api/exit-preview';
 
 // https://github.com/jefflau/jest-fetch-mock/issues/83
 const fetchMock = fetch as FetchMock;
@@ -288,7 +289,7 @@ describe('getPagesPageData()', () => {
   });
 });
 
-describe('api.preview-enter[apiName].handler()', () => {
+describe('apienter-.preview[apiName].handler()', () => {
   const previewSecret = 'test-secret';
   // https://stackoverflow.com/questions/48033841/test-process-env-with-jest
   const OLD_ENV = process.env;
@@ -321,5 +322,24 @@ describe('api.preview-enter[apiName].handler()', () => {
     });
     expect(res.end).toHaveBeenCalledTimes(1);
     expect(res.end.mock.calls[0][0]).toStrictEqual('Preview mode enabled');
+  });
+});
+
+describe('api.exit-previee.handler()', () => {
+  it('should exit preview mode', async () => {
+    const req = mockNextApiRequest({});
+    const res = mockNextApiResponse();
+    await handlerExit(req, res);
+
+    // preview context がクリアされる
+    expect(res.clearPreviewData).toHaveBeenCalledTimes(1);
+    // redirect で '/' に振られる
+    expect(res.writeHead).toHaveBeenCalledTimes(1);
+    expect(res.writeHead.mock.calls[0][0]).toStrictEqual(307);
+    expect(res.writeHead.mock.calls[0][1]).toStrictEqual({
+      Location: '/'
+    });
+    expect(res.end).toHaveBeenCalledTimes(1);
+    expect(res.end.mock.calls[0][0]).toBeUndefined();
   });
 });
