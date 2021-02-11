@@ -233,6 +233,20 @@ export async function getSectionFromPages(
               totalCount: pagesList.totalCount,
               detail: content.detail || false
             };
+          } else if (
+            content.fieldId === 'contentMessageBanner' &&
+            !content.disabled
+          ) {
+            return {
+              kind: 'message' as const,
+              message: content.message,
+              variant: content.variant[0],
+              autoHide: content.autoHide || false
+            };
+            // return {
+            //   kind: 'message' as const,
+            //   contentHtml: htmlToChildren(stickyBarToHtml({ ...content }))
+            // };
           }
           return {
             kind: '' as const

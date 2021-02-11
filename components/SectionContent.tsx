@@ -14,6 +14,7 @@ import DateUpdated from './parts/DateUpdated';
 import NavCategory from './parts/NavCategory';
 import NavPagination from './parts/NavPagination';
 import NavBreadcrumbs from './parts/NavBreadcrumbs';
+import MessageBanner from './parts/MessageBanner';
 
 const useStyles = makeStyles(() => ({
   'SectionContent-root': {},
@@ -107,6 +108,14 @@ const SectionContent = ({ content, classes: inClasses }: Props) => {
             classes={{ ...inClasses }}
           />
         </Box>
+      )}
+      {content.kind === 'message' && (
+        <MessageBanner
+          message={content.message}
+          variant={content.variant}
+          autoHide={content.autoHide}
+          classes={{ ...inClasses }}
+        />
       )}
     </>
   );

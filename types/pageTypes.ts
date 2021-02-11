@@ -30,6 +30,13 @@ export type SectionPosts = {
   // よって一旦削除。
   // category: PagesCategory[];
 };
+export type SectionMessageBanner = {
+  kind: 'message';
+  message: string;
+  variant: 'info' | 'warning' | 'alert';
+  // disabled: boolean; // disabled が指定されていら、項目を作成しない
+  autoHide: boolean;
+};
 
 // 現時点では Parts>>> は外部からの定義はできない
 export type SectionPartsSiteTitle = {
@@ -80,6 +87,7 @@ export type Section = {
     | SectionBlank
     | SectionContent
     | SectionPosts
+    | SectionMessageBanner
     | SectionPartsSiteTitle
     | SectionPartsSiteLogo
     | SectionPartsPageTitle

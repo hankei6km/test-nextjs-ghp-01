@@ -57,12 +57,21 @@ type PagesContentImage = {
   newTab?: boolean;
   asThumb?: boolean;
 };
+type PagesContentMessageBanner = {
+  fieldId: 'contentMessageBanner';
+  message: string;
+  variant: ['info' | 'warning' | 'alert']; // 複数選択ではない
+  disabled?: boolean;
+  autoHide?: boolean;
+};
+
 type PageContent =
   | PagesContentHtml
   | PagesContentMarkdown
   | PagesContentPageArticles
   | PagesContentFragArticles
-  | PagesContentImage;
+  | PagesContentImage
+  | PagesContentMessageBanner;
 type PagesSectionContent = {
   fieldId: 'sectionContent';
   title?: string;
