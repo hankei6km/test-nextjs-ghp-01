@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import { previewSetupHandler } from '../../../lib/preview';
+import { getAllPagesIds } from '../../../lib/pages';
 
 // apiName によって、どの API のプレビューか決定する..
 // apiName で動的に扱うにはリダイレクト先をどこかで決める必要がある。
@@ -17,13 +18,25 @@ const handler = async (
       // slug が指す id が含まれる location へリダイレクトさせる
       switch (id) {
         case '_global':
+          // どこにリダイレクトしても表示はされる
           location = `/`;
           break;
         case 'home':
           location = `/`;
           break;
         case 'blog':
-        case 'blog-outer':
+          location = `/posts/`;
+          break;
+        case 'blog-posts':
+          // posts の [id] の outer.
+          // id を１件取得して表示させる.
+          // getAllPagesIds は aspida の client 使ってるので、おそらく mock もついてくる
+          // (なので api route では使いたくなかったのだが)
+          const ids = await getAllPagesIds('posts', { limit: 1 });
+          if (ids.length > 0) {
+            location = `/posts/${ids[0]}`;
+          }
+          break;
         case 'blog-category':
           location = `/posts/`;
           break;

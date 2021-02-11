@@ -12,7 +12,7 @@ import {
   mockNextApiRequest,
   mockNextApiResponse
 } from '../test/testUtils';
-import { previewSetupHandler } from './preview';
+import { previewSetupHandler, applyPreviewDataToIdQuery } from './preview';
 import handlerEnter from '../pages/api/enter-preview/[apiName]';
 
 // https://github.com/jefflau/jest-fetch-mock/issues/83
@@ -57,7 +57,7 @@ describe('previewSetupHandler()', () => {
     });
     expect(res.setPreviewData).toHaveBeenCalledTimes(1);
     expect(res.setPreviewData.mock.calls[0][0]).toStrictEqual({
-        apiName: 'posts',
+      apiName: 'posts',
       slug: 'abcdefg-123',
       draftKey: 'qqqqqq-56'
     });
@@ -135,8 +135,50 @@ describe('previewSetupHandler()', () => {
   });
 });
 
+describe('applyPreviewDataToIdQuery()', () => {
+  it('should apply preview data to id and query ', () => {
+    const previewData = {
+      apiName: 'posts',
+      slug: 'test-slug',
+      draftKey: 'test-key'
+    };
+    expect(
+      applyPreviewDataToIdQuery(true, previewData, 'posts', 'test-id', {
+        fields: 'id'
+      })
+    ).toStrictEqual(['test-slug', { fields: 'id', draftKey: 'test-key' }]);
+  });
+  it('should not apply preview data to id and query ', () => {
+    const previewData = {
+      apiName: 'posts',
+      slug: 'test-slug',
+      draftKey: 'test-key'
+    };
+    expect(
+      applyPreviewDataToIdQuery(false, previewData, 'posts', 'test-id', {
+        fields: 'id'
+      })
+    ).toStrictEqual(['test-id', { fields: 'id' }]);
+    expect(
+      applyPreviewDataToIdQuery(false, undefined, 'posts', 'test-id', {
+        fields: 'id'
+      })
+    ).toStrictEqual(['test-id', { fields: 'id' }]);
+    expect(
+      applyPreviewDataToIdQuery(false, {}, 'posts', 'test-id', {
+        fields: 'id'
+      })
+    ).toStrictEqual(['test-id', { fields: 'id' }]);
+    expect(
+      applyPreviewDataToIdQuery(true, previewData, 'pages', 'test-id', {
+        fields: 'id'
+      })
+    ).toStrictEqual(['test-id', { fields: 'id' }]);
+  });
+});
+
 describe('getPagesPageData()', () => {
-  it('should get pages with draftKey', async () => {
+  it('should get posts with draftKey', async () => {
     fetchMock
       .mockResponseOnce(JSON.stringify(mockDataPagesOuterHome))
       .mockResponseOnce(JSON.stringify(mockDataArticleList))
@@ -145,8 +187,8 @@ describe('getPagesPageData()', () => {
       params: { id: 'home' },
       preview: true,
       previewData: {
-        apiName: 'posts',
-        slug: 'abcdefg-123',
+        apiName: 'pages',
+        slug: 'home',
         draftKey: 'qqqqqq-56'
       }
     });
@@ -167,24 +209,32 @@ describe('getPagesPageData()', () => {
         'id,createdAt,updatedAt,publishedAt,revisedAt,title,category.id,category.title'
     });
   });
+
   it('should get posts with draftKey', async () => {
     fetchMock
       .mockResponseOnce(JSON.stringify(mockDataPagesOuterPosts))
       .mockResponseOnce(JSON.stringify(mockDataArticleLContent));
-    await getPagesPageData('posts', {
-      params: { id: 'abcdefg' },
-      preview: true,
-      previewData: {
-        slug: 'abcdefg-123',
-        draftKey: 'qqqqqq-56'
+    await getPagesPageData(
+      'posts',
+      {
+        params: { id: 'abcdefg' },
+        preview: true,
+        previewData: {
+          apiName: 'posts',
+          slug: 'abcdefg-123',
+          draftKey: 'qqqqqq-56'
+        }
+      },
+      {
+        outerIds: ['blog-posts']
       }
-    });
+    );
 
     expect(fetchMock).toHaveBeenCalledTimes(2);
     // pages から global と home の取得. ここでは draftKey が使われない.
     expect(fetchMock.mock.calls[0][0]).toContain('/pages?');
     expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
-      ids: '_global',
+      ids: '_global,blog-posts',
       fields:
         'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
     });
@@ -195,6 +245,45 @@ describe('getPagesPageData()', () => {
       fields:
         'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections',
       draftKey: 'qqqqqq-56'
+    });
+  });
+
+  it('should get posts outer with draftKey', async () => {
+    fetchMock
+      .mockResponseOnce(JSON.stringify(mockDataPagesOuterPosts))
+      .mockResponseOnce(JSON.stringify(mockDataArticleLContent));
+    await getPagesPageData(
+      'posts',
+      {
+        params: { id: 'abcdefg' },
+        preview: true,
+        previewData: {
+          apiName: 'pages',
+          slug: 'posts-outer',
+          draftKey: 'qqqqqq-56'
+        }
+      },
+      {
+        outerIds: ['blog-posts']
+      }
+    );
+
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    // pages から global と home の取得. getPagesPageData は  posts で実行しているが、
+    // preview の api は pages なので draftKey が使われる
+    expect(fetchMock.mock.calls[0][0]).toContain('/pages?');
+    expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
+      ids: '_global,blog-posts',
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections',
+
+      draftKey: 'qqqqqq-56'
+    });
+    // posts から artcles の取得. preview の api ではないので、slug も draftKey も使われない
+    expect(fetchMock.mock.calls[1][0]).toContain('/posts/abcdefg?');
+    expect(queryParams(String(fetchMock.mock.calls[1][0]))).toStrictEqual({
+      fields:
+        'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
     });
   });
 });
