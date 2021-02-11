@@ -49,7 +49,6 @@ describe('getSortedPagesData()', () => {
     // categoyから項目取得.
     expect(fetchMock.mock.calls[1][0]).toContain('/category/cat2?');
     expect(queryParams(String(fetchMock.mock.calls[1][0]))).toStrictEqual({
-      draftKey: '',
       fields:
         'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
     });

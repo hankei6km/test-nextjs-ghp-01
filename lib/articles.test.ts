@@ -263,7 +263,6 @@ describe('getPagesData()', () => {
     });
     expect(fetchMock.mock.calls[0][0]).toContain('/posts/zzzzzzzzz?');
     expect(queryParams(String(fetchMock.mock.calls[0][0]))).toStrictEqual({
-      draftKey: '',
       fields:
         'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
     });
@@ -377,7 +376,6 @@ describe('getPagesPageData()', () => {
     // posts から記事ページ(zzzzzzzzz)) の取得. -> getPagesPageData で指定した id
     expect(fetchMock.mock.calls[1][0]).toContain('/posts/zzzzzzzzz?');
     expect(queryParams(String(fetchMock.mock.calls[1][0]))).toStrictEqual({
-      draftKey: '',
       fields:
         'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
     });
@@ -542,7 +540,6 @@ describe('getPagesPageData()', () => {
     // posts から記事ページ(mmmmmmmmm)) の取得. -> getPagesPageData で指定した id
     expect(fetchMock.mock.calls[1][0]).toContain('/posts/mmmmmmmmm?');
     expect(queryParams(String(fetchMock.mock.calls[1][0]))).toStrictEqual({
-      draftKey: '',
       fields:
         'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
     });

@@ -1,4 +1,5 @@
 import { NextRouter } from 'next/router';
+import { NextApiRequest, NextApiResponse } from 'next';
 import { mockDataArticleList } from './testMockData';
 // import { CreateMockRouterOptions } from 'next-router-provider';
 
@@ -44,6 +45,41 @@ export function mockImage(srcSetter = jest.fn(), addEventListener = jest.fn()) {
     image.addEventListener = addEventListener;
     return image;
   });
+}
+
+export function mockNextApiRequest(query: NextApiRequest['query']) {
+  return jest.fn().mockImplementation(() => {
+    return ({
+      _mockName: 'mockNextApiRequest',
+      query: query
+    } as unknown) as NextApiRequest;
+  })();
+}
+export function mockNextApiResponse() {
+  const mock = {
+    end: jest.fn(),
+    json: jest.fn(),
+    status: jest.fn(),
+    writeHead: jest.fn(),
+    clearPreviewData: jest.fn(),
+    setPreviewData: jest.fn()
+  };
+  const res = jest.fn().mockImplementation(() => {
+    const o = {
+      end: mock.end.mockReturnValue(mock),
+      json: mock.json.mockReturnValue(mock),
+      status: mock.status.mockReturnValue(mock),
+      writeHead: mock.writeHead.mockReturnValue(mock),
+      clearPreviewData: mock.clearPreviewData.mockReturnValue(mock),
+      setPreviewData: mock.setPreviewData.mockReturnValue(mock)
+    };
+    const res = ({
+      _mockName: 'mockNextApiResponse',
+      ...o
+    } as unknown) as NextApiResponse;
+    return res;
+  })();
+  return res;
 }
 
 export function queryParams(src?: string): { [key: string]: string } {

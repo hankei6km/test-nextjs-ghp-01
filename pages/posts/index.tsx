@@ -95,13 +95,19 @@ const PostsPage = ({ pageData }: { pageData: PageData }) => {
 
 export default PostsPage;
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps = async (context) => {
   const id = 'blog';
   const pageNo = 1;
   const curCategory = '';
   const pageData = await getPagesPageData(
     'pages',
-    { params: { id } },
+    {
+      params: {
+        id
+      },
+      preview: context.preview,
+      previewData: context.previewData
+    },
     {
       outerIds: [],
       articlesApi: 'posts',

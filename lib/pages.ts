@@ -8,8 +8,13 @@ import {
   blankPagesList,
   blankPageContent
 } from '../types/client/contentTypes';
-import { GetQuery } from '../types/client/queryTypes';
+import {
+  GetQuery,
+  GetContentQuery,
+  GetPagesItemsWithLayout
+} from '../types/client/queryTypes';
 import { PageData, blankPageData } from '../types/pageTypes';
+import { applyPreviewDataToIdQuery } from './preview';
 import {
   getSectionFromPages,
   getPagePostsTotalCountFromSection
@@ -87,8 +92,7 @@ export async function getAllPagesIds(
     return (
       await getPagesIdsList(apiName, {
         ...query,
-
-        limit: allIdsLimit
+        limit: query.limit !== undefined ? query.limit : allIdsLimit
       })
     ).contents.map(({ id }) => id);
   } catch (err) {
@@ -151,14 +155,20 @@ export async function getPagesData(
   }: GetStaticPropsContext<ParsedUrlQuery>
 ): Promise<PagesContent> {
   try {
+    const [id, query] = applyPreviewDataToIdQuery<GetContentQuery>(
+      preview,
+      previewData,
+      apiName,
+      params.id as string,
+      {
+        fields:
+          'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
+      }
+    );
     const res = await client[apiName]
-      ._id(!preview ? params.id : previewData.slug) // 似たような3項式がバラけていてすっきりしない
+      ._id(id) // 似たような3項式がバラけていてすっきりしない
       .$get({
-        query: {
-          draftKey: !preview ? '' : previewData.draftKey,
-          fields:
-            'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
-        },
+        query: query,
         config: fetchConfig
       });
     return res;
@@ -171,44 +181,63 @@ export async function getPagesData(
 export async function getPagesDataWithOuter(
   apiName: ApiNameArticle,
   {
-    params = { id: '' }
-  }: // preview = false,
-  // previewData = {}
-  GetStaticPropsContext<ParsedUrlQuery>,
+    params = { id: '' },
+    preview = false,
+    previewData = {}
+  }: GetStaticPropsContext<ParsedUrlQuery>,
   { outerIds = [] }: PageDataGetOptions = {
     outerIds: []
   }
 ): Promise<PagesContent[]> {
   try {
-    // TODO: preview 対応
     if (apiName === 'pages') {
+      // ids でも draftKey を付けると対応した id は自動的に切り替わるもよう
+      // const id = !preview ? params.id : previewData.slug;
+      const id = params.id; // pages の場合は outer 等で slug が指す id が含まれるはず
       const ids =
         // TODO: id='' のテスト
         params.id !== ''
-          ? [globalPageId].concat(outerIds, params.id).join(',')
+          ? [globalPageId].concat(outerIds, id).join(',')
           : [globalPageId].concat(outerIds).join(',');
-      const res = await client[apiName].get({
-        query: {
+      const [, query] = applyPreviewDataToIdQuery<GetPagesItemsWithLayout>(
+        preview,
+        previewData,
+        'pages',
+        params.id as string,
+        {
           ids: ids,
           fields:
             'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
-        },
+        }
+      );
+      const res = await client[apiName].get({
+        query: query,
         config: fetchConfig
       });
       return res.body.contents;
     }
-    const res = await client['pages'].get({
-      query: {
+    // その他 API と outer 用に pages API を実行する場合
+    const [, query] = applyPreviewDataToIdQuery<GetPagesItemsWithLayout>(
+      preview,
+      previewData,
+      'pages',
+      params.id as string,
+      {
         ids: [globalPageId].concat(outerIds).join(','),
         fields:
           'id,createdAt,updatedAt,publishedAt,revisedAt,title,kind,description,mainImage,category.id,category.title,sections'
-      },
+      }
+    );
+    const res = await client['pages'].get({
+      query,
       config: fetchConfig
     });
-    if (params.id !== '') {
+    if (params.id !== '' || previewData.apiName === apiName) {
       return res.body.contents.concat(
         await getPagesData(apiName, {
-          params
+          params,
+          preview,
+          previewData
         })
       );
     }
