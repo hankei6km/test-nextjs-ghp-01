@@ -59,7 +59,7 @@ type PagesContentImage = {
 };
 type PagesContentNotification = {
   fieldId: 'contentNotification';
-  message: string;
+  messageHtml: string;
   severity: ['info' | 'warning' | 'alert']; // 複数選択ではない
   enabled?: boolean;
   autoHide?: boolean;

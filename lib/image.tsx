@@ -1,13 +1,6 @@
 import ReactDomServer from 'react-dom/server';
-import unified from 'unified';
-import rehypeParse from 'rehype-parse';
-import rehypeMinifyWhitespace from 'rehype-minify-whitespace';
-import rehypeStringify from 'rehype-stringify';
-import rehypeSanitize from 'rehype-sanitize';
-import merge from 'deepmerge';
-import gh from 'hast-util-sanitize/lib/github.json';
-import { Schema } from 'hast-util-sanitize';
 import { ImageTemplate, imageTransformedUrl } from './imageTemplate';
+import { sanitizeHtml } from './html';
 import siteServerSideConfig from '../src/site.server-side-config';
 
 export type ImageInfo = {
@@ -112,35 +105,13 @@ function toElm(
   return ReactDomServer.renderToStaticMarkup(imgTag);
 }
 
-const schema = merge(gh, {
-  tagNames: ['picture', 'source'],
-  attributes: {
-    source: ['srcSet', 'sizes'],
-    img: ['srcSet', 'sizes', 'className']
-  }
-});
-const processorHtml = unified()
-  .use(rehypeParse, { fragment: true })
-  .use(rehypeMinifyWhitespace)
-  .use(rehypeSanitize, (schema as unknown) as Schema)
-  .use(rehypeStringify)
-  .freeze();
-
 export function imageToHtml(contentImage: ContentImage): string {
   const image = toElm(
     contentImage,
     siteServerSideConfig.imageConfig.contentImageClassName,
     siteServerSideConfig.imageConfig.template
   );
-  // return image;
-  let ret = '';
-  processorHtml.process(image, (err, file) => {
-    if (err) {
-      console.error(err);
-    }
-    ret = String(file);
-  });
-  return ret;
+  return sanitizeHtml(image);
 }
 
 const fmJsonQuery = (() => {

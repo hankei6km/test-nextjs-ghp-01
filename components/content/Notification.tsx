@@ -9,13 +9,25 @@ import SiteStateContext, { SiteStateDispatch } from '../../reducers/SiteState';
 
 // Snackbar だと複数表示が面倒なので作り直す予定
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   // _app.tsx で SnackbarProvider の className を上書きすることで
   // container 側の幅を 100% まで広げている.
-  'MessageBanner-message': { width: '100%', alignSelf: 'center' },
-  'MessageBanner-close': { paddingTop: 0, paddingBottom: 0 }
+  'Notification-outer': {},
+  'Notification-message': {
+    ...theme.typography.body1,
+    '& a': {
+      // color: theme.palette.primary.main
+      // color: theme.palette.text.secondary
+      color: 'inherit'
+    }
+  },
+  'Notification-close': { paddingTop: 0, paddingBottom: 0 }
 }));
-const classNames = ['MessageBanner-message', 'MessageBanner-close'];
+const classNames = [
+  'Notification-outer',
+  'Notification-message',
+  'Notification-close'
+];
 
 type Props = {
   message: string;
@@ -48,6 +60,7 @@ const Notification = ({
         content: (key, message) => (
           <Alert
             id={`${key}`}
+            icon={false}
             elevation={6}
             variant="filled"
             severity={
@@ -57,12 +70,12 @@ const Notification = ({
                 ? 'warning'
                 : 'error'
             }
-            className={classes['MessageBanner-message']}
+            className={classes['Notification-outer']}
             action={
               <IconButton
                 aria-label="close"
                 color="inherit"
-                className={classes['MessageBanner-close']}
+                className={classes['Notification-close']}
                 onClick={() => {
                   closeSnackbar(key);
                   dispatch({ type: 'notifyClosed', payload: [notificationId] });
@@ -72,7 +85,14 @@ const Notification = ({
               </IconButton>
             }
           >
-            {message}
+            {typeof message === 'string' ? (
+              <div
+                className={classes['Notification-message']}
+                dangerouslySetInnerHTML={{ __html: message }}
+              />
+            ) : (
+              { message }
+            )}
           </Alert>
         )
       });

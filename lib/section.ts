@@ -1,126 +1,17 @@
 import { join } from 'path';
 import { createHash } from 'crypto';
-import cheerio from 'cheerio';
-import parseStyle from 'style-to-object';
-// import camelcaseKeys from 'camelcase-keys';  // vedor prefix が jsx styleにならない?
 import { PageDataGetOptions, getSortedPagesData } from './pages';
 import { markdownToHtml } from './markdown';
 import { ApiNameArticleValues, ApiNameArticle } from './client';
 import { PagesContent, PagesSectionKind } from '../types/client/contentTypes';
-import { Section, SectionContentHtmlChildren } from '../types/pageTypes';
+import { Section } from '../types/pageTypes';
 import { GetQuery } from '../types/client/queryTypes';
 import { imageToHtml, imageInfo } from './image';
+import { htmlToChildren, sanitizeHtml } from './html';
 
 // copy で使いまわす予定だったが、linter で "Added in: v13.1.0" にひっかかるようなのでやめる.
 // const hash = createHash('sha256');
 const hashAbbrev = 9; // 9 にとくに意味はない
-
-export function styleToJsxStyle(
-  s: string
-): SectionContentHtmlChildren['style'] {
-  const p = parseStyle(s) || {};
-  const ret: SectionContentHtmlChildren['style'] = {};
-  Object.entries(p).forEach((kv) => {
-    const [first, ...names] = kv[0].split('-');
-    const capitalizedNames = names.map(
-      (r) => `${r[0].toLocaleUpperCase()}${r.slice(1)}`
-    );
-    const k = `${first}${capitalizedNames.join('')}`;
-
-    ret[k] = kv[1];
-  });
-  return ret;
-}
-
-// とりあえず、普通に記述された markdown から変換されたときに body の直下にありそうなタグ.
-// いまのところ小文字のみ.
-export const SectionContentHtmlChildrenElemValues = [
-  'h1',
-  'h2',
-  'h3',
-  'h4',
-  'h5',
-  'h6',
-  'div',
-  'p',
-  'blockquote',
-  'code',
-  'pre',
-  'span',
-  'img',
-  'picture',
-  'table',
-  'ul',
-  'ol',
-  'dl',
-  'hr',
-  'a',
-  'header',
-  'footer',
-  'section',
-  'article',
-  'aside'
-] as const;
-export function htmlToChildren(html: string): SectionContentHtmlChildren[] {
-  // markdown の変換と sanitize には unifed を使っているので、少し迷ったが cheerio を利用.
-  // (unified は typescript で利用するときに対応していないプラグインがたまにあるので)
-
-  const ret: SectionContentHtmlChildren[] = [];
-  const $ = cheerio.load(html);
-  try {
-    $('body')
-      .contents()
-      .each((_idx, elm) => {
-        // https://stackoverflow.com/questions/31949521/scraping-text-with-cheerio
-        // if (elm.nodeType === Node.ELEMENT_NODE) {
-        if (elm.nodeType === 1) {
-          if (
-            SectionContentHtmlChildrenElemValues.some((v) => v === elm.tagName)
-          ) {
-            const $elm = $(elm);
-            const attribs = elm.attribs ? { ...elm.attribs } : {};
-            let style: SectionContentHtmlChildren['style'] = {};
-            if (elm.attribs.style) {
-              style = styleToJsxStyle(elm.attribs.style);
-              delete attribs.style;
-            }
-            if (elm.attribs.class) {
-              attribs.className = elm.attribs.class;
-              delete attribs.class;
-            }
-            ret.push({
-              tagName: elm.tagName,
-              style: style,
-              attribs: attribs,
-              html: $elm.html() || ''
-            });
-          } else {
-            throw new Error(
-              `support only ${SectionContentHtmlChildrenElemValues.join(', ')}`
-            );
-          }
-        } else {
-          throw new Error('support only nodeType=Node.ELEMENT_NODE');
-        }
-      });
-  } catch (_e) {
-    ret.splice(0, ret.length, {
-      tagName: 'div',
-      style: {},
-      attribs: {},
-      html: html
-    });
-  }
-  if (ret.length === 0) {
-    ret.push({
-      tagName: 'div',
-      style: {},
-      attribs: {},
-      html: html
-    });
-  }
-  return ret;
-}
 
 export function getApiNameArticle(
   apiNameFromContent: string
@@ -172,7 +63,7 @@ export async function getSectionFromPages(
           if (content.fieldId === 'contentHtml') {
             return {
               kind: 'html' as const,
-              contentHtml: htmlToChildren(content.html)
+              contentHtml: htmlToChildren(sanitizeHtml(content.html))
             };
           } else if (content.fieldId === 'contentMarkdown') {
             return {
@@ -250,15 +141,16 @@ export async function getSectionFromPages(
             content.fieldId === 'contentNotification' &&
             content.enabled
           ) {
+            const messageHtml = sanitizeHtml(content.messageHtml); // 個別に sanitizeHtml を実行していると抜けが出そう
             return {
               kind: 'notification' as const,
-              message: content.message,
+              messageHtml: messageHtml,
               severity: content.severity[0],
               autoHide: content.autoHide || false,
               notificationId:
                 content.notificationId ||
                 createHash('sha256')
-                  .update(content.message, 'utf8')
+                  .update(messageHtml, 'utf8')
                   .digest('hex')
                   .slice(0, hashAbbrev)
             };

@@ -32,7 +32,7 @@ export type SectionPosts = {
 };
 export type SectionNotification = {
   kind: 'notification';
-  message: string;
+  messageHtml: string;
   severity: 'info' | 'warning' | 'alert';
   // enabled: boolean; // enabled でなければ、項目を作成しない
   autoHide: boolean;
