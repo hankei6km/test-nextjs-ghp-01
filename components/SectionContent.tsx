@@ -5,6 +5,7 @@ import ArticleList from './ArticleList';
 import { Section as SectionType } from '../types/pageTypes';
 import { pruneClasses } from '../utils/classes';
 import SectionContext from './SectionContext';
+import HtmlFragment from './content/HtmlFragment';
 import SiteTitle from './parts/SiteTitle';
 import SiteLogo from './parts/SiteLogo';
 import PageTitle from './parts/PageTitle';
@@ -40,17 +41,9 @@ const SectionContent = ({ content, classes: inClasses }: Props) => {
   // }
   const contentNode = (
     <>
-      {content.kind === 'html' &&
-        content.contentHtml.map((childItem, i) =>
-          React.createElement(childItem.tagName, {
-            style: childItem.style,
-            ...childItem.attribs,
-            key: `${childItem.tagName}-${i}`,
-            dangerouslySetInnerHTML: childItem.html
-              ? { __html: childItem.html }
-              : undefined
-          })
-        )}
+      {content.kind === 'html' && (
+        <HtmlFragment htmlChildren={content.contentHtml} />
+      )}
       {content.kind === 'partsSiteTitle' && (
         <SiteTitle link={content.link} classes={{ ...inClasses }} />
       )}
