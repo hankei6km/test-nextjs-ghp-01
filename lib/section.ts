@@ -141,6 +141,14 @@ export function getPagePostsTotalCountFromSection(sections: Section[]): number {
   return totalCount;
 }
 
+export function purgeContentBlank(sections: Section[]): Section[] {
+  const contentPurged = sections.map((section) => {
+    const content = section.content.filter(({ kind }) => kind !== '');
+    return { ...section, content };
+  });
+  return contentPurged.filter(({ content }) => content.length > 0);
+}
+
 export async function getSectionFromPages(
   page: PagesContent,
   kind: PagesSectionKind,
@@ -257,13 +265,17 @@ export async function getSectionFromPages(
     }));
   // all だと fetch が同時に実行されすぎる?
   // (いっても 2 セクションもないだろうけど)
-  return await Promise.all(
-    sections.map(async (section) => {
-      return {
-        title: section.title,
-        // content: []
-        content: await Promise.all(section.content.map((content) => content()))
-      };
-    })
+  return purgeContentBlank(
+    await Promise.all(
+      sections.map(async (section) => {
+        return {
+          title: section.title,
+          // content: []
+          content: await Promise.all(
+            section.content.map((content) => content())
+          )
+        };
+      })
+    )
   );
 }

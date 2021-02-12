@@ -5,9 +5,11 @@ import {
   styleToJsxStyle,
   htmlToChildren,
   getApiNameArticle,
-  getPagePostsTotalCountFromSection
+  getPagePostsTotalCountFromSection,
+  purgeContentBlank
 } from './section';
 import { PagesContent } from '../types/client/contentTypes';
+import { Section } from '../types/pageTypes';
 
 // https://github.com/jefflau/jest-fetch-mock/issues/83
 const fetchMock = fetch as FetchMock;
@@ -251,6 +253,73 @@ describe('getPagePostsTotalCountFromSection()', () => {
         }
       ])
     ).toEqual(-1);
+  });
+});
+
+describe('purgeContentBlank()', () => {
+  const mockData: Section[] = [
+    {
+      title: 'content section1',
+      content: [
+        {
+          kind: 'html',
+          contentHtml: [
+            {
+              tagName: 'p',
+              style: {},
+              attribs: {},
+              html: 'content1'
+            }
+          ]
+        }
+      ]
+    },
+    {
+      title: 'content section2',
+      content: [
+        {
+          kind: 'html',
+          contentHtml: [
+            {
+              tagName: 'p',
+              style: {},
+              attribs: {},
+              html: 'content2'
+            }
+          ]
+        },
+        {
+          kind: 'html',
+          contentHtml: [
+            {
+              tagName: 'p',
+              style: {},
+              attribs: {},
+              html: 'content3'
+            }
+          ]
+        }
+      ]
+    }
+  ];
+  it('path through sections array', () => {
+    expect(purgeContentBlank(mockData)).toStrictEqual(mockData);
+  });
+  it('should purge content included blank', () => {
+    const blankMock = [...mockData];
+    blankMock[1].content = [...mockData[1].content];
+    blankMock[1].content[0] = { kind: '' };
+    const blankExp = [...mockData];
+    blankExp[1].content = [...blankExp[1].content];
+    blankExp[1].content = blankExp[1].content.slice(1);
+    expect(purgeContentBlank(blankMock)).toStrictEqual(blankExp);
+  });
+  it('should purge section included no content', () => {
+    const blankMock = [...mockData];
+    blankMock[0].content = [...mockData[0].content];
+    blankMock[0].content[0] = { kind: '' };
+    const blankExp = mockData.slice(1);
+    expect(purgeContentBlank(blankMock)).toStrictEqual(blankExp);
   });
 });
 
@@ -552,9 +621,6 @@ describe('getSectionFromPages()', () => {
             severity: 'info',
             autoHide: false,
             notificationId: ''
-          },
-          {
-            kind: ''
           },
           {
             kind: 'notification',
