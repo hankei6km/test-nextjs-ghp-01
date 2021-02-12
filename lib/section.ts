@@ -1,4 +1,5 @@
 import { join } from 'path';
+import { createHash } from 'crypto';
 import cheerio from 'cheerio';
 import parseStyle from 'style-to-object';
 // import camelcaseKeys from 'camelcase-keys';  // vedor prefix が jsx styleにならない?
@@ -9,6 +10,10 @@ import { PagesContent, PagesSectionKind } from '../types/client/contentTypes';
 import { Section, SectionContentHtmlChildren } from '../types/pageTypes';
 import { GetQuery } from '../types/client/queryTypes';
 import { imageToHtml, imageInfo } from './image';
+
+// copy で使いまわす予定だったが、linter で "Added in: v13.1.0" にひっかかるようなのでやめる.
+// const hash = createHash('sha256');
+const hashAbbrev = 9; // 9 にとくに意味はない
 
 export function styleToJsxStyle(
   s: string
@@ -250,7 +255,12 @@ export async function getSectionFromPages(
               message: content.message,
               severity: content.severity[0],
               autoHide: content.autoHide || false,
-              notificationId: content.notificationId || ''
+              notificationId:
+                content.notificationId ||
+                createHash('sha256')
+                  .update(content.message, 'utf8')
+                  .digest('hex')
+                  .slice(0, hashAbbrev)
             };
             // return {
             //   kind: 'message' as const,

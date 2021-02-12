@@ -10,6 +10,11 @@ import theme from '../src/theme';
 import { SnackbarProvider } from 'notistack';
 import SiteContext from '../components/SiteContext';
 import siteConfig from '../src/site.config';
+import SiteStateContext, {
+  SiteStateDispatch,
+  SiteStateReducer,
+  siteStateInitialState
+} from '../reducers/SiteState';
 
 const useStyles = makeStyles((theme) => ({
   containerRoot: {
@@ -31,6 +36,15 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   // 共有されないもよう。
   // sessionStorage は?
   // https://ja.reactjs.org/docs/hooks-faq.html#how-to-avoid-passing-callbacks-down
+  const [state, dispatch] = React.useReducer(
+    SiteStateReducer,
+    siteStateInitialState,
+    (init) => {
+      const newState = { ...init };
+      return newState;
+    }
+  );
+
   return (
     <React.Fragment>
       <Head>
@@ -41,18 +55,22 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         />
       </Head>
       <SiteContext.Provider value={siteConfig}>
-        <ThemeProvider theme={theme}>
-          <SnackbarProvider
-            maxSnack={3}
-            dense
-            hideIconVariant
-            classes={{ containerRoot: classes.containerRoot }}
-          >
-            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-            <CssBaseline />
-            <Component {...pageProps} />
-          </SnackbarProvider>
-        </ThemeProvider>
+        <SiteStateDispatch.Provider value={dispatch}>
+          <SiteStateContext.Provider value={state}>
+            <ThemeProvider theme={theme}>
+              <SnackbarProvider
+                maxSnack={3}
+                dense
+                hideIconVariant
+                classes={{ containerRoot: classes.containerRoot }}
+              >
+                {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+                <CssBaseline />
+                <Component {...pageProps} />
+              </SnackbarProvider>
+            </ThemeProvider>
+          </SiteStateContext.Provider>
+        </SiteStateDispatch.Provider>
       </SiteContext.Provider>
     </React.Fragment>
   );

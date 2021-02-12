@@ -114,6 +114,7 @@ const SectionContent = ({ content, classes: inClasses }: Props) => {
           message={content.message}
           serverity={content.severity}
           autoHide={content.autoHide}
+          notificationId={content.notificationId}
           classes={{ ...inClasses }}
         />
       )}

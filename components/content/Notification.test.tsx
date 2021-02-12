@@ -1,11 +1,12 @@
 import React from 'react';
-import { render, act } from '@testing-library/react';
+import { render, fireEvent, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
-// import { ThemeProvider } from '@material-ui/core/styles';
-// import { makeStyles } from '@material-ui/core/styles';
 import { SnackbarProvider } from 'notistack';
+import SiteStateContext, {
+  SiteStateDispatch,
+  siteStateInitialState
+} from '../../reducers/SiteState';
 
-// import theme from '../../src/theme';
 import Notification from './Notification';
 
 describe('Notification', () => {
@@ -21,7 +22,12 @@ describe('Notification', () => {
               hideIconVariant
               // classes={{ containerRoot: classes.containerRoot }}
             >
-              <Notification message="test1" serverity="info" />
+              <Notification
+                message="test1"
+                serverity="info"
+                autoHide={false}
+                notificationId="test1id"
+              />
             </SnackbarProvider>
           );
         })()
@@ -45,7 +51,12 @@ describe('Notification', () => {
               hideIconVariant
               // classes={{ containerRoot: classes.containerRoot }}
             >
-              <Notification message="test1" serverity="info" autoHide={true} />
+              <Notification
+                message="test1"
+                serverity="info"
+                autoHide={true}
+                notificationId="test1id"
+              />
             </SnackbarProvider>
           );
         })()
@@ -55,6 +66,66 @@ describe('Notification', () => {
       expect(queryByRole('alert')).toBeInTheDocument();
       expect(getByText('test1')).toBeInTheDocument();
       jest.advanceTimersByTime(6000);
+      expect(queryByRole('alert')).not.toBeInTheDocument();
+    });
+  });
+  it('should regist closed id to state', async () => {
+    const dispatch = jest.fn();
+    await act(async () => {
+      const { getByRole } = render(
+        <SiteStateDispatch.Provider value={dispatch}>
+          <SnackbarProvider
+            maxSnack={3}
+            dense
+            hideIconVariant
+            // classes={{ containerRoot: classes.containerRoot }}
+          >
+            <Notification
+              message="test1"
+              serverity="info"
+              autoHide={true}
+              notificationId="test1id"
+            />
+          </SnackbarProvider>
+        </SiteStateDispatch.Provider>
+      );
+      // useEffect 待ち
+      jest.advanceTimersByTime(1000);
+      const close = getByRole('button');
+      expect(close).toBeInTheDocument();
+      fireEvent.click(close);
+    });
+    expect(dispatch).toHaveBeenCalledWith({
+      type: 'notifyClosed',
+      payload: ['test1id']
+    });
+  });
+  it('should not notify', async () => {
+    await act(async () => {
+      const { queryByRole } = render(
+        <SiteStateContext.Provider
+          value={{
+            ...siteStateInitialState,
+            notify: { closedIds: ['test1id'] }
+          }}
+        >
+          <SnackbarProvider
+            maxSnack={3}
+            dense
+            hideIconVariant
+            // classes={{ containerRoot: classes.containerRoot }}
+          >
+            <Notification
+              message="test1"
+              serverity="info"
+              autoHide={true}
+              notificationId="test1id"
+            />
+          </SnackbarProvider>
+        </SiteStateContext.Provider>
+      );
+      // useEffect 待ち
+      jest.advanceTimersByTime(1000);
       expect(queryByRole('alert')).not.toBeInTheDocument();
     });
   });
