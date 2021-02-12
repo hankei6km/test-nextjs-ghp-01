@@ -620,14 +620,18 @@ describe('getSectionFromPages()', () => {
             message: 'test1',
             severity: 'info',
             autoHide: false,
-            notificationId: ''
+            // echo -n "test1" | sha256sum | cut -c 1-9
+            // 1b4f0e985
+            notificationId: '1b4f0e985'
           },
           {
             kind: 'notification',
             message: 'test3',
             severity: 'info',
             autoHide: true,
-            notificationId: ''
+            // echo -n "test3" | sha256sum | cut -c 1-9
+            // fd61a03af
+            notificationId: 'fd61a03af'
           },
           {
             kind: 'notification',
