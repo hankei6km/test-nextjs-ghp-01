@@ -18,14 +18,15 @@ const classNames = ['MessageBanner-message', 'MessageBanner-close'];
 
 type Props = {
   message: string;
-  variant: 'info' | 'warning' | 'alert';
+  serverity: 'info' | 'warning' | 'alert';
   autoHide?: boolean;
+  messageId?: string;
   classes?: { [key: string]: string };
 };
 
-const MessageBanner = ({
+const Notification = ({
   message,
-  variant,
+  serverity: variant,
   autoHide = false,
   classes: inClasses
 }: Props) => {
@@ -84,4 +85,4 @@ const MessageBanner = ({
   return <></>;
 };
 
-export default MessageBanner;
+export default Notification;

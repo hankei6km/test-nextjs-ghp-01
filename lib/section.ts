@@ -234,14 +234,15 @@ export async function getSectionFromPages(
               detail: content.detail || false
             };
           } else if (
-            content.fieldId === 'contentMessageBanner' &&
-            !content.disabled
+            content.fieldId === 'contentNotification' &&
+            content.enabled
           ) {
             return {
-              kind: 'message' as const,
+              kind: 'notification' as const,
               message: content.message,
-              variant: content.variant[0],
-              autoHide: content.autoHide || false
+              severity: content.severity[0],
+              autoHide: content.autoHide || false,
+              notificationId: content.notificationId || ''
             };
             // return {
             //   kind: 'message' as const,
