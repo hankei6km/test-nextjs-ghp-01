@@ -14,6 +14,7 @@ import DateUpdated from './parts/DateUpdated';
 import NavCategory from './parts/NavCategory';
 import NavPagination from './parts/NavPagination';
 import NavBreadcrumbs from './parts/NavBreadcrumbs';
+import Notification from './content/Notification';
 
 const useStyles = makeStyles(() => ({
   'SectionContent-root': {},
@@ -107,6 +108,14 @@ const SectionContent = ({ content, classes: inClasses }: Props) => {
             classes={{ ...inClasses }}
           />
         </Box>
+      )}
+      {content.kind === 'notification' && (
+        <Notification
+          message={content.message}
+          serverity={content.severity}
+          autoHide={content.autoHide}
+          classes={{ ...inClasses }}
+        />
       )}
     </>
   );

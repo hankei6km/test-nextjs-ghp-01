@@ -4,12 +4,21 @@ import { AppProps } from 'next/app';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
 import { ThemeProvider } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import theme from '../src/theme';
+import { SnackbarProvider } from 'notistack';
 import SiteContext from '../components/SiteContext';
 import siteConfig from '../src/site.config';
 
+const useStyles = makeStyles((theme) => ({
+  containerRoot: {
+    width: theme.breakpoints.values.sm
+  }
+}));
+
 export default function MyApp({ Component, pageProps }: AppProps) {
+  const classes = useStyles();
   React.useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
@@ -33,9 +42,16 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       </Head>
       <SiteContext.Provider value={siteConfig}>
         <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <Component {...pageProps} />
+          <SnackbarProvider
+            maxSnack={3}
+            dense
+            hideIconVariant
+            classes={{ containerRoot: classes.containerRoot }}
+          >
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            <Component {...pageProps} />
+          </SnackbarProvider>
         </ThemeProvider>
       </SiteContext.Provider>
     </React.Fragment>

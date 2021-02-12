@@ -503,4 +503,75 @@ describe('getSectionFromPages()', () => {
       }
     ]);
   });
+  it('should returns sections included notification', async () => {
+    const mockData: PagesContent = {
+      ...mockBase,
+      category: [],
+      sections: [
+        {
+          fieldId: 'sectionHeader',
+          title: '',
+          content: [
+            {
+              fieldId: 'contentNotification',
+              message: 'test1',
+              enabled: true,
+              severity: ['info']
+            },
+            {
+              fieldId: 'contentNotification',
+              message: 'test2',
+              severity: ['info']
+            },
+            {
+              fieldId: 'contentNotification',
+              message: 'test3',
+              enabled: true,
+              severity: ['info'],
+              autoHide: true
+            },
+            {
+              fieldId: 'contentNotification',
+              message: 'test4',
+              enabled: true,
+              severity: ['info'],
+              notificationId: 'abcdefg'
+            }
+          ]
+        }
+      ]
+    };
+    const res = await getSectionFromPages(mockData, 'sectionHeader');
+    expect(res).toEqual([
+      {
+        title: '',
+        content: [
+          {
+            kind: 'notification',
+            message: 'test1',
+            severity: 'info',
+            autoHide: false,
+            notificationId: ''
+          },
+          {
+            kind: ''
+          },
+          {
+            kind: 'notification',
+            message: 'test3',
+            severity: 'info',
+            autoHide: true,
+            notificationId: ''
+          },
+          {
+            kind: 'notification',
+            message: 'test4',
+            severity: 'info',
+            autoHide: false,
+            notificationId: 'abcdefg'
+          }
+        ]
+      }
+    ]);
+  });
 });
