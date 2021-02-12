@@ -41,23 +41,10 @@ const Notification = ({
       enqueueSnackbar(message, {
         preventDuplicate: true,
         persist: !autoHide,
-        // variant:
-        //   variant === 'info'
-        //     ? 'info'
-        //     : variant === 'warning'
-        //     ? 'warning'
-        //     : 'error',
-        // dense: true,
-        //hideIconVariant: true,
         anchorOrigin: {
           vertical: 'top',
           horizontal: 'center'
         },
-        // content: (key, message) => (
-        //   <div id={key} className={classes['MessageBanner-message']}>
-        //     {message}
-        //   </div>
-        // ),
         content: (key, message) => (
           <Alert
             id={`${key}`}
