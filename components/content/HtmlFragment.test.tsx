@@ -10,7 +10,7 @@ describe('HtmlFragment', () => {
       const { getByText } = render(
         <HtmlFragment
           htmlChildren={[
-            { tagName: 'div', style: {}, attrib: {}, html: 'test' }
+            { tagName: 'div', style: {}, attribs: {}, html: 'test' }
           ]}
         />
       );
@@ -23,7 +23,7 @@ describe('HtmlFragment', () => {
             {
               tagName: 'div',
               style: {},
-              attrib: {},
+              attribs: {},
               html: '<div>test1</div><div>test2</div>'
             }
           ]}
@@ -37,7 +37,12 @@ describe('HtmlFragment', () => {
     const { container } = render(
       <HtmlFragment
         htmlChildren={[
-          { tagName: 'div', style: { width: '100%' }, attrib: {}, html: 'test' }
+          {
+            tagName: 'div',
+            style: { width: '100%' },
+            attribs: {},
+            html: 'test'
+          }
         ]}
       />
     );
@@ -79,7 +84,7 @@ describe('HtmlFragment', () => {
         ]}
       />
     );
-    expect(container.querySelector('div > p').textContent).toEqual('test1');
-    expect(container.querySelector('div > span').textContent).toEqual('test2');
+    expect(container.querySelector('div > p')?.textContent).toEqual('test1');
+    expect(container.querySelector('div > span')?.textContent).toEqual('test2');
   });
 });

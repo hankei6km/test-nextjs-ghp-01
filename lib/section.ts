@@ -13,6 +13,19 @@ import { htmlToChildren, sanitizeHtml } from './html';
 // const hash = createHash('sha256');
 const hashAbbrev = 9; // 9 にとくに意味はない
 
+export function getNotificationId(
+  notificationId: string,
+  messageHtml: string
+): string {
+  if (notificationId) {
+    return notificationId;
+  }
+  return createHash('sha256')
+    .update(messageHtml, 'utf8')
+    .digest('hex')
+    .slice(0, hashAbbrev);
+}
+
 export function getApiNameArticle(
   apiNameFromContent: string
 ): '' | ApiNameArticle {
@@ -147,12 +160,10 @@ export async function getSectionFromPages(
               messageHtml: messageHtml,
               severity: content.severity[0],
               autoHide: content.autoHide || false,
-              notificationId:
-                content.notificationId ||
-                createHash('sha256')
-                  .update(messageHtml, 'utf8')
-                  .digest('hex')
-                  .slice(0, hashAbbrev)
+              notificationId: getNotificationId(
+                content.notificationId || '',
+                messageHtml
+              )
             };
             // return {
             //   kind: 'message' as const,
