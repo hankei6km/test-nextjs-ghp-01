@@ -17,12 +17,14 @@ import { PageData, blankPageData } from '../types/pageTypes';
 import { applyPreviewDataToIdQuery } from './preview';
 import {
   getSectionFromPages,
-  getPagePostsTotalCountFromSection
+  getPagePostsTotalCountFromSection,
+  getNotificationId
 } from './section';
 import {
   pageCountFromTotalCount,
   paginationIdsFromPageCount
 } from '../utils/pagination';
+import { markdownToHtml } from './markdown';
 
 const globalPageId = '_global';
 // id が 1件で 40byte  と想定、 content-length が 5M 程度とのことなので、1000*1000*5 / 40 で余裕を見て決めた値。
@@ -372,6 +374,26 @@ export async function getPagesPageData(
             options.itemsPerPage
           )
         : -1;
+
+    if (preview) {
+      const title = '[DRAFT]';
+      const messageHtml = markdownToHtml(
+        `API: ${previewData.apiName}, slug: ${previewData.slug}\n\n[click to exit](/api/exit-preview)`
+      );
+      pageData.header.push({
+        title: '',
+        content: [
+          {
+            kind: 'notification',
+            title,
+            messageHtml,
+            severity: 'warning',
+            autoHide: false,
+            notificationId: getNotificationId('', title, messageHtml)
+          }
+        ]
+      });
+    }
     return pageData;
   } catch (err) {
     console.error(`getPagesPageData error: ${err.name}`);

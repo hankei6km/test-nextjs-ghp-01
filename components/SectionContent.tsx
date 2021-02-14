@@ -104,7 +104,8 @@ const SectionContent = ({ content, classes: inClasses }: Props) => {
       )}
       {content.kind === 'notification' && (
         <Notification
-          message={content.messageHtml}
+          title={content.title}
+          messageHtml={content.messageHtml}
           serverity={content.severity}
           autoHide={content.autoHide}
           notificationId={content.notificationId}

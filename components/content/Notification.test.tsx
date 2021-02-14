@@ -13,7 +13,7 @@ describe('Notification', () => {
   jest.useFakeTimers();
   it('renders notification', async () => {
     await act(async () => {
-      const { queryByRole, getByText } = render(
+      const { container, queryByRole, getByText } = render(
         (() => {
           return (
             <SnackbarProvider
@@ -23,7 +23,8 @@ describe('Notification', () => {
               // classes={{ containerRoot: classes.containerRoot }}
             >
               <Notification
-                message="test1"
+                title=""
+                messageHtml="test1"
                 serverity="info"
                 autoHide={false}
                 notificationId="test1id"
@@ -36,6 +37,49 @@ describe('Notification', () => {
       jest.advanceTimersByTime(1000);
       expect(queryByRole('alert')).toBeInTheDocument();
       expect(getByText('test1')).toBeInTheDocument();
+      expect(
+        container.querySelector('[class*=Notification-title]')
+      ).not.toBeInTheDocument();
+      expect(
+        container.querySelector('[class*=Notification-simple-message]')
+      ).toBeInTheDocument();
+      jest.advanceTimersByTime(6000);
+      expect(queryByRole('alert')).toBeInTheDocument();
+    });
+  });
+  it('renders notification(title + message)', async () => {
+    await act(async () => {
+      const { container, queryByRole, getByText } = render(
+        (() => {
+          return (
+            <SnackbarProvider
+              maxSnack={3}
+              dense
+              hideIconVariant
+              // classes={{ containerRoot: classes.containerRoot }}
+            >
+              <Notification
+                title="title1"
+                messageHtml="test1"
+                serverity="info"
+                autoHide={false}
+                notificationId="test1id"
+              />
+            </SnackbarProvider>
+          );
+        })()
+      );
+      // useEffect 待ち
+      jest.advanceTimersByTime(1000);
+      expect(queryByRole('alert')).toBeInTheDocument();
+      expect(getByText('title1')).toBeInTheDocument();
+      expect(getByText('test1')).toBeInTheDocument();
+      expect(
+        container.querySelector('[class*=Notification-title]')
+      ).toBeInTheDocument();
+      expect(
+        container.querySelector('[class*=Notification-simple-message]')
+      ).not.toBeInTheDocument();
       jest.advanceTimersByTime(6000);
       expect(queryByRole('alert')).toBeInTheDocument();
     });
@@ -52,7 +96,8 @@ describe('Notification', () => {
               // classes={{ containerRoot: classes.containerRoot }}
             >
               <Notification
-                message="test1"
+                title=""
+                messageHtml="test1"
                 serverity="info"
                 autoHide={true}
                 notificationId="test1id"
@@ -81,7 +126,8 @@ describe('Notification', () => {
             // classes={{ containerRoot: classes.containerRoot }}
           >
             <Notification
-              message="test1"
+              title=""
+              messageHtml="test1"
               serverity="info"
               autoHide={true}
               notificationId="test1id"
@@ -116,7 +162,8 @@ describe('Notification', () => {
             // classes={{ containerRoot: classes.containerRoot }}
           >
             <Notification
-              message="test1"
+              title=""
+              messageHtml="test1"
               serverity="info"
               autoHide={true}
               notificationId="test1id"
