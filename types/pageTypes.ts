@@ -32,6 +32,7 @@ export type SectionPosts = {
 };
 export type SectionNotification = {
   kind: 'notification';
+  title: string;
   messageHtml: string; // とりあえず :SectionContentHtmlChildren にはしない
   severity: 'info' | 'warning' | 'alert';
   // enabled: boolean; // enabled でなければ、項目を作成しない

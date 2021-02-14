@@ -24,14 +24,17 @@ const siteConfig: {
       siteTitleComponent: 'h1',
       pageTitleComponent: 'h2',
       navCategoryComponent: 'nav',
-      navAllCategoryComponent: 'nav'
+      navAllCategoryComponent: 'nav',
+      notificationComponent: 'aside',
+      notificationTitleComponent: 'h3'
     },
     variant: {
       sectionTitleVariant: 'h2',
       articleDetailTitleVariant: 'h3',
       articleItemTitleVariant: 'body1',
       siteTitleVariant: 'h2',
-      pageTitleVariant: 'h2'
+      pageTitleVariant: 'h2',
+      notificationTitleVariant: 'body1'
     }
   },
   iamgeConfig: {

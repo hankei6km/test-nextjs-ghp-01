@@ -7,6 +7,10 @@ import { ArticleItemComponent, ArticleItemVariant } from './ArticleItem';
 import { SiteTitleComponent, SiteTitleVariant } from './parts/SiteTitle';
 import { PageTitleComponent, PageTitleVariant } from './parts/PageTitle';
 import { NavCategoryComponent } from './parts/NavCategory';
+import {
+  NotificationComponent,
+  NotificationVariant
+} from './content/Notification';
 import siteConfig from '../src/site.config';
 
 export type SectionConfig = {
@@ -17,13 +21,15 @@ export type SectionConfig = {
     ArticleItemComponent &
     SiteTitleComponent &
     PageTitleComponent &
-    NavCategoryComponent;
+    NavCategoryComponent &
+    NotificationComponent;
   variant: SectionItemVariant &
     ArticleListVariant &
     ArticleDetailVariant &
     ArticleItemVariant &
     SiteTitleVariant &
-    PageTitleVariant;
+    PageTitleVariant &
+    NotificationVariant;
 };
 
 export function defaultSectionConfig(config?: SectionConfig): SectionConfig {

@@ -15,13 +15,14 @@ const hashAbbrev = 9; // 9 にとくに意味はない
 
 export function getNotificationId(
   notificationId: string,
+  title: string,
   messageHtml: string
 ): string {
   if (notificationId) {
     return notificationId;
   }
   return createHash('sha256')
-    .update(messageHtml, 'utf8')
+    .update(`${title}:${messageHtml}`, 'utf8')
     .digest('hex')
     .slice(0, hashAbbrev);
 }
@@ -157,11 +158,13 @@ export async function getSectionFromPages(
             const messageHtml = sanitizeHtml(content.messageHtml); // 個別に sanitizeHtml を実行していると抜けが出そう
             return {
               kind: 'notification' as const,
+              title: content.title || '',
               messageHtml: messageHtml,
               severity: content.severity[0],
               autoHide: content.autoHide || false,
               notificationId: getNotificationId(
                 content.notificationId || '',
+                content.title || '',
                 messageHtml
               )
             };

@@ -461,6 +461,13 @@ describe('getSectionFromPages()', () => {
               enabled: true,
               severity: ['info'],
               notificationId: 'abcdefg'
+            },
+            {
+              fieldId: 'contentNotification',
+              title: 'title5',
+              messageHtml: 'test5',
+              enabled: true,
+              severity: ['info']
             }
           ]
         }
@@ -473,28 +480,41 @@ describe('getSectionFromPages()', () => {
         content: [
           {
             kind: 'notification',
+            title: '',
             messageHtml: 'test1',
             severity: 'info',
             autoHide: false,
-            // echo -n "test1" | sha256sum | cut -c 1-9
-            // 1b4f0e985
-            notificationId: '1b4f0e985'
+            //echo -n ":test1" | sha256sum | cut -c 1-9
+            // 8e09c99e6
+            notificationId: '8e09c99e6'
           },
           {
             kind: 'notification',
+            title: '',
             messageHtml: 'test3',
             severity: 'info',
             autoHide: true,
-            // echo -n "test3" | sha256sum | cut -c 1-9
-            // fd61a03af
-            notificationId: 'fd61a03af'
+            // echo -n ":test3" | sha256sum | cut -c 1-9
+            // dd5eb4555
+            notificationId: 'dd5eb4555'
           },
           {
             kind: 'notification',
+            title: '',
             messageHtml: 'test4',
             severity: 'info',
             autoHide: false,
             notificationId: 'abcdefg'
+          },
+          {
+            kind: 'notification',
+            title: 'title5',
+            messageHtml: 'test5',
+            severity: 'info',
+            autoHide: false,
+            // echo -n "title5:test5" | sha256sum | cut -c 1-9
+            // fdc62342c
+            notificationId: 'fdc62342c'
           }
         ]
       }

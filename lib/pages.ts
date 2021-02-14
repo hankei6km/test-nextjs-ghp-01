@@ -376,18 +376,20 @@ export async function getPagesPageData(
         : -1;
 
     if (preview) {
+      const title = '[DRAFT]';
       const messageHtml = markdownToHtml(
-        `\\[DRAFT\\]\n\nAPI: ${previewData.apiName}, slug: ${previewData.slug}\n\n[click to exit](/api/exit-preview)`
+        `API: ${previewData.apiName}, slug: ${previewData.slug}\n\n[click to exit](/api/exit-preview)`
       );
       pageData.header.push({
         title: '',
         content: [
           {
             kind: 'notification',
-            messageHtml: messageHtml,
+            title,
+            messageHtml,
             severity: 'warning',
             autoHide: false,
-            notificationId: getNotificationId('', messageHtml)
+            notificationId: getNotificationId('', title, messageHtml)
           }
         ]
       });
