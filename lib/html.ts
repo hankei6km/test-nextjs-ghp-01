@@ -185,3 +185,28 @@ export function getIndexedHtml(sections: Section[]): IndexedHtml {
   });
   return ret;
 }
+
+export function insertHtmlToSections(
+  html: string,
+  pos: number, // section を IndexedHtml の html に変換した場合の html の位置
+  sections: Section[]
+): Section[] {
+  // const ret = [...sections];
+  const { index } = getIndexedHtml(sections);
+  const idx = index.findIndex(
+    ({ range }) => range[0] <= pos && pos <= range[1]
+  );
+  if (idx >= 0) {
+    const { range, sectionIdx, contentIdx, childIdx } = index[idx];
+    const content = sections[sectionIdx].content[contentIdx];
+    if (content.kind === 'html') {
+      const c = content.contentHtml[childIdx];
+      let posInChild = pos - range[0] - (c.tagName.length + 2); // 2 = '<>'.length
+      posInChild = posInChild < 0 ? 0 : posInChild;
+      c.html = `${c.html.slice(0, posInChild)}${html}${c.html.slice(
+        posInChild
+      )}`;
+    }
+  } // 見つからないときは?
+  return sections;
+}
