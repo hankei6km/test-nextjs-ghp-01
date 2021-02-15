@@ -5,7 +5,6 @@ import {
   insertHtmlToSections,
   textLintInSections
 } from './html';
-import cheerio from 'cheerio';
 import { TextLintEngine } from 'textlint';
 
 describe('styleToJsxStyle()', () => {
@@ -767,44 +766,43 @@ describe('textLintInSections()', () => {
     presets: ['textlint-rule-preset-japanese']
   });
   it('should lints html that contained sections', async () => {
-    expect(
-      await textLintInSections(engine, [
-        {
-          title: '',
-          content: [
-            {
-              kind: 'html' as const,
-              contentHtml: [
-                {
-                  tagName: 'p',
-                  style: {},
-                  attribs: {},
-                  html: 'test1'
-                },
-                {
-                  tagName: 'p',
-                  style: {},
-                  attribs: {},
-                  html: '今日は、おいしい、ものが、食べれた。'
-                },
-                {
-                  tagName: 'p',
-                  style: {},
-                  attribs: {},
-                  html: 'テストが成功するとこが確認できた。'
-                },
-                {
-                  tagName: 'p',
-                  style: {},
-                  attribs: {},
-                  html: 'test2'
-                }
-              ]
-            }
-          ]
-        }
-      ])
-    ).toStrictEqual([
+    const res = await textLintInSections(engine, [
+      {
+        title: '',
+        content: [
+          {
+            kind: 'html' as const,
+            contentHtml: [
+              {
+                tagName: 'p',
+                style: {},
+                attribs: {},
+                html: 'test1'
+              },
+              {
+                tagName: 'p',
+                style: {},
+                attribs: {},
+                html: '今日は、おいしい、ものが、食べれた。'
+              },
+              {
+                tagName: 'p',
+                style: {},
+                attribs: {},
+                html: 'テストが成功するとこが確認できた。'
+              },
+              {
+                tagName: 'p',
+                style: {},
+                attribs: {},
+                html: 'test2'
+              }
+            ]
+          }
+        ]
+      }
+    ]);
+    expect(res.sections).toStrictEqual([
       {
         title: '',
         content: [
@@ -822,14 +820,15 @@ describe('textLintInSections()', () => {
                 style: {},
                 attribs: {},
                 html:
-                  '今日は、おいしい、ものが<span style="color: red;">一つの文で"、"を3つ以上使用しています</span>、食べ<span style="color: red;">ら抜き言葉を使用しています。</span>れた。'
+                  // attr の並びはは保障されていないはず
+                  '今日は、おいしい、ものが<span style="color: red;" id=":textLintMessage:0">一つの文で"、"を3つ以上使用しています</span>、食べ<span style="color: red;" id=":textLintMessage:1">ら抜き言葉を使用しています。</span>れた。'
               },
               {
                 tagName: 'p',
                 style: {},
                 attribs: {},
                 html:
-                  'テストが成功するとこ<span style="color: red;">一文に二回以上利用されている助詞 "が" がみつかりました。</span>が確認できた。'
+                  'テストが成功するとこ<span style="color: red;" id=":textLintMessage:2">一文に二回以上利用されている助詞 "が" がみつかりました。</span>が確認できた。'
               },
               {
                 tagName: 'p',
@@ -842,5 +841,116 @@ describe('textLintInSections()', () => {
         ]
       }
     ]);
+    expect(res.messages).toStrictEqual([
+      {
+        id: ':textLintMessage:0',
+        severity: 2,
+        message: '一つの文で"、"を3つ以上使用しています'
+      },
+      {
+        id: ':textLintMessage:1',
+        severity: 2,
+        message: 'ら抜き言葉を使用しています。'
+      },
+      {
+        id: ':textLintMessage:2',
+        severity: 2,
+        message: '一文に二回以上利用されている助詞 "が" がみつかりました。'
+      }
+    ]);
+    expect(res.list).toEqual(
+      '<dl><dt>error</dt><dd><a href="#:textLintMessage:0">一つの文で"、"を3つ以上使用しています</a></dd><dt>error</dt><dd><a href="#:textLintMessage:1">ら抜き言葉を使用しています。</a></dd><dt>error</dt><dd><a href="#:textLintMessage:2">一文に二回以上利用されている助詞 "が" がみつかりました。</a></dd></dl>'
+    );
+  });
+  it('should apply style to messages', async () => {
+    const res = await textLintInSections(
+      engine,
+      [
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'テストが成功するとこが確認できた。'
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      {
+        'background-color': '#ff0000'
+      }
+    );
+    expect(res.sections).toStrictEqual([
+      {
+        title: '',
+        content: [
+          {
+            kind: 'html' as const,
+            contentHtml: [
+              {
+                tagName: 'p',
+                style: {},
+                attribs: {},
+                html:
+                  'テストが成功するとこ<span style="background-color: #ff0000;" id=":textLintMessage:0">一文に二回以上利用されている助詞 "が" がみつかりました。</span>が確認できた。'
+              }
+            ]
+          }
+        ]
+      }
+    ]);
+    expect(res.messages).toStrictEqual([
+      {
+        id: ':textLintMessage:0',
+        severity: 2,
+        message: '一文に二回以上利用されている助詞 "が" がみつかりました。'
+      }
+    ]);
+  });
+  it('should inserts no messages', async () => {
+    const res = await textLintInSections(engine, [
+      {
+        title: '',
+        content: [
+          {
+            kind: 'html' as const,
+            contentHtml: [
+              {
+                tagName: 'p',
+                style: {},
+                attribs: {},
+                html: 'テストが成功するところを確認できた。'
+              }
+            ]
+          }
+        ]
+      }
+    ]);
+    expect(res.sections).toStrictEqual([
+      {
+        title: '',
+        content: [
+          {
+            kind: 'html' as const,
+            contentHtml: [
+              {
+                tagName: 'p',
+                style: {},
+                attribs: {},
+                html: 'テストが成功するところを確認できた。'
+              }
+            ]
+          }
+        ]
+      }
+    ]);
+    expect(res.messages).toStrictEqual([]);
   });
 });

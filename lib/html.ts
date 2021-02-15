@@ -211,13 +211,19 @@ export function insertHtmlToSections(
   } // 見つからないときは?
   return sections;
 }
+type TextLintInSectionsResult = {
+  sections: Section[];
+  messages: { message: string; id: string; severity: number }[];
+  list: string;
+};
 
 export async function textLintInSections(
   engine: TextLintEngine,
   sections: Section[],
-  messageStyle: { [key: string]: string } = { color: 'red' }
-): Promise<Section[]> {
-  let ret = sections;
+  messageStyle: { [key: string]: string } = { color: 'red' },
+  idPrefix: string = ''
+): Promise<TextLintInSectionsResult> {
+  let ret: TextLintInSectionsResult = { sections, messages: [], list: '' };
   const indexedHtml = getIndexedHtml(sections);
   const results = await engine.executeOnText(indexedHtml.html, '.html');
   if (results.length > 0) {
@@ -226,11 +232,34 @@ export async function textLintInSections(
     Object.entries(messageStyle).forEach(([k, v]) => {
       $wrapper.css(k, v);
     });
-    results[0].messages.forEach((m) => {
+    results[0].messages.forEach((m, i) => {
+      const id = `${idPrefix}:textLintMessage:${i}`;
+      $wrapper.attr('id', id);
       const html = $wrapper.html(m.message).parent().html();
-      ret = insertHtmlToSections(html, m.index + slider, ret);
-      slider = slider + html.length;
+      if (m.message && html) {
+        ret.sections = insertHtmlToSections(
+          html,
+          m.index + slider,
+          ret.sections
+        );
+        slider = slider + html.length;
+        ret.messages.push({ message: m.message, id, severity: m.severity });
+      }
     });
+    const $dl = cheerio.load('<dl/>')('dl');
+    ret.messages.forEach((m) => {
+      const $d = cheerio.load('<dt></dt><dd><a/></dd>');
+      // https://github.com/textlint/textlint/blob/master/packages/%40textlint/kernel/src/shared/rule-severity.ts
+      // https://github.com/textlint/textlint/blob/master/packages/%40textlint/kernel/src/context/TextlintRuleSeverityLevelKeys.ts
+      $d('dt').text(
+        m.severity === 0 ? 'info' : m.severity === 1 ? 'warning' : 'error'
+      );
+      const $a = $d('a');
+      $a.attr('href', `#${m.id}`);
+      $a.text(m.message);
+      $dl.append($d('body').children());
+    });
+    ret.list = $dl.parent().html() || '';
   }
   return ret;
 }
