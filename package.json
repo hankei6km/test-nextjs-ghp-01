@@ -31,6 +31,9 @@
     "remark-parse": "^9.0.0",
     "remark-rehype": "^8.0.0",
     "style-to-object": "^0.3.0",
+    "textlint": "^11.8.2",
+    "textlint-plugin-html": "^0.2.0",
+    "textlint-rule-preset-japanese": "^5.0.0",
     "unified": "^9.2.0"
   },
   "devDependencies": {

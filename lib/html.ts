@@ -7,6 +7,7 @@ import merge from 'deepmerge';
 import gh from 'hast-util-sanitize/lib/github.json';
 import { Schema } from 'hast-util-sanitize';
 import cheerio from 'cheerio';
+import { TextLintEngine } from 'textlint';
 import parseStyle from 'style-to-object';
 // import camelcaseKeys from 'camelcase-keys';  // vedor prefix が jsx styleにならない?
 import { Section, SectionContentHtmlChildren } from '../types/pageTypes';
@@ -191,7 +192,7 @@ export function insertHtmlToSections(
   pos: number, // section を IndexedHtml の html に変換した場合の html の位置
   sections: Section[]
 ): Section[] {
-  // const ret = [...sections];
+  //  const ret = [...sections];
   const { index } = getIndexedHtml(sections);
   const idx = index.findIndex(
     ({ range }) => range[0] <= pos && pos <= range[1]
@@ -209,4 +210,27 @@ export function insertHtmlToSections(
     }
   } // 見つからないときは?
   return sections;
+}
+
+export async function textLintInSections(
+  engine: TextLintEngine,
+  sections: Section[],
+  messageStyle: { [key: string]: string } = { color: 'red' }
+): Promise<Section[]> {
+  let ret = sections;
+  const indexedHtml = getIndexedHtml(sections);
+  const results = await engine.executeOnText(indexedHtml.html, '.html');
+  if (results.length > 0) {
+    let slider = 0;
+    const $wrapper = cheerio.load('<span/>')('span');
+    Object.entries(messageStyle).forEach(([k, v]) => {
+      $wrapper.css(k, v);
+    });
+    results[0].messages.forEach((m) => {
+      const html = $wrapper.html(m.message).parent().html();
+      ret = insertHtmlToSections(html, m.index + slider, ret);
+      slider = slider + html.length;
+    });
+  }
+  return ret;
 }

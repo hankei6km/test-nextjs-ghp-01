@@ -2,8 +2,11 @@ import {
   styleToJsxStyle,
   htmlToChildren,
   getIndexedHtml,
-  insertHtmlToSections
+  insertHtmlToSections,
+  textLintInSections
 } from './html';
+import cheerio from 'cheerio';
+import { TextLintEngine } from 'textlint';
 
 describe('styleToJsxStyle()', () => {
   it('should returns jsx style from style attribute', () => {
@@ -742,6 +745,91 @@ describe('insertHtmlToSections()', () => {
                 style: {},
                 attribs: {},
                 html: 'test1<span>ins1</span>'
+              },
+              {
+                tagName: 'p',
+                style: {},
+                attribs: {},
+                html: 'test2'
+              }
+            ]
+          }
+        ]
+      }
+    ]);
+  });
+});
+
+describe('textLintInSections()', () => {
+  const engine = new TextLintEngine({
+    plugins: ['html'],
+    rules: [],
+    presets: ['textlint-rule-preset-japanese']
+  });
+  it('should lints html that contained sections', async () => {
+    expect(
+      await textLintInSections(engine, [
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'test1'
+                },
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: '今日は、おいしい、ものが、食べれた。'
+                },
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'テストが成功するとこが確認できた。'
+                },
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'test2'
+                }
+              ]
+            }
+          ]
+        }
+      ])
+    ).toStrictEqual([
+      {
+        title: '',
+        content: [
+          {
+            kind: 'html' as const,
+            contentHtml: [
+              {
+                tagName: 'p',
+                style: {},
+                attribs: {},
+                html: 'test1'
+              },
+              {
+                tagName: 'p',
+                style: {},
+                attribs: {},
+                html:
+                  '今日は、おいしい、ものが<span style="color: red;">一つの文で"、"を3つ以上使用しています</span>、食べ<span style="color: red;">ら抜き言葉を使用しています。</span>れた。'
+              },
+              {
+                tagName: 'p',
+                style: {},
+                attribs: {},
+                html:
+                  'テストが成功するとこ<span style="color: red;">一文に二回以上利用されている助詞 "が" がみつかりました。</span>が確認できた。'
               },
               {
                 tagName: 'p',
