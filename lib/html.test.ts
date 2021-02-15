@@ -1,4 +1,4 @@
-import { styleToJsxStyle, htmlToChildren } from './html';
+import { styleToJsxStyle, htmlToChildren, getIndexedHtml } from './html';
 
 describe('styleToJsxStyle()', () => {
   it('should returns jsx style from style attribute', () => {
@@ -140,5 +140,279 @@ describe('htmlToChildren()', () => {
         html: '<p>test</p><button>abc</button><p>test</p>'
       }
     ]);
+  });
+});
+
+describe('getIndexedHtml()', () => {
+  it('should get index html', () => {
+    expect(
+      getIndexedHtml([
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'test1'
+                }
+              ]
+            }
+          ]
+        }
+      ])
+    ).toStrictEqual({
+      index: [
+        {
+          range: [0, 11],
+          sectionIdx: 0,
+          contentIdx: 0,
+          childIdx: 0
+        }
+      ],
+      html: '<p>test1</p>'
+    });
+    expect(
+      getIndexedHtml([
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'test1'
+                },
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'test2'
+                }
+              ]
+            }
+          ]
+        }
+      ])
+    ).toStrictEqual({
+      index: [
+        {
+          range: [0, 11],
+          sectionIdx: 0,
+          contentIdx: 0,
+          childIdx: 0
+        },
+        {
+          range: [12, 23],
+          sectionIdx: 0,
+          contentIdx: 0,
+          childIdx: 1
+        }
+      ],
+      html: '<p>test1</p><p>test2</p>'
+    });
+    expect(
+      getIndexedHtml([
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'test1'
+                },
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'test2'
+                }
+              ]
+            },
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'div',
+                  style: {},
+                  attribs: {},
+                  html: 'test3'
+                },
+                {
+                  tagName: 'div',
+                  style: {},
+                  attribs: {},
+                  html: 'test4'
+                }
+              ]
+            }
+          ]
+        }
+      ])
+    ).toStrictEqual({
+      index: [
+        {
+          range: [0, 11],
+          sectionIdx: 0,
+          contentIdx: 0,
+          childIdx: 0
+        },
+        {
+          range: [12, 23],
+          sectionIdx: 0,
+          contentIdx: 0,
+          childIdx: 1
+        },
+        {
+          range: [24, 39],
+          sectionIdx: 0,
+          contentIdx: 1,
+          childIdx: 0
+        },
+        {
+          range: [40, 55],
+          sectionIdx: 0,
+          contentIdx: 1,
+          childIdx: 1
+        }
+      ],
+      html: '<p>test1</p><p>test2</p><div>test3</div><div>test4</div>'
+    });
+    expect(
+      getIndexedHtml([
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'test1'
+                },
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'test2'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'div',
+                  style: {},
+                  attribs: {},
+                  html: 'test3'
+                },
+                {
+                  tagName: 'div',
+                  style: {},
+                  attribs: {},
+                  html: 'test4'
+                }
+              ]
+            }
+          ]
+        }
+      ])
+    ).toStrictEqual({
+      index: [
+        {
+          range: [0, 11],
+          sectionIdx: 0,
+          contentIdx: 0,
+          childIdx: 0
+        },
+        {
+          range: [12, 23],
+          sectionIdx: 0,
+          contentIdx: 0,
+          childIdx: 1
+        },
+        {
+          range: [24, 39],
+          sectionIdx: 1,
+          contentIdx: 0,
+          childIdx: 0
+        },
+        {
+          range: [40, 55],
+          sectionIdx: 1,
+          contentIdx: 0,
+          childIdx: 1
+        }
+      ],
+      html: '<p>test1</p><p>test2</p><div>test3</div><div>test4</div>'
+    });
+  });
+  it('skip un-targeted kind/element', () => {
+    expect(
+      getIndexedHtml([
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'test1'
+                },
+                {
+                  tagName: 'img',
+                  style: {},
+                  attribs: {},
+                  html: 'test2'
+                },
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'test3'
+                }
+              ]
+            }
+          ]
+        }
+      ])
+    ).toStrictEqual({
+      index: [
+        {
+          range: [0, 11],
+          sectionIdx: 0,
+          contentIdx: 0,
+          childIdx: 0
+        },
+        {
+          range: [12, 23],
+          sectionIdx: 0,
+          contentIdx: 0,
+          childIdx: 2
+        }
+      ],
+      html: '<p>test1</p><p>test3</p>'
+    });
   });
 });
