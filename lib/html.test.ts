@@ -5,7 +5,6 @@ import {
   insertHtmlToSections,
   textLintInSections
 } from './html';
-import { TextLintEngine } from 'textlint';
 
 describe('styleToJsxStyle()', () => {
   it('should returns jsx style from style attribute', () => {
@@ -760,48 +759,47 @@ describe('insertHtmlToSections()', () => {
 });
 
 describe('textLintInSections()', () => {
-  const engine = new TextLintEngine({
-    plugins: ['html'],
-    rules: [],
-    presets: ['textlint-rule-preset-japanese']
-  });
+  const presets = [require('textlint-rule-preset-japanese')];
   it('should lints html that contained sections', async () => {
-    const res = await textLintInSections(engine, [
-      {
-        title: '',
-        content: [
-          {
-            kind: 'html' as const,
-            contentHtml: [
-              {
-                tagName: 'p',
-                style: {},
-                attribs: {},
-                html: 'test1'
-              },
-              {
-                tagName: 'p',
-                style: {},
-                attribs: {},
-                html: '今日は、おいしい、ものが、食べれた。'
-              },
-              {
-                tagName: 'p',
-                style: {},
-                attribs: {},
-                html: 'テストが成功するとこが確認できた。'
-              },
-              {
-                tagName: 'p',
-                style: {},
-                attribs: {},
-                html: 'test2'
-              }
-            ]
-          }
-        ]
-      }
-    ]);
+    const res = await textLintInSections(
+      [
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'test1'
+                },
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: '今日は、おいしい、ものが、食べれた。'
+                },
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'テストが成功するとこが確認できた。'
+                },
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'test2'
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      presets
+    );
     expect(res.sections).toStrictEqual([
       {
         title: '',
@@ -864,7 +862,6 @@ describe('textLintInSections()', () => {
   });
   it('should apply style to messages', async () => {
     const res = await textLintInSections(
-      engine,
       [
         {
           title: '',
@@ -883,6 +880,7 @@ describe('textLintInSections()', () => {
           ]
         }
       ],
+      presets,
       {
         'background-color': '#ff0000'
       }
@@ -915,24 +913,27 @@ describe('textLintInSections()', () => {
     ]);
   });
   it('should inserts no messages', async () => {
-    const res = await textLintInSections(engine, [
-      {
-        title: '',
-        content: [
-          {
-            kind: 'html' as const,
-            contentHtml: [
-              {
-                tagName: 'p',
-                style: {},
-                attribs: {},
-                html: 'テストが成功するところを確認できた。'
-              }
-            ]
-          }
-        ]
-      }
-    ]);
+    const res = await textLintInSections(
+      [
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'テストが成功するところを確認できた。'
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      presets
+    );
     expect(res.sections).toStrictEqual([
       {
         title: '',

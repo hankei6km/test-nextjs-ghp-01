@@ -7,7 +7,7 @@ import merge from 'deepmerge';
 import gh from 'hast-util-sanitize/lib/github.json';
 import { Schema } from 'hast-util-sanitize';
 import cheerio from 'cheerio';
-import { TextLintEngine } from 'textlint';
+import { TextlintKernel, TextlintKernelRule } from '@textlint/kernel';
 import parseStyle from 'style-to-object';
 // import camelcaseKeys from 'camelcase-keys';  // vedor prefix が jsx styleにならない?
 import { Section, SectionContentHtmlChildren } from '../types/pageTypes';
@@ -218,15 +218,40 @@ type TextLintInSectionsResult = {
 };
 
 export async function textLintInSections(
-  engine: TextLintEngine,
   sections: Section[],
+  optionsPresets?: any[],
   messageStyle: { [key: string]: string } = { color: 'red' },
   idPrefix: string = ''
 ): Promise<TextLintInSectionsResult> {
   let ret: TextLintInSectionsResult = { sections, messages: [], list: '' };
   const indexedHtml = getIndexedHtml(sections);
-  const results = await engine.executeOnText(indexedHtml.html, '.html');
-  if (results.length > 0) {
+
+  const kernel = new TextlintKernel();
+  // todo: SiteServerSideConfig で定義できるようにする
+  const presets = optionsPresets || [require('textlint-rule-preset-japanese')];
+  const options = {
+    // filePath: '/path/to/file.md',
+    ext: '.html',
+    plugins: [
+      {
+        pluginId: 'html',
+        plugin: require('textlint-plugin-html')
+      }
+    ],
+    rules: presets
+      .map((preset) =>
+        Object.entries(preset.rules).map<TextlintKernelRule>(([k, v]) => ({
+          ruleId: k,
+          rule: v as TextlintKernelRule['rule'],
+          options: preset.rulesConfig[k] ? { ...preset.rulesConfig[k] } : {}
+        }))
+      )
+      .reduce((a, v) => a.concat(v), [])
+    // .flat(1)
+    //https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
+  };
+  const results = [await kernel.lintText(indexedHtml.html, options)];
+  if (results && results.length > 0 && results[0].messages.length > 0) {
     let slider = 0;
     const $wrapper = cheerio.load('<span/>')('span');
     Object.entries(messageStyle).forEach(([k, v]) => {

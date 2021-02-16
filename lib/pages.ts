@@ -26,7 +26,6 @@ import {
 } from '../utils/pagination';
 import { markdownToHtml } from './markdown';
 import { textLintInSections } from './html';
-import { TextLintEngine } from 'textlint';
 
 const globalPageId = '_global';
 // id が 1件で 40byte  と想定、 content-length が 5M 程度とのことなので、1000*1000*5 / 40 で余裕を見て決めた値。
@@ -378,12 +377,7 @@ export async function getPagesPageData(
         : -1;
 
     if (preview) {
-      const engine = new TextLintEngine({
-        plugins: ['html'],
-        rules: [],
-        // :presets: ['textlint-rule-preset-japanese']
-      });
-      const res = await textLintInSections(engine, pageData.sections);
+      const res = await textLintInSections(pageData.sections);
       pageData.sections = res.sections;
 
       const title = '[DRAFT]';
@@ -406,8 +400,8 @@ export async function getPagesPageData(
     }
     return pageData;
   } catch (err) {
-     console.error(`getPagesPageData error: ${err.name}`);
-    // console.error(`getPagesPageData error: ${err}`);
+    // console.error(`getPagesPageData error: ${err.name}`);
+    console.error(`getPagesPageData error: ${err}`);
   }
   return blankPageData();
 }
