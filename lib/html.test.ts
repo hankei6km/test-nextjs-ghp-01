@@ -5,6 +5,7 @@ import {
   insertHtmlToSections,
   textLintInSections
 } from './html';
+import { getTextlintKernelOptions } from '../utils/textlint';
 
 describe('styleToJsxStyle()', () => {
   it('should returns jsx style from style attribute', () => {
@@ -759,7 +760,9 @@ describe('insertHtmlToSections()', () => {
 });
 
 describe('textLintInSections()', () => {
-  const presets = [require('textlint-rule-preset-japanese')];
+  const presets = getTextlintKernelOptions([
+    { presetId: 'japanese', preset: require('textlint-rule-preset-japanese') }
+  ]);
   it('should lints html that contained sections', async () => {
     const res = await textLintInSections(
       [
@@ -841,23 +844,26 @@ describe('textLintInSections()', () => {
     ]);
     expect(res.messages).toStrictEqual([
       {
+        ruleId: 'japanese/max-ten',
         id: ':textLintMessage:0',
         severity: 2,
         message: '一つの文で"、"を3つ以上使用しています'
       },
       {
+        ruleId: 'japanese/no-dropping-the-ra',
         id: ':textLintMessage:1',
         severity: 2,
         message: 'ら抜き言葉を使用しています。'
       },
       {
+        ruleId: 'japanese/no-doubled-joshi',
         id: ':textLintMessage:2',
         severity: 2,
         message: '一文に二回以上利用されている助詞 "が" がみつかりました。'
       }
     ]);
     expect(res.list).toEqual(
-      '<dl><dt>error</dt><dd><a href="#:textLintMessage:0">一つの文で"、"を3つ以上使用しています</a></dd><dt>error</dt><dd><a href="#:textLintMessage:1">ら抜き言葉を使用しています。</a></dd><dt>error</dt><dd><a href="#:textLintMessage:2">一文に二回以上利用されている助詞 "が" がみつかりました。</a></dd></dl>'
+      '<dl><dt>error</dt><dd><a href="#:textLintMessage:0">一つの文で"、"を3つ以上使用しています(japanese/max-ten)</a></dd><dt>error</dt><dd><a href="#:textLintMessage:1">ら抜き言葉を使用しています。(japanese/no-dropping-the-ra)</a></dd><dt>error</dt><dd><a href="#:textLintMessage:2">一文に二回以上利用されている助詞 "が" がみつかりました。(japanese/no-doubled-joshi)</a></dd></dl>'
     );
   });
   it('should apply style to messages', async () => {
@@ -906,6 +912,7 @@ describe('textLintInSections()', () => {
     ]);
     expect(res.messages).toStrictEqual([
       {
+        ruleId: 'japanese/no-doubled-joshi',
         id: ':textLintMessage:0',
         severity: 2,
         message: '一文に二回以上利用されている助詞 "が" がみつかりました。'

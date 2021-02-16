@@ -7,10 +7,12 @@ import merge from 'deepmerge';
 import gh from 'hast-util-sanitize/lib/github.json';
 import { Schema } from 'hast-util-sanitize';
 import cheerio from 'cheerio';
-import { TextlintKernel, TextlintKernelRule } from '@textlint/kernel';
+import { TextlintKernel } from '@textlint/kernel';
+import { TextlintKernelOptions } from '@textlint/kernel/lib/textlint-kernel-interface';
 import parseStyle from 'style-to-object';
 // import camelcaseKeys from 'camelcase-keys';  // vedor prefix が jsx styleにならない?
 import { Section, SectionContentHtmlChildren } from '../types/pageTypes';
+import { getTextlintKernelOptions } from '../utils/textlint';
 
 const schema = merge(gh, {
   tagNames: ['picture', 'source'],
@@ -213,44 +215,29 @@ export function insertHtmlToSections(
 }
 type TextLintInSectionsResult = {
   sections: Section[];
-  messages: { message: string; id: string; severity: number }[];
+  messages: { ruleId: string; message: string; id: string; severity: number }[];
   list: string;
 };
 
 export async function textLintInSections(
   sections: Section[],
-  optionsPresets?: any[],
+  options?: TextlintKernelOptions,
   messageStyle: { [key: string]: string } = { color: 'red' },
   idPrefix: string = ''
 ): Promise<TextLintInSectionsResult> {
   let ret: TextLintInSectionsResult = { sections, messages: [], list: '' };
   const indexedHtml = getIndexedHtml(sections);
 
+  // https://github.com/mobilusoss/textlint-browser-runner/tree/master/packages/textlint-bundler
   const kernel = new TextlintKernel();
-  // todo: SiteServerSideConfig で定義できるようにする
-  const presets = optionsPresets || [require('textlint-rule-preset-japanese')];
-  const options = {
-    // filePath: '/path/to/file.md',
-    ext: '.html',
-    plugins: [
-      {
-        pluginId: 'html',
-        plugin: require('textlint-plugin-html')
-      }
-    ],
-    rules: presets
-      .map((preset) =>
-        Object.entries(preset.rules).map<TextlintKernelRule>(([k, v]) => ({
-          ruleId: k,
-          rule: v as TextlintKernelRule['rule'],
-          options: preset.rulesConfig[k] ? { ...preset.rulesConfig[k] } : {}
-        }))
-      )
-      .reduce((a, v) => a.concat(v), [])
-    // .flat(1)
-    //https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Array/flat
-  };
-  const results = [await kernel.lintText(indexedHtml.html, options)];
+
+  const results = [
+    await kernel.lintText(
+      indexedHtml.html,
+      // todo: options(presets など)は SiteServerSideConfig で定義できるようにする.
+      options || getTextlintKernelOptions()
+    )
+  ];
   if (results && results.length > 0 && results[0].messages.length > 0) {
     let slider = 0;
     const $wrapper = cheerio.load('<span/>')('span');
@@ -268,7 +255,12 @@ export async function textLintInSections(
           ret.sections
         );
         slider = slider + html.length;
-        ret.messages.push({ message: m.message, id, severity: m.severity });
+        ret.messages.push({
+          ruleId: m.ruleId,
+          message: m.message,
+          id,
+          severity: m.severity
+        });
       }
     });
     const $dl = cheerio.load('<dl/>')('dl');
@@ -281,7 +273,7 @@ export async function textLintInSections(
       );
       const $a = $d('a');
       $a.attr('href', `#${m.id}`);
-      $a.text(m.message);
+      $a.text(`${m.message}(${m.ruleId})`);
       $dl.append($d('body').children());
     });
     ret.list = $dl.parent().html() || '';

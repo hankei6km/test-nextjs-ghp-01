@@ -33,6 +33,7 @@
     "style-to-object": "^0.3.0",
     "textlint": "^11.8.2",
     "textlint-plugin-html": "^0.2.0",
+    "textlint-rule-preset-ja-technical-writing": "^4.0.1",
     "textlint-rule-preset-japanese": "^5.0.0",
     "unified": "^9.2.0"
   },
