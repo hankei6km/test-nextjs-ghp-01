@@ -382,8 +382,8 @@ export async function getPagesPageData(
 
       const title = '[DRAFT]';
       const messageHtml = `${markdownToHtml(
-        `API: ${previewData.apiName}, slug: ${previewData.slug}\n\n[Exit](/api/exit-preview)\n\n---`
-      )}${res.list}`;
+        `API: ${previewData.apiName}, slug: ${previewData.slug}\n\n[Exit](/api/exit-preview)`
+      )}${res.list ? `<hr/>${res.list}` : ''}`;
       pageData.header.push({
         title: '',
         content: [
