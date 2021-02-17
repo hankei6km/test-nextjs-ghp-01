@@ -398,6 +398,18 @@ describe('getIndexedHtml()', () => {
                   style: {},
                   attribs: {},
                   html: 'test3'
+                },
+                {
+                  tagName: 'pre',
+                  style: {},
+                  attribs: {},
+                  html: '<code class="typescript">cosnt a=1;</code>'
+                },
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'test4'
                 }
               ]
             }
@@ -417,9 +429,15 @@ describe('getIndexedHtml()', () => {
           sectionIdx: 0,
           contentIdx: 0,
           childIdx: 2
+        },
+        {
+          range: [24, 35],
+          sectionIdx: 0,
+          contentIdx: 0,
+          childIdx: 4
         }
       ],
-      html: '<p>test1</p><p>test3</p>'
+      html: '<p>test1</p><p>test3</p><p>test4</p>'
     });
   });
 });

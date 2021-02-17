@@ -170,10 +170,18 @@ export function getIndexedHtml(sections: Section[]): IndexedHtml {
   sections.forEach((section, sectionIdx) => {
     section.content.forEach((content, contentIdx) => {
       if (content.kind === 'html') {
-        content.contentHtml.forEach((contentHtml, childIdx) => {
-          if (contentHtml.tagName !== 'img') {
+        // filter ではじくと index がずれる
+        // const contentHtmlWithoutCodeBlock = content.contentHtml.filter(
+        //   ({ tagName, html }) =>
+        //     tagName !== 'pre' && html.slice(0, 4) !== 'code'
+        // );
+        content.contentHtml.forEach(({ tagName, html }, childIdx) => {
+          if (
+            tagName !== 'img' &&
+            !(tagName === 'pre' && html.slice(0, 5) === '<code')
+          ) {
             const start = ret.html.length;
-            ret.html = `${ret.html}<${contentHtml.tagName}>${contentHtml.html}</${contentHtml.tagName}>`;
+            ret.html = `${ret.html}<${tagName}>${html}</${tagName}>`;
             const index: IndexedHtml['index'][0] = {
               range: [start, ret.html.length - 1],
               sectionIdx: sectionIdx,
