@@ -36,12 +36,20 @@ export function getTextlintKernelOptions(
     {
       presetId: 'ja-technical-writing',
       preset: require('textlint-rule-preset-ja-technical-writing')
+    },
+    {
+      presetId: 'ja-spacing',
+      preset: require('textlint-rule-preset-ja-spacing')
     }
   ];
   const _rules = rules || [];
   // ruleOptions の  key は preset のrule のoption を指定すｒ場合は
   // 'japanese-???' のように指定する.
-  const _ruleOptions = ruleOptions || {};
+  const _ruleOptions = ruleOptions || {
+    'ja-spacing/ja-space-between-half-and-full-width': {
+      space: 'always'
+    }
+  };
   const options = {
     // filePath: '/path/to/file.md',
     ext: '.html',
