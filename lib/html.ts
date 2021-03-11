@@ -7,12 +7,9 @@ import merge from 'deepmerge';
 import gh from 'hast-util-sanitize/lib/github.json';
 import { Schema } from 'hast-util-sanitize';
 import cheerio from 'cheerio';
-import { TextlintKernel } from '@textlint/kernel';
-import { TextlintKernelOptions } from '@textlint/kernel/lib/textlint-kernel-interface';
 import parseStyle from 'style-to-object';
 // import camelcaseKeys from 'camelcase-keys';  // vedor prefix が jsx styleにならない?
 import { Section, SectionContentHtmlChildren } from '../types/pageTypes';
-import { getTextlintKernelOptions } from '../utils/textlint';
 
 const schema = merge(gh, {
   tagNames: ['picture', 'source'],
@@ -194,97 +191,5 @@ export function getIndexedHtml(sections: Section[]): IndexedHtml {
       }
     });
   });
-  return ret;
-}
-
-export function insertHtmlToSections(
-  html: string,
-  pos: number, // section を IndexedHtml の html に変換した場合の html の位置
-  sections: Section[]
-): Section[] {
-  //  const ret = [...sections];
-  const { index } = getIndexedHtml(sections);
-  const idx = index.findIndex(
-    ({ range }) => range[0] <= pos && pos <= range[1]
-  );
-  if (idx >= 0) {
-    const { range, sectionIdx, contentIdx, childIdx } = index[idx];
-    const content = sections[sectionIdx].content[contentIdx];
-    if (content.kind === 'html') {
-      const c = content.contentHtml[childIdx];
-      let posInChild = pos - range[0] - (c.tagName.length + 2); // 2 = '<>'.length
-      posInChild = posInChild < 0 ? 0 : posInChild;
-      c.html = `${c.html.slice(0, posInChild)}${html}${c.html.slice(
-        posInChild
-      )}`;
-    }
-  } // 見つからないときは?
-  return sections;
-}
-type TextLintInSectionsResult = {
-  sections: Section[];
-  messages: { ruleId: string; message: string; id: string; severity: number }[];
-  list: string;
-};
-
-export async function textLintInSections(
-  sections: Section[],
-  options?: TextlintKernelOptions,
-  messageStyle: { [key: string]: string } = { color: 'red' },
-  idPrefix: string = ''
-): Promise<TextLintInSectionsResult> {
-  let ret: TextLintInSectionsResult = { sections, messages: [], list: '' };
-  const indexedHtml = getIndexedHtml(sections);
-
-  // https://github.com/mobilusoss/textlint-browser-runner/tree/master/packages/textlint-bundler
-  const kernel = new TextlintKernel();
-
-  const results = [
-    await kernel.lintText(
-      indexedHtml.html,
-      // todo: options(presets など)は SiteServerSideConfig で定義できるようにする.
-      options || getTextlintKernelOptions()
-    )
-  ];
-  if (results && results.length > 0 && results[0].messages.length > 0) {
-    let slider = 0;
-    const $wrapper = cheerio.load('<span/>')('span');
-    Object.entries(messageStyle).forEach(([k, v]) => {
-      $wrapper.css(k, v);
-    });
-    results[0].messages.forEach((m, i) => {
-      const id = `${idPrefix}:textLintMessage:${i}`;
-      $wrapper.attr('id', id);
-      const html = $wrapper.html(m.message).parent().html();
-      if (m.message && html) {
-        ret.sections = insertHtmlToSections(
-          html,
-          m.index + slider,
-          ret.sections
-        );
-        slider = slider + html.length;
-        ret.messages.push({
-          ruleId: m.ruleId,
-          message: m.message,
-          id,
-          severity: m.severity
-        });
-      }
-    });
-    const $dl = cheerio.load('<dl/>')('dl');
-    ret.messages.forEach((m) => {
-      const $d = cheerio.load('<dt></dt><dd><a/></dd>');
-      // https://github.com/textlint/textlint/blob/master/packages/%40textlint/kernel/src/shared/rule-severity.ts
-      // https://github.com/textlint/textlint/blob/master/packages/%40textlint/kernel/src/context/TextlintRuleSeverityLevelKeys.ts
-      $d('dt').text(
-        m.severity === 0 ? 'info' : m.severity === 1 ? 'warning' : 'error'
-      );
-      const $a = $d('a');
-      $a.attr('href', `#${m.id}`);
-      $a.text(`${m.message}(${m.ruleId})`);
-      $dl.append($d('body').children());
-    });
-    ret.list = $dl.parent().html() || '';
-  }
   return ret;
 }

@@ -25,7 +25,7 @@ import {
   paginationIdsFromPageCount
 } from '../utils/pagination';
 import { markdownToHtml } from './markdown';
-import { textLintInSections } from './html';
+import { textLintInSections } from './draftlint';
 
 const globalPageId = '_global';
 // id が 1件で 40byte  と想定、 content-length が 5M 程度とのことなので、1000*1000*5 / 40 で余裕を見て決めた値。
