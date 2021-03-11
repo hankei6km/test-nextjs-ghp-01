@@ -1,4 +1,4 @@
-import unified from 'unified';
+import unified, { Processor, FrozenProcessor } from 'unified';
 import rehypeParse from 'rehype-parse';
 import rehypeMinifyWhitespace from 'rehype-minify-whitespace';
 import rehypeStringify from 'rehype-stringify';
@@ -11,6 +11,11 @@ import parseStyle from 'style-to-object';
 // import camelcaseKeys from 'camelcase-keys';  // vedor prefix が jsx styleにならない?
 import { Section, SectionContentHtmlChildren } from '../types/pageTypes';
 
+import visit from 'unist-util-visit';
+import { Element } from 'hast';
+// import { Heading } from 'mdast';
+import { Transformer } from 'unified';
+
 const schema = merge(gh, {
   tagNames: ['picture', 'source'],
   attributes: {
@@ -19,16 +24,58 @@ const schema = merge(gh, {
   }
 });
 
-const processorHtml = unified()
-  .use(rehypeParse, { fragment: true })
-  .use(rehypeMinifyWhitespace)
-  .use(rehypeSanitize, (schema as unknown) as Schema)
-  .use(rehypeStringify)
-  .freeze();
+export function adjustHeading(
+  { top }: { top: number } = { top: 4 }
+): Transformer {
+  // hコンテント HTML と Markdown で本文に入力される見出しは h2 と h3 .
+  // h1 は保険で最上位にまるめる、.
+  return function transformer(tree): void {
+    // 今回は最上位が h3 か h4 に固定
+    function visitorH3Top(node: Element, _index: number): void {
+      switch (node.tagName) {
+        case 'h1':
+          node.tagName = 'h3';
+          break;
+        case 'h2':
+          node.tagName = 'h3';
+          break;
+        case 'h3':
+          node.tagName = 'h4';
+          break;
+      }
+    }
+    function visitorH4Top(node: Element, _index: number): void {
+      switch (node.tagName) {
+        case 'h1':
+          node.tagName = 'h4';
+          break;
+        case 'h2':
+          node.tagName = 'h4';
+          break;
+        case 'h3':
+          node.tagName = 'h5';
+          break;
+      }
+    }
+    visit(tree, 'element', top === 3 ? visitorH3Top : visitorH4Top);
+  };
+}
 
-export function sanitizeHtml(html: string): string {
+export function processorHtml() {
+  return unified().use(rehypeParse, { fragment: true });
+}
+
+function normalizeProcessor(processor: Processor): FrozenProcessor {
+  return processor
+    .use(rehypeMinifyWhitespace)
+    .use(rehypeSanitize, (schema as unknown) as Schema)
+    .use(rehypeStringify)
+    .freeze();
+}
+
+export function normalizedHtml(processor: Processor, html: string): string {
   let ret = '';
-  processorHtml.process(html, (err, file) => {
+  normalizeProcessor(processor).process(html, (err, file) => {
     if (err) {
       console.error(err);
     }

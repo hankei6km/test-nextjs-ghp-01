@@ -1,6 +1,6 @@
 import ReactDomServer from 'react-dom/server';
 import { ImageTemplate, imageTransformedUrl } from './imageTemplate';
-import { sanitizeHtml } from './html';
+import { normalizedHtml, processorHtml } from './html';
 import siteServerSideConfig from '../src/site.server-side-config';
 
 export type ImageInfo = {
@@ -111,7 +111,9 @@ export function imageToHtml(contentImage: ContentImage): string {
     siteServerSideConfig.imageConfig.contentImageClassName,
     siteServerSideConfig.imageConfig.template
   );
-  return sanitizeHtml(image);
+  // normalizeHtml は section の組み立てでコールしたいが、
+  // 何か影響ある?
+  return normalizedHtml(processorHtml(), image);
 }
 
 const fmJsonQuery = (() => {

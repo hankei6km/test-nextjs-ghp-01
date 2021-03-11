@@ -1,4 +1,33 @@
-import { styleToJsxStyle, htmlToChildren, getIndexedHtml } from './html';
+import {
+  processorHtml,
+  adjustHeading,
+  normalizedHtml,
+  styleToJsxStyle,
+  htmlToChildren,
+  getIndexedHtml
+} from './html';
+
+describe('normalizeHtml()', () => {
+  it('should returns nrmalized html', () => {
+    expect(
+      normalizedHtml(processorHtml(), '<h2   id="abcdef123">test1</h2>')
+    ).toEqual('<h2 id="user-content-abcdef123">test1</h2>');
+  });
+  it('should adjust heading depth', () => {
+    expect(
+      normalizedHtml(
+        processorHtml().use(adjustHeading, { top: 3 }),
+        '<h2>test1</h2><h3>test2</h3>'
+      )
+    ).toEqual('<h3>test1</h3><h4>test2</h4>');
+    expect(
+      normalizedHtml(
+        processorHtml().use(adjustHeading),
+        '<h2>test1</h2><h3>test2</h3>'
+      )
+    ).toEqual('<h4>test1</h4><h5>test2</h5>');
+  });
+});
 
 describe('styleToJsxStyle()', () => {
   it('should returns jsx style from style attribute', () => {

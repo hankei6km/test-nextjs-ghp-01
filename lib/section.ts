@@ -1,13 +1,13 @@
 import { join } from 'path';
 import { createHash } from 'crypto';
 import { PageDataGetOptions, getSortedPagesData } from './pages';
-import { markdownToHtml } from './markdown';
+import { processorMarkdownToHtml } from './markdown';
 import { ApiNameArticleValues, ApiNameArticle } from './client';
 import { PagesContent, PagesSectionKind } from '../types/client/contentTypes';
 import { Section } from '../types/pageTypes';
 import { GetQuery } from '../types/client/queryTypes';
 import { imageToHtml, imageInfo } from './image';
-import { htmlToChildren, sanitizeHtml } from './html';
+import { processorHtml, htmlToChildren, normalizedHtml } from './html';
 
 // copy で使いまわす予定だったが、linter で "Added in: v13.1.0" にひっかかるようなのでやめる.
 // const hash = createHash('sha256');
@@ -77,12 +77,16 @@ export async function getSectionFromPages(
           if (content.fieldId === 'contentHtml') {
             return {
               kind: 'html' as const,
-              contentHtml: htmlToChildren(sanitizeHtml(content.html))
+              contentHtml: htmlToChildren(
+                normalizedHtml(processorHtml(), content.html)
+              )
             };
           } else if (content.fieldId === 'contentMarkdown') {
             return {
               kind: 'html' as const,
-              contentHtml: htmlToChildren(markdownToHtml(content.markdown))
+              contentHtml: htmlToChildren(
+                normalizedHtml(processorMarkdownToHtml(), content.markdown)
+              )
             };
           } else if (content.fieldId === 'contentImage') {
             return {
@@ -155,7 +159,10 @@ export async function getSectionFromPages(
             content.fieldId === 'contentNotification' &&
             content.enabled
           ) {
-            const messageHtml = sanitizeHtml(content.messageHtml); // 個別に sanitizeHtml を実行していると抜けが出そう
+            const messageHtml = normalizedHtml(
+              processorHtml(),
+              content.messageHtml
+            ); // 個別に sanitizeHtml を実行していると抜けが出そう
             return {
               kind: 'notification' as const,
               title: content.title || '',
