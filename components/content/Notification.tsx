@@ -30,7 +30,7 @@ const useMessageStyles = makeStyles((theme) => ({
   },
   'Notification-message': {
     ...theme.typography.body1,
-    maxWidth: '90%',
+    maxWidth: '100%',
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
     '& a': {

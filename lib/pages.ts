@@ -25,6 +25,7 @@ import {
   paginationIdsFromPageCount
 } from '../utils/pagination';
 import { markdownToHtml } from './markdown';
+import { textLintInSections } from './draftlint';
 
 const globalPageId = '_global';
 // id が 1件で 40byte  と想定、 content-length が 5M 程度とのことなので、1000*1000*5 / 40 で余裕を見て決めた値。
@@ -376,10 +377,13 @@ export async function getPagesPageData(
         : -1;
 
     if (preview) {
+      const res = await textLintInSections(pageData.sections);
+      pageData.sections = res.sections;
+
       const title = '[DRAFT]';
-      const messageHtml = markdownToHtml(
-        `API: ${previewData.apiName}, slug: ${previewData.slug}\n\n[click to exit](/api/exit-preview)`
-      );
+      const messageHtml = `${markdownToHtml(
+        `API: ${previewData.apiName}, slug: ${previewData.slug}\n\n[Exit](/api/exit-preview)`
+      )}${res.list ? `<hr/>${res.list}` : ''}`;
       pageData.header.push({
         title: '',
         content: [
@@ -387,7 +391,7 @@ export async function getPagesPageData(
             kind: 'notification',
             title,
             messageHtml,
-            severity: 'warning',
+            severity: res.messages.length === 0 ? 'info' : 'warning',
             autoHide: false,
             notificationId: getNotificationId('', title, messageHtml)
           }
@@ -396,7 +400,8 @@ export async function getPagesPageData(
     }
     return pageData;
   } catch (err) {
-    console.error(`getPagesPageData error: ${err.name}`);
+    //console.error(`getPagesPageData error: ${err.name}`);
+    console.error(`getPagesPageData error: ${err}`);
   }
   return blankPageData();
 }

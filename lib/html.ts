@@ -9,7 +9,7 @@ import { Schema } from 'hast-util-sanitize';
 import cheerio from 'cheerio';
 import parseStyle from 'style-to-object';
 // import camelcaseKeys from 'camelcase-keys';  // vedor prefix が jsx styleにならない?
-import { SectionContentHtmlChildren } from '../types/pageTypes';
+import { Section, SectionContentHtmlChildren } from '../types/pageTypes';
 
 const schema = merge(gh, {
   tagNames: ['picture', 'source'],
@@ -141,5 +141,55 @@ export function htmlToChildren(html: string): SectionContentHtmlChildren[] {
       html: html
     });
   }
+  return ret;
+}
+
+export type IndexedHtml = {
+  index: {
+    range: [
+      // start and end pos.
+      number,
+      number
+    ];
+    // section  section contentHtml を特定する idx.
+    sectionIdx: number;
+    contentIdx: number;
+    childIdx: number;
+  }[];
+  html: string;
+};
+
+export function getIndexedHtml(sections: Section[]): IndexedHtml {
+  const ret: IndexedHtml = {
+    index: [],
+    html: ''
+  };
+  sections.forEach((section, sectionIdx) => {
+    section.content.forEach((content, contentIdx) => {
+      if (content.kind === 'html') {
+        // filter ではじくと index がずれる
+        // const contentHtmlWithoutCodeBlock = content.contentHtml.filter(
+        //   ({ tagName, html }) =>
+        //     tagName !== 'pre' && html.slice(0, 4) !== 'code'
+        // );
+        content.contentHtml.forEach(({ tagName, html }, childIdx) => {
+          if (
+            tagName !== 'img' &&
+            !(tagName === 'pre' && html.slice(0, 5) === '<code')
+          ) {
+            const start = ret.html.length;
+            ret.html = `${ret.html}<${tagName}>${html}</${tagName}>`;
+            const index: IndexedHtml['index'][0] = {
+              range: [start, ret.html.length - 1],
+              sectionIdx: sectionIdx,
+              contentIdx: contentIdx,
+              childIdx: childIdx
+            };
+            ret.index.push(index);
+          }
+        });
+      }
+    });
+  });
   return ret;
 }
