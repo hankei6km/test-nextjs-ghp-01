@@ -58,7 +58,6 @@ describe('insertHtmlToSections()', () => {
       insertHtmlToSections('<span>ins1</span>', 3, [
         {
           tocItems: [],
-          tocItems: [],
           title: '',
           content: [
             {
