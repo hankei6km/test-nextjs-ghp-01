@@ -15,6 +15,8 @@ import visit from 'unist-util-visit';
 import { Element } from 'hast';
 // import { Heading } from 'mdast';
 import { Transformer } from 'unified';
+// import nodesToString from 'unist-util-to-string-with-nodes';
+const nodesToString = require('unist-util-to-string-with-nodes');
 
 const schema = merge(gh, {
   tagNames: ['picture', 'source'],
@@ -24,40 +26,51 @@ const schema = merge(gh, {
   }
 });
 
+const textToTocLabelRegExp = /[ \t\n\r]+/g;
+export function getTocLabel(s: string): string {
+  return s.replace(textToTocLabelRegExp, '-');
+}
+
 export function adjustHeading(
   { top }: { top: number } = { top: 4 }
 ): Transformer {
-  // hコンテント HTML と Markdown で本文に入力される見出しは h2 と h3 .
+  // コンテント HTML と Markdown で本文に入力される見出しは
+  // h2 と h3 を使うという前提.
+  // (しばらくメモ的につかってみたが、感覚的に本文に見出しを入れると h2 にしたくなる).
   // h1 は保険で最上位にまるめる、.
   return function transformer(tree): void {
     // 今回は最上位が h3 か h4 に固定
-    function visitorH3Top(node: Element, _index: number): void {
-      switch (node.tagName) {
-        case 'h1':
-          node.tagName = 'h3';
-          break;
-        case 'h2':
-          node.tagName = 'h3';
-          break;
-        case 'h3':
-          node.tagName = 'h4';
-          break;
+    const adjust =
+      top === 3
+        ? {
+            h1: 'h3',
+            h2: 'h3',
+            h3: 'h4'
+          }
+        : {
+            h1: 'h4',
+            h2: 'h4',
+            h3: 'h5'
+          };
+    function visitor(node: Element, _index: number): void {
+      if (
+        node.tagName === 'h1' ||
+        node.tagName === 'h2' ||
+        node.tagName === 'h3'
+      ) {
+        node.tagName = adjust[node.tagName];
+        if (node.properties) {
+          // とりあえず 空白と tab 改行は - にしておく.
+          // https://developer.mozilla.org/ja/docs/Web/HTML/Global_attributes/id
+          //> この制約は HTML5 で外されましたが、互換性のために ID は文字で始めるようにしましょう。
+          // prefix は sanitize で付加される.
+          // 問題になるようなら hash 化する
+          // (hashs は notification 用があるので、それを util にする).
+          node.properties.id = getTocLabel(nodesToString(node).text);
+        }
       }
     }
-    function visitorH4Top(node: Element, _index: number): void {
-      switch (node.tagName) {
-        case 'h1':
-          node.tagName = 'h4';
-          break;
-        case 'h2':
-          node.tagName = 'h4';
-          break;
-        case 'h3':
-          node.tagName = 'h5';
-          break;
-      }
-    }
-    visit(tree, 'element', top === 3 ? visitorH3Top : visitorH4Top);
+    visit(tree, 'element', visitor);
   };
 }
 

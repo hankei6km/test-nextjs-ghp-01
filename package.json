@@ -45,6 +45,7 @@
     "textlint-rule-preset-jtf-style": "^2.3.8",
     "traverse": "^0.6.6",
     "unified": "^9.2.0",
+    "unist-util-to-string-with-nodes": "^0.1.1",
     "unist-util-visit": "^2.0.3"
   },
   "devDependencies": {

@@ -1,4 +1,5 @@
 import {
+  getTocLabel,
   processorHtml,
   adjustHeading,
   normalizedHtml,
@@ -6,6 +7,15 @@ import {
   htmlToChildren,
   getIndexedHtml
 } from './html';
+
+describe('getTocLabel()', () => {
+  it('should returns label to using in toc', () => {
+    expect(getTocLabel('test')).toEqual('test');
+    expect(getTocLabel('test1 test2\ttest3')).toEqual('test1-test2-test3');
+    expect(getTocLabel('test1  test2\t\ttest3')).toEqual('test1-test2-test3');
+    expect(getTocLabel('test1\ntest2\n\ntest3')).toEqual('test1-test2-test3');
+  });
+});
 
 describe('normalizeHtml()', () => {
   it('should returns nrmalized html', () => {
@@ -19,13 +29,17 @@ describe('normalizeHtml()', () => {
         processorHtml().use(adjustHeading, { top: 3 }),
         '<h2>test1</h2><h3>test2</h3>'
       )
-    ).toEqual('<h3>test1</h3><h4>test2</h4>');
+    ).toEqual(
+      '<h3 id="user-content-test1">test1</h3><h4 id="user-content-test2">test2</h4>'
+    );
     expect(
       normalizedHtml(
         processorHtml().use(adjustHeading),
         '<h2>test1</h2><h3>test2</h3>'
       )
-    ).toEqual('<h4>test1</h4><h5>test2</h5>');
+    ).toEqual(
+      '<h4 id="user-content-test1">test1</h4><h5 id="user-content-test2">test2</h5>'
+    );
   });
 });
 

@@ -7,7 +7,12 @@ import { PagesContent, PagesSectionKind } from '../types/client/contentTypes';
 import { Section } from '../types/pageTypes';
 import { GetQuery } from '../types/client/queryTypes';
 import { imageToHtml, imageInfo } from './image';
-import { processorHtml, htmlToChildren, normalizedHtml } from './html';
+import {
+  processorHtml,
+  htmlToChildren,
+  normalizedHtml,
+  adjustHeading
+} from './html';
 
 // copy で使いまわす予定だったが、linter で "Added in: v13.1.0" にひっかかるようなのでやめる.
 // const hash = createHash('sha256');
@@ -78,14 +83,24 @@ export async function getSectionFromPages(
             return {
               kind: 'html' as const,
               contentHtml: htmlToChildren(
-                normalizedHtml(processorHtml(), content.html)
+                normalizedHtml(
+                  processorHtml().use(adjustHeading, {
+                    top: section.title ? 4 : 3
+                  }),
+                  content.html
+                )
               )
             };
           } else if (content.fieldId === 'contentMarkdown') {
             return {
               kind: 'html' as const,
               contentHtml: htmlToChildren(
-                normalizedHtml(processorMarkdownToHtml(), content.markdown)
+                normalizedHtml(
+                  processorMarkdownToHtml().use(adjustHeading, {
+                    top: section.title ? 4 : 3
+                  }),
+                  content.markdown
+                )
               )
             };
           } else if (content.fieldId === 'contentImage') {
