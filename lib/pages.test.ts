@@ -192,10 +192,15 @@ describe('getPagesPageData()', () => {
         allCategory: [],
         category: [],
         curCategory: '',
+        pageToc: {
+          label: '',
+          items: []
+        },
         header: [],
         top: [],
         sections: [
           {
+            tocItems: [],
             title: 'intro',
             content: [
               {
@@ -213,9 +218,9 @@ describe('getPagesPageData()', () => {
                 kind: 'html',
                 contentHtml: [
                   {
-                    tagName: 'h2',
+                    tagName: 'h4',
                     style: {},
-                    attribs: {},
+                    attribs: { id: 'user-content-markdown' },
                     html: 'markdown'
                   },
                   {
@@ -230,9 +235,9 @@ describe('getPagesPageData()', () => {
                 kind: 'html',
                 contentHtml: [
                   {
-                    tagName: 'h2',
+                    tagName: 'h4',
                     style: {},
-                    attribs: {},
+                    attribs: { id: 'user-content-blog' },
                     html: 'blog'
                   }
                 ]
@@ -325,6 +330,7 @@ describe('getPagesPageData()', () => {
         bottom: [],
         footer: [
           {
+            tocItems: [],
             title: 'language & library',
             content: [
               {
@@ -342,6 +348,7 @@ describe('getPagesPageData()', () => {
             ]
           },
           {
+            tocItems: [],
             title: 'environment',
             content: [
               {
@@ -358,6 +365,7 @@ describe('getPagesPageData()', () => {
             ]
           },
           {
+            tocItems: [],
             title: '',
             content: [
               {

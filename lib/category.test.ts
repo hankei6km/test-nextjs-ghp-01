@@ -74,9 +74,14 @@ describe('getSortedPagesData()', () => {
       ],
       category: [],
       curCategory: 'cat2',
+      pageToc: {
+        label: '',
+        items: []
+      },
       header: [],
       top: [
         {
+          tocItems: [],
           title: '',
           content: [
             {
@@ -101,6 +106,7 @@ describe('getSortedPagesData()', () => {
       ],
       sections: [
         {
+          tocItems: [],
           title: 'all posts',
           content: [
             {
@@ -139,6 +145,7 @@ describe('getSortedPagesData()', () => {
       ],
       bottom: [
         {
+          tocItems: [],
           title: '',
           content: [
             {
@@ -163,6 +170,7 @@ describe('getSortedPagesData()', () => {
       ],
       footer: [
         {
+          tocItems: [],
           title: 'language & library',
           content: [
             {
@@ -180,6 +188,7 @@ describe('getSortedPagesData()', () => {
           ]
         },
         {
+          tocItems: [],
           title: 'environment',
           content: [
             {
@@ -196,6 +205,7 @@ describe('getSortedPagesData()', () => {
           ]
         },
         {
+          tocItems: [],
           title: '',
           content: [
             {

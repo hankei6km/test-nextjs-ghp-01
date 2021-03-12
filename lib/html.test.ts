@@ -191,6 +191,7 @@ describe('getIndexedHtml()', () => {
     expect(
       getIndexedHtml([
         {
+          tocItems: [],
           title: '',
           content: [
             {
@@ -221,6 +222,7 @@ describe('getIndexedHtml()', () => {
     expect(
       getIndexedHtml([
         {
+          tocItems: [],
           title: '',
           content: [
             {
@@ -263,6 +265,7 @@ describe('getIndexedHtml()', () => {
     expect(
       getIndexedHtml([
         {
+          tocItems: [],
           title: '',
           content: [
             {
@@ -334,6 +337,7 @@ describe('getIndexedHtml()', () => {
     expect(
       getIndexedHtml([
         {
+          tocItems: [],
           title: '',
           content: [
             {
@@ -356,6 +360,7 @@ describe('getIndexedHtml()', () => {
           ]
         },
         {
+          tocItems: [],
           title: '',
           content: [
             {
@@ -412,6 +417,7 @@ describe('getIndexedHtml()', () => {
     expect(
       getIndexedHtml([
         {
+          tocItems: [],
           title: '',
           content: [
             {

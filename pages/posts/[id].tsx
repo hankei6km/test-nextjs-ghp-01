@@ -53,6 +53,7 @@ export default function Post({
           <SectionList
             sections={[
               {
+                tocItems: [],
                 title: '',
                 content: [
                   {
@@ -82,6 +83,7 @@ export default function Post({
           <SectionList
             sections={[
               {
+                tocItems: [],
                 title: '',
                 content: [
                   {

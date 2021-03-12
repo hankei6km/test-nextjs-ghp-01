@@ -100,6 +100,7 @@ const Layout = ({
             <SectionList
               sections={[
                 {
+                  tocItems: [],
                   title: '',
                   content: [
                     { kind: 'partsSiteLogo', size: 'small', link: '/' },
@@ -107,6 +108,7 @@ const Layout = ({
                   ]
                 },
                 {
+                  tocItems: [],
                   title: '',
                   content: [{ kind: 'partsNavMain' }]
                 }

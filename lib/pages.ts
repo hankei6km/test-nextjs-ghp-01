@@ -285,6 +285,7 @@ export async function getPagesPageData(
       allCategory: [],
       category: [],
       curCategory: options.curCategory || '',
+      pageToc: { label: '', items: [] },
       header: await getSectionFromPages(
         rawPageDatas[0],
         'sectionHeader',
@@ -387,6 +388,7 @@ export async function getPagesPageData(
         `API: ${previewData.apiName}, slug: ${previewData.slug}\n\n[Exit](/api/exit-preview)`
       )}${res.list ? `<hr/>${res.list}` : ''}`;
       pageData.header.push({
+        tocItems: [],
         title: '',
         content: [
           {

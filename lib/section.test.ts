@@ -31,6 +31,7 @@ describe('getPagePostsTotalCountFromSection()', () => {
     expect(
       getPagePostsTotalCountFromSection([
         {
+          tocItems: [],
           title: 'content section',
           content: [
             {
@@ -58,6 +59,7 @@ describe('getPagePostsTotalCountFromSection()', () => {
     expect(
       getPagePostsTotalCountFromSection([
         {
+          tocItems: [],
           title: 'content section',
           content: [
             {
@@ -74,6 +76,7 @@ describe('getPagePostsTotalCountFromSection()', () => {
           ]
         },
         {
+          tocItems: [],
           title: 'content section',
           content: [
             {
@@ -92,6 +95,7 @@ describe('getPagePostsTotalCountFromSection()', () => {
     expect(
       getPagePostsTotalCountFromSection([
         {
+          tocItems: [],
           title: 'content section',
           content: [
             {
@@ -115,6 +119,7 @@ describe('getPagePostsTotalCountFromSection()', () => {
 describe('purgeContentBlank()', () => {
   const mockData: Section[] = [
     {
+      tocItems: [],
       title: 'content section1',
       content: [
         {
@@ -131,6 +136,7 @@ describe('purgeContentBlank()', () => {
       ]
     },
     {
+      tocItems: [],
       title: 'content section2',
       content: [
         {
@@ -251,6 +257,7 @@ describe('getSectionFromPages()', () => {
     };
     expect(await getSectionFromPages(mockData, 'sectionContent')).toEqual([
       {
+        tocItems: [],
         title: 'content section',
         content: [
           {
@@ -269,6 +276,7 @@ describe('getSectionFromPages()', () => {
     ]);
     expect(await getSectionFromPages(mockData, 'sectionTop')).toEqual([
       {
+        tocItems: [],
         title: 'top section',
         content: [
           {
@@ -287,6 +295,7 @@ describe('getSectionFromPages()', () => {
     ]);
     expect(await getSectionFromPages(mockData, 'sectionBottom')).toEqual([
       {
+        tocItems: [],
         title: 'bottom section',
         content: [
           {
@@ -305,6 +314,7 @@ describe('getSectionFromPages()', () => {
     ]);
     expect(await getSectionFromPages(mockData, 'sectionHeader')).toEqual([
       {
+        tocItems: [],
         title: 'header section',
         content: [
           {
@@ -323,6 +333,7 @@ describe('getSectionFromPages()', () => {
     ]);
     expect(await getSectionFromPages(mockData, 'sectionFooter')).toEqual([
       {
+        tocItems: [],
         title: 'footer section',
         content: [
           {
@@ -359,6 +370,7 @@ describe('getSectionFromPages()', () => {
     };
     expect(await getSectionFromPages(mockData, 'sectionContent')).toEqual([
       {
+        tocItems: [],
         title: '',
         content: [
           {
@@ -404,6 +416,7 @@ describe('getSectionFromPages()', () => {
     const res = await getSectionFromPages(mockData, 'sectionContent');
     expect(res).toEqual([
       {
+        tocItems: [],
         title: '',
         content: [
           {
@@ -476,6 +489,7 @@ describe('getSectionFromPages()', () => {
     const res = await getSectionFromPages(mockData, 'sectionHeader');
     expect(res).toEqual([
       {
+        tocItems: [],
         title: '',
         content: [
           {

@@ -291,10 +291,15 @@ describe('getPagesPageData()', () => {
       allCategory: [],
       category: [],
       curCategory: '',
+      pageToc: {
+        label: '',
+        items: []
+      },
       header: [],
       top: [],
       sections: [
         {
+          tocItems: [],
           title: '',
           content: [
             {
@@ -314,6 +319,7 @@ describe('getPagesPageData()', () => {
       bottom: [],
       footer: [
         {
+          tocItems: [],
           title: 'language & library',
           content: [
             {
@@ -331,6 +337,7 @@ describe('getPagesPageData()', () => {
           ]
         },
         {
+          tocItems: [],
           title: 'environment',
           content: [
             {
@@ -347,6 +354,7 @@ describe('getPagesPageData()', () => {
           ]
         },
         {
+          tocItems: [],
           title: '',
           content: [
             {
@@ -409,9 +417,14 @@ describe('getPagesPageData()', () => {
       ],
       category: [{ id: 'cat3', title: 'category3' }],
       curCategory: '',
+      pageToc: {
+        label: '',
+        items: []
+      },
       header: [],
       top: [
         {
+          tocItems: [],
           title: '',
           content: [
             {
@@ -436,6 +449,7 @@ describe('getPagesPageData()', () => {
       ],
       sections: [
         {
+          tocItems: [],
           title: '',
           content: [
             {
@@ -454,6 +468,7 @@ describe('getPagesPageData()', () => {
       ],
       bottom: [
         {
+          tocItems: [],
           title: '',
           content: [
             {
@@ -478,6 +493,7 @@ describe('getPagesPageData()', () => {
       ],
       footer: [
         {
+          tocItems: [],
           title: 'language & library',
           content: [
             {
@@ -495,6 +511,7 @@ describe('getPagesPageData()', () => {
           ]
         },
         {
+          tocItems: [],
           title: 'environment',
           content: [
             {
@@ -511,6 +528,7 @@ describe('getPagesPageData()', () => {
           ]
         },
         {
+          tocItems: [],
           title: '',
           content: [
             {

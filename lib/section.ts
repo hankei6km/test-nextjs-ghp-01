@@ -76,6 +76,7 @@ export async function getSectionFromPages(
   const sections = page.sections
     .filter(({ fieldId }) => fieldId === kind)
     .map((section) => ({
+      tocItems: [],
       title: section.title || '',
       content: section.content.map((content) => {
         return async () => {
@@ -207,6 +208,7 @@ export async function getSectionFromPages(
     await Promise.all(
       sections.map(async (section) => {
         return {
+          tocItems: section.tocItems,
           title: section.title,
           // content: []
           content: await Promise.all(

@@ -53,6 +53,7 @@ export default function Page({
           <SectionList
             sections={[
               {
+                tocItems: [],
                 title: '',
                 content: [
                   {
@@ -80,6 +81,7 @@ export default function Page({
           <SectionList
             sections={[
               {
+                tocItems: [],
                 title: '',
                 content: [
                   {
