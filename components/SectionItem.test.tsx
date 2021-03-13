@@ -27,7 +27,6 @@ describe('SectionItem', () => {
         <RouterContext.Provider value={router}>
           <SectionItem
             data={{
-              tocItems: [],
               title: 'posts',
               content: [
                 {

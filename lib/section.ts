@@ -4,14 +4,17 @@ import { PageDataGetOptions, getSortedPagesData } from './pages';
 import { processorMarkdownToHtml } from './markdown';
 import { ApiNameArticleValues, ApiNameArticle } from './client';
 import { PagesContent, PagesSectionKind } from '../types/client/contentTypes';
-import { Section } from '../types/pageTypes';
+import { Section, ContentToc } from '../types/pageTypes';
 import { GetQuery } from '../types/client/queryTypes';
 import { imageToHtml, imageInfo } from './image';
 import {
+  getTocLabel,
   processorHtml,
   htmlToChildren,
   normalizedHtml,
-  adjustHeading
+  adjustHeading,
+  htmlContent,
+  htmlFromSection
 } from './html';
 
 // copy で使いまわす予定だったが、linter で "Added in: v13.1.0" にひっかかるようなのでやめる.
@@ -56,6 +59,31 @@ export function getPagePostsTotalCountFromSection(sections: Section[]): number {
   return totalCount;
 }
 
+export function getTocFromSections(sections: Section[]): ContentToc {
+  const ret: ContentToc = {
+    label: 'toc',
+    items: []
+  };
+  sections.forEach((section) => {
+    ret.items = ret.items.concat(
+      htmlContent(
+        htmlFromSection(section), // ちょっともったいない. 分割されてない html 持ち越せないか.
+        section.title
+          ? [
+              {
+                depth: 0,
+                label: section.title,
+                items: [],
+                id: getTocLabel(section.title)
+              }
+            ]
+          : []
+      )
+    );
+  });
+  return ret;
+}
+
 export function purgeContentBlank(sections: Section[]): Section[] {
   const contentPurged = sections.map((section) => {
     const content = section.content.filter(({ kind }) => kind !== '');
@@ -76,7 +104,6 @@ export async function getSectionFromPages(
   const sections = page.sections
     .filter(({ fieldId }) => fieldId === kind)
     .map((section) => ({
-      tocItems: [],
       title: section.title || '',
       content: section.content.map((content) => {
         return async () => {
@@ -208,7 +235,6 @@ export async function getSectionFromPages(
     await Promise.all(
       sections.map(async (section) => {
         return {
-          tocItems: section.tocItems,
           title: section.title,
           // content: []
           content: await Promise.all(

@@ -192,7 +192,7 @@ describe('getPagesPageData()', () => {
         allCategory: [],
         category: [],
         curCategory: '',
-        pageToc: {
+        contentToc: {
           label: '',
           items: []
         },
@@ -200,7 +200,6 @@ describe('getPagesPageData()', () => {
         top: [],
         sections: [
           {
-            tocItems: [],
             title: 'intro',
             content: [
               {
@@ -330,7 +329,6 @@ describe('getPagesPageData()', () => {
         bottom: [],
         footer: [
           {
-            tocItems: [],
             title: 'language & library',
             content: [
               {
@@ -348,7 +346,6 @@ describe('getPagesPageData()', () => {
             ]
           },
           {
-            tocItems: [],
             title: 'environment',
             content: [
               {
@@ -365,7 +362,6 @@ describe('getPagesPageData()', () => {
             ]
           },
           {
-            tocItems: [],
             title: '',
             content: [
               {

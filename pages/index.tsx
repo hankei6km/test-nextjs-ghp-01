@@ -22,7 +22,6 @@ const IndexPage = ({ pageData }: { pageData: PageData }) => {
   const classes = useStyles();
   const proofileSection: Section[] = [
     {
-      tocItems: [],
       title: '',
       content: [{ kind: 'partsProfileImage', size: '', name: true, link: '' }]
     }

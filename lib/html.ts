@@ -9,7 +9,11 @@ import { Schema } from 'hast-util-sanitize';
 import cheerio from 'cheerio';
 import parseStyle from 'style-to-object';
 // import camelcaseKeys from 'camelcase-keys';  // vedor prefix が jsx styleにならない?
-import { Section, SectionContentHtmlChildren } from '../types/pageTypes';
+import {
+  Section,
+  SectionContentHtmlChildren,
+  TocItems
+} from '../types/pageTypes';
 
 import visit from 'unist-util-visit';
 import { Element } from 'hast';
@@ -29,6 +33,12 @@ const schema = merge(gh, {
 const textToTocLabelRegExp = /[ \t\n\r]+/g;
 export function getTocLabel(s: string): string {
   return s.replace(textToTocLabelRegExp, '-');
+}
+
+const headingToNumberRegExp = /h(\d+)/;
+export function headingToNumber(tagName: string): number {
+  const n = parseInt(tagName.replace(headingToNumberRegExp, '$1'), 10);
+  return isNaN(n) ? -1 : n;
 }
 
 export function adjustHeading(
@@ -93,6 +103,49 @@ export function normalizedHtml(processor: Processor, html: string): string {
       console.error(err);
     }
     ret = String(file);
+  });
+  return ret;
+}
+
+const tocProcessor = unified().use(rehypeParse, { fragment: true }).freeze();
+export function htmlContent(
+  html: string,
+  root: TocItems = [],
+  opts: { top: number; depth: number } = { top: 4, depth: 1 }
+): TocItems {
+  const ret: TocItems = [...root];
+  let items: TocItems = ret;
+  const path: TocItems[] = [items];
+  let prevDepth = ret.length > 0 ? ret[0].depth : 0;
+  const node = tocProcessor.parse(html);
+  visit(node, 'element', function (node: Element) {
+    const tagName = node.tagName;
+    if (
+      tagName === 'h1' ||
+      tagName === 'h2' ||
+      tagName === 'h3' ||
+      tagName === 'h4' ||
+      tagName === 'h5' ||
+      tagName === 'h6'
+    ) {
+      const depth = opts.depth + (headingToNumber(tagName) - opts.top);
+      const item = {
+        label: getTocLabel(nodesToString(node).text),
+        items: [],
+        depth,
+        id: `${node.properties?.id}`
+      };
+      if (prevDepth < depth) {
+        if (items.length > 0) {
+          path.push(items);
+          items = items[items.length - 1].items;
+        }
+      } else if (depth < prevDepth) {
+        items = path.pop() || [];
+      }
+      items.push(item);
+      prevDepth = depth;
+    }
   });
   return ret;
 }
@@ -202,6 +255,28 @@ export function htmlToChildren(html: string): SectionContentHtmlChildren[] {
     });
   }
   return ret;
+}
+
+// toc 用に用意したもの.
+// class の処理が抜けている.
+export function htmlFromSection(section: Section): string {
+  return section.content
+    .filter((content) => content.kind === 'html')
+    .map((content) => {
+      let html = '';
+      if (content.kind === 'html') {
+        content.contentHtml.forEach((c) => {
+          const elm = cheerio.load(`<${c.tagName}/>`)(c.tagName);
+          elm.attr(c.attribs);
+          elm.html(c.html);
+          if (elm) {
+            html = `${html}${elm.parent().html()}`;
+          }
+        });
+      }
+      return html;
+    })
+    .join('');
 }
 
 export type IndexedHtml = {

@@ -1,8 +1,10 @@
 import {
   getTocLabel,
   processorHtml,
+  headingToNumber,
   adjustHeading,
   normalizedHtml,
+  htmlContent,
   styleToJsxStyle,
   htmlToChildren,
   getIndexedHtml
@@ -14,6 +16,15 @@ describe('getTocLabel()', () => {
     expect(getTocLabel('test1 test2\ttest3')).toEqual('test1-test2-test3');
     expect(getTocLabel('test1  test2\t\ttest3')).toEqual('test1-test2-test3');
     expect(getTocLabel('test1\ntest2\n\ntest3')).toEqual('test1-test2-test3');
+  });
+});
+
+describe('headingToNumber()', () => {
+  it('should returns number from suffix of heading tag', () => {
+    expect(headingToNumber('h3')).toEqual(3);
+    expect(headingToNumber('h4')).toEqual(4);
+    expect(headingToNumber('h5')).toEqual(5);
+    expect(headingToNumber('p')).toEqual(-1);
   });
 });
 
@@ -40,6 +51,95 @@ describe('normalizeHtml()', () => {
     ).toEqual(
       '<h4 id="user-content-test1">test1</h4><h5 id="user-content-test2">test2</h5>'
     );
+  });
+});
+
+describe('htmlContent()', () => {
+  it('should returns toc of html', () => {
+    expect(
+      htmlContent('<h4 id="test1">test1</h4><h4 id="test2">test2</h4>', [
+        { label: 'section title', items: [], depth: 0, id: 'section-title' }
+      ])
+    ).toEqual([
+      {
+        label: 'section title',
+        items: [
+          {
+            label: 'test1',
+            items: [],
+            depth: 1,
+            id: 'test1'
+          },
+          {
+            label: 'test2',
+            items: [],
+            depth: 1,
+            id: 'test2'
+          }
+        ],
+        depth: 0,
+        id: 'section-title'
+      }
+    ]);
+  });
+  it('should returns toc of html(nested)', () => {
+    expect(
+      htmlContent(
+        '<h4 id="test1">test1</h4><p>abc</p><h5 id="test3">test3</h5><p>123</p><h5 id="test4">test4</h5><h4 id="test2">test2</h4>',
+        [{ label: 'section title', items: [], depth: 0, id: 'section-title' }]
+      )
+    ).toEqual([
+      {
+        label: 'section title',
+        items: [
+          {
+            label: 'test1',
+            items: [
+              {
+                label: 'test3',
+                items: [],
+                depth: 2,
+                id: 'test3'
+              },
+              {
+                label: 'test4',
+                items: [],
+                depth: 2,
+                id: 'test4'
+              }
+            ],
+            depth: 1,
+            id: 'test1'
+          },
+          {
+            label: 'test2',
+            items: [],
+            depth: 1,
+            id: 'test2'
+          }
+        ],
+        depth: 0,
+        id: 'section-title'
+      }
+    ]);
+  });
+  it('should returns toc of html(without section title)', () => {
+    expect(
+      htmlContent('<h4 id="test1">test1</h4><h4 id="test2">test2</h4>', [])
+    ).toEqual([
+      {
+        label: 'test1',
+        items: [],
+        depth: 1,
+        id: 'test1'
+      },
+      {
+        label: 'test2',
+        items: [],
+        depth: 1,
+        id: 'test2'
+      }
+    ]);
   });
 });
 
@@ -191,7 +291,6 @@ describe('getIndexedHtml()', () => {
     expect(
       getIndexedHtml([
         {
-          tocItems: [],
           title: '',
           content: [
             {
@@ -222,7 +321,6 @@ describe('getIndexedHtml()', () => {
     expect(
       getIndexedHtml([
         {
-          tocItems: [],
           title: '',
           content: [
             {
@@ -265,8 +363,6 @@ describe('getIndexedHtml()', () => {
     expect(
       getIndexedHtml([
         {
-          tocItems: [],
-          title: '',
           content: [
             {
               kind: 'html' as const,
@@ -337,7 +433,6 @@ describe('getIndexedHtml()', () => {
     expect(
       getIndexedHtml([
         {
-          tocItems: [],
           title: '',
           content: [
             {
@@ -360,7 +455,6 @@ describe('getIndexedHtml()', () => {
           ]
         },
         {
-          tocItems: [],
           title: '',
           content: [
             {
@@ -417,7 +511,6 @@ describe('getIndexedHtml()', () => {
     expect(
       getIndexedHtml([
         {
-          tocItems: [],
           title: '',
           content: [
             {

@@ -40,7 +40,6 @@ const PostsPage = ({ pageData }: { pageData: PageData }) => {
           <SectionList
             sections={[
               {
-                tocItems: [],
                 title: '',
                 content: [
                   {
@@ -72,7 +71,6 @@ const PostsPage = ({ pageData }: { pageData: PageData }) => {
           <SectionList
             sections={[
               {
-                tocItems: [],
                 title: '',
                 content: [
                   {

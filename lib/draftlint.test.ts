@@ -6,7 +6,6 @@ describe('insertHtmlToSections()', () => {
     expect(
       insertHtmlToSections('<span>ins1</span>', 16, [
         {
-          tocItems: [],
           title: '',
           content: [
             {
@@ -31,7 +30,6 @@ describe('insertHtmlToSections()', () => {
       ])
     ).toStrictEqual([
       {
-        tocItems: [],
         title: '',
         content: [
           {
@@ -57,7 +55,6 @@ describe('insertHtmlToSections()', () => {
     expect(
       insertHtmlToSections('<span>ins1</span>', 3, [
         {
-          tocItems: [],
           title: '',
           content: [
             {
@@ -82,7 +79,6 @@ describe('insertHtmlToSections()', () => {
       ])
     ).toStrictEqual([
       {
-        tocItems: [],
         title: '',
         content: [
           {
@@ -108,7 +104,6 @@ describe('insertHtmlToSections()', () => {
     expect(
       insertHtmlToSections('<span>ins1</span>', 8, [
         {
-          tocItems: [],
           title: '',
           content: [
             {
@@ -133,7 +128,6 @@ describe('insertHtmlToSections()', () => {
       ])
     ).toStrictEqual([
       {
-        tocItems: [],
         title: '',
         content: [
           {
@@ -159,7 +153,6 @@ describe('insertHtmlToSections()', () => {
     expect(
       insertHtmlToSections('<span>ins1</span>', 31, [
         {
-          tocItems: [],
           title: '',
           content: [
             {
@@ -201,7 +194,6 @@ describe('insertHtmlToSections()', () => {
       ])
     ).toStrictEqual([
       {
-        tocItems: [],
         title: '',
         content: [
           {
@@ -246,7 +238,6 @@ describe('insertHtmlToSections()', () => {
     expect(
       insertHtmlToSections('<span>ins1</span>', 2, [
         {
-          tocItems: [],
           title: '',
           content: [
             {
@@ -271,7 +262,6 @@ describe('insertHtmlToSections()', () => {
       ])
     ).toStrictEqual([
       {
-        tocItems: [],
         title: '',
         content: [
           {
@@ -297,7 +287,6 @@ describe('insertHtmlToSections()', () => {
     expect(
       insertHtmlToSections('<span>ins1</span>', 9, [
         {
-          tocItems: [],
           title: '',
           content: [
             {
@@ -322,7 +311,6 @@ describe('insertHtmlToSections()', () => {
       ])
     ).toStrictEqual([
       {
-        tocItems: [],
         title: '',
         content: [
           {
@@ -358,7 +346,6 @@ describe('textLintInSections()', () => {
     const res = await textLintInSections(
       [
         {
-          tocItems: [],
           title: '',
           content: [
             {
@@ -403,7 +390,6 @@ describe('textLintInSections()', () => {
     );
     expect(res.sections).toStrictEqual([
       {
-        tocItems: [],
         title: '',
         content: [
           {
@@ -488,7 +474,6 @@ describe('textLintInSections()', () => {
     const res = await textLintInSections(
       [
         {
-          tocItems: [],
           title: '',
           content: [
             {
@@ -512,7 +497,6 @@ describe('textLintInSections()', () => {
     );
     expect(res.sections).toStrictEqual([
       {
-        tocItems: [],
         title: '',
         content: [
           {
@@ -543,7 +527,6 @@ describe('textLintInSections()', () => {
     const res = await textLintInSections(
       [
         {
-          tocItems: [],
           title: '',
           content: [
             {
@@ -564,7 +547,6 @@ describe('textLintInSections()', () => {
     );
     expect(res.sections).toStrictEqual([
       {
-        tocItems: [],
         title: '',
         content: [
           {

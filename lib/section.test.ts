@@ -4,6 +4,7 @@ import {
   getSectionFromPages,
   getApiNameArticle,
   getPagePostsTotalCountFromSection,
+  getTocFromSections,
   purgeContentBlank
 } from './section';
 import { PagesContent } from '../types/client/contentTypes';
@@ -31,7 +32,6 @@ describe('getPagePostsTotalCountFromSection()', () => {
     expect(
       getPagePostsTotalCountFromSection([
         {
-          tocItems: [],
           title: 'content section',
           content: [
             {
@@ -59,7 +59,6 @@ describe('getPagePostsTotalCountFromSection()', () => {
     expect(
       getPagePostsTotalCountFromSection([
         {
-          tocItems: [],
           title: 'content section',
           content: [
             {
@@ -76,7 +75,6 @@ describe('getPagePostsTotalCountFromSection()', () => {
           ]
         },
         {
-          tocItems: [],
           title: 'content section',
           content: [
             {
@@ -95,7 +93,6 @@ describe('getPagePostsTotalCountFromSection()', () => {
     expect(
       getPagePostsTotalCountFromSection([
         {
-          tocItems: [],
           title: 'content section',
           content: [
             {
@@ -116,10 +113,118 @@ describe('getPagePostsTotalCountFromSection()', () => {
   });
 });
 
+describe('getTocFromSections()', () => {
+  it('should returns toc from sections', () => {
+    expect(
+      getTocFromSections([
+        {
+          title: '',
+          content: [
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'content'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          title: 'one',
+          content: [
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'content one'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          title: 'two',
+          content: [
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'content two'
+                },
+                {
+                  tagName: 'h4',
+                  style: {},
+                  attribs: { id: 'two-1' },
+                  html: 'two-1'
+                },
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'content two-1'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          title: 'three end',
+          content: [
+            {
+              kind: 'html' as const,
+              contentHtml: [
+                {
+                  tagName: 'p',
+                  style: {},
+                  attribs: {},
+                  html: 'content three'
+                }
+              ]
+            }
+          ]
+        }
+      ])
+    ).toEqual({
+      label: 'toc',
+      items: [
+        {
+          label: 'one',
+          items: [],
+          depth: 0,
+          id: 'one'
+        },
+        {
+          label: 'two',
+          items: [
+            {
+              label: 'two-1',
+              items: [],
+              depth: 1,
+              id: 'two-1'
+            }
+          ],
+          depth: 0,
+          id: 'two'
+        },
+        { label: 'three end', items: [], depth: 0, id: 'three-end' }
+      ]
+    });
+  });
+});
+
 describe('purgeContentBlank()', () => {
   const mockData: Section[] = [
     {
-      tocItems: [],
       title: 'content section1',
       content: [
         {
@@ -136,7 +241,6 @@ describe('purgeContentBlank()', () => {
       ]
     },
     {
-      tocItems: [],
       title: 'content section2',
       content: [
         {
@@ -257,7 +361,6 @@ describe('getSectionFromPages()', () => {
     };
     expect(await getSectionFromPages(mockData, 'sectionContent')).toEqual([
       {
-        tocItems: [],
         title: 'content section',
         content: [
           {
@@ -276,7 +379,6 @@ describe('getSectionFromPages()', () => {
     ]);
     expect(await getSectionFromPages(mockData, 'sectionTop')).toEqual([
       {
-        tocItems: [],
         title: 'top section',
         content: [
           {
@@ -295,7 +397,6 @@ describe('getSectionFromPages()', () => {
     ]);
     expect(await getSectionFromPages(mockData, 'sectionBottom')).toEqual([
       {
-        tocItems: [],
         title: 'bottom section',
         content: [
           {
@@ -314,7 +415,6 @@ describe('getSectionFromPages()', () => {
     ]);
     expect(await getSectionFromPages(mockData, 'sectionHeader')).toEqual([
       {
-        tocItems: [],
         title: 'header section',
         content: [
           {
@@ -333,7 +433,6 @@ describe('getSectionFromPages()', () => {
     ]);
     expect(await getSectionFromPages(mockData, 'sectionFooter')).toEqual([
       {
-        tocItems: [],
         title: 'footer section',
         content: [
           {
@@ -370,7 +469,6 @@ describe('getSectionFromPages()', () => {
     };
     expect(await getSectionFromPages(mockData, 'sectionContent')).toEqual([
       {
-        tocItems: [],
         title: '',
         content: [
           {
@@ -416,7 +514,6 @@ describe('getSectionFromPages()', () => {
     const res = await getSectionFromPages(mockData, 'sectionContent');
     expect(res).toEqual([
       {
-        tocItems: [],
         title: '',
         content: [
           {
@@ -489,7 +586,6 @@ describe('getSectionFromPages()', () => {
     const res = await getSectionFromPages(mockData, 'sectionHeader');
     expect(res).toEqual([
       {
-        tocItems: [],
         title: '',
         content: [
           {
