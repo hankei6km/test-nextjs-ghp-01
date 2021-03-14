@@ -1,13 +1,21 @@
 import { join } from 'path';
 import { createHash } from 'crypto';
 import { PageDataGetOptions, getSortedPagesData } from './pages';
-import { markdownToHtml } from './markdown';
+import { processorMarkdownToHtml } from './markdown';
 import { ApiNameArticleValues, ApiNameArticle } from './client';
 import { PagesContent, PagesSectionKind } from '../types/client/contentTypes';
-import { Section } from '../types/pageTypes';
+import { Section, ContentToc } from '../types/pageTypes';
 import { GetQuery } from '../types/client/queryTypes';
 import { imageToHtml, imageInfo } from './image';
-import { htmlToChildren, sanitizeHtml } from './html';
+import {
+  getTocLabel,
+  processorHtml,
+  htmlToChildren,
+  normalizedHtml,
+  adjustHeading,
+  htmlContent,
+  htmlFromSection
+} from './html';
 
 // copy で使いまわす予定だったが、linter で "Added in: v13.1.0" にひっかかるようなのでやめる.
 // const hash = createHash('sha256');
@@ -51,6 +59,31 @@ export function getPagePostsTotalCountFromSection(sections: Section[]): number {
   return totalCount;
 }
 
+export function getTocFromSections(sections: Section[]): ContentToc {
+  const ret: ContentToc = {
+    label: 'toc',
+    items: []
+  };
+  sections.forEach((section) => {
+    ret.items = ret.items.concat(
+      htmlContent(
+        htmlFromSection(section), // ちょっともったいない. 分割されてない html 持ち越せないか.
+        section.title
+          ? [
+              {
+                depth: 0,
+                label: section.title,
+                items: [],
+                id: getTocLabel(section.title)
+              }
+            ]
+          : []
+      )
+    );
+  });
+  return ret;
+}
+
 export function purgeContentBlank(sections: Section[]): Section[] {
   const contentPurged = sections.map((section) => {
     const content = section.content.filter(({ kind }) => kind !== '');
@@ -77,12 +110,26 @@ export async function getSectionFromPages(
           if (content.fieldId === 'contentHtml') {
             return {
               kind: 'html' as const,
-              contentHtml: htmlToChildren(sanitizeHtml(content.html))
+              contentHtml: htmlToChildren(
+                normalizedHtml(
+                  processorHtml().use(adjustHeading, {
+                    top: section.title ? 4 : 3
+                  }),
+                  content.html
+                )
+              )
             };
           } else if (content.fieldId === 'contentMarkdown') {
             return {
               kind: 'html' as const,
-              contentHtml: htmlToChildren(markdownToHtml(content.markdown))
+              contentHtml: htmlToChildren(
+                normalizedHtml(
+                  processorMarkdownToHtml().use(adjustHeading, {
+                    top: section.title ? 4 : 3
+                  }),
+                  content.markdown
+                )
+              )
             };
           } else if (content.fieldId === 'contentImage') {
             return {
@@ -155,7 +202,10 @@ export async function getSectionFromPages(
             content.fieldId === 'contentNotification' &&
             content.enabled
           ) {
-            const messageHtml = sanitizeHtml(content.messageHtml); // 個別に sanitizeHtml を実行していると抜けが出そう
+            const messageHtml = normalizedHtml(
+              processorHtml(),
+              content.messageHtml
+            ); // 個別に sanitizeHtml を実行していると抜けが出そう
             return {
               kind: 'notification' as const,
               title: content.title || '',
@@ -186,6 +236,7 @@ export async function getSectionFromPages(
       sections.map(async (section) => {
         return {
           title: section.title,
+          id: getTocLabel(section.title || ''),
           // content: []
           content: await Promise.all(
             section.content.map((content) => content())

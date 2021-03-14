@@ -14,6 +14,7 @@ import NavMain from './parts/NavMain';
 import DateUpdated from './parts/DateUpdated';
 import NavCategory from './parts/NavCategory';
 import NavPagination from './parts/NavPagination';
+import NavContentToc from './parts/NavContentToc';
 import NavBreadcrumbs from './parts/NavBreadcrumbs';
 import Notification from './content/Notification';
 
@@ -92,6 +93,9 @@ const SectionContent = ({ content, classes: inClasses }: Props) => {
           paginationFirstPageHref={content.firstPageHref}
           classes={{ ...inClasses }}
         />
+      )}
+      {content.kind === 'partsNavContentToc' && (
+        <NavContentToc classes={{ ...inClasses }} />
       )}
       {content.kind === 'posts' && (
         <Box className={classes['SectionContent-contentArticles']}>

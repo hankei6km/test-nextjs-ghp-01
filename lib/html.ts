@@ -1,4 +1,4 @@
-import unified from 'unified';
+import unified, { Processor, FrozenProcessor } from 'unified';
 import rehypeParse from 'rehype-parse';
 import rehypeMinifyWhitespace from 'rehype-minify-whitespace';
 import rehypeStringify from 'rehype-stringify';
@@ -9,30 +9,146 @@ import { Schema } from 'hast-util-sanitize';
 import cheerio from 'cheerio';
 import parseStyle from 'style-to-object';
 // import camelcaseKeys from 'camelcase-keys';  // vedor prefix が jsx styleにならない?
-import { Section, SectionContentHtmlChildren } from '../types/pageTypes';
+import {
+  Section,
+  SectionContentHtmlChildren,
+  TocItems
+} from '../types/pageTypes';
+
+import visit from 'unist-util-visit';
+import { Element } from 'hast';
+// import { Heading } from 'mdast';
+import { Transformer } from 'unified';
+// import nodesToString from 'unist-util-to-string-with-nodes';
+const nodesToString = require('unist-util-to-string-with-nodes');
 
 const schema = merge(gh, {
   tagNames: ['picture', 'source'],
   attributes: {
     source: ['srcSet', 'sizes'],
-    img: ['srcSet', 'sizes', 'className']
+    img: ['alt', 'srcSet', 'sizes', 'className']
   }
 });
 
-const processorHtml = unified()
-  .use(rehypeParse, { fragment: true })
-  .use(rehypeMinifyWhitespace)
-  .use(rehypeSanitize, (schema as unknown) as Schema)
-  .use(rehypeStringify)
-  .freeze();
+const textToTocLabelRegExp = /[#.()[\]{}<>@&%$"`=_:;'\\ \t\n\r]/g;
+export function getTocLabel(s: string): string {
+  // selector ではそのままで使えない id になる可能性もある
+  // CSS.escape() は "selector 内で operator? になる文字をエスケープ"するものなので
+  // ちょっと意味合いが違う
+  return s.replace(textToTocLabelRegExp, '-');
+}
 
-export function sanitizeHtml(html: string): string {
+const headingToNumberRegExp = /h(\d+)/;
+export function headingToNumber(tagName: string): number {
+  const n = parseInt(tagName.replace(headingToNumberRegExp, '$1'), 10);
+  return isNaN(n) ? -1 : n;
+}
+
+export function adjustHeading(
+  { top }: { top: number } = { top: 4 }
+): Transformer {
+  // コンテント HTML と Markdown で本文に入力される見出しは
+  // h2 と h3 を使うという前提.
+  // (しばらくメモ的につかってみたが、感覚的に本文に見出しを入れると h2 にしたくなる).
+  // h1 は保険で最上位にまるめる、.
+  return function transformer(tree): void {
+    // 今回は最上位が h3 か h4 に固定
+    const adjust =
+      top === 3
+        ? {
+            h1: 'h3',
+            h2: 'h3',
+            h3: 'h4'
+          }
+        : {
+            h1: 'h4',
+            h2: 'h4',
+            h3: 'h5'
+          };
+    function visitor(node: Element, _index: number): void {
+      if (
+        node.tagName === 'h1' ||
+        node.tagName === 'h2' ||
+        node.tagName === 'h3'
+      ) {
+        node.tagName = adjust[node.tagName];
+        if (node.properties) {
+          // とりあえず 空白と tab 改行は - にしておく.
+          // https://developer.mozilla.org/ja/docs/Web/HTML/Global_attributes/id
+          //> この制約は HTML5 で外されましたが、互換性のために ID は文字で始めるようにしましょう。
+          // prefix は sanitize で付加される.
+          // 問題になるようなら hash 化する
+          // (hashs は notification 用があるので、それを util にする).
+          node.properties.id = getTocLabel(nodesToString(node).text);
+        }
+      }
+    }
+    visit(tree, 'element', visitor);
+  };
+}
+
+export function processorHtml() {
+  return unified().use(rehypeParse, { fragment: true });
+}
+
+function normalizeProcessor(processor: Processor): FrozenProcessor {
+  return processor
+    .use(rehypeMinifyWhitespace)
+    .use(rehypeSanitize, (schema as unknown) as Schema)
+    .use(rehypeStringify)
+    .freeze();
+}
+
+export function normalizedHtml(processor: Processor, html: string): string {
   let ret = '';
-  processorHtml.process(html, (err, file) => {
+  normalizeProcessor(processor).process(html, (err, file) => {
     if (err) {
       console.error(err);
     }
     ret = String(file);
+  });
+  return ret;
+}
+
+const tocProcessor = unified().use(rehypeParse, { fragment: true }).freeze();
+export function htmlContent(
+  html: string,
+  root: TocItems = [],
+  opts: { top: number; depth: number } = { top: 4, depth: 1 }
+): TocItems {
+  const ret: TocItems = [...root];
+  let items: TocItems = ret;
+  const path: TocItems[] = [items];
+  let prevDepth = ret.length > 0 ? ret[0].depth : 0;
+  const node = tocProcessor.parse(html);
+  visit(node, 'element', function (node: Element) {
+    const tagName = node.tagName;
+    if (
+      tagName === 'h1' ||
+      tagName === 'h2' ||
+      tagName === 'h3' ||
+      tagName === 'h4' ||
+      tagName === 'h5' ||
+      tagName === 'h6'
+    ) {
+      const depth = opts.depth + (headingToNumber(tagName) - opts.top);
+      const item = {
+        label: getTocLabel(nodesToString(node).text),
+        items: [],
+        depth,
+        id: `${node.properties?.id}`
+      };
+      if (prevDepth < depth) {
+        if (items.length > 0) {
+          path.push(items);
+          items = items[items.length - 1].items;
+        }
+      } else if (depth < prevDepth) {
+        items = path.pop() || [];
+      }
+      items.push(item);
+      prevDepth = depth;
+    }
   });
   return ret;
 }
@@ -142,6 +258,28 @@ export function htmlToChildren(html: string): SectionContentHtmlChildren[] {
     });
   }
   return ret;
+}
+
+// toc 用に用意したもの.
+// class の処理が抜けている.
+export function htmlFromSection(section: Section): string {
+  return section.content
+    .filter((content) => content.kind === 'html')
+    .map((content) => {
+      let html = '';
+      if (content.kind === 'html') {
+        content.contentHtml.forEach((c) => {
+          const elm = cheerio.load(`<${c.tagName}/>`)(c.tagName);
+          elm.attr(c.attribs);
+          elm.html(c.html);
+          if (elm) {
+            html = `${html}${elm.parent().html()}`;
+          }
+        });
+      }
+      return html;
+    })
+    .join('');
 }
 
 export type IndexedHtml = {

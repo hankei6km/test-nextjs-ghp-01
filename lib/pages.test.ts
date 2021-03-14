@@ -192,11 +192,36 @@ describe('getPagesPageData()', () => {
         allCategory: [],
         category: [],
         curCategory: '',
+        contentToc: {
+          label: 'toc',
+          items: [
+            {
+              depth: 0,
+              id: 'intro',
+              items: [
+                {
+                  depth: 1,
+                  id: 'user-content-markdown',
+                  items: [],
+                  label: 'markdown'
+                },
+                {
+                  depth: 1,
+                  id: 'user-content-blog',
+                  items: [],
+                  label: 'blog'
+                }
+              ],
+              label: 'intro'
+            }
+          ]
+        },
         header: [],
         top: [],
         sections: [
           {
             title: 'intro',
+            id: 'intro',
             content: [
               {
                 kind: 'html',
@@ -213,9 +238,9 @@ describe('getPagesPageData()', () => {
                 kind: 'html',
                 contentHtml: [
                   {
-                    tagName: 'h2',
+                    tagName: 'h4',
                     style: {},
-                    attribs: {},
+                    attribs: { id: 'user-content-markdown' },
                     html: 'markdown'
                   },
                   {
@@ -230,9 +255,9 @@ describe('getPagesPageData()', () => {
                 kind: 'html',
                 contentHtml: [
                   {
-                    tagName: 'h2',
+                    tagName: 'h4',
                     style: {},
-                    attribs: {},
+                    attribs: { id: 'user-content-blog' },
                     html: 'blog'
                   }
                 ]
@@ -326,6 +351,7 @@ describe('getPagesPageData()', () => {
         footer: [
           {
             title: 'language & library',
+            id: 'language---library',
             content: [
               {
                 kind: 'html',
@@ -343,6 +369,7 @@ describe('getPagesPageData()', () => {
           },
           {
             title: 'environment',
+            id: 'environment',
             content: [
               {
                 kind: 'html',
@@ -359,6 +386,7 @@ describe('getPagesPageData()', () => {
           },
           {
             title: '',
+            id: '',
             content: [
               {
                 kind: 'html',

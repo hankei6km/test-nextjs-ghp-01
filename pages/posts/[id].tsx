@@ -65,6 +65,9 @@ export default function Post({
                   },
                   {
                     kind: 'partsUpdated'
+                  },
+                  {
+                    kind: 'partsNavContentToc'
                   }
                 ]
               }

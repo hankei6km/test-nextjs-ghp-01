@@ -82,9 +82,25 @@ export type SectionPartsNavPagination = {
   pagePath: string[];
   firstPageHref: string;
 };
+export type SectionPartsNavContentToc = {
+  kind: 'partsNavContentToc';
+};
+
+export type TocItem = {
+  depth: number;
+  label: string;
+  items: TocItems; // 階層を無限に増やせるが、今回は 2 階層のみ.
+  id: string;
+};
+export type TocItems = TocItem[];
+export type ContentToc = {
+  label: string;
+  items: TocItem[];
+};
 
 export type Section = {
   title?: string;
+  id?: string;
   content: (
     | SectionBlank
     | SectionContent
@@ -99,6 +115,7 @@ export type Section = {
     | SectionPartsNavBreadcrumbs
     | SectionPartsNavCategory
     | SectionPartsNavPagination
+    | SectionPartsNavContentToc
   )[];
 };
 
@@ -113,6 +130,7 @@ export type PageData = {
   allCategory: PagesCategory[];
   category: PagesCategory[];
   curCategory: string; //  route 上で選択されているカテゴリ、getStaticProps で付与される.選択されていないときは ''.
+  contentToc: ContentToc;
   header: Section[];
   top: Section[];
   sections: Section[];
@@ -131,6 +149,10 @@ export const blankPageData = (): PageData => ({
   allCategory: [],
   category: [],
   curCategory: '',
+  contentToc: {
+    label: '',
+    items: []
+  },
   header: [],
   top: [],
   sections: [],

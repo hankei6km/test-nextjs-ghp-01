@@ -18,14 +18,16 @@ import { applyPreviewDataToIdQuery } from './preview';
 import {
   getSectionFromPages,
   getPagePostsTotalCountFromSection,
-  getNotificationId
+  getNotificationId,
+  getTocFromSections
 } from './section';
 import {
   pageCountFromTotalCount,
   paginationIdsFromPageCount
 } from '../utils/pagination';
-import { markdownToHtml } from './markdown';
+import { processorMarkdownToHtml } from './markdown';
 import { textLintInSections } from './draftlint';
+import { normalizedHtml } from './html';
 
 const globalPageId = '_global';
 // id が 1件で 40byte  と想定、 content-length が 5M 程度とのことなので、1000*1000*5 / 40 で余裕を見て決めた値。
@@ -284,6 +286,7 @@ export async function getPagesPageData(
       allCategory: [],
       category: [],
       curCategory: options.curCategory || '',
+      contentToc: { label: '', items: [] },
       header: await getSectionFromPages(
         rawPageDatas[0],
         'sectionHeader',
@@ -343,6 +346,8 @@ export async function getPagesPageData(
         options
       );
       pageData.footer = footer.length > 0 ? footer : pageData.footer;
+
+      pageData.contentToc = getTocFromSections(pageData.sections);
     }
     switch (apiName) {
       case 'pages':
@@ -381,7 +386,8 @@ export async function getPagesPageData(
       pageData.sections = res.sections;
 
       const title = '[DRAFT]';
-      const messageHtml = `${markdownToHtml(
+      const messageHtml = `${normalizedHtml(
+        processorMarkdownToHtml(),
         `API: ${previewData.apiName}, slug: ${previewData.slug}\n\n[Exit](/api/exit-preview)`
       )}${res.list ? `<hr/>${res.list}` : ''}`;
       pageData.header.push({
