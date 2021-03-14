@@ -26,7 +26,7 @@ const schema = merge(gh, {
   tagNames: ['picture', 'source'],
   attributes: {
     source: ['srcSet', 'sizes'],
-    img: ['srcSet', 'sizes', 'className']
+    img: ['alt', 'srcSet', 'sizes', 'className']
   }
 });
 

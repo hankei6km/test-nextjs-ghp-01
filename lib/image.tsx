@@ -44,7 +44,7 @@ function toElm(
           })}
           <img
             src={`${contentImage.image.url}?${intermediate.img.src.url.paramsStr}`}
-            alt={intermediate.img.alt}
+            alt={contentImage.alt}
             className={className}
             width={intermediate.img.width}
             height={intermediate.img.height}

@@ -82,6 +82,9 @@ export type SectionPartsNavPagination = {
   pagePath: string[];
   firstPageHref: string;
 };
+export type SectionPartsNavContentToc = {
+  kind: 'partsNavContentToc';
+};
 
 export type TocItem = {
   depth: number;
@@ -97,6 +100,7 @@ export type ContentToc = {
 
 export type Section = {
   title?: string;
+  id?: string;
   content: (
     | SectionBlank
     | SectionContent
@@ -111,6 +115,7 @@ export type Section = {
     | SectionPartsNavBreadcrumbs
     | SectionPartsNavCategory
     | SectionPartsNavPagination
+    | SectionPartsNavContentToc
   )[];
 };
 

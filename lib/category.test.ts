@@ -75,13 +75,21 @@ describe('getSortedPagesData()', () => {
       category: [],
       curCategory: 'cat2',
       contentToc: {
-        label: '',
-        items: []
+        label: 'toc',
+        items: [
+          {
+            label: 'all posts',
+            depth: 0,
+            items: [],
+            id: 'all-posts'
+          }
+        ]
       },
       header: [],
       top: [
         {
           title: '',
+          id: '',
           content: [
             {
               kind: 'html',
@@ -106,6 +114,7 @@ describe('getSortedPagesData()', () => {
       sections: [
         {
           title: 'all posts',
+          id: 'all-posts',
           content: [
             {
               kind: 'posts',
@@ -144,6 +153,7 @@ describe('getSortedPagesData()', () => {
       bottom: [
         {
           title: '',
+          id: '',
           content: [
             {
               kind: 'html',
@@ -168,6 +178,7 @@ describe('getSortedPagesData()', () => {
       footer: [
         {
           title: 'language & library',
+          id: 'language-&-library',
           content: [
             {
               kind: 'html',
@@ -185,6 +196,7 @@ describe('getSortedPagesData()', () => {
         },
         {
           title: 'environment',
+          id: 'environment',
           content: [
             {
               kind: 'html',
@@ -201,6 +213,7 @@ describe('getSortedPagesData()', () => {
         },
         {
           title: '',
+          id: '',
           content: [
             {
               kind: 'html',

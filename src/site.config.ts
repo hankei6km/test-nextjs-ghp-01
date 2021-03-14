@@ -25,6 +25,8 @@ const siteConfig: {
       pageTitleComponent: 'h2',
       navCategoryComponent: 'nav',
       navAllCategoryComponent: 'nav',
+      navContentTocComponent: 'nav',
+      navContentTocLabelComponent: 'h3',
       notificationComponent: 'aside',
       notificationTitleComponent: 'h3'
     },
@@ -34,6 +36,7 @@ const siteConfig: {
       articleItemTitleVariant: 'body1',
       siteTitleVariant: 'h2',
       pageTitleVariant: 'h2',
+      navContentTocLabelVariant: 'h3',
       notificationTitleVariant: 'body1'
     }
   },

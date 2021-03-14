@@ -193,14 +193,35 @@ describe('getPagesPageData()', () => {
         category: [],
         curCategory: '',
         contentToc: {
-          label: '',
-          items: []
+          label: 'toc',
+          items: [
+            {
+              depth: 0,
+              id: 'intro',
+              items: [
+                {
+                  depth: 1,
+                  id: 'user-content-markdown',
+                  items: [],
+                  label: 'markdown'
+                },
+                {
+                  depth: 1,
+                  id: 'user-content-blog',
+                  items: [],
+                  label: 'blog'
+                }
+              ],
+              label: 'intro'
+            }
+          ]
         },
         header: [],
         top: [],
         sections: [
           {
             title: 'intro',
+            id: 'intro',
             content: [
               {
                 kind: 'html',
@@ -330,6 +351,7 @@ describe('getPagesPageData()', () => {
         footer: [
           {
             title: 'language & library',
+            id: 'language-&-library',
             content: [
               {
                 kind: 'html',
@@ -347,6 +369,7 @@ describe('getPagesPageData()', () => {
           },
           {
             title: 'environment',
+            id: 'environment',
             content: [
               {
                 kind: 'html',
@@ -363,6 +386,7 @@ describe('getPagesPageData()', () => {
           },
           {
             title: '',
+            id: '',
             content: [
               {
                 kind: 'html',

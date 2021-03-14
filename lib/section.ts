@@ -236,6 +236,7 @@ export async function getSectionFromPages(
       sections.map(async (section) => {
         return {
           title: section.title,
+          id: getTocLabel(section.title || ''),
           // content: []
           content: await Promise.all(
             section.content.map((content) => content())

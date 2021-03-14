@@ -292,7 +292,7 @@ describe('getPagesPageData()', () => {
       category: [],
       curCategory: '',
       contentToc: {
-        label: '',
+        label: 'toc',
         items: []
       },
       header: [],
@@ -300,6 +300,7 @@ describe('getPagesPageData()', () => {
       sections: [
         {
           title: '',
+          id: '',
           content: [
             {
               kind: 'html',
@@ -319,6 +320,7 @@ describe('getPagesPageData()', () => {
       footer: [
         {
           title: 'language & library',
+          id: 'language-&-library',
           content: [
             {
               kind: 'html',
@@ -336,6 +338,7 @@ describe('getPagesPageData()', () => {
         },
         {
           title: 'environment',
+          id: 'environment',
           content: [
             {
               kind: 'html',
@@ -352,6 +355,7 @@ describe('getPagesPageData()', () => {
         },
         {
           title: '',
+          id: '',
           content: [
             {
               kind: 'html',
@@ -414,13 +418,14 @@ describe('getPagesPageData()', () => {
       category: [{ id: 'cat3', title: 'category3' }],
       curCategory: '',
       contentToc: {
-        label: '',
+        label: 'toc',
         items: []
       },
       header: [],
       top: [
         {
           title: '',
+          id: '',
           content: [
             {
               kind: 'html',
@@ -445,6 +450,7 @@ describe('getPagesPageData()', () => {
       sections: [
         {
           title: '',
+          id: '',
           content: [
             {
               kind: 'html',
@@ -463,6 +469,7 @@ describe('getPagesPageData()', () => {
       bottom: [
         {
           title: '',
+          id: '',
           content: [
             {
               kind: 'html',
@@ -487,6 +494,7 @@ describe('getPagesPageData()', () => {
       footer: [
         {
           title: 'language & library',
+          id: 'language-&-library',
           content: [
             {
               kind: 'html',
@@ -504,6 +512,7 @@ describe('getPagesPageData()', () => {
         },
         {
           title: 'environment',
+          id: 'environment',
           content: [
             {
               kind: 'html',
@@ -520,6 +529,7 @@ describe('getPagesPageData()', () => {
         },
         {
           title: '',
+          id: '',
           content: [
             {
               kind: 'html',

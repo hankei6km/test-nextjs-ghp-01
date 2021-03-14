@@ -18,7 +18,8 @@ import { applyPreviewDataToIdQuery } from './preview';
 import {
   getSectionFromPages,
   getPagePostsTotalCountFromSection,
-  getNotificationId
+  getNotificationId,
+  getTocFromSections
 } from './section';
 import {
   pageCountFromTotalCount,
@@ -345,6 +346,8 @@ export async function getPagesPageData(
         options
       );
       pageData.footer = footer.length > 0 ? footer : pageData.footer;
+
+      pageData.contentToc = getTocFromSections(pageData.sections);
     }
     switch (apiName) {
       case 'pages':

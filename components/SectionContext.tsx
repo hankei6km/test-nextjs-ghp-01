@@ -8,6 +8,10 @@ import { SiteTitleComponent, SiteTitleVariant } from './parts/SiteTitle';
 import { PageTitleComponent, PageTitleVariant } from './parts/PageTitle';
 import { NavCategoryComponent } from './parts/NavCategory';
 import {
+  NavContentTocComponent,
+  NavContentTocVariant
+} from './parts/NavContentToc';
+import {
   NotificationComponent,
   NotificationVariant
 } from './content/Notification';
@@ -22,6 +26,7 @@ export type SectionConfig = {
     SiteTitleComponent &
     PageTitleComponent &
     NavCategoryComponent &
+    NavContentTocComponent &
     NotificationComponent;
   variant: SectionItemVariant &
     ArticleListVariant &
@@ -29,6 +34,7 @@ export type SectionConfig = {
     ArticleItemVariant &
     SiteTitleVariant &
     PageTitleVariant &
+    NavContentTocVariant &
     NotificationVariant;
 };
 

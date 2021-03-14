@@ -44,6 +44,7 @@ const SectionItem = ({ data, classes: inClasses }: Props) => {
           variant={variant.sectionTitleVariant}
           component={component.sectionTitleComponent}
           className={classes['SectionItem-title']}
+          id={data.id}
         >
           {data.title}
         </Typography>
