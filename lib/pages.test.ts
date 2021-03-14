@@ -351,7 +351,7 @@ describe('getPagesPageData()', () => {
         footer: [
           {
             title: 'language & library',
-            id: 'language-&-library',
+            id: 'language---library',
             content: [
               {
                 kind: 'html',

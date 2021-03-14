@@ -14,8 +14,15 @@ describe('getTocLabel()', () => {
   it('should returns label to using in toc', () => {
     expect(getTocLabel('test')).toEqual('test');
     expect(getTocLabel('test1 test2\ttest3')).toEqual('test1-test2-test3');
-    expect(getTocLabel('test1  test2\t\ttest3')).toEqual('test1-test2-test3');
-    expect(getTocLabel('test1\ntest2\n\ntest3')).toEqual('test1-test2-test3');
+    expect(getTocLabel('test1  test2\t\ttest3')).toEqual('test1--test2--test3');
+    expect(getTocLabel('test1\ntest2\n\rtest3')).toEqual('test1-test2--test3');
+    expect(getTocLabel('test1#test2.test3')).toEqual('test1-test2-test3');
+    expect(getTocLabel('test1&test2>test3')).toEqual('test1-test2-test3');
+    expect(getTocLabel('test1[test2]test3')).toEqual('test1-test2-test3');
+    expect(getTocLabel('test1:test2;test3')).toEqual('test1-test2-test3');
+    expect(getTocLabel('#.()[]{}<>@&%$"`=_:;\'\\ \t\n\r')).toEqual(
+      '--------------------------'
+    );
   });
 });
 

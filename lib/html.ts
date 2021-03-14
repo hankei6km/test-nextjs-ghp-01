@@ -30,8 +30,11 @@ const schema = merge(gh, {
   }
 });
 
-const textToTocLabelRegExp = /[ \t\n\r]+/g;
+const textToTocLabelRegExp = /[#.()[\]{}<>@&%$"`=_:;'\\ \t\n\r]/g;
 export function getTocLabel(s: string): string {
+  // selector ではそのままで使えない id になる可能性もある
+  // CSS.escape() は "selector 内で operator? になる文字をエスケープ"するものなので
+  // ちょっと意味合いが違う
   return s.replace(textToTocLabelRegExp, '-');
 }
 
