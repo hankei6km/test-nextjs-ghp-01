@@ -1,6 +1,6 @@
 {
-  "name": "with-typescript",
-  "version": "1.0.0",
+  "name": "test-nextjs-ghp-01",
+  "version": "0.1.0",
   "scripts": {
     "api:build": "aspida && aspida-mock",
     "dev": "aspida && aspida-mock && next",

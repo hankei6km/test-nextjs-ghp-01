@@ -14,7 +14,7 @@ type SiteServerSideConfig = {
   };
 };
 const siteServerSideConfig: SiteServerSideConfig = {
-  globalPageId: 'o_global',
+  globalPageId: '_global',
   imageConfig: {
     // siteConfig と重複している項目
     contentImageClassName: 'contentImage-img',
