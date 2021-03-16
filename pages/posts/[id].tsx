@@ -13,19 +13,40 @@ import { wrapStyle } from '../../utils/classes';
 import PageContext from '../../components/PageContext';
 // import classes from '*.module.css';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   pageMain: {
     ...wrapStyle(`& .${siteConfig.iamgeConfig.contentImageClassName}`, {
       maxWidth: '100%',
+      height: '100%',
       objectFit: 'scale-down'
-    })
+    }),
+    ...theme.typography.body1,
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    '& article > h3': {
+      ...theme.typography.h6,
+      marginTop: theme.spacing(1),
+      paddingTop: theme.spacing(0.5),
+      paddingBottom: theme.spacing(0.5),
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+      borderLeft: `6px solid ${theme.palette.primary.main}`,
+      backgroundColor: theme.palette.divider // ライトグレイぽい色は他にないかね
+      // background: `linear-gradient(to right, ${theme.palette.primary.main} ,#f0f0f0)`
+    },
+    '& article > h4': {
+      ...theme.typography.h6,
+      display: 'inline',
+      marginTop: theme.spacing(1),
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
+      // color: theme.palette.primary.contrastText,
+      color: theme.palette.getContrastText(theme.palette.primary.main),
+      backgroundColor: theme.palette.primary.main
+    }
   },
   'SectionItem-root': {},
-  'SectionItem-title': {
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'center'
-  }
+  'SectionItem-title': {}
 }));
 
 const sectionConfigInPosts = mergeSectionConfig({
@@ -49,7 +70,7 @@ export default function Post({
         title={pageData.title}
         footerSections={pageData.footer}
       >
-        <Box my={1}>
+        <>
           <SectionList
             sections={[
               {
@@ -58,29 +79,46 @@ export default function Post({
                   {
                     kind: 'partsNavBreadcrumbs',
                     lastBreadcrumb: pageData.title
-                  },
-                  {
-                    kind: 'partsPageTitle',
-                    link: ''
-                  },
-                  {
-                    kind: 'partsUpdated'
-                  },
-                  {
-                    kind: 'partsNavContentToc'
                   }
                 ]
               }
             ]}
             classes={{ ...classes }}
           />
-          <SectionList sections={pageData.top} classes={{ ...classes }} />
-          <Box className={classes.pageMain}>
+          <Box component="section" className={classes.pageMain}>
             <SectionList
-              sections={pageData.sections}
+              sections={[
+                {
+                  title: '',
+                  content: [
+                    {
+                      kind: 'partsPageTitle',
+                      link: ''
+                    },
+                    {
+                      kind: 'partsUpdated'
+                    },
+                    {
+                      kind: 'partsNavContentToc'
+                    }
+                  ]
+                }
+              ]}
               config={sectionConfigInPosts}
               classes={{ ...classes }}
             />
+            <SectionList
+              sections={pageData.top}
+              config={sectionConfigInPosts}
+              classes={{ ...classes }}
+            />
+            <Box component="article">
+              <SectionList
+                sections={pageData.sections}
+                config={sectionConfigInPosts}
+                classes={{ ...classes }}
+              />
+            </Box>
           </Box>
           <SectionList
             sections={[
@@ -98,7 +136,7 @@ export default function Post({
             classes={{ ...classes }}
           />
           <SectionList sections={pageData.bottom} classes={{ ...classes }} />
-        </Box>
+        </>
         <Link href="/posts">{'Back to posts'}</Link>
       </Layout>
     </PageContext.Provider>
