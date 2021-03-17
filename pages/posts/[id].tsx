@@ -17,9 +17,10 @@ const useStyles = makeStyles((theme) => ({
   pageMain: {
     ...wrapStyle(`& .${siteConfig.iamgeConfig.contentImageClassName}`, {
       maxWidth: '100%',
-      height: '100%',
+      maxHeight: '100%',
       objectFit: 'scale-down'
     }),
+    maxWidth: theme.breakpoints.values.sm,
     ...theme.typography.body1,
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1),
@@ -68,75 +69,76 @@ export default function Post({
       <Layout
         headerSections={pageData.header}
         title={pageData.title}
+        topSections={pageData.top}
+        bottomSections={[
+          {
+            title: '',
+            content: [
+              {
+                kind: 'partsNavContentToc'
+              }
+            ]
+          },
+          ...pageData.bottom
+        ]}
         footerSections={pageData.footer}
       >
-        <>
-          <SectionList
-            sections={[
-              {
-                title: '',
-                content: [
-                  {
-                    kind: 'partsNavBreadcrumbs',
-                    lastBreadcrumb: pageData.title
-                  }
-                ]
-              }
-            ]}
-            classes={{ ...classes }}
-          />
-          <Box component="section" className={classes.pageMain}>
-            <SectionList
-              sections={[
+        <SectionList
+          sections={[
+            {
+              title: '',
+              content: [
                 {
-                  title: '',
-                  content: [
-                    {
-                      kind: 'partsPageTitle',
-                      link: ''
-                    },
-                    {
-                      kind: 'partsUpdated'
-                    },
-                    {
-                      kind: 'partsNavContentToc'
-                    }
-                  ]
+                  kind: 'partsNavBreadcrumbs',
+                  lastBreadcrumb: pageData.title
                 }
-              ]}
-              config={sectionConfigInPosts}
-              classes={{ ...classes }}
-            />
-            <SectionList
-              sections={pageData.top}
-              config={sectionConfigInPosts}
-              classes={{ ...classes }}
-            />
-            <Box component="article">
-              <SectionList
-                sections={pageData.sections}
-                config={sectionConfigInPosts}
-                classes={{ ...classes }}
-              />
-            </Box>
-          </Box>
+              ]
+            }
+          ]}
+          classes={{ ...classes }}
+        />
+        <Box component="section" className={classes.pageMain}>
           <SectionList
             sections={[
               {
                 title: '',
                 content: [
                   {
-                    kind: 'partsNavCategory',
-                    all: false,
-                    categoryPath: '/posts/category'
+                    kind: 'partsPageTitle',
+                    link: ''
+                  },
+                  {
+                    kind: 'partsUpdated'
                   }
                 ]
               }
             ]}
+            config={sectionConfigInPosts}
             classes={{ ...classes }}
           />
-          <SectionList sections={pageData.bottom} classes={{ ...classes }} />
-        </>
+          <Box display="block" component="article">
+            <SectionList
+              sections={pageData.sections}
+              config={sectionConfigInPosts}
+              classes={{ ...classes }}
+            />
+          </Box>
+        </Box>
+        <SectionList
+          sections={[
+            {
+              title: '',
+              content: [
+                {
+                  kind: 'partsNavCategory',
+                  all: false,
+                  categoryPath: '/posts/category'
+                }
+              ]
+            }
+          ]}
+          classes={{ ...classes }}
+        />
         <Link href="/posts">{'Back to posts'}</Link>
       </Layout>
     </PageContext.Provider>
