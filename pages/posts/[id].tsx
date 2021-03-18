@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   pageMain: {
     ...wrapStyle(`& .${siteConfig.iamgeConfig.contentImageClassName}`, {
       maxWidth: '100%',
-      maxHeight: '100%',
+      height: '100%',
       objectFit: 'scale-down'
     }),
     maxWidth: theme.breakpoints.values.sm,
@@ -45,10 +45,31 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.getContrastText(theme.palette.primary.main),
       backgroundColor: theme.palette.primary.main
     }
-  },
+  }
+}));
+
+const useSectionStyles = makeStyles(() => ({
   'SectionItem-root': {},
   'SectionItem-title': {}
 }));
+
+const useNoneUpMdStyles = makeStyles((theme) => ({
+  'NavContentToc-root': {
+    [theme.breakpoints.up('md')]: {
+      display: 'none'
+    },
+    width: '100%'
+  }
+}));
+
+// const useDispUpMdStyles = makeStyles((theme) => ({
+//   'NavContentToc-root': {
+//     [theme.breakpoints.up('md')]: {
+//       display: 'none'
+//     },
+//     width: '100%'
+//   }
+// }));
 
 const sectionConfigInPosts = mergeSectionConfig({
   naked: true
@@ -61,6 +82,9 @@ export default function Post({
   preview: boolean;
 }) {
   const classes = useStyles();
+  const classesSection = useSectionStyles();
+  const classesNoneUpMd = useNoneUpMdStyles();
+  // const classesDispUpMd = useDispUpMdStyles();
   if (!pageData) {
     return <ErrorPage statusCode={404} />;
   }
@@ -75,7 +99,8 @@ export default function Post({
             title: '',
             content: [
               {
-                kind: 'partsNavContentToc'
+                kind: 'partsNavContentToc',
+                expanded: true
               }
             ]
           },
@@ -95,7 +120,7 @@ export default function Post({
               ]
             }
           ]}
-          classes={{ ...classes }}
+          classes={{ ...classesSection }}
         />
         <Box component="section" className={classes.pageMain}>
           <SectionList
@@ -114,13 +139,24 @@ export default function Post({
               }
             ]}
             config={sectionConfigInPosts}
-            classes={{ ...classes }}
+            classes={{ ...classesSection }}
           />
           <Box display="block" component="article">
             <SectionList
-              sections={pageData.sections}
+              sections={[
+                {
+                  title: '',
+                  content: [
+                    {
+                      kind: 'partsNavContentToc',
+                      expanded: false
+                    }
+                  ]
+                },
+                ...pageData.sections
+              ]}
               config={sectionConfigInPosts}
-              classes={{ ...classes }}
+              classes={{ ...classesSection, ...classesNoneUpMd }}
             />
           </Box>
         </Box>
@@ -137,7 +173,7 @@ export default function Post({
               ]
             }
           ]}
-          classes={{ ...classes }}
+          classes={{ ...classesSection }}
         />
         <Link href="/posts">{'Back to posts'}</Link>
       </Layout>
