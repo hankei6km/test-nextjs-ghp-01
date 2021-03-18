@@ -48,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const useSectionStyles = makeStyles((theme) => ({
+const useSectionStyles = makeStyles(() => ({
   'SectionItem-root': {},
   'SectionItem-title': {}
 }));
@@ -99,7 +99,8 @@ export default function Post({
             title: '',
             content: [
               {
-                kind: 'partsNavContentToc'
+                kind: 'partsNavContentToc',
+                expanded: true
               }
             ]
           },
@@ -147,7 +148,8 @@ export default function Post({
                   title: '',
                   content: [
                     {
-                      kind: 'partsNavContentToc'
+                      kind: 'partsNavContentToc',
+                      expanded: false
                     }
                   ]
                 },
