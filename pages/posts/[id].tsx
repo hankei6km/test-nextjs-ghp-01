@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   pageMain: {
     ...wrapStyle(`& .${siteConfig.iamgeConfig.contentImageClassName}`, {
       maxWidth: '100%',
-      maxHeight: '100%',
+      height: '100%',
       objectFit: 'scale-down'
     }),
     maxWidth: theme.breakpoints.values.sm,
